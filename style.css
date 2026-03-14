@@ -267,3 +267,432 @@ main {
     nav, .filter-bar, .btn-full, .external-links, #backToTop { display: none !important; }
     .card { box-shadow: none; border: 1px solid #000; }
 }
+
+/* =============================================
+   MODALE SÉANCE
+   ============================================= */
+
+/* Overlay sombre derrière la modale */
+#modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#modal-overlay.open {
+    display: flex;
+}
+
+/* Boîte principale de la modale */
+#modal-box {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 640px;
+    margin: auto;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    animation: modalIn 0.22s ease-out;
+    position: relative;
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Bandeau couleur en haut selon le type */
+#modal-header {
+    padding: 22px 24px 16px;
+    border-bottom: 1px solid #eee;
+}
+
+#modal-header h2 {
+    margin: 0 32px 10px 0;
+    font-size: 1.3em;
+    line-height: 1.2;
+    color: #000;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* Badges dans la modale */
+.modal-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.modal-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.72em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.modal-badge-type   { background: #222; color: #fff; }
+.modal-badge-body   { background: #e8f5e9; color: #1b5e20; }
+.modal-badge-time   { background: #fff3e0; color: #e65100; }
+.modal-badge-mat    { background: #e1f5fe; color: #01579b; }
+.modal-badge-level-facile  { background: #e8f5e9; color: #2e7d32; }
+.modal-badge-level-moyen   { background: #fff8e1; color: #ef6c00; }
+.modal-badge-level-intense { background: #fce4ec; color: #c62828; }
+
+/* Corps de la modale */
+#modal-body {
+    padding: 20px 24px;
+}
+
+/* Bloc description principale */
+.modal-section-title {
+    font-size: 0.78em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin: 0 0 6px;
+}
+
+.modal-format-label {
+    font-size: 1.05em;
+    font-weight: 800;
+    color: #000;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.modal-intro {
+    font-size: 0.92em;
+    color: #555;
+    margin: 0 0 8px;
+    font-style: italic;
+}
+
+.modal-exercises {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+}
+
+.modal-exercises li {
+    padding: 7px 0 7px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.95em;
+    color: #222;
+    position: relative;
+    line-height: 1.4;
+}
+
+.modal-exercises li:last-child {
+    border-bottom: none;
+}
+
+.modal-exercises li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #aaa;
+    font-size: 0.8em;
+    top: 9px;
+}
+
+/* Bloc Version Scaled */
+.modal-scaled {
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 12px 0;
+}
+
+.modal-scaled .modal-section-title {
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.modal-scaled .modal-exercises li {
+    border-bottom-color: #eaeaea;
+}
+
+.modal-scaled .modal-intro {
+    color: #666;
+}
+
+/* Bloc Conseil */
+.modal-conseil {
+    background: #fffbf0;
+    border-left: 4px solid #d4af37;
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin-top: 14px;
+    font-size: 0.88em;
+    color: #555;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.modal-conseil strong {
+    display: block;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #b8962e;
+    margin-bottom: 4px;
+    font-style: normal;
+}
+
+/* Couleur de l'accent selon le type */
+#modal-box.type-emom     { border-top: 5px solid #d4af37; }
+#modal-box.type-amrap    { border-top: 5px solid #e53935; }
+#modal-box.type-tabata   { border-top: 5px solid #fb8c00; }
+#modal-box.type-for-time { border-top: 5px solid #1a237e; }
+#modal-box.type-hyrox    { border-top: 5px solid #00695c; }
+#modal-box.type-muscu    { border-top: 5px solid #424242; }
+#modal-box.type-cardio   { border-top: 5px solid #000; }
+
+#modal-box.type-emom   .modal-badge-type { background: #d4af37; color: #000; }
+#modal-box.type-amrap  .modal-badge-type { background: #e53935; }
+#modal-box.type-tabata .modal-badge-type { background: #fb8c00; }
+#modal-box.type-for-time .modal-badge-type { background: #1a237e; }
+#modal-box.type-hyrox  .modal-badge-type { background: #00695c; }
+#modal-box.type-muscu  .modal-badge-type { background: #424242; }
+#modal-box.type-cardio .modal-badge-type { background: #000; }
+
+/* Bouton fermer */
+#modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    transition: background 0.2s;
+    line-height: 1;
+    z-index: 10;
+}
+
+#modal-close:hover { background: #ddd; color: #000; }
+
+/* Pied de modale */
+#modal-footer {
+    padding: 14px 24px 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+#modal-footer .btn-modal-close {
+    display: inline-block;
+    padding: 10px 28px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.05em;
+}
+
+#modal-footer .btn-modal-close:hover { background: #333; }
+
+/* =============================================
+   BANDEAU EBOOK EN BAS DE PAGE
+   ============================================= */
+.ebook-banner {
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 22px 20px;
+    margin-top: 40px;
+}
+
+.ebook-banner p {
+    margin: 0 0 10px;
+    font-size: 0.95em;
+    color: #ccc;
+}
+
+.ebook-banner strong {
+    color: #fff;
+    display: block;
+    font-size: 1.05em;
+    margin-bottom: 4px;
+}
+
+.ebook-banner a.btn-ebook {
+    display: inline-block;
+    background: #b6d73c;
+    color: #000;
+    font-weight: bold;
+    padding: 11px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9em;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+}
+
+.ebook-banner a.btn-ebook:hover { background: #a0c030; }
+
+/* =============================================
+   RESPONSIVE MODALE
+   ============================================= */
+@media (max-width: 600px) {
+    #modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+    #modal-box {
+        border-radius: 16px 16px 0 0;
+        max-width: 100%;
+        margin: 0;
+        max-height: 92vh;
+        overflow-y: auto;
+        animation: modalInMobile 0.25s ease-out;
+    }
+    @keyframes modalInMobile {
+        from { opacity: 0; transform: translateY(40px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    #modal-header h2 { font-size: 1.1em; }
+}
+/* =============================================
+   RUN TEMPO — SÉLECTEUR DE NIVEAU
+   ============================================= */
+
+.run-tempo-selector {
+    margin-bottom: 14px;
+}
+
+.niveau-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 6px;
+}
+
+.btn-niveau {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    background: #f5f5f5;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-niveau:hover {
+    border-color: #000;
+    background: #eee;
+    color: #000;
+}
+
+.btn-niveau.active {
+    background: #000;
+    border-color: #000;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.type-cardio .btn-niveau.active {
+    background: #000;
+    border-color: #000;
+}
+
+/* Liste des phases */
+.run-tempo-list {
+    margin: 8px 0 0 !important;
+}
+
+.run-tempo-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px 6px 20px !important;
+    gap: 10px;
+}
+
+.run-tempo-list li::before {
+    content: '' !important;
+}
+
+.run-min {
+    font-size: 0.82em;
+    color: #888;
+    white-space: nowrap;
+    min-width: 70px;
+}
+
+.run-speed {
+    font-size: 0.92em;
+    font-weight: 600;
+    text-align: right;
+}
+
+.run-effort {
+    background: #fff8e1;
+    border-bottom-color: #ffe082 !important;
+}
+
+.run-effort .run-speed {
+    color: #e65100;
+}
+
+.run-recup {
+    background: #f1f8e9;
+    border-bottom-color: #dcedc8 !important;
+}
+
+.run-recup .run-speed {
+    color: #558b2f;
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* =============================================
+   CONSEILS — BLOCS DE CONTENU MODALE
+   ============================================= */
+
+.conseil-texte p {
+    font-size: 0.93em;
+    line-height: 1.6;
+    color: #333;
+    margin: 0 0 8px;
+}
+
+.conseil-texte p:empty {
+    display: none;
+}
+
+.conseil-media {
+    margin-bottom: 4px;
+}

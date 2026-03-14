@@ -41,45 +41,26 @@
 
 <main>
     <h1>Course à pied</h1>
-    <br>
-        
-    <div class="card-grid">
-        
-        <div class="card card-muscu"> <div>
-                <span class="tag tag-material">Cardio</span>
-                <span class="tag tag-body">tapis de course incurvé</span>
-                <h3>Séance TEMPO pyramidale</h3>
-                <div class="card-desc">
-                    Séance cardio sur tapis avec choix du niveau. Durée : 40 minutes
-                </div>
-            </div>
-            <div class="card-buttons">
-                <a href="docs/RUN_TEMPO.pdf" target="_blank" class="btn-full">Afficher la séance</a>
-            </div>
-        </div>
-        
-    
-    
-    <div class="card-grid">
-        
-        <div class="card card-muscu"> <div>
-                <span class="tag tag-material">Cardio</span>
-                <h3>Séances course à pied</h3>
-                <div class="card-desc">
-                    Séances de course à pied guidées avec l'application decathlon coach
-                </div>
-            </div>
-            <div class="card-buttons">
-                <a href="docs/AppliDecat.pdf" target="_blank" class="btn-full">Afficher le guide</a>
-            </div>
-        </div>
-        
-    </div>
-    </div>
-    
+    <div id="course-grid" class="card-grid"></div>
 </main>
-    <button id="backToTop" title="Retour en haut">↑</button>
-    <script src="script.js"></script>
+
+<!-- Modale séance -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-box">
+        <button id="modal-close" aria-label="Fermer">✕</button>
+        <div id="modal-header">
+            <h2 id="modal-title"></h2>
+            <div class="modal-badges" id="modal-badges"></div>
+        </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer">
+            <button class="btn-modal-close" onclick="closeModal()">Fermer la fiche</button>
+        </div>
+    </div>
+</div>
+
+<button id="backToTop" title="Retour en haut">↑</button>
+<script src="course.js"></script>
 
 </body>
 </html>

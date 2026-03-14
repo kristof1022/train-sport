@@ -40,28 +40,26 @@
   
 <main>
     <h1>Conseils - Infos pratiques</h1>
-    <div class="card-grid">
-        
-        <div class="card card-muscu"> <div>
-                <span class="tag tag-material">Lexique</span>
-                <span class="tag tag-body">Mouvements</span>
-                <h3>CROSSTRAINING</h3>
-                <div class="card-desc">
-                    Deux fiches sur le crosstraining : un lexique matériels et entraînement / un guide des mouvements. 
-                </div>
-            </div>
-            <div class="card-buttons">
-                <a href="docs/lexique_crossfit1.jpg" target="_blank" class="btn-full">lexique</a> <br>
-                <a href="docs/lexique_crossfit2.jpg" target="_blank" class="btn-full">mouvements</a>
-            </div>
-        </div>
-                        
-    </div>
-    
-    
+    <div id="conseils-grid" class="card-grid"></div>
 </main>
-    <button id="backToTop" title="Retour en haut">↑</button>
-    <script src="script.js"></script>
+
+<!-- Modale conseil -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-box">
+        <button id="modal-close" aria-label="Fermer">✕</button>
+        <div id="modal-header">
+            <h2 id="modal-title"></h2>
+            <div class="modal-badges" id="modal-badges"></div>
+        </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer">
+            <button class="btn-modal-close" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<button id="backToTop" title="Retour en haut">↑</button>
+<script src="conseils.js"></script>
 
 </body>
 </html>

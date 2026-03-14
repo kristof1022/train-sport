@@ -109,6 +109,28 @@
     <div id="workout-grid" class="card-grid"></div>
 </main>
 
+<!-- Bandeau téléchargement PDF 
+<div class="ebook-banner">
+    <strong>📥 Toutes les séances en PDF</strong>
+    <p>Télécharge le recueil complet de séances pour l'avoir hors-ligne ou l'imprimer.</p>
+    <a href="docs/SEANCES_CROSSTRAINING.pdf" download class="btn-ebook">⬇ Télécharger le PDF complet</a>
+</div> -->
+
+<!-- MODALE SÉANCE -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-box">
+        <button id="modal-close" aria-label="Fermer">✕</button>
+        <div id="modal-header">
+            <h2 id="modal-title"></h2>
+            <div class="modal-badges" id="modal-badges"></div>
+        </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer">
+            <button class="btn-modal-close" onclick="closeModal()">Fermer la fiche</button>
+        </div>
+    </div>
+</div>
+
 <button id="backToTop" title="Retour en haut">↑</button>
 <script src="script.js"></script>
 </body>

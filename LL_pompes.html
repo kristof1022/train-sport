@@ -40,45 +40,26 @@
     
 <main>
     <h1>S'améliorer au Luc léger et aux pompes</h1>
-    <br>
-            
-    <div class="card-grid">
-       
-        <div class="card card-muscu"> <div>
-                <span class="tag tag-material">Cardio</span>
-                <span class="tag tag-body">Sans matériel</span>
-                <h3>Séances Fractionné</h3>
-                <div class="card-desc">
-                    Séances de fractionné en course à pied pour s'améliorer au LUC Léger
-                </div>
-            </div>
-            <div class="card-buttons">
-                <a href="docs/CCPM_fractionne.pdf" target="_blank" class="btn-full">Afficher la séance</a>
-            </div>
+    <div id="ll-grid" class="card-grid"></div>
+</main>
+
+<!-- Modale séance -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-box">
+        <button id="modal-close" aria-label="Fermer">✕</button>
+        <div id="modal-header">
+            <h2 id="modal-title"></h2>
+            <div class="modal-badges" id="modal-badges"></div>
         </div>
-        
-    <div class="card-grid">
-       
-        <div class="card card-muscu"> <div>
-                <span class="tag tag-material">FORCE</span>
-                <span class="tag tag-body">Sans matériel</span>
-                <h3>Séance Pompes</h3>
-                <div class="card-desc">
-                    Séances de pompes pour améliorer son nombre max de reps
-                </div>
-            </div>
-            <div class="card-buttons">
-                <a href="docs/CCPM_pompes.pdf" target="_blank" class="btn-full">Afficher la séance</a>
-            </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer">
+            <button class="btn-modal-close" onclick="closeModal()">Fermer la fiche</button>
         </div>
-        
     </div>
-    </div>
-    
-    
-    </main>
-    <button id="backToTop" title="Retour en haut">↑</button>
-    <script src="script.js"></script>
+</div>
+
+<button id="backToTop" title="Retour en haut">↑</button>
+<script src="ll_pompes.js"></script>
 
 </body>
 </html>
