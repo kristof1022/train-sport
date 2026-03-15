@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/2090184-cddc39_ico.png">
+    <title>Chronos d'entraînement</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --travail-bg:    #c0392b;
+            --travail-bg2:   #e74c3c;
+            --repos-bg:      #1a3a6b;
+            --repos-bg2:     #2760ae;
+            --countdown-bg:  #d35400;
+            --countdown-bg2: #e67e22;
+            --card-bg:       #0f3460;
+            --neutral-bg:    #1a1a2e;
+            --accent:        #b6d73c;
+            --text-light:    #f0f0f0;
+            --text-dim:      #aaa;
+            --btn-radius:    10px;
+            --shadow:        0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        body { background: var(--neutral-bg); color: var(--text-light); }
+        nav  { border-bottom: 2px solid var(--accent); }
+
+        /* ── Bandeau titre ── */
+        .chrono-topbar {
+            background: #000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        .chrono-topbar h2 {
+            font-size: 1em;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 0;
+            text-align: center;
+        }
+        .btn-mute {
+            position: absolute;
+            right: 16px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 50%;
+            width: 42px; height: 42px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .btn-mute:hover { background: #333; }
+        .btn-mute.muted { background: #c0392b; border-color: #e74c3c; }
+
+        /* ── Onglets centrés ── */
+        .chrono-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: #000;
+            border-bottom: 1px solid #222;
+        }
+        .chrono-tab {
+            flex: 0 0 auto;
+            padding: 12px 14px;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-family: sans-serif;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .chrono-tab.active {
+            color: #000;
+            background: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .chrono-tab:hover { color: #fff; background: #1a1a1a; }
+
+        /* Sur très petit écran, 2 lignes de 2-3 onglets */
+        @media (max-width: 400px) {
+            .chrono-tab { padding: 10px 10px; font-size: 0.72em; }
+        }
+
+        /* ── Panels ── */
+        .chrono-panel { display: none; padding: 20px 16px; max-width: 480px; margin: 0 auto; }
+        .chrono-panel.active { display: block; }
+
+        /* ── Affichage principal ── */
+        .phase-display {
+            border-radius: 16px;
+            padding: 28px 20px 22px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: background 0.4s ease;
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+        }
+        .phase-display.phase-travail  { background: linear-gradient(135deg, var(--travail-bg), var(--travail-bg2)); }
+        .phase-display.phase-repos    { background: linear-gradient(135deg, var(--repos-bg), var(--repos-bg2)); }
+        .phase-display.phase-countdown {
+            background: linear-gradient(135deg, var(--countdown-bg), var(--countdown-bg2));
+            animation: pulse-cd 0.5s ease infinite alternate;
+        }
+        @keyframes pulse-cd {
+            from { transform: scale(1); }
+            to   { transform: scale(1.02); }
+        }
+
+        .phase-label {
+            font-size: 1.4em; font-weight: 900;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 6px; min-height: 1.6em;
+        }
+        .chrono-time {
+            font-size: 5em; font-weight: 900; color: #fff;
+            line-height: 1; letter-spacing: 0.02em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin: 8px 0; font-variant-numeric: tabular-nums;
+        }
+        .chrono-time.small { font-size: 3.8em; }
+        .chrono-sub  { font-size: 0.88em; color: rgba(255,255,255,0.75); margin-top: 6px; min-height: 1.4em; }
+        .chrono-next { font-size: 0.82em; color: rgba(255,255,255,0.6); margin-top: 4px; font-style: italic; min-height: 1.2em; }
+
+        .progress-bar-wrap {
+            background: rgba(0,0,0,0.25); border-radius: 10px;
+            height: 8px; margin-top: 14px; overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; border-radius: 10px;
+            background: rgba(255,255,255,0.8); transition: width 0.5s linear;
+        }
+
+        /* ── Config ── */
+        .chrono-config {
+            background: #0f1b35; border-radius: 12px;
+            padding: 16px; margin-bottom: 18px; border: 1px solid #1e3050;
+        }
+        .config-title {
+            font-size: 0.85em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent); margin: 0 0 12px;
+        }
+        .config-row {
+            display: flex; align-items: center;
+            gap: 10px; margin-bottom: 12px; flex-wrap: nowrap;
+        }
+        .config-row label { font-size: 0.85em; color: var(--text-dim); flex: 1; min-width: 110px; }
+
+        /* Stepper +/- */
+        .stepper {
+            display: flex; align-items: center;
+            border-radius: 10px; overflow: hidden; border: 1px solid #2a3a5a;
+        }
+        .btn-step {
+            background: #1a2a4a; border: none; color: var(--accent);
+            font-size: 1.3em; font-weight: 700;
+            width: 42px; height: 42px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s; flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-step:hover  { background: #243a5a; }
+        .btn-step:active { background: #0f1b35; }
+        .config-input {
+            background: #0f1b35; border: none;
+            border-left: 1px solid #2a3a5a; border-right: 1px solid #2a3a5a;
+            color: #fff; padding: 0; font-size: 1.1em; font-weight: 700;
+            width: 60px; height: 42px; text-align: center;
+            -moz-appearance: textfield;
+        }
+        .config-input::-webkit-outer-spin-button,
+        .config-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+        .config-input:focus { outline: none; background: #1a2a4a; color: var(--accent); }
+
+        /* ── Boutons contrôle ── */
+        .chrono-controls {
+            display: flex; gap: 10px;
+            justify-content: center; flex-wrap: wrap;
+        }
+        .btn-chrono {
+            padding: 14px 18px; border: none;
+            border-radius: var(--btn-radius);
+            font-family: sans-serif; font-size: 0.92em; font-weight: 700;
+            letter-spacing: 0.06em; cursor: pointer;
+            transition: all 0.15s ease; text-transform: uppercase;
+            min-width: 85px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-chrono:active { transform: scale(0.96); }
+        .btn-chrono:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        /* Couleurs de base */
+        .btn-start { background: var(--accent); color: #000; }
+        .btn-start:hover:not(:disabled) { background: #a0c030; }
+
+        .btn-hold  { background: #8e44ad; color: #fff; }
+        .btn-hold:hover:not(:disabled) { background: #6c3483; }
+        .btn-hold.btn-active { background: #f39c12; color: #000; }
+
+        .btn-pause { background: #e67e22; color: #fff; }
+        .btn-pause:hover:not(:disabled) { background: #d35400; }
+        .btn-pause.btn-active { background: #c0392b; color: #fff; }
+
+        .btn-reset { background: #2c3e50; color: #fff; }
+        .btn-reset:hover { background: #1a252f; }
+
+        /* ── Stats rounds ── */
+        .rounds-display { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
+        .round-stat .val { font-size: 2.2em; font-weight: 900; color: var(--accent); line-height: 1; text-align: center; }
+        .round-stat .lbl { font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; text-align: center; }
+
+        /* ── Séquence sur-mesure ── */
+        .sequence-list { list-style: none; padding: 0; margin: 0 0 10px; }
+        .sequence-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 10px; background: #1a2a4a;
+            border-radius: 8px; margin-bottom: 6px; border-left: 4px solid #2a3a5a;
+        }
+        .sequence-item.type-travail      { border-left-color: #e74c3c; }
+        .sequence-item.type-repos        { border-left-color: #2760ae; }
+        .sequence-item.type-echauffement { border-left-color: #3498db; }
+        .sequence-item.type-retour       { border-left-color: #9b59b6; }
+
+        .sequence-item select {
+            background: #0f1b35; border: 1px solid #2a3a5a;
+            border-radius: 6px; color: #fff; padding: 7px 8px;
+            font-size: 0.82em; flex: 1;
+        }
+        .seq-stepper { display: flex; align-items: center; border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a; }
+        .seq-stepper .btn-step    { width: 32px; height: 34px; font-size: 1.1em; }
+        .seq-stepper .config-input { width: 48px; height: 34px; font-size: 0.9em; }
+
+        .btn-del-seq {
+            background: #c0392b; border: none; color: #fff;
+            border-radius: 6px; width: 30px; height: 30px;
+            cursor: pointer; font-size: 0.85em;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .btn-add-seq {
+            width: 100%; padding: 11px; background: #1a2a4a;
+            border: 1px dashed #2a3a5a; border-radius: 8px;
+            color: var(--accent); font-size: 0.9em; cursor: pointer;
+            transition: background 0.2s; font-weight: 600;
+        }
+        .btn-add-seq:hover { background: #243a5a; }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .chrono-time       { font-size: 4em; }
+            .chrono-time.small { font-size: 3em; }
+            .btn-chrono        { padding: 12px 12px; font-size: 0.85em; min-width: 72px; }
+            .config-row label  { font-size: 0.8em; min-width: 90px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="index.html"><img src="images/2090184-cddc39.png" alt="Logo"></a>
+        </div>
+        <ul>
+            <li>
+                <a href="#">Entraînements</a>
+                <ul class="submenu">
+                    <li><a href="index.html">Crosstraining - Renfo - Muscu</a></li>
+                    <li><a href="LL_pompes.html">S'améliorer au LL et pompes</a></li>
+                    <li><a href="course.html">Course à pied</a></li>
+                    <li><a href="velo.html">Vélo</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Infos Pratiques</a>
+                <ul class="submenu">
+                    <li><a href="mode_emploi.html">Modes d'emploi</a></li>
+                    <li><a href="conseils.html">Conseils</a></li>
+                </ul>
+            </li>
+            <li><a href="chrono.html">⏱ Chronos</a></li>
+        </ul>
+        <div class="nav-spacer"></div>
+    </div>
+</nav>
+
+<div class="chrono-topbar">
+    <h2>⏱ Chronos d'entraînement</h2>
+    <button class="btn-mute" id="btn-mute-global" onclick="toggleMute()" title="Son on/off">🔔</button>
+</div>
+
+<div class="chrono-tabs">
+    <button class="chrono-tab active" onclick="showTab('simple', this)">⏱ Chrono</button>
+    <button class="chrono-tab" onclick="showTab('countdown', this)">⏳ Rebours</button>
+    <button class="chrono-tab" onclick="showTab('tabata', this)">⚡ Tabata</button>
+    <button class="chrono-tab" onclick="showTab('emom', this)">🔁 EMOM</button>
+    <button class="chrono-tab" onclick="showTab('pyramide', this)">🔺 Pyramide</button>
+    <button class="chrono-tab" onclick="showTab('surmesure', this)">⚙️ Sur-Mesure</button>
+</div>
+
+<!-- ══════════════════════════════
+     PANEL 1 — CHRONOMÈTRE
+══════════════════════════════ -->
+<div class="chrono-panel active" id="panel-simple">
+    <div class="phase-display" id="simple-display">
+        <div class="phase-label" id="simple-label"></div>
+        <div class="chrono-time" id="simple-time">00:00:00</div>
+        <div class="chrono-sub">min : sec : centièmes</div>
+    </div>
+    <div class="chrono-controls">
+        <button class="btn-chrono btn-start" id="btn-simple-start" onclick="simpleStart()">▶ Start</button>
+        <button class="btn-chrono btn-hold"  id="btn-simple-hold"  onclick="simpleHold()"  disabled>Hold</button>
+        <button class="btn-chrono btn-pause" id="btn-simple-pause" onclick="simplePause()" disabled>⏸ Pause</button>
+        <button class="btn-chrono btn-reset" onclick="simpleReset()">↺ Reset</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     PANEL 2 — COMPTE À REBOURS
+══════════════════════════════ -->
+<div class="chrono-panel" id="panel-countdown">
+    <div class="chrono-config">
+        <p class="config-title">⚙️ Configuration</p>
+        <div class="config-row">
+            <label>Minutes</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('cd-min', -1)">−</button>
+                <input type="number" class="config-input" id="cd-min" value="10" min="0" max="99">
+                <button class="btn-step" onclick="step('cd-min', 1)">+</button>
+            </div>
+        </div>
+        <div class="config-row">
+            <label>Secondes</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('cd-sec', -5)">−</button>
+                <input type="number" class="config-input" id="cd-sec" value="0" min="0" max="55" step="5">
+                <button class="btn-step" onclick="step('cd-sec', 5)">+</button>
+            </div>
+        </div>
+    </div>
+    <div class="phase-display" id="countdown-display">
+        <div class="phase-label" id="countdown-label">PRÊT</div>
+        <div class="chrono-time" id="countdown-time">10:00</div>
+        <div class="chrono-sub" id="countdown-sub"></div>
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="countdown-bar" style="width:100%"></div>
+        </div>
+    </div>
+    <div class="chrono-controls">
+        <button class="btn-chrono btn-start" id="btn-cd-start" onclick="countdownStart()">▶ Start</button>
+        <button class="btn-chrono btn-pause" id="btn-cd-pause" onclick="countdownPause()" disabled>⏸ Pause</button>
+        <button class="btn-chrono btn-reset" onclick="countdownReset()">↺ Reset</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     PANEL 3 — TABATA
+══════════════════════════════ -->
+<div class="chrono-panel" id="panel-tabata">
+    <div class="chrono-config">
+        <p class="config-title">⚙️ Configuration</p>
+        <div class="config-row">
+            <label>Travail (sec)</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('tab-work', -5)">−</button>
+                <input type="number" class="config-input" id="tab-work" value="20" min="1" max="3600">
+                <button class="btn-step" onclick="step('tab-work', 5)">+</button>
+            </div>
+        </div>
+        <div class="config-row">
+            <label>Pause (sec)</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('tab-rest', -5)">−</button>
+                <input type="number" class="config-input" id="tab-rest" value="10" min="1" max="3600">
+                <button class="btn-step" onclick="step('tab-rest', 5)">+</button>
+            </div>
+        </div>
+        <div class="config-row">
+            <label>Rounds</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('tab-rounds', -1)">−</button>
+                <input type="number" class="config-input" id="tab-rounds" value="8" min="1" max="99">
+                <button class="btn-step" onclick="step('tab-rounds', 1)">+</button>
+            </div>
+        </div>
+    </div>
+    <div class="rounds-display">
+        <div class="round-stat"><div class="val" id="tab-cur">0</div><div class="lbl">Round</div></div>
+        <div class="round-stat"><div class="val" id="tab-tot">8</div><div class="lbl">Total</div></div>
+    </div>
+    <div class="phase-display" id="tabata-display">
+        <div class="phase-label" id="tabata-label">PRÊT</div>
+        <div class="chrono-time small" id="tabata-time">20</div>
+        <div class="chrono-sub" id="tabata-sub"></div>
+        <div class="chrono-next" id="tabata-next"></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="tabata-bar" style="width:100%"></div></div>
+    </div>
+    <div class="chrono-controls">
+        <button class="btn-chrono btn-start" id="btn-tab-start" onclick="tabataStart()">▶ Start</button>
+        <button class="btn-chrono btn-pause" id="btn-tab-pause" onclick="tabataPause()" disabled>⏸ Pause</button>
+        <button class="btn-chrono btn-reset" onclick="tabataReset()">↺ Reset</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     PANEL 4 — EMOM
+══════════════════════════════ -->
+<div class="chrono-panel" id="panel-emom">
+    <div class="chrono-config">
+        <p class="config-title">⚙️ Configuration</p>
+        <div class="config-row">
+            <label>Durée totale (min)</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('emom-min', -1)">−</button>
+                <input type="number" class="config-input" id="emom-min" value="10" min="1" max="99">
+                <button class="btn-step" onclick="step('emom-min', 1)">+</button>
+            </div>
+        </div>
+        <div style="font-size:0.8em; color:var(--text-dim); margin-top:4px;">
+            ℹ️ À chaque nouvelle minute : exécuter les exercices prévus. Le reste de la minute = repos.
+        </div>
+    </div>
+    <div class="rounds-display">
+        <div class="round-stat"><div class="val" id="emom-cur">0</div><div class="lbl">Minute</div></div>
+        <div class="round-stat"><div class="val" id="emom-tot">10</div><div class="lbl">Total</div></div>
+        <div class="round-stat"><div class="val" id="emom-sec-val">60</div><div class="lbl">Sec restantes</div></div>
+    </div>
+    <div class="phase-display" id="emom-display">
+        <div class="phase-label" id="emom-label">PRÊT</div>
+        <div class="chrono-time small" id="emom-time">60</div>
+        <div class="chrono-sub" id="emom-sub">Dans la minute, effectuez les exercices prévus</div>
+        <div class="chrono-next" id="emom-next"></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="emom-bar" style="width:100%"></div></div>
+    </div>
+    <div class="chrono-controls">
+        <button class="btn-chrono btn-start" id="btn-emom-start" onclick="emomStart()">▶ Start</button>
+        <button class="btn-chrono btn-pause" id="btn-emom-pause" onclick="emomPause()" disabled>⏸ Pause</button>
+        <button class="btn-chrono btn-reset" onclick="emomReset()">↺ Reset</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     PANEL 5 — PYRAMIDE
+══════════════════════════════ -->
+<div class="chrono-panel" id="panel-pyramide">
+    <div class="chrono-config">
+        <p class="config-title">⚙️ Configuration</p>
+        <div class="config-row">
+            <label>Travail (sec)</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('pyr-work', -5)">−</button>
+                <input type="number" class="config-input" id="pyr-work" value="30" min="1" max="3600">
+                <button class="btn-step" onclick="step('pyr-work', 5)">+</button>
+            </div>
+        </div>
+        <div class="config-row">
+            <label>Pause (sec)</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('pyr-rest', -5)">−</button>
+                <input type="number" class="config-input" id="pyr-rest" value="10" min="1" max="3600">
+                <button class="btn-step" onclick="step('pyr-rest', 5)">+</button>
+            </div>
+        </div>
+        <div class="config-row">
+            <label>Séries (montée)</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('pyr-series', -1)">−</button>
+                <input type="number" class="config-input" id="pyr-series" value="5" min="2" max="20">
+                <button class="btn-step" onclick="step('pyr-series', 1)">+</button>
+            </div>
+        </div>
+        <div style="font-size:0.8em; color:var(--text-dim); margin-top:4px;">
+            ℹ️ Monte puis redescend automatiquement
+        </div>
+    </div>
+    <div class="rounds-display">
+        <div class="round-stat"><div class="val" id="pyr-cur">0</div><div class="lbl">Série</div></div>
+        <div class="round-stat"><div class="val" id="pyr-tot">9</div><div class="lbl">Total</div></div>
+    </div>
+    <div class="phase-display" id="pyramide-display">
+        <div class="phase-label" id="pyramide-label">PRÊT</div>
+        <div class="chrono-time small" id="pyramide-time">30</div>
+        <div class="chrono-sub" id="pyramide-sub"></div>
+        <div class="chrono-next" id="pyramide-next"></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pyramide-bar" style="width:100%"></div></div>
+    </div>
+    <div class="chrono-controls">
+        <button class="btn-chrono btn-start" id="btn-pyr-start" onclick="pyramideStart()">▶ Start</button>
+        <button class="btn-chrono btn-pause" id="btn-pyr-pause" onclick="pyramidePause()" disabled>⏸ Pause</button>
+        <button class="btn-chrono btn-reset" onclick="pyramideReset()">↺ Reset</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════
+     PANEL 5 — CHRONO SUR-MESURE
+══════════════════════════════ -->
+<div class="chrono-panel" id="panel-surmesure">
+    <div class="chrono-config">
+        <p class="config-title">⚙️ Construire la séquence</p>
+        <ul class="sequence-list" id="seq-list"></ul>
+        <button class="btn-add-seq" onclick="addSeqItem()">+ Ajouter une phase</button>
+        <div class="config-row" style="margin-top:14px;">
+            <label>Répéter la séquence</label>
+            <div class="stepper">
+                <button class="btn-step" onclick="step('seq-repeat', -1)">−</button>
+                <input type="number" class="config-input" id="seq-repeat" value="1" min="1" max="20">
+                <button class="btn-step" onclick="step('seq-repeat', 1)">+</button>
+            </div>
+            <span style="font-size:0.82em; color:var(--text-dim);">fois</span>
+        </div>
+    </div>
+    <div class="rounds-display">
+        <div class="round-stat"><div class="val" id="seq-cur">0</div><div class="lbl">Phase</div></div>
+        <div class="round-stat"><div class="val" id="seq-tot">0</div><div class="lbl">Total</div></div>
+        <div class="round-stat"><div class="val" id="seq-rep">0</div><div class="lbl">Répét.</div></div>
+    </div>
+    <div class="phase-display" id="surmesure-display">
+        <div class="phase-label" id="surmesure-label">PRÊT</div>
+        <div class="chrono-time small" id="surmesure-time">--</div>
+        <div class="chrono-sub" id="surmesure-sub"></div>
+        <div class="chrono-next" id="surmesure-next"></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="surmesure-bar" style="width:100%"></div></div>
+    </div>
+    <div class="chrono-controls">
+        <button class="btn-chrono btn-start" id="btn-seq-start" onclick="seqStart()">▶ Start</button>
+        <button class="btn-chrono btn-pause" id="btn-seq-pause" onclick="seqPause()" disabled>⏸ Pause</button>
+        <button class="btn-chrono btn-reset" onclick="seqReset()">↺ Reset</button>
+    </div>
+</div>
+
+<button id="backToTop" title="Retour en haut">↑</button>
+
+<script>
+/* ══════════════════════════════════════════
+   UTILITAIRES
+══════════════════════════════════════════ */
+var isMuted = false;
+var audioCtx = null;
+
+function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+}
+function playBeep(freq, dur, vol) {
+    if (isMuted) return;
+    try {
+        var ctx = getAudioCtx();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = freq; osc.type = 'sine';
+        gain.gain.setValueAtTime(vol || 0.4, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur);
+    } catch(e) {}
+}
+function bipTravail()   { playBeep(880,0.12,0.5); setTimeout(function(){playBeep(880,0.12,0.5);},180); }
+function bipPause()     { playBeep(440,0.4,0.4); }
+function bipCountdown() { playBeep(660,0.1,0.3); }
+function bipFin()       { playBeep(1046,0.15,0.5); setTimeout(function(){playBeep(1046,0.15,0.5);},200); setTimeout(function(){playBeep(1046,0.3,0.5);},400); }
+
+function toggleMute() {
+    isMuted = !isMuted;
+    var btn = document.getElementById('btn-mute-global');
+    btn.textContent = isMuted ? '🔕' : '🔔';
+    btn.classList.toggle('muted', isMuted);
+}
+
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+/* Format sec → affichage min:sec si >= 60, sinon juste sec */
+function fmtSec(s) {
+    if (s >= 60) { return pad(Math.floor(s/60)) + ':' + pad(s % 60); }
+    return '' + s;
+}
+function formatMSec(ms) {
+    var m  = Math.floor(ms / 60000);
+    var s  = Math.floor((ms % 60000) / 1000);
+    var cs = Math.floor((ms % 1000) / 10);
+    return pad(m) + ':' + pad(s) + ':' + pad(cs);
+}
+
+function showTab(name, btn) {
+    document.querySelectorAll('.chrono-panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.chrono-tab').forEach(function(t){ t.classList.remove('active'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+
+function setPhaseStyle(el, phase) {
+    el.classList.remove('phase-travail','phase-repos','phase-countdown');
+    if (phase) el.classList.add('phase-' + phase);
+}
+
+function step(id, delta) {
+    var input = document.getElementById(id);
+    var val = parseInt(input.value) || 0;
+    var min = parseInt(input.min) !== undefined ? parseInt(input.min) : 0;
+    var max = parseInt(input.max) || 9999;
+    var newVal;
+    // Si delta est un multiple de 5, on arrondit au multiple de |delta| le plus proche
+    var absDelta = Math.abs(delta);
+    if (absDelta > 1 && absDelta % 5 === 0) {
+        if (delta > 0) {
+            newVal = Math.ceil((val + 1) / absDelta) * absDelta;
+        } else {
+            newVal = Math.floor((val - 1) / absDelta) * absDelta;
+        }
+    } else {
+        newVal = val + delta;
+    }
+    input.value = Math.max(min, Math.min(max, newVal));
+}
+
+/* Active/désactive visuellement un bouton (hold/pause) */
+function setBtnActive(id, active) {
+    var btn = document.getElementById(id);
+    if (active) btn.classList.add('btn-active');
+    else btn.classList.remove('btn-active');
+}
+
+/* ══════════════════════════════════════════
+   1. CHRONOMÈTRE SIMPLE
+══════════════════════════════════════════ */
+var simpleInterval = null;
+var simpleMs = 0;
+var simpleRunning = false;
+var simpleHeld = false;
+
+function simpleStart() {
+    if (simpleRunning) return;
+    simpleRunning = true;
+    var last = Date.now() - simpleMs;
+    simpleInterval = setInterval(function() {
+        simpleMs = Date.now() - last;
+        if (!simpleHeld) document.getElementById('simple-time').textContent = formatMSec(simpleMs);
+    }, 30);
+    document.getElementById('btn-simple-start').disabled = true;
+    document.getElementById('btn-simple-hold').disabled  = false;
+    document.getElementById('btn-simple-pause').disabled = false;
+    document.getElementById('simple-label').textContent  = '🏃 EN COURS';
+    setPhaseStyle(document.getElementById('simple-display'), 'travail');
+}
+
+function simpleHold() {
+    simpleHeld = !simpleHeld;
+    setBtnActive('btn-simple-hold', simpleHeld);
+    document.getElementById('simple-label').textContent = simpleHeld ? '⏸ FIGÉ' : '🏃 EN COURS';
+}
+
+function simplePause() {
+    if (!simpleRunning) return;
+    clearInterval(simpleInterval);
+    simpleRunning = false; simpleHeld = false;
+    setBtnActive('btn-simple-hold', false);
+    setBtnActive('btn-simple-pause', true);
+    document.getElementById('btn-simple-start').disabled = false;
+    document.getElementById('btn-simple-pause').disabled = false;
+    document.getElementById('btn-simple-hold').disabled  = true;
+    document.getElementById('simple-label').textContent  = '⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('simple-display'), '');
+}
+
+function simpleReset() {
+    clearInterval(simpleInterval);
+    simpleMs = 0; simpleRunning = false; simpleHeld = false;
+    document.getElementById('simple-time').textContent   = '00:00:00';
+    document.getElementById('simple-label').textContent  = '';
+    document.getElementById('btn-simple-start').disabled = false;
+    document.getElementById('btn-simple-pause').disabled = true;
+    document.getElementById('btn-simple-hold').disabled  = true;
+    setBtnActive('btn-simple-hold', false);
+    setBtnActive('btn-simple-pause', false);
+    setPhaseStyle(document.getElementById('simple-display'), '');
+}
+
+/* ══════════════════════════════════════════
+   2. COMPTE À REBOURS
+══════════════════════════════════════════ */
+var cdInterval = null;
+var cdMs = 0; var cdTotal = 0; var cdRunning = false;
+
+function countdownStart() {
+    if (cdRunning) return;
+    if (cdMs === 0) {
+        var m = parseInt(document.getElementById('cd-min').value)||0;
+        var s = parseInt(document.getElementById('cd-sec').value)||0;
+        cdTotal = (m*60+s)*1000; cdMs = cdTotal;
+        if (cdMs<=0) return;
+    }
+    cdRunning = true;
+    setBtnActive('btn-cd-pause', false);
+    document.getElementById('countdown-label').textContent = '🔥 EN COURS';
+    setPhaseStyle(document.getElementById('countdown-display'), 'travail');
+    document.getElementById('btn-cd-start').disabled = true;
+    document.getElementById('btn-cd-pause').disabled = false;
+    var last = Date.now();
+    cdInterval = setInterval(function() {
+        var now = Date.now(); cdMs -= (now-last); last = now;
+        if (cdMs<=0) {
+            cdMs=0; clearInterval(cdInterval); cdRunning=false;
+            document.getElementById('countdown-time').textContent = '00:00';
+            document.getElementById('countdown-label').textContent = '✅ TERMINÉ !';
+            document.getElementById('countdown-bar').style.width = '0%';
+            setPhaseStyle(document.getElementById('countdown-display'),'repos');
+            bipFin();
+            document.getElementById('btn-cd-start').disabled = false;
+            document.getElementById('btn-cd-pause').disabled = true;
+            return;
+        }
+        var secLeft = Math.ceil(cdMs/1000);
+        if (secLeft<=3) { bipCountdown(); setPhaseStyle(document.getElementById('countdown-display'),'countdown'); document.getElementById('countdown-label').textContent = secLeft+'...'; }
+        document.getElementById('countdown-time').textContent = pad(Math.floor(cdMs/60000))+':'+pad(Math.floor((cdMs%60000)/1000));
+        document.getElementById('countdown-bar').style.width = ((cdMs/cdTotal)*100)+'%';
+    }, 100);
+}
+
+function countdownPause() {
+    if (!cdRunning) return;
+    clearInterval(cdInterval); cdRunning = false;
+    setBtnActive('btn-cd-pause', true);
+    document.getElementById('countdown-label').textContent = '⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('countdown-display'),'');
+    document.getElementById('btn-cd-start').disabled = false;
+    document.getElementById('btn-cd-pause').disabled = false;
+}
+
+function countdownReset() {
+    clearInterval(cdInterval); cdMs=0; cdTotal=0; cdRunning=false;
+    var m=parseInt(document.getElementById('cd-min').value)||0;
+    var s=parseInt(document.getElementById('cd-sec').value)||0;
+    document.getElementById('countdown-time').textContent = pad(m)+':'+pad(s);
+    document.getElementById('countdown-label').textContent = 'PRÊT';
+    document.getElementById('countdown-bar').style.width = '100%';
+    document.getElementById('btn-cd-start').disabled = false;
+    document.getElementById('btn-cd-pause').disabled = true;
+    setBtnActive('btn-cd-pause', false);
+    setPhaseStyle(document.getElementById('countdown-display'),'');
+}
+
+/* ══════════════════════════════════════════
+   3. TABATA
+══════════════════════════════════════════ */
+var tabInterval=null; var tabRunning=false;
+var tabPhase='travail'; var tabSec=0; var tabTotalSec=0;
+var tabCurRound=0; var tabTotRounds=0;
+
+function tabataStart() {
+    if (tabRunning) return;
+    if (tabCurRound===0) {
+        tabTotRounds = parseInt(document.getElementById('tab-rounds').value)||8;
+        tabCurRound=1; tabPhase='travail';
+        tabSec = parseInt(document.getElementById('tab-work').value)||20;
+        tabTotalSec=tabSec;
+        document.getElementById('tab-tot').textContent=tabTotRounds;
+        bipTravail(); tabataRender();
+    }
+    tabRunning=true;
+    setBtnActive('btn-tab-pause', false);
+    document.getElementById('btn-tab-start').disabled=true;
+    document.getElementById('btn-tab-pause').disabled=false;
+    tabInterval = setInterval(function() {
+        tabSec--;
+        if (tabSec<=3 && tabSec>0) { bipCountdown(); setPhaseStyle(document.getElementById('tabata-display'),'countdown'); document.getElementById('tabata-label').textContent=tabSec+'...'; document.getElementById('tabata-time').textContent=tabSec; }
+        else if (tabSec<=0) { tabNextPhase(); }
+        else { tabataRender(); }
+    }, 1000);
+}
+
+function tabNextPhase() {
+    if (tabPhase==='travail') {
+        var rest=parseInt(document.getElementById('tab-rest').value)||10;
+        if (rest>0) { tabPhase='repos'; tabSec=rest; tabTotalSec=rest; bipPause(); }
+        else { tabAdvanceRound(); return; }
+    } else { tabAdvanceRound(); return; }
+    tabataRender();
+}
+
+function tabAdvanceRound() {
+    if (tabCurRound>=tabTotRounds) {
+        clearInterval(tabInterval); tabRunning=false;
+        document.getElementById('tabata-label').textContent='✅ TERMINÉ !';
+        document.getElementById('tabata-time').textContent='0';
+        document.getElementById('tabata-sub').textContent=tabTotRounds+' rounds complétés';
+        document.getElementById('tabata-next').textContent='';
+        document.getElementById('tabata-bar').style.width='0%';
+        setPhaseStyle(document.getElementById('tabata-display'),'repos');
+        bipFin();
+        document.getElementById('btn-tab-start').disabled=false;
+        document.getElementById('btn-tab-pause').disabled=true;
+        return;
+    }
+    tabCurRound++; tabPhase='travail';
+    tabSec=parseInt(document.getElementById('tab-work').value)||20;
+    tabTotalSec=tabSec; bipTravail(); tabataRender();
+}
+
+function tabataRender() {
+    document.getElementById('tab-cur').textContent=tabCurRound;
+    document.getElementById('tabata-time').textContent=fmtSec(tabSec);
+    setPhaseStyle(document.getElementById('tabata-display'),tabPhase);
+    document.getElementById('tabata-label').textContent=tabPhase==='travail'?'🔥 TRAVAIL':'😮‍💨 PAUSE';
+    document.getElementById('tabata-sub').textContent='Round '+tabCurRound+' / '+tabTotRounds;
+    var nextLbl=tabPhase==='travail'?'Pause':'Travail (Round '+Math.min(tabCurRound+1,tabTotRounds)+')';
+    document.getElementById('tabata-next').textContent='Prochain : '+nextLbl;
+    document.getElementById('tabata-bar').style.width=((tabSec/tabTotalSec)*100)+'%';
+}
+
+function tabataPause() {
+    if (!tabRunning) return;
+    clearInterval(tabInterval); tabRunning=false;
+    setBtnActive('btn-tab-pause', true);
+    document.getElementById('btn-tab-start').disabled=false;
+    document.getElementById('btn-tab-pause').disabled=false;
+    document.getElementById('tabata-label').textContent='⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('tabata-display'),'');
+}
+
+function tabataReset() {
+    clearInterval(tabInterval); tabRunning=false; tabCurRound=0; tabSec=0;
+    document.getElementById('tabata-label').textContent='PRÊT';
+    document.getElementById('tabata-time').textContent=fmtSec(parseInt(document.getElementById('tab-work').value)||20);
+    document.getElementById('tabata-sub').textContent='';
+    document.getElementById('tabata-next').textContent='';
+    document.getElementById('tabata-bar').style.width='100%';
+    document.getElementById('tab-cur').textContent='0';
+    document.getElementById('tab-tot').textContent=document.getElementById('tab-rounds').value||8;
+    document.getElementById('btn-tab-start').disabled=false;
+    document.getElementById('btn-tab-pause').disabled=true;
+    setBtnActive('btn-tab-pause', false);
+    setPhaseStyle(document.getElementById('tabata-display'),'');
+}
+
+/* ══════════════════════════════════════════
+   4. EMOM
+══════════════════════════════════════════ */
+var emomInterval = null;
+var emomRunning  = false;
+var emomSec      = 60;   // secondes restantes dans la minute en cours
+var emomCurMin   = 0;    // minute en cours (0 = pas démarré)
+var emomTotMin   = 10;
+
+function emomStart() {
+    if (emomRunning) return;
+    if (emomCurMin === 0) {
+        emomTotMin = parseInt(document.getElementById('emom-min').value) || 10;
+        document.getElementById('emom-tot').textContent = emomTotMin;
+        emomCurMin = 1;
+        emomSec    = 60;
+        bipTravail();
+        emomRender();
+    }
+    emomRunning = true;
+    setBtnActive('btn-emom-pause', false);
+    document.getElementById('btn-emom-start').disabled = true;
+    document.getElementById('btn-emom-pause').disabled = false;
+
+    emomInterval = setInterval(function() {
+        emomSec--;
+        if (emomSec <= 3 && emomSec > 0) {
+            bipCountdown();
+            setPhaseStyle(document.getElementById('emom-display'), 'countdown');
+            document.getElementById('emom-label').textContent  = emomSec + '...';
+            document.getElementById('emom-time').textContent   = emomSec;
+            document.getElementById('emom-sec-val').textContent = emomSec;
+        } else if (emomSec <= 0) {
+            // Nouvelle minute
+            if (emomCurMin >= emomTotMin) {
+                emomFinish();
+            } else {
+                emomCurMin++;
+                emomSec = 60;
+                bipTravail();
+                emomRender();
+            }
+        } else {
+            emomRender();
+        }
+    }, 1000);
+}
+
+function emomRender() {
+    setPhaseStyle(document.getElementById('emom-display'), 'travail');
+    document.getElementById('emom-label').textContent    = '🔁 TRAVAIL — Minute ' + emomCurMin;
+    document.getElementById('emom-time').textContent     = emomSec;
+    document.getElementById('emom-cur').textContent      = emomCurMin;
+    document.getElementById('emom-sec-val').textContent  = emomSec;
+    document.getElementById('emom-sub').textContent      = 'Effectuez les exercices, puis reposez-vous le temps restant';
+    var minLeft = emomTotMin - emomCurMin;
+    document.getElementById('emom-next').textContent = minLeft > 0
+        ? 'Prochaine minute dans ' + emomSec + 's — ' + minLeft + ' minute(s) restante(s)'
+        : '🏁 Dernière minute !';
+    document.getElementById('emom-bar').style.width = ((emomSec / 60) * 100) + '%';
+}
+
+function emomFinish() {
+    clearInterval(emomInterval); emomRunning = false;
+    document.getElementById('emom-label').textContent   = '✅ TERMINÉ !';
+    document.getElementById('emom-time').textContent    = '0';
+    document.getElementById('emom-sub').textContent     = emomTotMin + ' minutes complétées !';
+    document.getElementById('emom-next').textContent    = '';
+    document.getElementById('emom-bar').style.width     = '0%';
+    setPhaseStyle(document.getElementById('emom-display'), 'repos');
+    bipFin();
+    document.getElementById('btn-emom-start').disabled = false;
+    document.getElementById('btn-emom-pause').disabled = true;
+}
+
+function emomPause() {
+    if (!emomRunning) return;
+    clearInterval(emomInterval); emomRunning = false;
+    setBtnActive('btn-emom-pause', true);
+    document.getElementById('btn-emom-start').disabled = false;
+    document.getElementById('btn-emom-pause').disabled = false;
+    document.getElementById('emom-label').textContent  = '⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('emom-display'), '');
+}
+
+function emomReset() {
+    clearInterval(emomInterval); emomRunning = false; emomCurMin = 0; emomSec = 60;
+    var tot = parseInt(document.getElementById('emom-min').value) || 10;
+    document.getElementById('emom-label').textContent   = 'PRÊT';
+    document.getElementById('emom-time').textContent    = '60';
+    document.getElementById('emom-sub').textContent     = 'Dans la minute, effectuez les exercices prévus';
+    document.getElementById('emom-next').textContent    = '';
+    document.getElementById('emom-bar').style.width     = '100%';
+    document.getElementById('emom-cur').textContent     = '0';
+    document.getElementById('emom-tot').textContent     = tot;
+    document.getElementById('emom-sec-val').textContent = '60';
+    document.getElementById('btn-emom-start').disabled  = false;
+    document.getElementById('btn-emom-pause').disabled  = true;
+    setBtnActive('btn-emom-pause', false);
+    setPhaseStyle(document.getElementById('emom-display'), '');
+}
+
+/* ══════════════════════════════════════════
+   5. PYRAMIDE
+══════════════════════════════════════════ */
+var pyrInterval=null; var pyrRunning=false;
+var pyrSec=0; var pyrTotalSec=0; var pyrIdx=0; var pyrSeq=[];
+
+function buildPyrSeq() {
+    var work=parseInt(document.getElementById('pyr-work').value)||30;
+    var rest=parseInt(document.getElementById('pyr-rest').value)||10;
+    var n=parseInt(document.getElementById('pyr-series').value)||5;
+    pyrSeq=[];
+    for (var i=1;i<=n;i++) {
+        pyrSeq.push({phase:'travail',label:'Série '+i+' — montée',sec:work});
+        if (i<n) pyrSeq.push({phase:'repos',label:'Récupération',sec:rest});
+    }
+    for (var j=n-1;j>=1;j--) {
+        pyrSeq.push({phase:'repos',label:'Récupération',sec:rest});
+        pyrSeq.push({phase:'travail',label:'Série '+j+' — descente',sec:work});
+    }
+    var nw=pyrSeq.filter(function(s){return s.phase==='travail';}).length;
+    document.getElementById('pyr-tot').textContent=nw;
+}
+
+function pyramideStart() {
+    if (pyrRunning) return;
+    if (pyrSeq.length===0||pyrIdx===0) { buildPyrSeq(); pyrIdx=0; pyrAdvance(); }
+    pyrRunning=true;
+    setBtnActive('btn-pyr-pause', false);
+    document.getElementById('btn-pyr-start').disabled=true;
+    document.getElementById('btn-pyr-pause').disabled=false;
+    pyrInterval=setInterval(function() {
+        pyrSec--;
+        if (pyrSec<=3&&pyrSec>0) { bipCountdown(); setPhaseStyle(document.getElementById('pyramide-display'),'countdown'); document.getElementById('pyramide-label').textContent=pyrSec+'...'; document.getElementById('pyramide-time').textContent=pyrSec; }
+        else if (pyrSec<=0) { pyrIdx++; if(pyrIdx>=pyrSeq.length){pyrFinish();}else{pyrAdvance();} }
+        else { pyrRender(); }
+    },1000);
+}
+
+function pyrAdvance() {
+    var item=pyrSeq[pyrIdx];
+    pyrSec=item.sec; pyrTotalSec=item.sec;
+    if (item.phase==='travail') bipTravail(); else bipPause();
+    pyrRender();
+}
+
+function pyrRender() {
+    var item=pyrSeq[pyrIdx];
+    setPhaseStyle(document.getElementById('pyramide-display'),item.phase);
+    document.getElementById('pyramide-label').textContent=item.phase==='travail'?'🔥 TRAVAIL':'😮‍💨 PAUSE';
+    document.getElementById('pyramide-time').textContent=fmtSec(pyrSec);
+    document.getElementById('pyramide-sub').textContent=item.label;
+    var wd=pyrSeq.slice(0,pyrIdx+1).filter(function(s){return s.phase==='travail';}).length;
+    document.getElementById('pyr-cur').textContent=wd;
+    var next=pyrSeq[pyrIdx+1];
+    document.getElementById('pyramide-next').textContent=next?('Prochain : '+(next.phase==='travail'?'Travail':'Pause')):'🏁 Dernière phase !';
+    document.getElementById('pyramide-bar').style.width=((pyrSec/pyrTotalSec)*100)+'%';
+}
+
+function pyrFinish() {
+    clearInterval(pyrInterval); pyrRunning=false;
+    document.getElementById('pyramide-label').textContent='✅ TERMINÉ !';
+    document.getElementById('pyramide-time').textContent='0';
+    document.getElementById('pyramide-sub').textContent='Pyramide complétée !';
+    document.getElementById('pyramide-next').textContent='';
+    document.getElementById('pyramide-bar').style.width='0%';
+    setPhaseStyle(document.getElementById('pyramide-display'),'repos');
+    bipFin();
+    document.getElementById('btn-pyr-start').disabled=false;
+    document.getElementById('btn-pyr-pause').disabled=true;
+}
+
+function pyramidePause() {
+    if (!pyrRunning) return;
+    clearInterval(pyrInterval); pyrRunning=false;
+    setBtnActive('btn-pyr-pause', true);
+    document.getElementById('btn-pyr-start').disabled=false;
+    document.getElementById('btn-pyr-pause').disabled=false;
+    document.getElementById('pyramide-label').textContent='⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('pyramide-display'),'');
+}
+
+function pyramideReset() {
+    clearInterval(pyrInterval); pyrRunning=false; pyrIdx=0; pyrSec=0; pyrSeq=[];
+    document.getElementById('pyramide-label').textContent='PRÊT';
+    document.getElementById('pyramide-time').textContent=fmtSec(parseInt(document.getElementById('pyr-work').value)||30);
+    document.getElementById('pyramide-sub').textContent='';
+    document.getElementById('pyramide-next').textContent='';
+    document.getElementById('pyramide-bar').style.width='100%';
+    document.getElementById('pyr-cur').textContent='0';
+    document.getElementById('btn-pyr-start').disabled=false;
+    document.getElementById('btn-pyr-pause').disabled=true;
+    setBtnActive('btn-pyr-pause', false);
+    setPhaseStyle(document.getElementById('pyramide-display'),'');
+}
+
+/* ══════════════════════════════════════════
+   5. CHRONO SUR-MESURE
+══════════════════════════════════════════ */
+var seqInterval=null; var seqRunning=false;
+var seqSec=0; var seqTotalSec=0; var seqCur=0;
+var seqRepeat=1; var seqRepCur=1; var seqItems=[];
+
+var seqIdCounter = 0;
+function addSeqItem() {
+    var list=document.getElementById('seq-list');
+    seqIdCounter++;
+    var id='sq'+seqIdCounter;
+    var li=document.createElement('li');
+    li.className='sequence-item type-travail'; li.id=id;
+    li.innerHTML=
+        '<select onchange="updateSeqStyle(this)">'+
+        '<option value="travail">🔥 Travail</option>'+
+        '<option value="repos">😮‍💨 Pause</option>'+
+        '<option value="echauffement">🏃 Échauffement</option>'+
+        '<option value="retour">🧘 Retour calme</option>'+
+        '</select>'+
+        '<div class="seq-stepper">'+
+        '<button class="btn-step" onclick="stepSeq(\''+id+'\',-5)">−</button>'+
+        '<input type="number" class="config-input" value="30" min="1" max="3600">'+
+        '<button class="btn-step" onclick="stepSeq(\''+id+'\',5)">+</button>'+
+        '</div>'+
+        '<span style="font-size:0.75em;color:var(--text-dim)">sec</span>'+
+        '<button class="btn-del-seq" onclick="removeSeq(\''+id+'\')">✕</button>';
+    list.appendChild(li);
+    updateSeqCount();
+}
+
+function stepSeq(id,delta) {
+    var li=document.getElementById(id);
+    var input=li.querySelector('input');
+    input.value=Math.max(1,Math.min(3600,(parseInt(input.value)||30)+delta));
+}
+
+function updateSeqStyle(sel) {
+    sel.closest('.sequence-item').className='sequence-item type-'+sel.value;
+}
+
+function removeSeq(id) {
+    var el=document.getElementById(id);
+    if(el){el.remove();updateSeqCount();}
+}
+
+function updateSeqCount() {
+    document.getElementById('seq-tot').textContent=document.querySelectorAll('#seq-list .sequence-item').length;
+}
+
+function buildSeqItems() {
+    seqItems=[];
+    document.querySelectorAll('#seq-list .sequence-item').forEach(function(li){
+        seqItems.push({type:li.querySelector('select').value,sec:parseInt(li.querySelector('input').value)||30});
+    });
+}
+
+function seqStart() {
+    if(seqRunning) return;
+    if(seqItems.length===0||seqCur===0){
+        buildSeqItems();
+        if(seqItems.length===0) return;
+        seqCur=0; seqRepeat=parseInt(document.getElementById('seq-repeat').value)||1; seqRepCur=1;
+        seqAdvance();
+    }
+    seqRunning=true;
+    setBtnActive('btn-seq-pause', false);
+    document.getElementById('btn-seq-start').disabled=true;
+    document.getElementById('btn-seq-pause').disabled=false;
+    seqInterval=setInterval(function(){
+        seqSec--;
+        if(seqSec<=3&&seqSec>0){bipCountdown();setPhaseStyle(document.getElementById('surmesure-display'),'countdown');document.getElementById('surmesure-label').textContent=seqSec+'...';document.getElementById('surmesure-time').textContent=seqSec;}
+        else if(seqSec<=0){
+            seqCur++;
+            if(seqCur>=seqItems.length){
+                if(seqRepCur<seqRepeat){seqRepCur++;seqCur=0;seqAdvance();}else{seqFinish();}
+            } else {seqAdvance();}
+        } else {seqRender();}
+    },1000);
+}
+
+function seqAdvance() {
+    var item=seqItems[seqCur];
+    seqSec=item.sec; seqTotalSec=item.sec;
+    var isTravail=item.type==='travail'||item.type==='echauffement';
+    if(isTravail) bipTravail(); else bipPause();
+    seqRender();
+}
+
+function seqRender() {
+    var item=seqItems[seqCur];
+    var isTravail=item.type==='travail'||item.type==='echauffement';
+    setPhaseStyle(document.getElementById('surmesure-display'),isTravail?'travail':'repos');
+    var labels={travail:'🔥 TRAVAIL',repos:'😮‍💨 PAUSE',echauffement:'🏃 ÉCHAUFFEMENT',retour:'🧘 RETOUR CALME'};
+    document.getElementById('surmesure-label').textContent=labels[item.type]||item.type.toUpperCase();
+    document.getElementById('surmesure-time').textContent=fmtSec(seqSec);
+    document.getElementById('surmesure-sub').textContent='Phase '+(seqCur+1)+' / '+seqItems.length;
+    document.getElementById('seq-cur').textContent=seqCur+1;
+    document.getElementById('seq-rep').textContent=seqRepCur;
+    var next=seqItems[seqCur+1];
+    var nxtLbl={travail:'Travail',repos:'Pause',echauffement:'Échauffement',retour:'Retour calme'};
+    if(next){document.getElementById('surmesure-next').textContent='Prochain : '+(nxtLbl[next.type]||next.type)+' ('+fmtSec(next.sec)+')';}
+    else if(seqRepCur<seqRepeat){document.getElementById('surmesure-next').textContent='Prochain : Répétition '+(seqRepCur+1)+' / '+seqRepeat;}
+    else{document.getElementById('surmesure-next').textContent='🏁 Dernière phase !';}
+    document.getElementById('surmesure-bar').style.width=((seqSec/seqTotalSec)*100)+'%';
+}
+
+function seqFinish() {
+    clearInterval(seqInterval); seqRunning=false; seqCur=0;
+    document.getElementById('surmesure-label').textContent='✅ TERMINÉ !';
+    document.getElementById('surmesure-time').textContent='0';
+    document.getElementById('surmesure-sub').textContent='Séquence complétée !';
+    document.getElementById('surmesure-next').textContent='';
+    document.getElementById('surmesure-bar').style.width='0%';
+    setPhaseStyle(document.getElementById('surmesure-display'),'repos');
+    bipFin();
+    document.getElementById('btn-seq-start').disabled=false;
+    document.getElementById('btn-seq-pause').disabled=true;
+}
+
+function seqPause() {
+    if(!seqRunning) return;
+    clearInterval(seqInterval); seqRunning=false;
+    setBtnActive('btn-seq-pause', true);
+    document.getElementById('btn-seq-start').disabled=false;
+    document.getElementById('btn-seq-pause').disabled=false;
+    document.getElementById('surmesure-label').textContent='⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('surmesure-display'),'');
+}
+
+function seqReset() {
+    clearInterval(seqInterval); seqRunning=false; seqCur=0; seqSec=0; seqItems=[];
+    document.getElementById('surmesure-label').textContent='PRÊT';
+    document.getElementById('surmesure-time').textContent='--';
+    document.getElementById('surmesure-sub').textContent='';
+    document.getElementById('surmesure-next').textContent='';
+    document.getElementById('surmesure-bar').style.width='100%';
+    document.getElementById('seq-cur').textContent='0';
+    document.getElementById('seq-rep').textContent='0';
+    document.getElementById('btn-seq-start').disabled=false;
+    document.getElementById('btn-seq-pause').disabled=true;
+    setBtnActive('btn-seq-pause', false);
+    setPhaseStyle(document.getElementById('surmesure-display'),'');
+}
+
+/* Init */
+window.addEventListener('DOMContentLoaded', function() {
+    // 2 phases par défaut
+    addSeqItem();
+    var items=document.querySelectorAll('#seq-list .sequence-item');
+    if(items.length>0){
+        var sel=items[0].querySelector('select');
+        sel.value='echauffement'; updateSeqStyle(sel);
+        items[0].querySelector('input').value=60;
+    }
+    addSeqItem(); updateSeqCount();
+
+    var backButton=document.getElementById('backToTop');
+    if(backButton){
+        window.onscroll=function(){backButton.style.display=(window.scrollY>300)?'block':'none';};
+        backButton.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+    }
+});
+</script>
+</body>
+</html>
