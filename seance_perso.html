@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/2090184-cddc39_ico.png">
+    <title>Séance TABATA / PYRAMIDALE / HIIT</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --travail-bg:    #c0392b;
+            --travail-bg2:   #e74c3c;
+            --repos-bg:      #1a3a6b;
+            --repos-bg2:     #2760ae;
+            --countdown-bg:  #d35400;
+            --countdown-bg2: #e67e22;
+            --warmup-bg:     #1a5276;
+            --warmup-bg2:    #2e86c1;
+            --recup-bg:      #1a3a6b;
+            --recup-bg2:     #2760ae;
+            --card-bg:       #0f3460;
+            --neutral-bg:    #1a1a2e;
+            --accent:        #b6d73c;
+            --text-light:    #f0f0f0;
+            --text-dim:      #aaa;
+            --shadow:        0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        body { background: var(--neutral-bg); color: var(--text-light); }
+        nav  { border-bottom: 2px solid var(--accent); }
+
+        /* ── Bandeau titre ── */
+        .page-topbar {
+            background: #000;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        .page-topbar h2 {
+            font-size: 1em; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--accent); margin: 0; text-align: center;
+        }
+        .btn-mute {
+            position: absolute; right: 16px;
+            background: #222; border: 1px solid #444; color: #fff;
+            border-radius: 50%; width: 42px; height: 42px;
+            font-size: 1.2em; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .btn-mute:hover { background: #333; }
+        .btn-mute.muted { background: #c0392b; border-color: #e74c3c; }
+
+        /* ── Modes ── */
+        .mode-tabs {
+            display: flex; justify-content: center;
+            background: #000; border-bottom: 1px solid #222;
+        }
+        .mode-tab {
+            flex: 0 0 auto; padding: 13px 24px;
+            background: none; border: none;
+            color: var(--text-dim); font-family: sans-serif;
+            font-size: 0.85em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            cursor: pointer; border-bottom: 3px solid transparent;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .mode-tab.active { color: #000; background: var(--accent); border-bottom-color: var(--accent); }
+        .mode-tab:hover  { color: #fff; background: #1a1a1a; }
+
+        /* ── Panel config ── */
+        #panel-config { padding: 20px 16px; max-width: 540px; margin: 0 auto; }
+        #panel-seance { display: none; max-width: 540px; margin: 0 auto; }
+
+        .config-title {
+            font-size: 0.85em; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent); margin: 0 0 14px;
+        }
+
+        /* ── Nom de la séance ── */
+        .seance-name-wrap {
+            background: #0f1b35; border-radius: 12px;
+            padding: 16px; margin-bottom: 18px; border: 1px solid #1e3050;
+        }
+        .seance-name-input {
+            width: 100%; background: #1a2a4a; border: 1px solid #2a3a5a;
+            border-radius: 8px; color: #fff; padding: 10px 14px;
+            font-size: 1em; font-weight: 700; box-sizing: border-box;
+        }
+        .seance-name-input:focus { outline: none; border-color: var(--accent); }
+        .seance-name-input::placeholder { color: #555; font-weight: 400; }
+
+        /* ── Liste des phases ── */
+        .phases-list { list-style: none; padding: 0; margin: 0 0 12px; }
+
+        .phase-item {
+            background: #0f1b35; border-radius: 12px;
+            padding: 14px; margin-bottom: 10px;
+            border: 1px solid #1e3050; border-left: 5px solid #2a3a5a;
+        }
+        .phase-item.type-travail      { border-left-color: #e74c3c; }
+        .phase-item.type-repos        { border-left-color: #2760ae; }
+        .phase-item.type-warmup       { border-left-color: #2e86c1; }
+        .phase-item.type-recup        { border-left-color: #9b59b6; }
+
+        .phase-top-row {
+            display: flex; align-items: center;
+            gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
+        }
+        .phase-select {
+            background: #1a2a4a; border: 1px solid #2a3a5a;
+            border-radius: 8px; color: #fff; padding: 8px 10px;
+            font-size: 0.85em; flex: 1; min-width: 120px;
+        }
+
+        /* Stepper dans phase */
+        .phase-stepper {
+            display: flex; align-items: center;
+            border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a;
+            flex-shrink: 0;
+        }
+        .btn-step-sm {
+            background: #1a2a4a; border: none; color: var(--accent);
+            font-size: 1.2em; font-weight: 700;
+            width: 36px; height: 36px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-step-sm:hover { background: #243a5a; }
+        .phase-duration-input {
+            background: #0f1b35; border: none;
+            border-left: 1px solid #2a3a5a; border-right: 1px solid #2a3a5a;
+            color: #fff; width: 52px; height: 36px;
+            text-align: center; font-size: 1em; font-weight: 700;
+            -moz-appearance: textfield;
+        }
+        .phase-duration-input::-webkit-outer-spin-button,
+        .phase-duration-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+        .phase-duration-input:focus { outline: none; background: #1a2a4a; color: var(--accent); }
+        .phase-sec-label { font-size: 0.78em; color: var(--text-dim); flex-shrink: 0; }
+
+        .btn-del-phase {
+            background: #c0392b; border: none; color: #fff;
+            border-radius: 8px; width: 36px; height: 36px;
+            cursor: pointer; font-size: 0.9em;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        /* Champ commentaire */
+        .phase-comment {
+            width: 100%; background: #1a2a4a; border: 1px solid #2a3a5a;
+            border-radius: 8px; color: #fff; padding: 9px 12px;
+            font-size: 0.9em; resize: none; box-sizing: border-box;
+            font-family: sans-serif; line-height: 1.4; min-height: 60px;
+        }
+        .phase-comment:focus { outline: none; border-color: var(--accent); }
+        .phase-comment::placeholder { color: #444; font-style: italic; }
+
+        /* Bouton ajouter phase */
+        .btn-add-phase {
+            width: 100%; padding: 12px; background: #0f1b35;
+            border: 1px dashed #2a3a5a; border-radius: 10px;
+            color: var(--accent); font-size: 0.9em; cursor: pointer;
+            transition: background 0.2s; font-weight: 700; margin-bottom: 16px;
+        }
+        .btn-add-phase:hover { background: #1a2a4a; }
+
+        /* Config répétition */
+        .config-repeat {
+            background: #0f1b35; border-radius: 12px;
+            padding: 14px 16px; border: 1px solid #1e3050;
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .config-repeat label { font-size: 0.85em; color: var(--text-dim); flex: 1; }
+        .stepper-sm {
+            display: flex; align-items: center;
+            border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a;
+        }
+        .stepper-sm .btn-step-sm { width: 40px; height: 40px; }
+        .stepper-sm input {
+            background: #0f1b35; border: none;
+            border-left: 1px solid #2a3a5a; border-right: 1px solid #2a3a5a;
+            color: #fff; width: 52px; height: 40px;
+            text-align: center; font-size: 1.05em; font-weight: 700;
+            -moz-appearance: textfield;
+        }
+        .stepper-sm input::-webkit-outer-spin-button,
+        .stepper-sm input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+        /* Bouton lancer */
+        .btn-lancer {
+            width: 100%; padding: 16px; background: var(--accent);
+            border: none; border-radius: 12px; color: #000;
+            font-size: 1.1em; font-weight: 900; letter-spacing: 0.1em;
+            text-transform: uppercase; cursor: pointer;
+            transition: background 0.2s; margin-bottom: 20px;
+        }
+        .btn-lancer:hover { background: #a0c030; }
+
+        /* ══════════════════════════════
+           PANEL SÉANCE (exécution)
+        ══════════════════════════════ */
+        .seance-header {
+            background: #000; padding: 14px 20px;
+            text-align: center; border-bottom: 1px solid #222;
+        }
+        .seance-header h3 {
+            margin: 0; font-size: 1.1em; font-weight: 900;
+            color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase;
+        }
+
+        /* Affichage principal */
+        .phase-display {
+            border-radius: 0; padding: 30px 20px 24px;
+            text-align: center; transition: background 0.4s ease;
+            background: var(--card-bg);
+        }
+        .phase-display.phase-travail  { background: linear-gradient(135deg, var(--travail-bg), var(--travail-bg2)); }
+        .phase-display.phase-repos    { background: linear-gradient(135deg, var(--repos-bg), var(--repos-bg2)); }
+        .phase-display.phase-warmup   { background: linear-gradient(135deg, var(--warmup-bg), var(--warmup-bg2)); }
+        .phase-display.phase-recup    { background: linear-gradient(135deg, var(--recup-bg), var(--recup-bg2)); }
+        .phase-display.phase-countdown {
+            background: linear-gradient(135deg, var(--countdown-bg), var(--countdown-bg2));
+            animation: pulse-cd 0.5s ease infinite alternate;
+        }
+        @keyframes pulse-cd { from{transform:scale(1);} to{transform:scale(1.01);} }
+
+        .phase-label {
+            font-size: 1.3em; font-weight: 900;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: rgba(255,255,255,0.9); margin-bottom: 4px; min-height: 1.5em;
+        }
+        .phase-time-big {
+            font-size: 5em; font-weight: 900; color: #fff;
+            line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin: 6px 0; font-variant-numeric: tabular-nums;
+        }
+        .phase-progress-info {
+            font-size: 0.85em; color: rgba(255,255,255,0.7); margin-top: 4px;
+        }
+        .progress-bar-wrap {
+            background: rgba(0,0,0,0.25); border-radius: 10px;
+            height: 8px; margin-top: 12px; overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; border-radius: 10px;
+            background: rgba(255,255,255,0.8); transition: width 0.5s linear;
+        }
+
+        /* Commentaire de la phase en cours */
+        .phase-comment-display {
+            background: rgba(0,0,0,0.3); margin: 0;
+            padding: 16px 20px; font-size: 1.25em;
+            color: #fff; line-height: 1.6; font-weight: 600;
+            min-height: 60px; text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .phase-comment-display:empty { display: none; }
+
+        /* Prochaine phase */
+        .next-phase-bar {
+            background: #0a0a1a; padding: 12px 20px;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        .next-phase-label {
+            font-size: 0.78em; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;
+        }
+        .next-phase-info {
+            font-size: 0.92em; color: #ccc; font-weight: 600;
+        }
+        .next-phase-comment {
+            font-size: 0.82em; color: var(--text-dim);
+            font-style: italic; margin-top: 2px;
+        }
+
+        /* Contrôles séance */
+        .seance-controls {
+            padding: 16px 20px;
+            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+            background: #0f0f1a; border-top: 1px solid #1a1a2e;
+        }
+
+        .btn-chrono {
+            padding: 14px 18px; border: none; border-radius: 10px;
+            font-family: sans-serif; font-size: 0.92em; font-weight: 700;
+            letter-spacing: 0.06em; cursor: pointer;
+            transition: all 0.15s ease; text-transform: uppercase; min-width: 85px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-chrono:active  { transform: scale(0.96); }
+        .btn-chrono:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-start  { background: var(--accent); color: #000; }
+        .btn-start:hover:not(:disabled) { background: #a0c030; }
+        .btn-pause  { background: #e67e22; color: #fff; }
+        .btn-pause:hover:not(:disabled) { background: #d35400; }
+        .btn-pause.btn-active { background: #c0392b; }
+        .btn-reset  { background: #2c3e50; color: #fff; }
+        .btn-reset:hover { background: #1a252f; }
+        .btn-edit   { background: #6c3483; color: #fff; }
+        .btn-edit:hover { background: #4a235a; }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .phase-time-big { font-size: 4em; }
+            .phase-top-row  { gap: 6px; }
+            .btn-chrono     { padding: 12px 12px; font-size: 0.85em; min-width: 72px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="index.html"><img src="images/2090184-cddc39.png" alt="Logo"></a>
+        </div>
+        <ul>
+            <li>
+                <a href="#">Entraînements</a>
+                <ul class="submenu">
+                    <li><a href="index.html">Crosstraining - Renfo - Muscu</a></li>
+                    <li><a href="LL_pompes.html">S'améliorer au LL et pompes</a></li>
+                    <li><a href="course.html">Course à pied</a></li>
+                    <li><a href="velo.html">Vélo</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Infos Pratiques</a>
+                <ul class="submenu">
+                    <li><a href="mode_emploi.html">Modes d'emploi</a></li>
+                    <li><a href="conseils.html">Conseils</a></li>
+                </ul>
+            </li>
+            <li><a href="chrono.html">⏱ Chronos</a></li>
+            <li><a href="seance_perso.html">🎯 Créer ta séance</a></li>
+        </ul>
+        <div class="nav-spacer"></div>
+    </div>
+</nav>
+
+<div class="page-topbar">
+    <h2>🎯 Séance TABATA / PYRAMIDALE / HIIT</h2>
+    <button class="btn-mute" id="btn-mute" onclick="toggleMute()" title="Son on/off">🔔</button>
+</div>
+
+<!-- Onglets Config / Séance -->
+<div class="mode-tabs">
+    <button class="mode-tab active" id="tab-config" onclick="showMode('config')">⚙️ Préparer</button>
+    <button class="mode-tab" id="tab-seance" onclick="showMode('seance')">▶ En séance</button>
+</div>
+
+<!-- ══════════════════════════════
+     PANEL CONFIG
+══════════════════════════════ -->
+<div id="panel-config">
+
+    <!-- Nom de la séance -->
+    <div class="seance-name-wrap">
+        <p class="config-title">📋 Nom de la séance</p>
+        <input type="text" class="seance-name-input" id="seance-name"
+               placeholder="Ex : WOD CrossFit Lundi matin..." maxlength="60">
+    </div>
+
+    <!-- Liste des phases -->
+    <p class="config-title">⚡ Phases de la séance</p>
+    <ul class="phases-list" id="phases-list"></ul>
+    <div style="display:flex; gap:10px; margin-bottom:16px;">
+        <button class="btn-add-phase" style="margin-bottom:0" onclick="addPhase()">+ Ajouter une phase</button>
+        <button class="btn-add-phase" style="margin-bottom:0; color:#e74c3c; border-color:#c0392b; min-width:120px;" onclick="resetConfig()">🗑 Tout effacer</button>
+    </div>
+
+    <!-- Répétitions -->
+    <div class="config-repeat">
+        <label>Répéter la séquence</label>
+        <div class="stepper-sm">
+            <button class="btn-step-sm" onclick="stepRepeat(-1)">−</button>
+            <input type="number" id="repeat-count" value="1" min="1" max="20">
+            <button class="btn-step-sm" onclick="stepRepeat(1)">+</button>
+        </div>
+        <span style="font-size:0.85em; color:var(--text-dim);">fois</span>
+    </div>
+
+    <!-- Bouton lancer -->
+    <button class="btn-lancer" onclick="lancerSeance()">▶ Lancer la séance</button>
+
+</div>
+
+<!-- ══════════════════════════════
+     PANEL SÉANCE (exécution)
+══════════════════════════════ -->
+<div id="panel-seance">
+
+    <div class="seance-header">
+        <h3 id="seance-title-display">Ma Séance</h3>
+    </div>
+
+    <!-- Affichage phase en cours -->
+    <div class="phase-display" id="exec-display">
+        <div class="phase-label" id="exec-label">PRÊT</div>
+        <div class="phase-time-big" id="exec-time">--</div>
+        <div class="phase-progress-info" id="exec-info"></div>
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="exec-bar" style="width:100%"></div>
+        </div>
+    </div>
+
+    <!-- Commentaire phase en cours -->
+    <div class="phase-comment-display" id="exec-comment"></div>
+
+    <!-- Prochaine phase -->
+    <div class="next-phase-bar" id="next-phase-bar">
+        <div class="next-phase-label">Phase suivante</div>
+        <div class="next-phase-info" id="next-phase-info">—</div>
+        <div class="next-phase-comment" id="next-phase-comment"></div>
+    </div>
+
+    <!-- Contrôles -->
+    <div class="seance-controls">
+        <button class="btn-chrono btn-start" id="btn-exec-start" onclick="execStart()">▶ Start</button>
+        <button class="btn-chrono btn-pause" id="btn-exec-pause" onclick="execPause()" disabled>⏸ Pause</button>
+        <button class="btn-chrono btn-reset" onclick="execReset()">↺ Reset</button>
+        <button class="btn-chrono btn-edit"  onclick="showMode('config')">✏️ Éditer</button>
+    </div>
+
+</div>
+
+<button id="backToTop" title="Retour en haut">↑</button>
+
+<script>
+/* ══════════════════════════════════════
+   SON
+══════════════════════════════════════ */
+var isMuted = false;
+var audioCtx = null;
+
+function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+}
+function playBeep(freq, dur, vol) {
+    if (isMuted) return;
+    try {
+        var ctx = getAudioCtx();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = freq; osc.type = 'sine';
+        gain.gain.setValueAtTime(vol || 0.4, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur);
+    } catch(e) {}
+}
+function bipTravail()   { playBeep(880,0.12,0.5); setTimeout(function(){playBeep(880,0.12,0.5);},180); }
+function bipPause()     { playBeep(440,0.4,0.4); }
+function bipCountdown() { playBeep(660,0.1,0.3); }
+function bipFin()       {
+    playBeep(1046,0.15,0.5);
+    setTimeout(function(){playBeep(1046,0.15,0.5);},200);
+    setTimeout(function(){playBeep(1046,0.3,0.5);},400);
+}
+function toggleMute() {
+    isMuted = !isMuted;
+    var btn = document.getElementById('btn-mute');
+    btn.textContent = isMuted ? '🔕' : '🔔';
+    btn.classList.toggle('muted', isMuted);
+}
+
+/* ══════════════════════════════════════
+   UTILITAIRES
+══════════════════════════════════════ */
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+function fmtSec(s) {
+    if (s >= 60) return pad(Math.floor(s/60)) + ':' + pad(s % 60);
+    return '' + s;
+}
+function setPhaseStyle(el, phase) {
+    el.classList.remove('phase-travail','phase-repos','phase-warmup','phase-recup','phase-countdown');
+    if (phase) el.classList.add('phase-' + phase);
+}
+function setBtnActive(id, active) {
+    var btn = document.getElementById(id);
+    if (active) btn.classList.add('btn-active');
+    else btn.classList.remove('btn-active');
+}
+
+/* ══════════════════════════════════════
+   NAVIGATION MODES
+══════════════════════════════════════ */
+function showMode(mode) {
+    var isConfig = mode === 'config';
+    document.getElementById('panel-config').style.display = isConfig ? 'block' : 'none';
+    document.getElementById('panel-seance').style.display = isConfig ? 'none'  : 'block';
+    document.getElementById('tab-config').classList.toggle('active', isConfig);
+    document.getElementById('tab-seance').classList.toggle('active', !isConfig);
+}
+
+/* ══════════════════════════════════════
+   GESTION DES PHASES (config)
+══════════════════════════════════════ */
+var phaseCounter = 0;
+
+var phaseTypes = {
+    travail: { label: '🔥 Travail',  style: 'travail', bip: 'travail' },
+    repos:   { label: '😮‍💨 Pause',   style: 'repos',   bip: 'pause'   },
+    warmup:  { label: '🏃 Warm-up',  style: 'warmup',  bip: 'travail' },
+    recup:   { label: '🧘 Récup',    style: 'recup',   bip: 'pause'   }
+};
+
+function addPhase(typeVal, durVal, commentVal) {
+    var list = document.getElementById('phases-list');
+    phaseCounter++;
+    var id = 'ph' + phaseCounter;
+    var li = document.createElement('li');
+    li.className = 'phase-item type-' + (typeVal || 'travail');
+    li.id = id;
+
+    li.innerHTML =
+        '<div class="phase-top-row">' +
+        '<select class="phase-select" onchange="updatePhaseStyle(this)">' +
+        '<option value="travail"' + (typeVal==='travail'||!typeVal?' selected':'') + '>🔥 Travail</option>' +
+        '<option value="repos"'   + (typeVal==='repos'  ?' selected':'') + '>😮‍💨 Pause</option>'  +
+        '<option value="warmup"'  + (typeVal==='warmup' ?' selected':'') + '>🏃 Warm-up</option>' +
+        '<option value="recup"'   + (typeVal==='recup'  ?' selected':'') + '>🧘 Récup</option>'   +
+        '</select>' +
+        '<div class="phase-stepper">' +
+        '<button class="btn-step-sm" onclick="stepPhase(\'' + id + '\',-5)">−</button>' +
+        '<input type="number" class="phase-duration-input" value="' + (durVal||30) + '" min="1" max="3600">' +
+        '<button class="btn-step-sm" onclick="stepPhase(\'' + id + '\',5)">+</button>' +
+        '</div>' +
+        '<span class="phase-sec-label">sec</span>' +
+        '<button class="btn-del-phase" onclick="delPhase(\'' + id + '\')">✕</button>' +
+        '</div>' +
+        '<textarea class="phase-comment" rows="2" ' +
+        'placeholder="Instructions pour cette phase... (facultatif)">' +
+        (commentVal || '') + '</textarea>';
+
+    list.appendChild(li);
+}
+
+function updatePhaseStyle(sel) {
+    var li = sel.closest('.phase-item');
+    li.className = 'phase-item type-' + sel.value;
+}
+
+function stepPhase(id, delta) {
+    var li = document.getElementById(id);
+    var input = li.querySelector('.phase-duration-input');
+    var val = parseInt(input.value) || 30;
+    var absDelta = Math.abs(delta);
+    var newVal;
+    if (absDelta > 1 && absDelta % 5 === 0) {
+        newVal = delta > 0 ? Math.ceil((val+1)/absDelta)*absDelta : Math.floor((val-1)/absDelta)*absDelta;
+    } else {
+        newVal = val + delta;
+    }
+    input.value = Math.max(1, Math.min(3600, newVal));
+}
+
+function delPhase(id) {
+    var el = document.getElementById(id);
+    if (el) el.remove();
+}
+
+function resetConfig() {
+    if (!confirm('Effacer toutes les phases ?')) return;
+    document.getElementById('phases-list').innerHTML = '';
+    document.getElementById('seance-name').value = '';
+    document.getElementById('repeat-count').value = 1;
+}
+
+function stepRepeat(delta) {
+    var input = document.getElementById('repeat-count');
+    input.value = Math.max(1, Math.min(20, (parseInt(input.value)||1) + delta));
+}
+
+/* ══════════════════════════════════════
+   LANCER LA SÉANCE
+══════════════════════════════════════ */
+function lancerSeance() {
+    // Construire la liste des phases
+    var items = document.querySelectorAll('#phases-list .phase-item');
+    if (items.length === 0) { alert('Ajoutez au moins une phase !'); return; }
+
+    execPhases = [];
+    items.forEach(function(li) {
+        var type    = li.querySelector('.phase-select').value;
+        var sec     = parseInt(li.querySelector('.phase-duration-input').value) || 30;
+        var comment = li.querySelector('.phase-comment').value.trim();
+        execPhases.push({ type: type, sec: sec, comment: comment });
+    });
+
+    execRepeat    = parseInt(document.getElementById('repeat-count').value) || 1;
+    execRepCur    = 1;
+    execCur       = 0;
+    execSec       = 0;
+    execRunning   = false;
+    clearInterval(execInterval);
+
+    // Afficher le nom
+    var nom = document.getElementById('seance-name').value.trim() || 'Ma Séance';
+    document.getElementById('seance-title-display').textContent = nom;
+
+    // Reset affichage
+    document.getElementById('exec-label').textContent  = 'PRÊT';
+    document.getElementById('exec-time').textContent   = fmtSec(execPhases[0].sec);
+    document.getElementById('exec-info').textContent   = '';
+    document.getElementById('exec-comment').textContent = execPhases[0].comment || '';
+    document.getElementById('exec-bar').style.width    = '100%';
+    setPhaseStyle(document.getElementById('exec-display'), '');
+    renderNextPhase(0);
+
+    document.getElementById('btn-exec-start').disabled = false;
+    document.getElementById('btn-exec-pause').disabled = true;
+    setBtnActive('btn-exec-pause', false);
+
+    showMode('seance');
+}
+
+/* ══════════════════════════════════════
+   EXÉCUTION DE LA SÉANCE
+══════════════════════════════════════ */
+var execInterval = null;
+var execRunning  = false;
+var execPhases   = [];
+var execCur      = 0;
+var execSec      = 0;
+var execTotalSec = 0;
+var execRepeat   = 1;
+var execRepCur   = 1;
+
+function execStart() {
+    if (execRunning || execPhases.length === 0) return;
+    if (execSec === 0) {
+        execSec      = execPhases[execCur].sec;
+        execTotalSec = execSec;
+        execBip(execPhases[execCur].type);
+        execRender();
+    }
+    execRunning = true;
+    setBtnActive('btn-exec-pause', false);
+    document.getElementById('btn-exec-start').disabled = true;
+    document.getElementById('btn-exec-pause').disabled = false;
+
+    execInterval = setInterval(function() {
+        execSec--;
+        if (execSec <= 3 && execSec > 0) {
+            bipCountdown();
+            setPhaseStyle(document.getElementById('exec-display'), 'countdown');
+            document.getElementById('exec-label').textContent = execSec + '...';
+            document.getElementById('exec-time').textContent  = execSec;
+        } else if (execSec <= 0) {
+            execNext();
+        } else {
+            execRender();
+        }
+        // Barre de progression toujours mise à jour
+        document.getElementById('exec-bar').style.width = ((execSec / execTotalSec) * 100) + '%';
+    }, 1000);
+}
+
+function execNext() {
+    execCur++;
+    if (execCur >= execPhases.length) {
+        if (execRepCur < execRepeat) {
+            execRepCur++;
+            execCur = 0;
+            execAdvance();
+        } else {
+            execFinish();
+        }
+    } else {
+        execAdvance();
+    }
+}
+
+function execAdvance() {
+    execSec      = execPhases[execCur].sec;
+    execTotalSec = execSec;
+    execBip(execPhases[execCur].type);
+    execRender();
+}
+
+function execBip(type) {
+    if (type === 'travail' || type === 'warmup') bipTravail();
+    else bipPause();
+}
+
+function execRender() {
+    var phase = execPhases[execCur];
+    var styleMap = { travail:'travail', repos:'repos', warmup:'warmup', recup:'recup' };
+    setPhaseStyle(document.getElementById('exec-display'), styleMap[phase.type]);
+
+    var labelMap = { travail:'🔥 TRAVAIL', repos:'😮‍💨 PAUSE', warmup:'🏃 WARM-UP', recup:'🧘 RÉCUP' };
+    document.getElementById('exec-label').textContent   = labelMap[phase.type] || phase.type.toUpperCase();
+    document.getElementById('exec-time').textContent    = fmtSec(execSec);
+    document.getElementById('exec-comment').textContent = phase.comment || '';
+
+    var totalPhases = execPhases.length;
+    var repInfo = execRepeat > 1 ? ' — Répét. ' + execRepCur + '/' + execRepeat : '';
+    document.getElementById('exec-info').textContent = 'Phase ' + (execCur+1) + '/' + totalPhases + repInfo;
+    document.getElementById('exec-bar').style.width = ((execSec / execTotalSec) * 100) + '%';
+
+    renderNextPhase(execCur);
+}
+
+function renderNextPhase(cur) {
+    var nextIdx = cur + 1;
+    var bar     = document.getElementById('next-phase-bar');
+    if (nextIdx >= execPhases.length) {
+        if (execRepCur < execRepeat) {
+            // Prochaine répétition
+            var firstPhase = execPhases[0];
+            var labelMap2  = { travail:'🔥 Travail', repos:'😮‍💨 Pause', warmup:'🏃 Warm-up', recup:'🧘 Récup' };
+            document.getElementById('next-phase-info').textContent    = labelMap2[firstPhase.type] + ' — ' + fmtSec(firstPhase.sec) + 's (Répét. ' + (execRepCur+1) + ')';
+            document.getElementById('next-phase-comment').textContent = firstPhase.comment || '';
+            bar.style.display = 'block';
+        } else {
+            document.getElementById('next-phase-info').textContent    = '🏁 Fin de séance';
+            document.getElementById('next-phase-comment').textContent = '';
+            bar.style.display = 'block';
+        }
+        return;
+    }
+    var next     = execPhases[nextIdx];
+    var lblMap   = { travail:'🔥 Travail', repos:'😮‍💨 Pause', warmup:'🏃 Warm-up', recup:'🧘 Récup' };
+    document.getElementById('next-phase-info').textContent    = lblMap[next.type] + ' — ' + fmtSec(next.sec) + 's';
+    document.getElementById('next-phase-comment').textContent = next.comment || '';
+    bar.style.display = 'block';
+}
+
+function execFinish() {
+    clearInterval(execInterval); execRunning = false;
+    document.getElementById('exec-label').textContent   = '✅ SÉANCE TERMINÉE !';
+    document.getElementById('exec-time').textContent    = '0';
+    document.getElementById('exec-comment').textContent = 'Bravo ! Belle séance 💪';
+    document.getElementById('exec-info').textContent    = '';
+    document.getElementById('exec-bar').style.width     = '0%';
+    document.getElementById('next-phase-bar').style.display = 'none';
+    setPhaseStyle(document.getElementById('exec-display'), 'repos');
+    bipFin();
+    document.getElementById('btn-exec-start').disabled = false;
+    document.getElementById('btn-exec-pause').disabled = true;
+}
+
+function execPause() {
+    if (!execRunning) return;
+    clearInterval(execInterval); execRunning = false;
+    setBtnActive('btn-exec-pause', true);
+    document.getElementById('btn-exec-start').disabled = false;
+    document.getElementById('btn-exec-pause').disabled = false;
+    document.getElementById('exec-label').textContent  = '⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('exec-display'), '');
+}
+
+function execReset() {
+    clearInterval(execInterval); execRunning = false;
+    execCur = 0; execSec = 0; execRepCur = 1;
+    if (execPhases.length > 0) {
+        document.getElementById('exec-label').textContent   = 'PRÊT';
+        document.getElementById('exec-time').textContent    = fmtSec(execPhases[0].sec);
+        document.getElementById('exec-info').textContent    = '';
+        document.getElementById('exec-comment').textContent = execPhases[0].comment || '';
+        document.getElementById('exec-bar').style.width     = '100%';
+        setPhaseStyle(document.getElementById('exec-display'), '');
+        renderNextPhase(0);
+    }
+    document.getElementById('btn-exec-start').disabled = false;
+    document.getElementById('btn-exec-pause').disabled = true;
+    setBtnActive('btn-exec-pause', false);
+}
+
+/* Init */
+window.addEventListener('DOMContentLoaded', function() {
+    // Phases par défaut
+    addPhase('warmup',  600, 'Échauffement général — course légère, mobilité');
+    addPhase('travail', 30,  'Effectuez les exercices au maximum de vos capacités');
+    addPhase('repos',   15,  'Récupération — respirez calmement');
+
+    var backButton = document.getElementById('backToTop');
+    if (backButton) {
+        window.onscroll = function() { backButton.style.display = (window.scrollY > 300) ? 'block' : 'none'; };
+        backButton.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    }
+});
+</script>
+</body>
+</html>
