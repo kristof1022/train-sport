@@ -240,20 +240,31 @@
         .sequence-item.type-echauffement { border-left-color: #3498db; }
         .sequence-item.type-retour       { border-left-color: #9b59b6; }
 
+        .sequence-item {
+            flex-wrap: wrap;
+        }
         .sequence-item select {
             background: #0f1b35; border: 1px solid #2a3a5a;
             border-radius: 6px; color: #fff; padding: 7px 8px;
-            font-size: 0.82em; flex: 1;
+            font-size: 0.82em; flex: 1; min-width: 140px;
         }
-        .seq-stepper { display: flex; align-items: center; border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a; }
-        .seq-stepper .btn-step    { width: 32px; height: 34px; font-size: 1.1em; }
-        .seq-stepper .config-input { width: 48px; height: 34px; font-size: 0.9em; }
+        .seq-bottom-row {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; margin-top: 0;
+        }
+        .seq-stepper { display: flex; align-items: center; border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a; flex: 1; }
+        .seq-stepper .btn-step    { width: 38px; height: 36px; font-size: 1.1em; }
+        .seq-stepper .config-input { flex: 1; height: 36px; font-size: 0.95em; min-width: 50px; }
 
         .btn-del-seq {
             background: #c0392b; border: none; color: #fff;
-            border-radius: 6px; width: 30px; height: 30px;
-            cursor: pointer; font-size: 0.85em;
+            border-radius: 6px; width: 36px; height: 36px;
+            cursor: pointer; font-size: 0.9em;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        @media (min-width: 400px) {
+            .sequence-item { flex-wrap: nowrap; }
+            .seq-bottom-row { width: auto; margin-top: 0; }
         }
         .btn-add-seq {
             width: 100%; padding: 11px; background: #1a2a4a;
