@@ -241,20 +241,21 @@
         .sequence-item.type-retour       { border-left-color: #9b59b6; }
 
         .sequence-item {
-            flex-wrap: wrap;
+            flex-wrap: wrap; box-sizing: border-box;
         }
         .sequence-item select {
             background: #0f1b35; border: 1px solid #2a3a5a;
             border-radius: 6px; color: #fff; padding: 7px 8px;
-            font-size: 0.82em; flex: 1; min-width: 140px;
+            font-size: 0.82em; flex: 1; min-width: 0; width: 100%;
+            box-sizing: border-box;
         }
         .seq-bottom-row {
-            display: flex; align-items: center; gap: 8px;
-            width: 100%; margin-top: 0;
+            display: flex; align-items: center; gap: 6px;
+            width: 100%; margin-top: 6px; box-sizing: border-box;
         }
-        .seq-stepper { display: flex; align-items: center; border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a; flex: 1; }
-        .seq-stepper .btn-step    { width: 38px; height: 36px; font-size: 1.1em; }
-        .seq-stepper .config-input { flex: 1; height: 36px; font-size: 0.95em; min-width: 50px; }
+        .seq-stepper { display: flex; align-items: center; border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a; flex: 1; min-width: 0; }
+        .seq-stepper .btn-step    { width: 36px; height: 36px; font-size: 1.1em; flex-shrink: 0; }
+        .seq-stepper .config-input { flex: 1; height: 36px; font-size: 0.95em; min-width: 0; width: 0; }
 
         .btn-del-seq {
             background: #c0392b; border: none; color: #fff;
@@ -1205,7 +1206,7 @@ function seqReset() {
 
 /* Init */
 window.addEventListener('DOMContentLoaded', function() {
-    // 2 phases par défaut
+    // 2 phases par défaut — utilise le compteur incrémental (pas de risque d'ID dupliqué)
     addSeqItem();
     var items=document.querySelectorAll('#seq-list .sequence-item');
     if(items.length>0){
@@ -1213,7 +1214,12 @@ window.addEventListener('DOMContentLoaded', function() {
         sel.value='echauffement'; updateSeqStyle(sel);
         items[0].querySelector('input').value=60;
     }
-    addSeqItem(); updateSeqCount();
+    addSeqItem();
+    var items2=document.querySelectorAll('#seq-list .sequence-item');
+    if(items2.length>1){
+        items2[1].querySelector('input').value=30;
+    }
+    updateSeqCount();
 
     var backButton=document.getElementById('backToTop');
     if(backButton){
