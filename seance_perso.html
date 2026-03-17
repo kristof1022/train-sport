@@ -27,7 +27,7 @@
         }
 
         body { background: var(--neutral-bg); color: var(--text-light); }
-        nav  { border-bottom: 2px solid var(--accent); }
+        nav  { border-bottom: 2px solid #888888; }
 
         /* ── Bandeau titre ── */
         .page-topbar {
@@ -36,24 +36,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid #222;
-            position: relative;
+            border-bottom: 1px solid #888888;
         }
         .page-topbar h2 {
             font-size: 1em; font-weight: 700;
             letter-spacing: 0.12em; text-transform: uppercase;
-            color: var(--accent); margin: 0; text-align: center;
+            color: #888888; margin: 0; text-align: center;
         }
         .btn-mute {
-            position: absolute; right: 16px;
-            background: #222; border: 1px solid #444; color: #fff;
-            border-radius: 50%; width: 42px; height: 42px;
-            font-size: 1.2em; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
+            padding: 14px 18px; border: none; border-radius: 10px;
+            font-family: sans-serif; font-size: 0.92em; font-weight: 700;
+            letter-spacing: 0.06em; cursor: pointer;
+            transition: all 0.15s ease; text-transform: uppercase;
+            min-width: 85px; background: #2c3e50; color: #fff;
+            -webkit-tap-highlight-color: transparent;
         }
-        .btn-mute:hover { background: #333; }
-        .btn-mute.muted { background: #c0392b; border-color: #e74c3c; }
+        .btn-mute:hover  { background: #1a252f; }
+        .btn-mute.muted  { background: #c0392b; color: #fff; }
 
         /* ── Modes ── */
         .mode-tabs {
@@ -256,11 +255,11 @@
 
         /* Commentaire de la phase en cours */
         .phase-comment-display {
-            background: rgba(0,0,0,0.3); margin: 0;
-            padding: 16px 20px; font-size: 1.25em;
-            color: #fff; line-height: 1.6; font-weight: 600;
+            background: #e8e8e8; margin: 0;
+            padding: 16px 20px; font-size: 1.35em;
+            color: #111; line-height: 1.6; font-weight: 600;
             min-height: 60px; text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid #ccc;
         }
         .phase-comment-display:empty { display: none; }
 
@@ -348,7 +347,6 @@
 
 <div class="page-topbar">
     <h2>🎯 Séance TABATA / PYRAMIDALE / HIIT</h2>
-    <button class="btn-mute" id="btn-mute" onclick="toggleMute()" title="Son on/off">🔔</button>
 </div>
 
 <!-- Onglets Config / Séance -->
@@ -407,9 +405,6 @@
         <div class="phase-label" id="exec-label">PRÊT</div>
         <div class="phase-time-big" id="exec-time">--</div>
         <div class="phase-progress-info" id="exec-info"></div>
-        <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" id="exec-bar" style="width:100%"></div>
-        </div>
     </div>
 
     <!-- Commentaire phase en cours -->
@@ -428,6 +423,7 @@
         <button class="btn-chrono btn-pause" id="btn-exec-pause" onclick="execPause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="execReset()">↺ Reset</button>
         <button class="btn-chrono btn-edit"  onclick="showMode('config')">✏️ Éditer</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-exec" onclick="toggleMute()">🔔 Son</button>
     </div>
 
 </div>
@@ -468,9 +464,11 @@ function bipFin()       {
 }
 function toggleMute() {
     isMuted = !isMuted;
-    var btn = document.getElementById('btn-mute');
-    btn.textContent = isMuted ? '🔕' : '🔔';
-    btn.classList.toggle('muted', isMuted);
+    var btn = document.getElementById('btn-mute-exec');
+    if (btn) {
+        btn.textContent = isMuted ? '🔕 Son' : '🔔 Son';
+        btn.classList.toggle('muted', isMuted);
+    }
 }
 
 /* ══════════════════════════════════════
@@ -613,7 +611,6 @@ function lancerSeance() {
     document.getElementById('exec-time').textContent   = fmtSec(execPhases[0].sec);
     document.getElementById('exec-info').textContent   = '';
     document.getElementById('exec-comment').textContent = execPhases[0].comment || '';
-    document.getElementById('exec-bar').style.width    = '100%';
     setPhaseStyle(document.getElementById('exec-display'), '');
     renderNextPhase(0);
 
@@ -653,16 +650,14 @@ function execStart() {
         execSec--;
         if (execSec <= 3 && execSec > 0) {
             bipCountdown();
-            setPhaseStyle(document.getElementById('exec-display'), 'countdown');
-            document.getElementById('exec-label').textContent = execSec + '...';
-            document.getElementById('exec-time').textContent  = execSec;
-        } else if (execSec <= 0) {
-            execNext();
+            document.getElementById('exec-time').textContent = execSec;
+        } else if (execSec === 0) {
+            document.getElementById('exec-time').textContent = '0';
+        } else if (execSec < 0) {
+            execSec = 0; execNext();
         } else {
             execRender();
         }
-        // Barre de progression toujours mise à jour
-        document.getElementById('exec-bar').style.width = ((execSec / execTotalSec) * 100) + '%';
     }, 1000);
 }
 
@@ -706,7 +701,6 @@ function execRender() {
     var totalPhases = execPhases.length;
     var repInfo = execRepeat > 1 ? ' — Répét. ' + execRepCur + '/' + execRepeat : '';
     document.getElementById('exec-info').textContent = 'Phase ' + (execCur+1) + '/' + totalPhases + repInfo;
-    document.getElementById('exec-bar').style.width = ((execSec / execTotalSec) * 100) + '%';
 
     renderNextPhase(execCur);
 }
@@ -742,7 +736,6 @@ function execFinish() {
     document.getElementById('exec-time').textContent    = '0';
     document.getElementById('exec-comment').textContent = 'Bravo ! Belle séance 💪';
     document.getElementById('exec-info').textContent    = '';
-    document.getElementById('exec-bar').style.width     = '0%';
     document.getElementById('next-phase-bar').style.display = 'none';
     setPhaseStyle(document.getElementById('exec-display'), 'repos');
     bipFin();
@@ -768,7 +761,6 @@ function execReset() {
         document.getElementById('exec-time').textContent    = fmtSec(execPhases[0].sec);
         document.getElementById('exec-info').textContent    = '';
         document.getElementById('exec-comment').textContent = execPhases[0].comment || '';
-        document.getElementById('exec-bar').style.width     = '100%';
         setPhaseStyle(document.getElementById('exec-display'), '');
         renderNextPhase(0);
     }

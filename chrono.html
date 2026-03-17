@@ -24,7 +24,7 @@
         }
 
         body { background: var(--neutral-bg); color: var(--text-light); }
-        nav  { border-bottom: 2px solid var(--accent); }
+        nav  { border-bottom: 2px solid #888888; }
 
         /* ── Bandeau titre ── */
         .chrono-topbar {
@@ -34,7 +34,6 @@
             align-items: center;
             justify-content: center;
             border-bottom: 1px solid #222;
-            position: relative;
         }
         .chrono-topbar h2 {
             font-size: 1em;
@@ -46,22 +45,15 @@
             text-align: center;
         }
         .btn-mute {
-            position: absolute;
-            right: 16px;
-            background: #222;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 50%;
-            width: 42px; height: 42px;
-            font-size: 1.2em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
+            padding: 14px 18px; border: none; border-radius: 10px;
+            font-family: sans-serif; font-size: 0.92em; font-weight: 700;
+            letter-spacing: 0.06em; cursor: pointer;
+            transition: all 0.15s ease; text-transform: uppercase;
+            min-width: 85px; background: #2c3e50; color: #fff;
+            -webkit-tap-highlight-color: transparent;
         }
-        .btn-mute:hover { background: #333; }
-        .btn-mute.muted { background: #c0392b; border-color: #e74c3c; }
+        .btn-mute:hover  { background: #1a252f; }
+        .btn-mute.muted  { background: #c0392b; color: #fff; }
 
         /* ── Onglets centrés ── */
         .chrono-tabs {
@@ -341,7 +333,6 @@
 
 <div class="chrono-topbar">
     <h2>⏱ Chronos d'entraînement</h2>
-    <button class="btn-mute" id="btn-mute-global" onclick="toggleMute()" title="Son on/off">🔔</button>
 </div>
 
 <div class="chrono-tabs">
@@ -369,6 +360,7 @@
         <button class="btn-chrono btn-hold"  id="btn-simple-hold"  onclick="simpleHold()"  disabled>Hold</button>
         <button class="btn-chrono btn-pause" id="btn-simple-pause" onclick="simplePause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="simpleReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-s" onclick="toggleMute('btn-mute-s')">🔔 Son</button>
     </div>
 </div>
 
@@ -399,14 +391,12 @@
         <div class="phase-label" id="countdown-label">PRÊT</div>
         <div class="chrono-time" id="countdown-time">10:00</div>
         <div class="chrono-sub" id="countdown-sub"></div>
-        <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" id="countdown-bar" style="width:100%"></div>
-        </div>
     </div>
     <div class="chrono-controls">
         <button class="btn-chrono btn-start" id="btn-cd-start" onclick="countdownStart()">▶ Start</button>
         <button class="btn-chrono btn-pause" id="btn-cd-pause" onclick="countdownPause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="countdownReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-cd" onclick="toggleMute('btn-mute-cd')">🔔 Son</button>
     </div>
 </div>
 
@@ -450,12 +440,12 @@
         <div class="chrono-time small" id="tabata-time">20</div>
         <div class="chrono-sub" id="tabata-sub"></div>
         <div class="chrono-next" id="tabata-next"></div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="tabata-bar" style="width:100%"></div></div>
     </div>
     <div class="chrono-controls">
         <button class="btn-chrono btn-start" id="btn-tab-start" onclick="tabataStart()">▶ Start</button>
         <button class="btn-chrono btn-pause" id="btn-tab-pause" onclick="tabataPause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="tabataReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-tab" onclick="toggleMute('btn-mute-tab')">🔔 Son</button>
     </div>
 </div>
 
@@ -493,6 +483,7 @@
         <button class="btn-chrono btn-start" id="btn-ft-start" onclick="fortimeStart()">▶ Start</button>
         <button class="btn-chrono btn-pause" id="btn-ft-pause" onclick="fortimePause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="fortimeReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-ft" onclick="toggleMute('btn-mute-ft')">🔔 Son</button>
     </div>
 </div>
 
@@ -523,9 +514,6 @@
         <div class="phase-label" id="amrap-label">PRÊT</div>
         <div class="chrono-time" id="amrap-time">20:00</div>
         <div class="chrono-sub" id="amrap-sub"></div>
-        <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" id="amrap-bar" style="width:100%"></div>
-        </div>
     </div>
     <p style="text-align:center; color:var(--text-dim); font-size:0.85em; font-style:italic; margin: 0 0 16px;">
         💡 Lance le décompte et note ton score au fur et à mesure
@@ -552,6 +540,7 @@
         <button class="btn-chrono btn-start" id="btn-amrap-start" onclick="amrapStart()">▶ Start</button>
         <button class="btn-chrono btn-pause" id="btn-amrap-pause" onclick="amrapPause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="amrapReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-am" onclick="toggleMute('btn-mute-am')">🔔 Son</button>
     </div>
 </div>
 
@@ -583,12 +572,12 @@
         <div class="chrono-time small" id="emom-time">60</div>
         <div class="chrono-sub" id="emom-sub">Dans la minute, effectuez les exercices prévus</div>
         <div class="chrono-next" id="emom-next"></div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="emom-bar" style="width:100%"></div></div>
     </div>
     <div class="chrono-controls">
         <button class="btn-chrono btn-start" id="btn-emom-start" onclick="emomStart()">▶ Start</button>
         <button class="btn-chrono btn-pause" id="btn-emom-pause" onclick="emomPause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="emomReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-em" onclick="toggleMute('btn-mute-em')">🔔 Son</button>
     </div>
 </div>
 
@@ -635,12 +624,12 @@
         <div class="chrono-time small" id="pyramide-time">30</div>
         <div class="chrono-sub" id="pyramide-sub"></div>
         <div class="chrono-next" id="pyramide-next"></div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pyramide-bar" style="width:100%"></div></div>
     </div>
     <div class="chrono-controls">
         <button class="btn-chrono btn-start" id="btn-pyr-start" onclick="pyramideStart()">▶ Start</button>
         <button class="btn-chrono btn-pause" id="btn-pyr-pause" onclick="pyramidePause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="pyramideReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-pyr" onclick="toggleMute('btn-mute-pyr')">🔔 Son</button>
     </div>
 </div>
 
@@ -672,12 +661,12 @@
         <div class="chrono-time small" id="surmesure-time">--</div>
         <div class="chrono-sub" id="surmesure-sub"></div>
         <div class="chrono-next" id="surmesure-next"></div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="surmesure-bar" style="width:100%"></div></div>
     </div>
     <div class="chrono-controls">
         <button class="btn-chrono btn-start" id="btn-seq-start" onclick="seqStart()">▶ Start</button>
         <button class="btn-chrono btn-pause" id="btn-seq-pause" onclick="seqPause()" disabled>⏸ Pause</button>
         <button class="btn-chrono btn-reset" onclick="seqReset()">↺ Reset</button>
+        <button class="btn-chrono btn-mute" id="btn-mute-seq" onclick="toggleMute('btn-mute-seq')">🔔 Son</button>
     </div>
 </div>
 
@@ -714,9 +703,15 @@ function bipFin()       { playBeep(1046,0.15,0.5); setTimeout(function(){playBee
 
 function toggleMute() {
     isMuted = !isMuted;
-    var btn = document.getElementById('btn-mute-global');
-    btn.textContent = isMuted ? '🔕' : '🔔';
-    btn.classList.toggle('muted', isMuted);
+    var ids = ['btn-mute-s','btn-mute-cd','btn-mute-tab','btn-mute-ft',
+               'btn-mute-am','btn-mute-em','btn-mute-pyr','btn-mute-seq'];
+    ids.forEach(function(id) {
+        var btn = document.getElementById(id);
+        if (btn) {
+            btn.textContent = isMuted ? '🔕 Son' : '🔔 Son';
+            btn.classList.toggle('muted', isMuted);
+        }
+    });
 }
 
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
@@ -862,9 +857,8 @@ function countdownStart() {
             return;
         }
         var secLeft = Math.ceil(cdMs/1000);
-        if (secLeft<=3) { bipCountdown(); setPhaseStyle(document.getElementById('countdown-display'),'countdown'); document.getElementById('countdown-label').textContent = secLeft+'...'; }
+        if (secLeft<=3) { bipCountdown(); }
         document.getElementById('countdown-time').textContent = pad(Math.floor(cdMs/60000))+':'+pad(Math.floor((cdMs%60000)/1000));
-        document.getElementById('countdown-bar').style.width = ((cdMs/cdTotal)*100)+'%';
     }, 100);
 }
 
@@ -884,7 +878,6 @@ function countdownReset() {
     var s=parseInt(document.getElementById('cd-sec').value)||0;
     document.getElementById('countdown-time').textContent = pad(m)+':'+pad(s);
     document.getElementById('countdown-label').textContent = 'PRÊT';
-    document.getElementById('countdown-bar').style.width = '100%';
     document.getElementById('btn-cd-start').disabled = false;
     document.getElementById('btn-cd-pause').disabled = true;
     setBtnActive('btn-cd-pause', false);
@@ -914,8 +907,9 @@ function tabataStart() {
     document.getElementById('btn-tab-pause').disabled=false;
     tabInterval = setInterval(function() {
         tabSec--;
-        if (tabSec<=3 && tabSec>0) { bipCountdown(); setPhaseStyle(document.getElementById('tabata-display'),'countdown'); document.getElementById('tabata-label').textContent=tabSec+'...'; document.getElementById('tabata-time').textContent=tabSec; }
-        else if (tabSec<=0) { tabNextPhase(); }
+        if (tabSec<=3 && tabSec>0) { bipCountdown(); document.getElementById('tabata-time').textContent=tabSec; }
+        else if (tabSec===0) { document.getElementById('tabata-time').textContent='0'; }
+        else if (tabSec<0)   { tabSec=0; tabNextPhase(); }
         else { tabataRender(); }
     }, 1000);
 }
@@ -956,7 +950,6 @@ function tabataRender() {
     document.getElementById('tabata-sub').textContent='Round '+tabCurRound+' / '+tabTotRounds;
     var nextLbl=tabPhase==='travail'?'Pause':'Travail (Round '+Math.min(tabCurRound+1,tabTotRounds)+')';
     document.getElementById('tabata-next').textContent='Prochain : '+nextLbl;
-    document.getElementById('tabata-bar').style.width=((tabSec/tabTotalSec)*100)+'%';
 }
 
 function tabataPause() {
@@ -975,7 +968,6 @@ function tabataReset() {
     document.getElementById('tabata-time').textContent=fmtSec(parseInt(document.getElementById('tab-work').value)||20);
     document.getElementById('tabata-sub').textContent='';
     document.getElementById('tabata-next').textContent='';
-    document.getElementById('tabata-bar').style.width='100%';
     document.getElementById('tab-cur').textContent='0';
     document.getElementById('tab-tot').textContent=document.getElementById('tab-rounds').value||8;
     document.getElementById('btn-tab-start').disabled=false;
@@ -1063,6 +1055,7 @@ function amrapStart() {
     document.getElementById('btn-amrap-start').disabled = true;
     document.getElementById('btn-amrap-pause').disabled = false;
     var last = Date.now();
+    var lastSecShown = -1;
     amrapInterval = setInterval(function() {
         var now = Date.now(); amrapMs -= (now - last); last = now;
         if (amrapMs <= 0) {
@@ -1072,7 +1065,6 @@ function amrapStart() {
             var r = document.getElementById('amrap-rounds').value;
             var rp = document.getElementById('amrap-reps').value;
             document.getElementById('amrap-sub').textContent   = 'Score : ' + r + ' rounds + ' + rp + ' reps';
-            document.getElementById('amrap-bar').style.width   = '0%';
             setPhaseStyle(document.getElementById('amrap-display'), 'repos');
             bipFin();
             document.getElementById('btn-amrap-start').disabled = false;
@@ -1080,16 +1072,15 @@ function amrapStart() {
             return;
         }
         var secLeft = Math.ceil(amrapMs / 1000);
-        if (secLeft <= 3) {
+        // Bip une seule fois par seconde pendant le countdown
+        if (secLeft <= 3 && secLeft !== lastSecShown) {
             bipCountdown();
-            setPhaseStyle(document.getElementById('amrap-display'), 'countdown');
-            document.getElementById('amrap-label').textContent = secLeft + '...';
+            lastSecShown = secLeft;
         }
         var mm = Math.floor(amrapMs / 60000);
         var ss = Math.floor((amrapMs % 60000) / 1000);
         document.getElementById('amrap-time').textContent = pad(mm) + ':' + pad(ss);
         document.getElementById('amrap-sub').textContent  = 'Rounds : ' + document.getElementById('amrap-rounds').value + '  |  Reps : ' + document.getElementById('amrap-reps').value;
-        document.getElementById('amrap-bar').style.width  = ((amrapMs / amrapTotal) * 100) + '%';
     }, 100);
 }
 
@@ -1110,7 +1101,6 @@ function amrapReset() {
     document.getElementById('amrap-time').textContent  = pad(m) + ':' + pad(s);
     document.getElementById('amrap-label').textContent = 'PRÊT';
     document.getElementById('amrap-sub').textContent   = '';
-    document.getElementById('amrap-bar').style.width   = '100%';
     document.getElementById('amrap-rounds').value = 0;
     document.getElementById('amrap-reps').value   = 0;
     document.getElementById('btn-amrap-start').disabled = false;
@@ -1147,11 +1137,12 @@ function emomStart() {
         emomSec--;
         if (emomSec <= 3 && emomSec > 0) {
             bipCountdown();
-            setPhaseStyle(document.getElementById('emom-display'), 'countdown');
-            document.getElementById('emom-label').textContent  = emomSec + '...';
-            document.getElementById('emom-time').textContent   = emomSec;
+            document.getElementById('emom-time').textContent    = emomSec;
             document.getElementById('emom-sec-val').textContent = emomSec;
-        } else if (emomSec <= 0) {
+        } else if (emomSec === 0) {
+            document.getElementById('emom-time').textContent    = '0';
+            document.getElementById('emom-sec-val').textContent = '0';
+        } else if (emomSec < 0) {
             // Nouvelle minute
             if (emomCurMin >= emomTotMin) {
                 emomFinish();
@@ -1178,7 +1169,6 @@ function emomRender() {
     document.getElementById('emom-next').textContent = minLeft > 0
         ? 'Prochaine minute dans ' + emomSec + 's — ' + minLeft + ' minute(s) restante(s)'
         : '🏁 Dernière minute !';
-    document.getElementById('emom-bar').style.width = ((emomSec / 60) * 100) + '%';
 }
 
 function emomFinish() {
@@ -1187,7 +1177,6 @@ function emomFinish() {
     document.getElementById('emom-time').textContent    = '0';
     document.getElementById('emom-sub').textContent     = emomTotMin + ' minutes complétées !';
     document.getElementById('emom-next').textContent    = '';
-    document.getElementById('emom-bar').style.width     = '0%';
     setPhaseStyle(document.getElementById('emom-display'), 'repos');
     bipFin();
     document.getElementById('btn-emom-start').disabled = false;
@@ -1211,7 +1200,6 @@ function emomReset() {
     document.getElementById('emom-time').textContent    = '60';
     document.getElementById('emom-sub').textContent     = 'Dans la minute, effectuez les exercices prévus';
     document.getElementById('emom-next').textContent    = '';
-    document.getElementById('emom-bar').style.width     = '100%';
     document.getElementById('emom-cur').textContent     = '0';
     document.getElementById('emom-tot').textContent     = tot;
     document.getElementById('emom-sec-val').textContent = '60';
@@ -1253,8 +1241,9 @@ function pyramideStart() {
     document.getElementById('btn-pyr-pause').disabled=false;
     pyrInterval=setInterval(function() {
         pyrSec--;
-        if (pyrSec<=3&&pyrSec>0) { bipCountdown(); setPhaseStyle(document.getElementById('pyramide-display'),'countdown'); document.getElementById('pyramide-label').textContent=pyrSec+'...'; document.getElementById('pyramide-time').textContent=pyrSec; }
-        else if (pyrSec<=0) { pyrIdx++; if(pyrIdx>=pyrSeq.length){pyrFinish();}else{pyrAdvance();} }
+        if (pyrSec<=3&&pyrSec>0) { bipCountdown(); document.getElementById('pyramide-time').textContent=pyrSec; }
+        else if (pyrSec===0) { document.getElementById('pyramide-time').textContent='0'; }
+        else if (pyrSec<0)   { pyrSec=0; pyrIdx++; if(pyrIdx>=pyrSeq.length){pyrFinish();}else{pyrAdvance();} }
         else { pyrRender(); }
     },1000);
 }
@@ -1276,7 +1265,6 @@ function pyrRender() {
     document.getElementById('pyr-cur').textContent=wd;
     var next=pyrSeq[pyrIdx+1];
     document.getElementById('pyramide-next').textContent=next?('Prochain : '+(next.phase==='travail'?'Travail':'Pause')):'🏁 Dernière phase !';
-    document.getElementById('pyramide-bar').style.width=((pyrSec/pyrTotalSec)*100)+'%';
 }
 
 function pyrFinish() {
@@ -1285,7 +1273,6 @@ function pyrFinish() {
     document.getElementById('pyramide-time').textContent='0';
     document.getElementById('pyramide-sub').textContent='Pyramide complétée !';
     document.getElementById('pyramide-next').textContent='';
-    document.getElementById('pyramide-bar').style.width='0%';
     setPhaseStyle(document.getElementById('pyramide-display'),'repos');
     bipFin();
     document.getElementById('btn-pyr-start').disabled=false;
@@ -1308,7 +1295,6 @@ function pyramideReset() {
     document.getElementById('pyramide-time').textContent=fmtSec(parseInt(document.getElementById('pyr-work').value)||30);
     document.getElementById('pyramide-sub').textContent='';
     document.getElementById('pyramide-next').textContent='';
-    document.getElementById('pyramide-bar').style.width='100%';
     document.getElementById('pyr-cur').textContent='0';
     document.getElementById('btn-pyr-start').disabled=false;
     document.getElementById('btn-pyr-pause').disabled=true;
@@ -1388,9 +1374,10 @@ function seqStart() {
     document.getElementById('btn-seq-pause').disabled=false;
     seqInterval=setInterval(function(){
         seqSec--;
-        if(seqSec<=3&&seqSec>0){bipCountdown();setPhaseStyle(document.getElementById('surmesure-display'),'countdown');document.getElementById('surmesure-label').textContent=seqSec+'...';document.getElementById('surmesure-time').textContent=seqSec;}
-        else if(seqSec<=0){
-            seqCur++;
+        if(seqSec<=3&&seqSec>0){ bipCountdown(); document.getElementById('surmesure-time').textContent=seqSec; }
+        else if(seqSec===0){ document.getElementById('surmesure-time').textContent='0'; }
+        else if(seqSec<0){
+            seqSec=0; seqCur++;
             if(seqCur>=seqItems.length){
                 if(seqRepCur<seqRepeat){seqRepCur++;seqCur=0;seqAdvance();}else{seqFinish();}
             } else {seqAdvance();}
@@ -1421,7 +1408,6 @@ function seqRender() {
     if(next){document.getElementById('surmesure-next').textContent='Prochain : '+(nxtLbl[next.type]||next.type)+' ('+fmtSec(next.sec)+')';}
     else if(seqRepCur<seqRepeat){document.getElementById('surmesure-next').textContent='Prochain : Répétition '+(seqRepCur+1)+' / '+seqRepeat;}
     else{document.getElementById('surmesure-next').textContent='🏁 Dernière phase !';}
-    document.getElementById('surmesure-bar').style.width=((seqSec/seqTotalSec)*100)+'%';
 }
 
 function seqFinish() {
@@ -1430,7 +1416,6 @@ function seqFinish() {
     document.getElementById('surmesure-time').textContent='0';
     document.getElementById('surmesure-sub').textContent='Séquence complétée !';
     document.getElementById('surmesure-next').textContent='';
-    document.getElementById('surmesure-bar').style.width='0%';
     setPhaseStyle(document.getElementById('surmesure-display'),'repos');
     bipFin();
     document.getElementById('btn-seq-start').disabled=false;
@@ -1453,7 +1438,6 @@ function seqReset() {
     document.getElementById('surmesure-time').textContent='--';
     document.getElementById('surmesure-sub').textContent='';
     document.getElementById('surmesure-next').textContent='';
-    document.getElementById('surmesure-bar').style.width='100%';
     document.getElementById('seq-cur').textContent='0';
     document.getElementById('seq-rep').textContent='0';
     document.getElementById('btn-seq-start').disabled=false;
