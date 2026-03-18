@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="images/2090184-cddc39_ico.png">
-    <title>Séance TABATA / PYRAMIDALE / HIIT</title>
+    <title>Créer ta séance</title>
     <link rel="stylesheet" href="style.css">
     <style>
         :root {
@@ -12,8 +12,6 @@
             --travail-bg2:   #e74c3c;
             --repos-bg:      #1a3a6b;
             --repos-bg2:     #2760ae;
-            --countdown-bg:  #d35400;
-            --countdown-bg2: #e67e22;
             --warmup-bg:     #1a5276;
             --warmup-bg2:    #2e86c1;
             --recup-bg:      #1a3a6b;
@@ -31,11 +29,8 @@
 
         /* ── Bandeau titre ── */
         .page-topbar {
-            background: #000;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #000; padding: 12px 20px;
+            display: flex; align-items: center; justify-content: center;
             border-bottom: 1px solid #888888;
         }
         .page-topbar h2 {
@@ -43,18 +38,35 @@
             letter-spacing: 0.12em; text-transform: uppercase;
             color: #888888; margin: 0; text-align: center;
         }
-        .btn-mute {
-            padding: 14px 18px; border: none; border-radius: 10px;
-            font-family: sans-serif; font-size: 0.92em; font-weight: 700;
-            letter-spacing: 0.06em; cursor: pointer;
-            transition: all 0.15s ease; text-transform: uppercase;
-            min-width: 85px; background: #2c3e50; color: #fff;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .btn-mute:hover  { background: #1a252f; }
-        .btn-mute.muted  { background: #c0392b; color: #fff; }
 
-        /* ── Modes ── */
+        /* ── Onglets séances ── */
+        .seance-tabs {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            background: #000; border-bottom: 1px solid #222;
+        }
+        .seance-tab {
+            flex: 0 0 auto; padding: 12px 16px;
+            background: none; border: none;
+            color: var(--text-dim); font-family: sans-serif;
+            font-size: 0.8em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            cursor: pointer; border-bottom: 3px solid transparent;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .seance-tab.active { color: #000; background: var(--accent); border-bottom-color: var(--accent); }
+        .seance-tab:hover  { color: #fff; background: #1a1a1a; }
+
+        /* ── Panels ── */
+        .seance-panel { display: none; }
+        .seance-panel.active { display: block; }
+
+        /* ══════════════════════════════════════
+           STYLES COMMUNS CONFIG + EXÉCUTION
+        ══════════════════════════════════════ */
+
+        .panel-inner { padding: 20px 16px; max-width: 540px; margin: 0 auto; }
+
+        /* Modes Préparer / En séance */
         .mode-tabs {
             display: flex; justify-content: center;
             background: #000; border-bottom: 1px solid #222;
@@ -66,22 +78,17 @@
             font-size: 0.85em; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.08em;
             cursor: pointer; border-bottom: 3px solid transparent;
-            transition: all 0.2s; white-space: nowrap;
+            transition: all 0.2s;
         }
         .mode-tab.active { color: #000; background: var(--accent); border-bottom-color: var(--accent); }
         .mode-tab:hover  { color: #fff; background: #1a1a1a; }
 
-        /* ── Panel config ── */
-        #panel-config { padding: 20px 16px; max-width: 540px; margin: 0 auto; }
-        #panel-seance { display: none; max-width: 540px; margin: 0 auto; }
-
+        /* Config */
         .config-title {
             font-size: 0.85em; font-weight: 800;
             text-transform: uppercase; letter-spacing: 0.1em;
             color: var(--accent); margin: 0 0 14px;
         }
-
-        /* ── Nom de la séance ── */
         .seance-name-wrap {
             background: #0f1b35; border-radius: 12px;
             padding: 16px; margin-bottom: 18px; border: 1px solid #1e3050;
@@ -94,19 +101,165 @@
         .seance-name-input:focus { outline: none; border-color: var(--accent); }
         .seance-name-input::placeholder { color: #555; font-weight: 400; }
 
-        /* ── Liste des phases ── */
-        .phases-list { list-style: none; padding: 0; margin: 0 0 12px; }
+        /* Stepper */
+        .stepper {
+            display: flex; align-items: center;
+            border-radius: 10px; overflow: hidden; border: 1px solid #2a3a5a;
+        }
+        .btn-step {
+            background: #1a2a4a; border: none; color: var(--accent);
+            font-size: 1.3em; font-weight: 700;
+            width: 42px; height: 42px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s; flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-step:hover { background: #243a5a; }
+        .config-val {
+            background: #0f1b35; border: none;
+            border-left: 1px solid #2a3a5a; border-right: 1px solid #2a3a5a;
+            color: #fff; width: 60px; height: 42px;
+            text-align: center; font-size: 1.1em; font-weight: 700;
+            -moz-appearance: textfield;
+        }
+        .config-val::-webkit-outer-spin-button,
+        .config-val::-webkit-inner-spin-button { -webkit-appearance: none; }
+        .config-val:focus { outline: none; background: #1a2a4a; color: var(--accent); }
 
+        .config-row {
+            display: flex; align-items: center;
+            gap: 10px; margin-bottom: 12px; flex-wrap: nowrap;
+        }
+        .config-row label { font-size: 0.85em; color: var(--text-dim); flex: 1; }
+
+        /* Groupes d'instructions */
+        .instru-wrap {
+            background: #0f1b35; border-radius: 12px;
+            padding: 16px; margin-bottom: 18px; border: 1px solid #1e3050;
+        }
+        .groupe-list  { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+        .groupe-row   { display: flex; align-items: flex-start; gap: 6px; }
+        .groupe-dot   {
+            width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+            margin-top: 12px; border: 2px solid rgba(255,255,255,0.3);
+        }
+        .groupe-textarea {
+            flex: 1; background: #1a2a4a; border: 1px solid #2a3a5a;
+            border-radius: 8px; color: #fff; padding: 9px 12px;
+            font-size: 0.9em; resize: none; box-sizing: border-box;
+            font-family: sans-serif; line-height: 1.4; min-height: 44px;
+        }
+        .groupe-textarea:focus { outline: none; border-color: var(--accent); }
+        .groupe-textarea::placeholder { color: #444; font-style: italic; }
+        .btn-del-groupe {
+            background: #c0392b; border: none; color: #fff;
+            border-radius: 6px; width: 28px; height: 28px; flex-shrink: 0;
+            cursor: pointer; font-size: 0.8em; margin-top: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn-add-exo {
+            background: none; border: 1px dashed #2a3a5a; border-radius: 6px;
+            color: var(--accent); font-size: 0.82em; padding: 6px 12px;
+            cursor: pointer; font-weight: 600;
+        }
+        .btn-add-exo:hover { background: #1a2a4a; }
+
+        /* Bouton lancer */
+        .btn-lancer {
+            width: 100%; padding: 16px; background: var(--accent);
+            border: none; border-radius: 12px; color: #000;
+            font-size: 1.1em; font-weight: 900; letter-spacing: 0.1em;
+            text-transform: uppercase; cursor: pointer;
+            transition: background 0.2s; margin-bottom: 10px;
+        }
+        .btn-lancer:hover { background: #a0c030; }
+        .btn-reset-config {
+            width: 100%; padding: 12px; background: none;
+            border: 1px solid #c0392b; border-radius: 10px; color: #e74c3c;
+            font-size: 0.9em; font-weight: 700; cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        /* ── Exécution ── */
+        .exec-header {
+            background: #000; padding: 12px 20px;
+            text-align: center; border-bottom: 1px solid #222;
+        }
+        .exec-header h3 {
+            margin: 0; font-size: 1em; font-weight: 900;
+            color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase;
+        }
+
+        .phase-display {
+            padding: 28px 20px 22px; text-align: center;
+            transition: background 0.4s ease; background: var(--card-bg);
+        }
+        .phase-display.phase-travail { background: linear-gradient(135deg, var(--travail-bg), var(--travail-bg2)); }
+        .phase-display.phase-repos   { background: linear-gradient(135deg, var(--repos-bg), var(--repos-bg2)); }
+        .phase-display.phase-warmup  { background: linear-gradient(135deg, var(--warmup-bg), var(--warmup-bg2)); }
+
+        .phase-label {
+            font-size: 1.3em; font-weight: 900; letter-spacing: 0.2em;
+            text-transform: uppercase; color: rgba(255,255,255,0.9);
+            margin-bottom: 4px; min-height: 1.5em;
+        }
+        .phase-time-big {
+            font-size: 5em; font-weight: 900; color: #fff;
+            line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin: 6px 0; font-variant-numeric: tabular-nums;
+        }
+        .phase-info {
+            font-size: 0.85em; color: rgba(255,255,255,0.7); margin-top: 4px;
+        }
+
+        /* Zone instructions exécution */
+        .instru-display { background: #e8e8e8; margin: 0; }
+        .instru-display:empty { display: none; }
+        .instru-line {
+            padding: 11px 20px; font-size: 1.2em; font-weight: 700;
+            line-height: 1.5; text-align: center; border-bottom: 1px solid #ddd;
+        }
+        .instru-line:last-child { border-bottom: none; }
+
+        /* Contrôles */
+        .exec-controls {
+            padding: 14px 16px; display: flex; gap: 10px;
+            justify-content: center; flex-wrap: wrap;
+            background: #0f0f1a; border-top: 1px solid #1a1a2e;
+        }
+        .btn-ctrl {
+            padding: 14px 18px; border: none; border-radius: 10px;
+            font-family: sans-serif; font-size: 0.92em; font-weight: 700;
+            letter-spacing: 0.06em; cursor: pointer;
+            transition: all 0.15s ease; text-transform: uppercase;
+            min-width: 80px; -webkit-tap-highlight-color: transparent;
+        }
+        .btn-ctrl:active   { transform: scale(0.96); }
+        .btn-ctrl:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-start  { background: var(--accent); color: #000; }
+        .btn-start:hover:not(:disabled)  { background: #a0c030; }
+        .btn-pause  { background: #e67e22; color: #fff; }
+        .btn-pause:hover:not(:disabled)  { background: #d35400; }
+        .btn-pause.btn-active { background: #c0392b; }
+        .btn-reset  { background: #2c3e50; color: #fff; }
+        .btn-reset:hover { background: #1a252f; }
+        .btn-edit   { background: #6c3483; color: #fff; }
+        .btn-edit:hover { background: #4a235a; }
+        .btn-mute   { background: #2c3e50; color: #fff; }
+        .btn-mute:hover  { background: #1a252f; }
+        .btn-mute.muted  { background: #c0392b; }
+
+        /* Phases list (TABATA/HIIT) */
+        .phases-list { list-style: none; padding: 0; margin: 0 0 12px; }
         .phase-item {
             background: #0f1b35; border-radius: 12px;
             padding: 14px; margin-bottom: 10px;
             border: 1px solid #1e3050; border-left: 5px solid #2a3a5a;
         }
-        .phase-item.type-travail      { border-left-color: #e74c3c; }
-        .phase-item.type-repos        { border-left-color: #2760ae; }
-        .phase-item.type-warmup       { border-left-color: #2e86c1; }
-        .phase-item.type-recup        { border-left-color: #9b59b6; }
-
+        .phase-item.type-travail { border-left-color: #e74c3c; }
+        .phase-item.type-repos   { border-left-color: #2760ae; }
+        .phase-item.type-warmup  { border-left-color: #2e86c1; }
+        .phase-item.type-recup   { border-left-color: #9b59b6; }
         .phase-top-row {
             display: flex; align-items: center;
             gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
@@ -116,52 +269,33 @@
             border-radius: 8px; color: #fff; padding: 8px 10px;
             font-size: 0.85em; flex: 1; min-width: 120px;
         }
-
-        /* Stepper dans phase */
         .phase-stepper {
             display: flex; align-items: center;
-            border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a;
-            flex-shrink: 0;
+            border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a; flex-shrink: 0;
         }
         .btn-step-sm {
             background: #1a2a4a; border: none; color: var(--accent);
             font-size: 1.2em; font-weight: 700;
             width: 36px; height: 36px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: background 0.15s;
             -webkit-tap-highlight-color: transparent;
         }
-        .btn-step-sm:hover { background: #243a5a; }
-        .phase-duration-input {
+        .phase-dur-input {
             background: #0f1b35; border: none;
             border-left: 1px solid #2a3a5a; border-right: 1px solid #2a3a5a;
             color: #fff; width: 52px; height: 36px;
             text-align: center; font-size: 1em; font-weight: 700;
             -moz-appearance: textfield;
         }
-        .phase-duration-input::-webkit-outer-spin-button,
-        .phase-duration-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-        .phase-duration-input:focus { outline: none; background: #1a2a4a; color: var(--accent); }
+        .phase-dur-input::-webkit-outer-spin-button,
+        .phase-dur-input::-webkit-inner-spin-button { -webkit-appearance: none; }
         .phase-sec-label { font-size: 0.78em; color: var(--text-dim); flex-shrink: 0; }
-
         .btn-del-phase {
             background: #c0392b; border: none; color: #fff;
             border-radius: 8px; width: 36px; height: 36px;
             cursor: pointer; font-size: 0.9em;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-
-        /* Champ commentaire */
-        .phase-comment {
-            width: 100%; background: #1a2a4a; border: 1px solid #2a3a5a;
-            border-radius: 8px; color: #fff; padding: 9px 12px;
-            font-size: 0.9em; resize: none; box-sizing: border-box;
-            font-family: sans-serif; line-height: 1.4; min-height: 60px;
-        }
-        .phase-comment:focus { outline: none; border-color: var(--accent); }
-        .phase-comment::placeholder { color: #444; font-style: italic; }
-
-        /* Bouton ajouter phase */
         .btn-add-phase {
             width: 100%; padding: 12px; background: #0f1b35;
             border: 1px dashed #2a3a5a; border-radius: 10px;
@@ -169,19 +303,13 @@
             transition: background 0.2s; font-weight: 700; margin-bottom: 16px;
         }
         .btn-add-phase:hover { background: #1a2a4a; }
-
-        /* Config répétition */
         .config-repeat {
             background: #0f1b35; border-radius: 12px;
             padding: 14px 16px; border: 1px solid #1e3050;
             display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-            flex-wrap: wrap;
         }
         .config-repeat label { font-size: 0.85em; color: var(--text-dim); flex: 1; }
-        .stepper-sm {
-            display: flex; align-items: center;
-            border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a;
-        }
+        .stepper-sm { display: flex; align-items: center; border-radius: 8px; overflow: hidden; border: 1px solid #2a3a5a; }
         .stepper-sm .btn-step-sm { width: 40px; height: 40px; }
         .stepper-sm input {
             background: #0f1b35; border: none;
@@ -193,124 +321,19 @@
         .stepper-sm input::-webkit-outer-spin-button,
         .stepper-sm input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-        /* Bouton lancer */
-        .btn-lancer {
-            width: 100%; padding: 16px; background: var(--accent);
-            border: none; border-radius: 12px; color: #000;
-            font-size: 1.1em; font-weight: 900; letter-spacing: 0.1em;
-            text-transform: uppercase; cursor: pointer;
-            transition: background 0.2s; margin-bottom: 20px;
-        }
-        .btn-lancer:hover { background: #a0c030; }
-
-        /* ══════════════════════════════
-           PANEL SÉANCE (exécution)
-        ══════════════════════════════ */
-        .seance-header {
-            background: #000; padding: 14px 20px;
-            text-align: center; border-bottom: 1px solid #222;
-        }
-        .seance-header h3 {
-            margin: 0; font-size: 1.1em; font-weight: 900;
-            color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase;
-        }
-
-        /* Affichage principal */
-        .phase-display {
-            border-radius: 0; padding: 30px 20px 24px;
-            text-align: center; transition: background 0.4s ease;
-            background: var(--card-bg);
-        }
-        .phase-display.phase-travail  { background: linear-gradient(135deg, var(--travail-bg), var(--travail-bg2)); }
-        .phase-display.phase-repos    { background: linear-gradient(135deg, var(--repos-bg), var(--repos-bg2)); }
-        .phase-display.phase-warmup   { background: linear-gradient(135deg, var(--warmup-bg), var(--warmup-bg2)); }
-        .phase-display.phase-recup    { background: linear-gradient(135deg, var(--recup-bg), var(--recup-bg2)); }
-        .phase-display.phase-countdown {
-            background: linear-gradient(135deg, var(--countdown-bg), var(--countdown-bg2));
-            animation: pulse-cd 0.5s ease infinite alternate;
-        }
-        @keyframes pulse-cd { from{transform:scale(1);} to{transform:scale(1.01);} }
-
-        .phase-label {
-            font-size: 1.3em; font-weight: 900;
-            letter-spacing: 0.2em; text-transform: uppercase;
-            color: rgba(255,255,255,0.9); margin-bottom: 4px; min-height: 1.5em;
-        }
-        .phase-time-big {
-            font-size: 5em; font-weight: 900; color: #fff;
-            line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            margin: 6px 0; font-variant-numeric: tabular-nums;
-        }
-        .phase-progress-info {
-            font-size: 0.85em; color: rgba(255,255,255,0.7); margin-top: 4px;
-        }
-        .progress-bar-wrap {
-            background: rgba(0,0,0,0.25); border-radius: 10px;
-            height: 8px; margin-top: 12px; overflow: hidden;
-        }
-        .progress-bar-fill {
-            height: 100%; border-radius: 10px;
-            background: rgba(255,255,255,0.8); transition: width 0.5s linear;
-        }
-
-        /* Commentaire de la phase en cours */
-        .phase-comment-display {
-            background: #e8e8e8; margin: 0;
-            padding: 16px 20px; font-size: 1.35em;
-            color: #111; line-height: 1.6; font-weight: 600;
-            min-height: 60px; text-align: center;
-            border-bottom: 1px solid #ccc;
-        }
-        .phase-comment-display:empty { display: none; }
-
-        /* Prochaine phase */
+        /* Next phase bar */
         .next-phase-bar {
             background: #0a0a1a; padding: 12px 20px;
             border-bottom: 1px solid #1a1a2e;
         }
-        .next-phase-label {
-            font-size: 0.78em; color: var(--text-dim);
-            text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;
-        }
-        .next-phase-info {
-            font-size: 0.92em; color: #ccc; font-weight: 600;
-        }
-        .next-phase-comment {
-            font-size: 0.82em; color: var(--text-dim);
-            font-style: italic; margin-top: 2px;
-        }
+        .next-phase-label { font-size: 0.78em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+        .next-phase-info  { font-size: 0.92em; color: #ccc; font-weight: 600; }
+        .next-phase-comment { font-size: 0.82em; color: var(--text-dim); font-style: italic; margin-top: 2px; }
 
-        /* Contrôles séance */
-        .seance-controls {
-            padding: 16px 20px;
-            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-            background: #0f0f1a; border-top: 1px solid #1a1a2e;
-        }
-
-        .btn-chrono {
-            padding: 14px 18px; border: none; border-radius: 10px;
-            font-family: sans-serif; font-size: 0.92em; font-weight: 700;
-            letter-spacing: 0.06em; cursor: pointer;
-            transition: all 0.15s ease; text-transform: uppercase; min-width: 85px;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .btn-chrono:active  { transform: scale(0.96); }
-        .btn-chrono:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-        .btn-start  { background: var(--accent); color: #000; }
-        .btn-start:hover:not(:disabled) { background: #a0c030; }
-        .btn-pause  { background: #e67e22; color: #fff; }
-        .btn-pause:hover:not(:disabled) { background: #d35400; }
-        .btn-pause.btn-active { background: #c0392b; }
-        .btn-reset  { background: #2c3e50; color: #fff; }
-        .btn-reset:hover { background: #1a252f; }
-        .btn-edit   { background: #6c3483; color: #fff; }
-        .btn-edit:hover { background: #4a235a; }
-
-        /* ── Responsive ── */
+        /* Responsive */
         @media (max-width: 480px) {
             .phase-time-big { font-size: 4em; }
-            .phase-top-row  { gap: 6px; }
-            .btn-chrono     { padding: 12px 12px; font-size: 0.85em; min-width: 72px; }
+            .btn-ctrl { padding: 12px 12px; font-size: 0.85em; min-width: 68px; }
         }
     </style>
 </head>
@@ -346,86 +369,288 @@
 </nav>
 
 <div class="page-topbar">
-    <h2>🎯 Séance TABATA / PYRAMIDALE / HIIT</h2>
+    <h2>🎯 Créer ta séance</h2>
 </div>
 
-<!-- Onglets Config / Séance -->
-<div class="mode-tabs">
-    <button class="mode-tab active" id="tab-config" onclick="showMode('config')">⚙️ Préparer</button>
-    <button class="mode-tab" id="tab-seance" onclick="showMode('seance')">▶ En séance</button>
+<div class="seance-tabs">
+    <button class="seance-tab active" onclick="showSeance('tabata', this)">🎯 TABATA / HIIT</button>
+    <button class="seance-tab" onclick="showSeance('fortime', this)">🏁 FOR TIME</button>
+    <button class="seance-tab" onclick="showSeance('amrap', this)">🔄 AMRAP</button>
+    <button class="seance-tab" onclick="showSeance('emom', this)">🔁 EMOM</button>
 </div>
 
-<!-- ══════════════════════════════
-     PANEL CONFIG
-══════════════════════════════ -->
-<div id="panel-config">
+<!-- ══════════════════════════════════════
+     PANEL TABATA / PYRAMIDALE / HIIT
+══════════════════════════════════════ -->
+<div class="seance-panel active" id="sp-tabata">
 
-    <!-- Nom de la séance -->
-    <div class="seance-name-wrap">
-        <p class="config-title">📋 Nom de la séance</p>
-        <input type="text" class="seance-name-input" id="seance-name"
-               placeholder="Ex : WOD CrossFit Lundi matin..." maxlength="60">
+    <div class="mode-tabs" id="mt-tabata">
+        <button class="mode-tab active" id="mtt-config" onclick="showMode('tabata','config')">⚙️ Préparer</button>
+        <button class="mode-tab" id="mtt-exec"   onclick="showMode('tabata','exec')">▶ En séance</button>
     </div>
 
-    <!-- Liste des phases -->
-    <p class="config-title">⚡ Phases de la séance</p>
-    <ul class="phases-list" id="phases-list"></ul>
-    <div style="display:flex; gap:10px; margin-bottom:16px;">
-        <button class="btn-add-phase" style="margin-bottom:0" onclick="addPhase()">+ Ajouter une phase</button>
-        <button class="btn-add-phase" style="margin-bottom:0; color:#e74c3c; border-color:#c0392b; min-width:120px;" onclick="resetConfig()">🗑 Tout effacer</button>
-    </div>
-
-    <!-- Répétitions -->
-    <div class="config-repeat">
-        <label>Répéter la séquence</label>
-        <div class="stepper-sm">
-            <button class="btn-step-sm" onclick="stepRepeat(-1)">−</button>
-            <input type="number" id="repeat-count" value="1" min="1" max="20">
-            <button class="btn-step-sm" onclick="stepRepeat(1)">+</button>
+    <!-- Config TABATA -->
+    <div id="cfg-tabata" class="panel-inner">
+        <div class="seance-name-wrap">
+            <p class="config-title">📋 Nom de la séance</p>
+            <input type="text" class="seance-name-input" id="tab-name" placeholder="Ex : WOD Tabata Lundi..." maxlength="60">
         </div>
-        <span style="font-size:0.85em; color:var(--text-dim);">fois</span>
+
+        <p class="config-title">⚡ Phases de la séance</p>
+        <ul class="phases-list" id="tab-phases-list"></ul>
+        <button class="btn-add-phase" onclick="tabAddPhase()">+ Ajouter une phase</button>
+
+        <div class="config-repeat">
+            <label>Répéter la séquence</label>
+            <div class="stepper-sm">
+                <button class="btn-step-sm" onclick="stepVal('tab-repeat',-1)">−</button>
+                <input type="number" id="tab-repeat" value="1" min="1" max="20">
+                <button class="btn-step-sm" onclick="stepVal('tab-repeat',1)">+</button>
+            </div>
+            <span style="font-size:0.85em;color:var(--text-dim)">fois</span>
+        </div>
+
+        <button class="btn-lancer" onclick="tabLancer()">▶ Lancer la séance</button>
+        <button class="btn-reset-config" onclick="tabResetConfig()">🗑 Tout effacer</button>
     </div>
 
-    <!-- Bouton lancer -->
-    <button class="btn-lancer" onclick="lancerSeance()">▶ Lancer la séance</button>
-
+    <!-- Exec TABATA -->
+    <div id="exe-tabata" style="display:none">
+        <div class="exec-header"><h3 id="tab-exec-title">Séance</h3></div>
+        <div class="phase-display" id="tab-exec-display">
+            <div class="phase-label" id="tab-exec-label">PRÊT</div>
+            <div class="phase-time-big" id="tab-exec-time">--</div>
+            <div class="phase-info" id="tab-exec-info"></div>
+        </div>
+        <div class="instru-display" id="tab-exec-instru"></div>
+        <div class="next-phase-bar" id="tab-next-bar">
+            <div class="next-phase-label">Phase suivante</div>
+            <div class="next-phase-info" id="tab-next-info">—</div>
+            <div class="next-phase-comment" id="tab-next-comment"></div>
+        </div>
+        <div class="exec-controls">
+            <button class="btn-ctrl btn-start" id="tab-btn-start" onclick="tabExecStart()">▶ Start</button>
+            <button class="btn-ctrl btn-pause" id="tab-btn-pause" onclick="tabExecPause()" disabled>⏸ Pause</button>
+            <button class="btn-ctrl btn-reset" onclick="tabExecReset()">↺ Reset</button>
+            <button class="btn-ctrl btn-edit"  onclick="showMode('tabata','config')">✏️ Éditer</button>
+            <button class="btn-ctrl btn-mute"  id="tab-btn-mute" onclick="toggleMute('tab')">🔔 Son</button>
+        </div>
+    </div>
 </div>
 
-<!-- ══════════════════════════════
-     PANEL SÉANCE (exécution)
-══════════════════════════════ -->
-<div id="panel-seance">
+<!-- ══════════════════════════════════════
+     PANEL AMRAP
+══════════════════════════════════════ -->
+<div class="seance-panel" id="sp-amrap">
 
-    <div class="seance-header">
-        <h3 id="seance-title-display">Ma Séance</h3>
+    <div class="mode-tabs" id="mt-amrap">
+        <button class="mode-tab active" id="mta-config" onclick="showMode('amrap','config')">⚙️ Préparer</button>
+        <button class="mode-tab" id="mta-exec"   onclick="showMode('amrap','exec')">▶ En séance</button>
     </div>
 
-    <!-- Affichage phase en cours -->
-    <div class="phase-display" id="exec-display">
-        <div class="phase-label" id="exec-label">PRÊT</div>
-        <div class="phase-time-big" id="exec-time">--</div>
-        <div class="phase-progress-info" id="exec-info"></div>
+    <!-- Config AMRAP -->
+    <div id="cfg-amrap" class="panel-inner">
+        <div class="seance-name-wrap">
+            <p class="config-title">📋 Nom de la séance</p>
+            <input type="text" class="seance-name-input" id="amrap-name" placeholder="Ex : AMRAP 20 min..." maxlength="60">
+        </div>
+
+        <div class="instru-wrap">
+            <p class="config-title">⏱ Durée</p>
+            <div class="config-row">
+                <label>Minutes</label>
+                <div class="stepper">
+                    <button class="btn-step" onclick="stepVal('amrap-dur-min',-1)">−</button>
+                    <input type="number" class="config-val" id="amrap-dur-min" value="20" min="0" max="99">
+                    <button class="btn-step" onclick="stepVal('amrap-dur-min',1)">+</button>
+                </div>
+            </div>
+            <div class="config-row">
+                <label>Secondes</label>
+                <div class="stepper">
+                    <button class="btn-step" onclick="stepVal('amrap-dur-sec',-5)">−</button>
+                    <input type="number" class="config-val" id="amrap-dur-sec" value="0" min="0" max="55" step="5">
+                    <button class="btn-step" onclick="stepVal('amrap-dur-sec',5)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="instru-wrap">
+            <p class="config-title">📋 Instructions</p>
+            <div class="groupe-list" id="amrap-groupe-list"></div>
+            <button class="btn-add-exo" onclick="amrapAddExo()">+ Ajouter un exo</button>
+        </div>
+
+        <button class="btn-lancer" onclick="amrapLancer()">▶ Lancer la séance</button>
+        <button class="btn-reset-config" onclick="amrapResetConfig()">🗑 Tout effacer</button>
     </div>
 
-    <!-- Commentaire phase en cours -->
-    <div class="phase-comment-display" id="exec-comment"></div>
+    <!-- Exec AMRAP -->
+    <div id="exe-amrap" style="display:none">
+        <div class="exec-header"><h3 id="amrap-exec-title">Séance AMRAP</h3></div>
+        <div class="phase-display phase-travail" id="amrap-exec-display">
+            <div class="phase-label" id="amrap-exec-label">PRÊT</div>
+            <div class="phase-time-big" id="amrap-exec-time">20:00</div>
+            <div class="phase-info" id="amrap-exec-info"></div>
+        </div>
+        <div class="instru-display" id="amrap-exec-instru"></div>
 
-    <!-- Prochaine phase -->
-    <div class="next-phase-bar" id="next-phase-bar">
-        <div class="next-phase-label">Phase suivante</div>
-        <div class="next-phase-info" id="next-phase-info">—</div>
-        <div class="next-phase-comment" id="next-phase-comment"></div>
+        <!-- Compteurs rounds / reps -->
+        <div class="score-counters" style="background:#0f1b35; border-radius:0; padding:14px 20px; border-top:1px solid #1e3050;">
+            <div class="score-counter-row" style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;">
+                <span style="font-size:1em; font-weight:700; color:var(--text-light); min-width:80px;">🔁 ROUNDS</span>
+                <div class="stepper" style="flex-shrink:0;">
+                    <button class="btn-step" onclick="scoreStep('amrap-rounds',-1)">−</button>
+                    <input type="number" class="config-val" id="amrap-rounds" value="0" min="0" max="999" readonly style="width:70px; font-size:1.3em; font-weight:900; color:var(--accent);">
+                    <button class="btn-step" onclick="scoreStep('amrap-rounds',1)">+</button>
+                </div>
+            </div>
+            <div class="score-counter-row" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <span style="font-size:1em; font-weight:700; color:var(--text-light); min-width:80px;">💪 REPS</span>
+                <div class="stepper" style="flex-shrink:0;">
+                    <button class="btn-step" onclick="scoreStep('amrap-reps',-1)">−</button>
+                    <input type="number" class="config-val" id="amrap-reps" value="0" min="0" max="9999" readonly style="width:70px; font-size:1.3em; font-weight:900; color:var(--accent);">
+                    <button class="btn-step" onclick="scoreStep('amrap-reps',1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="exec-controls">
+            <button class="btn-ctrl btn-start" id="amrap-btn-start" onclick="amrapExecStart()">▶ Start</button>
+            <button class="btn-ctrl btn-pause" id="amrap-btn-pause" onclick="amrapExecPause()" disabled>⏸ Pause</button>
+            <button class="btn-ctrl btn-reset" onclick="amrapExecReset()">↺ Reset</button>
+            <button class="btn-ctrl btn-edit"  onclick="showMode('amrap','config')">✏️ Éditer</button>
+            <button class="btn-ctrl btn-mute"  id="amrap-btn-mute" onclick="toggleMute('amrap')">🔔 Son</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL EMOM
+══════════════════════════════════════ -->
+<div class="seance-panel" id="sp-emom">
+
+    <div class="mode-tabs" id="mt-emom">
+        <button class="mode-tab active" id="mte-config" onclick="showMode('emom','config')">⚙️ Préparer</button>
+        <button class="mode-tab" id="mte-exec"   onclick="showMode('emom','exec')">▶ En séance</button>
     </div>
 
-    <!-- Contrôles -->
-    <div class="seance-controls">
-        <button class="btn-chrono btn-start" id="btn-exec-start" onclick="execStart()">▶ Start</button>
-        <button class="btn-chrono btn-pause" id="btn-exec-pause" onclick="execPause()" disabled>⏸ Pause</button>
-        <button class="btn-chrono btn-reset" onclick="execReset()">↺ Reset</button>
-        <button class="btn-chrono btn-edit"  onclick="showMode('config')">✏️ Éditer</button>
-        <button class="btn-chrono btn-mute" id="btn-mute-exec" onclick="toggleMute()">🔔 Son</button>
+    <!-- Config EMOM -->
+    <div id="cfg-emom" class="panel-inner">
+        <div class="seance-name-wrap">
+            <p class="config-title">📋 Nom de la séance</p>
+            <input type="text" class="seance-name-input" id="emom-name" placeholder="Ex : Chelsea EMOM 30 min..." maxlength="60">
+        </div>
+
+        <div class="instru-wrap">
+            <p class="config-title">⏱ Durée totale</p>
+            <div class="config-row">
+                <label>Minutes</label>
+                <div class="stepper">
+                    <button class="btn-step" onclick="stepVal('emom-dur',-1)">−</button>
+                    <input type="number" class="config-val" id="emom-dur" value="10" min="1" max="99">
+                    <button class="btn-step" onclick="stepVal('emom-dur',1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="instru-wrap">
+            <p class="config-title">📋 Instructions (répétées chaque minute)</p>
+            <div class="groupe-list" id="emom-groupe-list"></div>
+            <button class="btn-add-exo" onclick="emomAddExo()">+ Ajouter un exo</button>
+        </div>
+
+        <button class="btn-lancer" onclick="emomLancer()">▶ Lancer la séance</button>
+        <button class="btn-reset-config" onclick="emomResetConfig()">🗑 Tout effacer</button>
     </div>
 
+    <!-- Exec EMOM -->
+    <div id="exe-emom" style="display:none">
+        <div class="exec-header"><h3 id="emom-exec-title">Séance EMOM</h3></div>
+        <div class="phase-display phase-travail" id="emom-exec-display">
+            <div class="phase-label" id="emom-exec-label">PRÊT</div>
+            <div class="phase-time-big" id="emom-exec-time">60</div>
+            <div class="phase-info" id="emom-exec-info"></div>
+        </div>
+        <div class="instru-display" id="emom-exec-instru"></div>
+        <div class="exec-controls">
+            <button class="btn-ctrl btn-start" id="emom-btn-start" onclick="emomExecStart()">▶ Start</button>
+            <button class="btn-ctrl btn-pause" id="emom-btn-pause" onclick="emomExecPause()" disabled>⏸ Pause</button>
+            <button class="btn-ctrl btn-reset" onclick="emomExecReset()">↺ Reset</button>
+            <button class="btn-ctrl btn-edit"  onclick="showMode('emom','config')">✏️ Éditer</button>
+            <button class="btn-ctrl btn-mute"  id="emom-btn-mute" onclick="toggleMute('emom')">🔔 Son</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL FOR TIME
+══════════════════════════════════════ -->
+<div class="seance-panel" id="sp-fortime">
+
+    <div class="mode-tabs" id="mt-fortime">
+        <button class="mode-tab active" id="mtf-config" onclick="showMode('fortime','config')">⚙️ Préparer</button>
+        <button class="mode-tab" id="mtf-exec"   onclick="showMode('fortime','exec')">▶ En séance</button>
+    </div>
+
+    <!-- Config FOR TIME -->
+    <div id="cfg-fortime" class="panel-inner">
+        <div class="seance-name-wrap">
+            <p class="config-title">📋 Nom de la séance</p>
+            <input type="text" class="seance-name-input" id="ft-name" placeholder="Ex : Fran, 21-15-9..." maxlength="60">
+        </div>
+
+        <div class="instru-wrap">
+            <p class="config-title">📋 Instructions</p>
+            <p style="font-size:0.82em; color:var(--text-dim); font-style:italic; margin:0 0 12px;">
+                💡 Lance le chrono et réalise les exercices dans l'ordre le plus vite possible
+            </p>
+            <div class="groupe-list" id="ft-groupe-list"></div>
+            <button class="btn-add-exo" onclick="ftAddExo()">+ Ajouter un exo</button>
+        </div>
+
+        <button class="btn-lancer" onclick="ftLancer()">▶ Lancer la séance</button>
+        <button class="btn-reset-config" onclick="ftResetConfig()">🗑 Tout effacer</button>
+    </div>
+
+    <!-- Exec FOR TIME -->
+    <div id="exe-fortime" style="display:none">
+        <div class="exec-header"><h3 id="ft-exec-title">Séance FOR TIME</h3></div>
+        <div class="phase-display phase-travail" id="ft-exec-display">
+            <div class="phase-label" id="ft-exec-label">PRÊT</div>
+            <div class="phase-time-big" id="ft-exec-time">00:00:00</div>
+            <div class="phase-info">min : sec : centièmes</div>
+        </div>
+        <div class="instru-display" id="ft-exec-instru"></div>
+
+        <!-- Compteurs rounds / reps -->
+        <div style="background:#0f1b35; padding:14px 20px; border-top:1px solid #1e3050;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;">
+                <span style="font-size:1em; font-weight:700; color:var(--text-light); min-width:80px;">🔁 ROUNDS</span>
+                <div class="stepper" style="flex-shrink:0;">
+                    <button class="btn-step" onclick="scoreStep('ft-rounds',-1)">−</button>
+                    <input type="number" class="config-val" id="ft-rounds" value="0" min="0" max="999" readonly style="width:70px; font-size:1.3em; font-weight:900; color:var(--accent);">
+                    <button class="btn-step" onclick="scoreStep('ft-rounds',1)">+</button>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <span style="font-size:1em; font-weight:700; color:var(--text-light); min-width:80px;">💪 REPS</span>
+                <div class="stepper" style="flex-shrink:0;">
+                    <button class="btn-step" onclick="scoreStep('ft-reps',-1)">−</button>
+                    <input type="number" class="config-val" id="ft-reps" value="0" min="0" max="9999" readonly style="width:70px; font-size:1.3em; font-weight:900; color:var(--accent);">
+                    <button class="btn-step" onclick="scoreStep('ft-reps',1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="exec-controls">
+            <button class="btn-ctrl btn-start" id="ft-btn-start" onclick="ftExecStart()">▶ Start</button>
+            <button class="btn-ctrl btn-pause" id="ft-btn-pause" onclick="ftExecPause()" disabled>⏸ Pause</button>
+            <button class="btn-ctrl btn-reset" onclick="ftExecReset()">↺ Reset</button>
+            <button class="btn-ctrl btn-edit"  onclick="showMode('fortime','config')">✏️ Éditer</button>
+            <button class="btn-ctrl btn-mute"  id="ft-btn-mute" onclick="toggleMute('ft')">🔔 Son</button>
+        </div>
+    </div>
 </div>
 
 <button id="backToTop" title="Retour en haut">↑</button>
@@ -436,350 +661,657 @@
 ══════════════════════════════════════ */
 var isMuted = false;
 var audioCtx = null;
-
 function getAudioCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     return audioCtx;
 }
-function playBeep(freq, dur, vol) {
+function playBeep(freq,dur,vol) {
     if (isMuted) return;
     try {
-        var ctx = getAudioCtx();
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
+        var ctx=getAudioCtx(), osc=ctx.createOscillator(), gain=ctx.createGain();
         osc.connect(gain); gain.connect(ctx.destination);
-        osc.frequency.value = freq; osc.type = 'sine';
-        gain.gain.setValueAtTime(vol || 0.4, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur);
+        osc.frequency.value=freq; osc.type='sine';
+        gain.gain.setValueAtTime(vol||0.4,ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+dur);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime+dur);
     } catch(e) {}
 }
 function bipTravail()   { playBeep(880,0.12,0.5); setTimeout(function(){playBeep(880,0.12,0.5);},180); }
 function bipPause()     { playBeep(440,0.4,0.4); }
 function bipCountdown() { playBeep(660,0.1,0.3); }
-function bipFin()       {
-    playBeep(1046,0.15,0.5);
-    setTimeout(function(){playBeep(1046,0.15,0.5);},200);
-    setTimeout(function(){playBeep(1046,0.3,0.5);},400);
-}
-function toggleMute() {
+function bipFin()       { playBeep(1046,0.15,0.5); setTimeout(function(){playBeep(1046,0.15,0.5);},200); setTimeout(function(){playBeep(1046,0.3,0.5);},400); }
+
+function toggleMute(prefix) {
     isMuted = !isMuted;
-    var btn = document.getElementById('btn-mute-exec');
-    if (btn) {
-        btn.textContent = isMuted ? '🔕 Son' : '🔔 Son';
-        btn.classList.toggle('muted', isMuted);
-    }
+    ['tab','amrap','emom','ft'].forEach(function(p) {
+        var btn = document.getElementById(p+'-btn-mute');
+        if (btn) { btn.textContent = isMuted ? '🔕 Son' : '🔔 Son'; btn.classList.toggle('muted', isMuted); }
+    });
 }
 
 /* ══════════════════════════════════════
    UTILITAIRES
 ══════════════════════════════════════ */
-function pad(n) { return n < 10 ? '0' + n : '' + n; }
-function fmtSec(s) {
-    if (s >= 60) return pad(Math.floor(s/60)) + ':' + pad(s % 60);
-    return '' + s;
-}
+function pad(n) { return n < 10 ? '0'+n : ''+n; }
+function fmtSec(s) { return s>=60 ? pad(Math.floor(s/60))+':'+pad(s%60) : ''+s; }
+
 function setPhaseStyle(el, phase) {
-    el.classList.remove('phase-travail','phase-repos','phase-warmup','phase-recup','phase-countdown');
-    if (phase) el.classList.add('phase-' + phase);
+    el.classList.remove('phase-travail','phase-repos','phase-warmup','phase-recup');
+    if (phase) el.classList.add('phase-'+phase);
 }
 function setBtnActive(id, active) {
-    var btn = document.getElementById(id);
-    if (active) btn.classList.add('btn-active');
-    else btn.classList.remove('btn-active');
+    var btn=document.getElementById(id);
+    if (active) btn.classList.add('btn-active'); else btn.classList.remove('btn-active');
 }
 
-/* ══════════════════════════════════════
-   NAVIGATION MODES
-══════════════════════════════════════ */
-function showMode(mode) {
-    var isConfig = mode === 'config';
-    document.getElementById('panel-config').style.display = isConfig ? 'block' : 'none';
-    document.getElementById('panel-seance').style.display = isConfig ? 'none'  : 'block';
-    document.getElementById('tab-config').classList.toggle('active', isConfig);
-    document.getElementById('tab-seance').classList.toggle('active', !isConfig);
+function stepVal(id, delta) {
+    var input=document.getElementById(id);
+    var val=parseInt(input.value)||0;
+    var min=parseInt(input.min)||0;
+    var max=parseInt(input.max)||9999;
+    input.value=Math.max(min,Math.min(max,val+delta));
 }
 
-/* ══════════════════════════════════════
-   GESTION DES PHASES (config)
-══════════════════════════════════════ */
-var phaseCounter = 0;
-
-var phaseTypes = {
-    travail: { label: '🔥 Travail',  style: 'travail', bip: 'travail' },
-    repos:   { label: '😮‍💨 Pause',   style: 'repos',   bip: 'pause'   },
-    warmup:  { label: '🏃 Warm-up',  style: 'warmup',  bip: 'travail' },
-    recup:   { label: '🧘 Récup',    style: 'recup',   bip: 'pause'   }
-};
-
-function addPhase(typeVal, durVal, commentVal) {
-    var list = document.getElementById('phases-list');
-    phaseCounter++;
-    var id = 'ph' + phaseCounter;
-    var li = document.createElement('li');
-    li.className = 'phase-item type-' + (typeVal || 'travail');
-    li.id = id;
-
-    li.innerHTML =
-        '<div class="phase-top-row">' +
-        '<select class="phase-select" onchange="updatePhaseStyle(this)">' +
-        '<option value="travail"' + (typeVal==='travail'||!typeVal?' selected':'') + '>🔥 Travail</option>' +
-        '<option value="repos"'   + (typeVal==='repos'  ?' selected':'') + '>😮‍💨 Pause</option>'  +
-        '<option value="warmup"'  + (typeVal==='warmup' ?' selected':'') + '>🏃 Warm-up</option>' +
-        '<option value="recup"'   + (typeVal==='recup'  ?' selected':'') + '>🧘 Récup</option>'   +
-        '</select>' +
-        '<div class="phase-stepper">' +
-        '<button class="btn-step-sm" onclick="stepPhase(\'' + id + '\',-5)">−</button>' +
-        '<input type="number" class="phase-duration-input" value="' + (durVal||30) + '" min="1" max="3600">' +
-        '<button class="btn-step-sm" onclick="stepPhase(\'' + id + '\',5)">+</button>' +
-        '</div>' +
-        '<span class="phase-sec-label">sec</span>' +
-        '<button class="btn-del-phase" onclick="delPhase(\'' + id + '\')">✕</button>' +
-        '</div>' +
-        '<textarea class="phase-comment" rows="2" ' +
-        'placeholder="Instructions pour cette phase... (facultatif)">' +
-        (commentVal || '') + '</textarea>';
-
-    list.appendChild(li);
-}
-
-function updatePhaseStyle(sel) {
-    var li = sel.closest('.phase-item');
-    li.className = 'phase-item type-' + sel.value;
-}
-
-function stepPhase(id, delta) {
-    var li = document.getElementById(id);
-    var input = li.querySelector('.phase-duration-input');
-    var val = parseInt(input.value) || 30;
-    var absDelta = Math.abs(delta);
+function stepPhaseVal(id, delta) {
+    var input=document.getElementById(id);
+    var val=parseInt(input.value)||30;
+    var absDelta=Math.abs(delta);
     var newVal;
-    if (absDelta > 1 && absDelta % 5 === 0) {
-        newVal = delta > 0 ? Math.ceil((val+1)/absDelta)*absDelta : Math.floor((val-1)/absDelta)*absDelta;
-    } else {
-        newVal = val + delta;
-    }
-    input.value = Math.max(1, Math.min(3600, newVal));
+    if (absDelta>1&&absDelta%5===0) {
+        newVal=delta>0?Math.ceil((val+1)/absDelta)*absDelta:Math.floor((val-1)/absDelta)*absDelta;
+    } else { newVal=val+delta; }
+    input.value=Math.max(1,Math.min(3600,newVal));
 }
 
-function delPhase(id) {
-    var el = document.getElementById(id);
-    if (el) el.remove();
+/* Couleurs groupes */
+var gColors = [
+    {name:'Noir',   text:'#111111', dot:'#333333'},
+    {name:'Bleu',   text:'#1a5276', dot:'#2760ae'},
+    {name:'Vert',   text:'#1a6b3c', dot:'#27ae60'},
+    {name:'Orange', text:'#d35400', dot:'#e67e22'},
+    {name:'Violet', text:'#6c3483', dot:'#9b59b6'},
+    {name:'Rouge',  text:'#c0392b', dot:'#e74c3c'},
+];
+var gCounter = 0;
+
+function addGroupe(listId, textVal, colorIdx) {
+    var gl=document.getElementById(listId);
+    if (!gl) return;
+    var existing=gl.querySelectorAll('.groupe-row').length;
+    var ci=(colorIdx!==undefined)?colorIdx:existing%gColors.length;
+    var color=gColors[ci];
+    gCounter++;
+    var gid='g'+gCounter;
+    var row=document.createElement('div');
+    row.className='groupe-row'; row.id=gid; row.dataset.colorIdx=ci;
+    row.innerHTML=
+        '<div class="groupe-dot" style="background:'+color.dot+'" title="'+color.name+'"></div>'+
+        '<textarea class="groupe-textarea" rows="2" placeholder="'+color.name+' — instructions...">'+
+        (textVal||'')+'</textarea>'+
+        '<button class="btn-del-groupe" onclick="delGroupe(\''+gid+'\')">✕</button>';
+    gl.appendChild(row);
 }
 
-function resetConfig() {
-    if (!confirm('Effacer toutes les phases ?')) return;
-    document.getElementById('phases-list').innerHTML = '';
-    document.getElementById('seance-name').value = '';
-    document.getElementById('repeat-count').value = 1;
+function delGroupe(gid) {
+    var el=document.getElementById(gid); if(el) el.remove();
 }
 
-function stepRepeat(delta) {
-    var input = document.getElementById('repeat-count');
-    input.value = Math.max(1, Math.min(20, (parseInt(input.value)||1) + delta));
-}
-
-/* ══════════════════════════════════════
-   LANCER LA SÉANCE
-══════════════════════════════════════ */
-function lancerSeance() {
-    // Construire la liste des phases
-    var items = document.querySelectorAll('#phases-list .phase-item');
-    if (items.length === 0) { alert('Ajoutez au moins une phase !'); return; }
-
-    execPhases = [];
-    items.forEach(function(li) {
-        var type    = li.querySelector('.phase-select').value;
-        var sec     = parseInt(li.querySelector('.phase-duration-input').value) || 30;
-        var comment = li.querySelector('.phase-comment').value.trim();
-        execPhases.push({ type: type, sec: sec, comment: comment });
+function getGroupes(listId) {
+    var res=[];
+    document.querySelectorAll('#'+listId+' .groupe-row').forEach(function(row) {
+        var txt=row.querySelector('textarea').value.trim();
+        if (txt) res.push({text:txt, colorIdx:parseInt(row.dataset.colorIdx)||0});
     });
+    return res;
+}
 
-    execRepeat    = parseInt(document.getElementById('repeat-count').value) || 1;
-    execRepCur    = 1;
-    execCur       = 0;
-    execSec       = 0;
-    execRunning   = false;
-    clearInterval(execInterval);
+function renderInstru(elId, groupes) {
+    var el=document.getElementById(elId);
+    if (groupes && groupes.length>0) {
+        // Police adaptative selon le nombre d'instructions
+        var n = groupes.length;
+        var fontSize = n <= 4 ? '1.2em' : n <= 7 ? '1em' : '0.85em';
+        el.innerHTML=groupes.map(function(g) {
+            var c=gColors[g.colorIdx]||gColors[0];
+            return '<div class="instru-line" style="color:'+c.text+';font-size:'+fontSize+'">'+g.text.replace(/\n/g,'<br>')+'</div>';
+        }).join('');
+        el.style.display='block';
+    } else {
+        el.innerHTML=''; el.style.display='none';
+    }
+}
 
-    // Afficher le nom
-    var nom = document.getElementById('seance-name').value.trim() || 'Ma Séance';
-    document.getElementById('seance-title-display').textContent = nom;
+/* Navigation */
+function showSeance(name, btn) {
+    document.querySelectorAll('.seance-panel').forEach(function(p){p.classList.remove('active');});
+    document.querySelectorAll('.seance-tab').forEach(function(t){t.classList.remove('active');});
+    document.getElementById('sp-'+name).classList.add('active');
+    btn.classList.add('active');
+}
 
-    // Reset affichage
-    document.getElementById('exec-label').textContent  = 'PRÊT';
-    document.getElementById('exec-time').textContent   = fmtSec(execPhases[0].sec);
-    document.getElementById('exec-info').textContent   = '';
-    document.getElementById('exec-comment').textContent = execPhases[0].comment || '';
-    setPhaseStyle(document.getElementById('exec-display'), '');
-    renderNextPhase(0);
-
-    document.getElementById('btn-exec-start').disabled = false;
-    document.getElementById('btn-exec-pause').disabled = true;
-    setBtnActive('btn-exec-pause', false);
-
-    showMode('seance');
+function showMode(seance, mode) {
+    var isConfig = mode==='config';
+    document.getElementById('cfg-'+seance).style.display = isConfig?'block':'none';
+    document.getElementById('exe-'+seance).style.display = isConfig?'none':'block';
+    document.getElementById('mt'+seance.charAt(0)+'-config').classList.toggle('active', isConfig);
+    document.getElementById('mt'+seance.charAt(0)+'-exec').classList.toggle('active', !isConfig);
 }
 
 /* ══════════════════════════════════════
-   EXÉCUTION DE LA SÉANCE
+   TABATA / HIIT — CONFIG
 ══════════════════════════════════════ */
-var execInterval = null;
-var execRunning  = false;
-var execPhases   = [];
-var execCur      = 0;
-var execSec      = 0;
-var execTotalSec = 0;
-var execRepeat   = 1;
-var execRepCur   = 1;
+var tabPhaseCounter=0;
 
-function execStart() {
-    if (execRunning || execPhases.length === 0) return;
-    if (execSec === 0) {
-        execSec      = execPhases[execCur].sec;
-        execTotalSec = execSec;
-        execBip(execPhases[execCur].type);
-        execRender();
-    }
-    execRunning = true;
-    setBtnActive('btn-exec-pause', false);
-    document.getElementById('btn-exec-start').disabled = true;
-    document.getElementById('btn-exec-pause').disabled = false;
-
-    execInterval = setInterval(function() {
-        execSec--;
-        if (execSec <= 3 && execSec > 0) {
-            bipCountdown();
-            document.getElementById('exec-time').textContent = execSec;
-        } else if (execSec === 0) {
-            document.getElementById('exec-time').textContent = '0';
-        } else if (execSec < 0) {
-            execSec = 0; execNext();
-        } else {
-            execRender();
-        }
-    }, 1000);
+function tabAddPhase(typeVal, durVal, groupes) {
+    var list=document.getElementById('tab-phases-list');
+    tabPhaseCounter++;
+    var id='tp'+tabPhaseCounter;
+    var li=document.createElement('li');
+    li.className='phase-item type-'+(typeVal||'travail'); li.id=id;
+    li.innerHTML=
+        '<div class="phase-top-row">'+
+        '<select class="phase-select" onchange="tabUpdatePhaseStyle(this)">'+
+        '<option value="travail"'+(typeVal==='travail'||!typeVal?' selected':'')+'>🔥 Travail</option>'+
+        '<option value="repos"'+(typeVal==='repos'?' selected':'')+'>😮‍💨 Pause</option>'+
+        '<option value="warmup"'+(typeVal==='warmup'?' selected':'')+'>🏃 Warm-up</option>'+
+        '<option value="recup"'+(typeVal==='recup'?' selected':'')+'>🧘 Récup</option>'+
+        '</select>'+
+        '<div class="phase-stepper">'+
+        '<button class="btn-step-sm" onclick="tabStepPhase(\''+id+'\',-5)">−</button>'+
+        '<input type="number" class="phase-dur-input" value="'+(durVal||30)+'" min="1" max="3600">'+
+        '<button class="btn-step-sm" onclick="tabStepPhase(\''+id+'\',5)">+</button>'+
+        '</div>'+
+        '<span class="phase-sec-label">sec</span>'+
+        '<button class="btn-del-phase" onclick="tabDelPhase(\''+id+'\')">✕</button>'+
+        '</div>'+
+        '<div class="groupe-list" id="gl-'+id+'"></div>'+
+        '<button class="btn-add-exo" onclick="addGroupe(\'gl-'+id+'\')">+ Ajouter un exo</button>';
+    list.appendChild(li);
+    var initGroupes = groupes || [{text:'',colorIdx:0}];
+    initGroupes.forEach(function(g){ addGroupe('gl-'+id, g.text, g.colorIdx); });
 }
 
-function execNext() {
-    execCur++;
-    if (execCur >= execPhases.length) {
-        if (execRepCur < execRepeat) {
-            execRepCur++;
-            execCur = 0;
-            execAdvance();
+function tabUpdatePhaseStyle(sel) {
+    sel.closest('.phase-item').className='phase-item type-'+sel.value;
+}
+
+function tabStepPhase(id, delta) {
+    var li=document.getElementById(id);
+    var input=li.querySelector('.phase-dur-input');
+    var val=parseInt(input.value)||30;
+    var absDelta=Math.abs(delta);
+    var newVal;
+    if (absDelta>1&&absDelta%5===0) {
+        newVal=delta>0?Math.ceil((val+1)/absDelta)*absDelta:Math.floor((val-1)/absDelta)*absDelta;
+    } else { newVal=val+delta; }
+    input.value=Math.max(1,Math.min(3600,newVal));
+}
+
+function tabDelPhase(id) {
+    var el=document.getElementById(id); if(el) el.remove();
+}
+
+function tabResetConfig() {
+    if (!confirm('Effacer toutes les phases ?')) return;
+    document.getElementById('tab-phases-list').innerHTML='';
+    document.getElementById('tab-name').value='';
+    document.getElementById('tab-repeat').value=1;
+}
+
+/* ══════════════════════════════════════
+   TABATA / HIIT — EXÉCUTION
+══════════════════════════════════════ */
+var tabExecInterval=null, tabExecRunning=false;
+var tabExecPhases=[], tabExecCur=0, tabExecSec=0, tabExecTotalSec=0;
+var tabExecRepeat=1, tabExecRepCur=1;
+
+function tabLancer() {
+    var items=document.querySelectorAll('#tab-phases-list .phase-item');
+    if (items.length===0) { alert('Ajoutez au moins une phase !'); return; }
+    tabExecPhases=[];
+    items.forEach(function(li) {
+        tabExecPhases.push({
+            type: li.querySelector('.phase-select').value,
+            sec:  parseInt(li.querySelector('.phase-dur-input').value)||30,
+            groupes: getGroupes('gl-'+li.id)
+        });
+    });
+    tabExecRepeat = parseInt(document.getElementById('tab-repeat').value)||1;
+    tabExecRepCur=1; tabExecCur=0; tabExecSec=0;
+    clearInterval(tabExecInterval); tabExecRunning=false;
+    document.getElementById('tab-exec-title').textContent = document.getElementById('tab-name').value.trim()||'Séance TABATA/HIIT';
+    document.getElementById('tab-exec-label').textContent='PRÊT';
+    document.getElementById('tab-exec-time').textContent=fmtSec(tabExecPhases[0].sec);
+    document.getElementById('tab-exec-info').textContent='';
+    renderInstru('tab-exec-instru', tabExecPhases[0].groupes);
+    setPhaseStyle(document.getElementById('tab-exec-display'),'');
+    tabRenderNext(0);
+    document.getElementById('tab-btn-start').disabled=false;
+    document.getElementById('tab-btn-pause').disabled=true;
+    setBtnActive('tab-btn-pause',false);
+    showMode('tabata','exec');
+}
+
+function tabExecStart() {
+    if (tabExecRunning||tabExecPhases.length===0) return;
+    if (tabExecSec===0) {
+        tabExecSec=tabExecPhases[tabExecCur].sec;
+        tabExecTotalSec=tabExecSec;
+        tabExecBip(tabExecPhases[tabExecCur].type);
+        tabExecRender();
+    }
+    tabExecRunning=true;
+    setBtnActive('tab-btn-pause',false);
+    document.getElementById('tab-btn-start').disabled=true;
+    document.getElementById('tab-btn-pause').disabled=false;
+    tabExecInterval=setInterval(function(){
+        tabExecSec--;
+        if (tabExecSec<=3&&tabExecSec>0) { bipCountdown(); document.getElementById('tab-exec-time').textContent=tabExecSec; }
+        else if (tabExecSec===0) { document.getElementById('tab-exec-time').textContent='0'; }
+        else if (tabExecSec<0)   { tabExecSec=0; tabExecNext(); }
+        else { tabExecRender(); }
+    },1000);
+}
+
+function tabExecNext() {
+    tabExecCur++;
+    if (tabExecCur>=tabExecPhases.length) {
+        if (tabExecRepCur<tabExecRepeat) { tabExecRepCur++; tabExecCur=0; tabExecAdvance(); }
+        else { tabExecFinish(); }
+    } else { tabExecAdvance(); }
+}
+
+function tabExecAdvance() {
+    tabExecSec=tabExecPhases[tabExecCur].sec; tabExecTotalSec=tabExecSec;
+    tabExecBip(tabExecPhases[tabExecCur].type);
+    tabExecRender();
+}
+
+function tabExecBip(type) {
+    if (type==='travail'||type==='warmup') bipTravail(); else bipPause();
+}
+
+function tabExecRender() {
+    var ph=tabExecPhases[tabExecCur];
+    var styleMap={travail:'travail',repos:'repos',warmup:'warmup',recup:'repos'};
+    setPhaseStyle(document.getElementById('tab-exec-display'),styleMap[ph.type]);
+    var lblMap={travail:'🔥 TRAVAIL',repos:'😮‍💨 PAUSE',warmup:'🏃 WARM-UP',recup:'🧘 RÉCUP'};
+    document.getElementById('tab-exec-label').textContent=lblMap[ph.type];
+    document.getElementById('tab-exec-time').textContent=fmtSec(tabExecSec);
+    var repInfo=tabExecRepeat>1?' — Répét. '+tabExecRepCur+'/'+tabExecRepeat:'';
+    document.getElementById('tab-exec-info').textContent='Phase '+(tabExecCur+1)+'/'+tabExecPhases.length+repInfo;
+    renderInstru('tab-exec-instru', ph.groupes);
+    tabRenderNext(tabExecCur);
+}
+
+function tabRenderNext(cur) {
+    var nextIdx=cur+1;
+    var lblMap={travail:'🔥 Travail',repos:'😮‍💨 Pause',warmup:'🏃 Warm-up',recup:'🧘 Récup'};
+    if (nextIdx>=tabExecPhases.length) {
+        if (tabExecRepCur<tabExecRepeat) {
+            var fp=tabExecPhases[0];
+            document.getElementById('tab-next-info').textContent=lblMap[fp.type]+' — '+fmtSec(fp.sec)+'s (Répét. '+(tabExecRepCur+1)+')';
+            document.getElementById('tab-next-comment').textContent=fp.groupes&&fp.groupes[0]?fp.groupes[0].text:'';
         } else {
-            execFinish();
+            document.getElementById('tab-next-info').textContent='🏁 Fin de séance';
+            document.getElementById('tab-next-comment').textContent='';
         }
     } else {
-        execAdvance();
+        var np=tabExecPhases[nextIdx];
+        document.getElementById('tab-next-info').textContent=lblMap[np.type]+' — '+fmtSec(np.sec)+'s';
+        document.getElementById('tab-next-comment').textContent=np.groupes&&np.groupes[0]?np.groupes[0].text:'';
     }
 }
 
-function execAdvance() {
-    execSec      = execPhases[execCur].sec;
-    execTotalSec = execSec;
-    execBip(execPhases[execCur].type);
-    execRender();
-}
-
-function execBip(type) {
-    if (type === 'travail' || type === 'warmup') bipTravail();
-    else bipPause();
-}
-
-function execRender() {
-    var phase = execPhases[execCur];
-    var styleMap = { travail:'travail', repos:'repos', warmup:'warmup', recup:'recup' };
-    setPhaseStyle(document.getElementById('exec-display'), styleMap[phase.type]);
-
-    var labelMap = { travail:'🔥 TRAVAIL', repos:'😮‍💨 PAUSE', warmup:'🏃 WARM-UP', recup:'🧘 RÉCUP' };
-    document.getElementById('exec-label').textContent   = labelMap[phase.type] || phase.type.toUpperCase();
-    document.getElementById('exec-time').textContent    = fmtSec(execSec);
-    document.getElementById('exec-comment').textContent = phase.comment || '';
-
-    var totalPhases = execPhases.length;
-    var repInfo = execRepeat > 1 ? ' — Répét. ' + execRepCur + '/' + execRepeat : '';
-    document.getElementById('exec-info').textContent = 'Phase ' + (execCur+1) + '/' + totalPhases + repInfo;
-
-    renderNextPhase(execCur);
-}
-
-function renderNextPhase(cur) {
-    var nextIdx = cur + 1;
-    var bar     = document.getElementById('next-phase-bar');
-    if (nextIdx >= execPhases.length) {
-        if (execRepCur < execRepeat) {
-            // Prochaine répétition
-            var firstPhase = execPhases[0];
-            var labelMap2  = { travail:'🔥 Travail', repos:'😮‍💨 Pause', warmup:'🏃 Warm-up', recup:'🧘 Récup' };
-            document.getElementById('next-phase-info').textContent    = labelMap2[firstPhase.type] + ' — ' + fmtSec(firstPhase.sec) + 's (Répét. ' + (execRepCur+1) + ')';
-            document.getElementById('next-phase-comment').textContent = firstPhase.comment || '';
-            bar.style.display = 'block';
-        } else {
-            document.getElementById('next-phase-info').textContent    = '🏁 Fin de séance';
-            document.getElementById('next-phase-comment').textContent = '';
-            bar.style.display = 'block';
-        }
-        return;
-    }
-    var next     = execPhases[nextIdx];
-    var lblMap   = { travail:'🔥 Travail', repos:'😮‍💨 Pause', warmup:'🏃 Warm-up', recup:'🧘 Récup' };
-    document.getElementById('next-phase-info').textContent    = lblMap[next.type] + ' — ' + fmtSec(next.sec) + 's';
-    document.getElementById('next-phase-comment').textContent = next.comment || '';
-    bar.style.display = 'block';
-}
-
-function execFinish() {
-    clearInterval(execInterval); execRunning = false;
-    document.getElementById('exec-label').textContent   = '✅ SÉANCE TERMINÉE !';
-    document.getElementById('exec-time').textContent    = '0';
-    document.getElementById('exec-comment').textContent = 'Bravo ! Belle séance 💪';
-    document.getElementById('exec-info').textContent    = '';
-    document.getElementById('next-phase-bar').style.display = 'none';
-    setPhaseStyle(document.getElementById('exec-display'), 'repos');
+function tabExecFinish() {
+    clearInterval(tabExecInterval); tabExecRunning=false;
+    document.getElementById('tab-exec-label').textContent='✅ TERMINÉ !';
+    document.getElementById('tab-exec-time').textContent='0';
+    document.getElementById('tab-exec-info').textContent='';
+    document.getElementById('tab-exec-instru').innerHTML='<div class="instru-line" style="color:#1a6b3c">Bravo ! Belle séance 💪</div>';
+    document.getElementById('tab-exec-instru').style.display='block';
+    document.getElementById('tab-next-info').textContent='';
+    document.getElementById('tab-next-comment').textContent='';
+    setPhaseStyle(document.getElementById('tab-exec-display'),'repos');
     bipFin();
-    document.getElementById('btn-exec-start').disabled = false;
-    document.getElementById('btn-exec-pause').disabled = true;
+    document.getElementById('tab-btn-start').disabled=false;
+    document.getElementById('tab-btn-pause').disabled=true;
 }
 
-function execPause() {
-    if (!execRunning) return;
-    clearInterval(execInterval); execRunning = false;
-    setBtnActive('btn-exec-pause', true);
-    document.getElementById('btn-exec-start').disabled = false;
-    document.getElementById('btn-exec-pause').disabled = false;
-    document.getElementById('exec-label').textContent  = '⏸ EN PAUSE';
-    setPhaseStyle(document.getElementById('exec-display'), '');
+function tabExecPause() {
+    if (!tabExecRunning) return;
+    clearInterval(tabExecInterval); tabExecRunning=false;
+    setBtnActive('tab-btn-pause',true);
+    document.getElementById('tab-btn-start').disabled=false;
+    document.getElementById('tab-btn-pause').disabled=false;
+    document.getElementById('tab-exec-label').textContent='⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('tab-exec-display'),'');
 }
 
-function execReset() {
-    clearInterval(execInterval); execRunning = false;
-    execCur = 0; execSec = 0; execRepCur = 1;
-    if (execPhases.length > 0) {
-        document.getElementById('exec-label').textContent   = 'PRÊT';
-        document.getElementById('exec-time').textContent    = fmtSec(execPhases[0].sec);
-        document.getElementById('exec-info').textContent    = '';
-        document.getElementById('exec-comment').textContent = execPhases[0].comment || '';
-        setPhaseStyle(document.getElementById('exec-display'), '');
-        renderNextPhase(0);
+function tabExecReset() {
+    clearInterval(tabExecInterval); tabExecRunning=false;
+    tabExecCur=0; tabExecSec=0; tabExecRepCur=1;
+    if (tabExecPhases.length>0) {
+        document.getElementById('tab-exec-label').textContent='PRÊT';
+        document.getElementById('tab-exec-time').textContent=fmtSec(tabExecPhases[0].sec);
+        document.getElementById('tab-exec-info').textContent='';
+        renderInstru('tab-exec-instru',tabExecPhases[0].groupes);
+        setPhaseStyle(document.getElementById('tab-exec-display'),'');
+        tabRenderNext(0);
     }
-    document.getElementById('btn-exec-start').disabled = false;
-    document.getElementById('btn-exec-pause').disabled = true;
-    setBtnActive('btn-exec-pause', false);
+    document.getElementById('tab-btn-start').disabled=false;
+    document.getElementById('tab-btn-pause').disabled=true;
+    setBtnActive('tab-btn-pause',false);
+}
+
+/* ══════════════════════════════════════
+   AMRAP — CONFIG
+══════════════════════════════════════ */
+function amrapAddExo(textVal, colorIdx) {
+    addGroupe('amrap-groupe-list', textVal, colorIdx);
+}
+
+function amrapResetConfig() {
+    if (!confirm('Effacer la configuration ?')) return;
+    document.getElementById('amrap-groupe-list').innerHTML='';
+    document.getElementById('amrap-name').value='';
+    document.getElementById('amrap-dur-min').value=20;
+    document.getElementById('amrap-dur-sec').value=0;
+    amrapAddExo('', 0);
+}
+
+function scoreStep(id, delta) {
+    var input=document.getElementById(id);
+    var val=parseInt(input.value)||0;
+    input.value=Math.max(0,val+delta);
+}
+
+/* ══════════════════════════════════════
+   AMRAP — EXÉCUTION
+══════════════════════════════════════ */
+var amrapInterval=null, amrapRunning=false;
+var amrapMs=0, amrapTotal=0;
+var amrapGroupes=[];
+
+function amrapLancer() {
+    amrapGroupes=getGroupes('amrap-groupe-list');
+    var m=parseInt(document.getElementById('amrap-dur-min').value)||0;
+    var s=parseInt(document.getElementById('amrap-dur-sec').value)||0;
+    amrapTotal=(m*60+s)*1000; amrapMs=amrapTotal;
+    if (amrapMs<=0) { alert('Configurez une durée !'); return; }
+    clearInterval(amrapInterval); amrapRunning=false;
+    document.getElementById('amrap-exec-title').textContent=document.getElementById('amrap-name').value.trim()||'Séance AMRAP';
+    document.getElementById('amrap-exec-label').textContent='PRÊT';
+    document.getElementById('amrap-exec-time').textContent=pad(m)+':'+pad(s);
+    document.getElementById('amrap-exec-info').textContent='';
+    document.getElementById('amrap-rounds').value=0;
+    document.getElementById('amrap-reps').value=0;
+    renderInstru('amrap-exec-instru', amrapGroupes);
+    setPhaseStyle(document.getElementById('amrap-exec-display'),'travail');
+    document.getElementById('amrap-btn-start').disabled=false;
+    document.getElementById('amrap-btn-pause').disabled=true;
+    setBtnActive('amrap-btn-pause',false);
+    showMode('amrap','exec');
+}
+
+function amrapExecStart() {
+    if (amrapRunning) return;
+    amrapRunning=true;
+    setBtnActive('amrap-btn-pause',false);
+    document.getElementById('amrap-exec-label').textContent='🔄 EN COURS';
+    document.getElementById('amrap-btn-start').disabled=true;
+    document.getElementById('amrap-btn-pause').disabled=false;
+    var last=Date.now();
+    var lastSecShown=-1;
+    amrapInterval=setInterval(function(){
+        var now=Date.now(); amrapMs-=(now-last); last=now;
+        if (amrapMs<=0) {
+            amrapMs=0; clearInterval(amrapInterval); amrapRunning=false;
+            document.getElementById('amrap-exec-time').textContent='00:00';
+            document.getElementById('amrap-exec-label').textContent='✅ TERMINÉ !';
+            var r=document.getElementById('amrap-rounds').value;
+            var rp=document.getElementById('amrap-reps').value;
+            document.getElementById('amrap-exec-info').textContent='Score : '+r+' rounds + '+rp+' reps';
+            setPhaseStyle(document.getElementById('amrap-exec-display'),'repos');
+            bipFin();
+            document.getElementById('amrap-btn-start').disabled=false;
+            document.getElementById('amrap-btn-pause').disabled=true;
+            return;
+        }
+        var secLeft=Math.ceil(amrapMs/1000);
+        if (secLeft<=3&&secLeft!==lastSecShown) { bipCountdown(); lastSecShown=secLeft; }
+        var mm=Math.floor(amrapMs/60000);
+        var ss=Math.floor((amrapMs%60000)/1000);
+        document.getElementById('amrap-exec-time').textContent=pad(mm)+':'+pad(ss);
+    },100);
+}
+
+function amrapExecPause() {
+    if (!amrapRunning) return;
+    clearInterval(amrapInterval); amrapRunning=false;
+    setBtnActive('amrap-btn-pause',true);
+    document.getElementById('amrap-btn-start').disabled=false;
+    document.getElementById('amrap-btn-pause').disabled=false;
+    document.getElementById('amrap-exec-label').textContent='⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('amrap-exec-display'),'');
+}
+
+function amrapExecReset() {
+    clearInterval(amrapInterval); amrapRunning=false;
+    amrapMs=amrapTotal;
+    var mm=Math.floor(amrapTotal/60000);
+    var ss=Math.floor((amrapTotal%60000)/1000);
+    document.getElementById('amrap-exec-label').textContent='PRÊT';
+    document.getElementById('amrap-exec-time').textContent=pad(mm)+':'+pad(ss);
+    document.getElementById('amrap-exec-info').textContent='';
+    document.getElementById('amrap-rounds').value=0;
+    document.getElementById('amrap-reps').value=0;
+    setPhaseStyle(document.getElementById('amrap-exec-display'),'travail');
+    document.getElementById('amrap-btn-start').disabled=false;
+    document.getElementById('amrap-btn-pause').disabled=true;
+    setBtnActive('amrap-btn-pause',false);
+}
+
+/* ══════════════════════════════════════
+   EMOM — CONFIG
+══════════════════════════════════════ */
+function emomAddExo(textVal, colorIdx) {
+    addGroupe('emom-groupe-list', textVal, colorIdx);
+}
+
+function emomResetConfig() {
+    if (!confirm('Effacer la configuration ?')) return;
+    document.getElementById('emom-groupe-list').innerHTML='';
+    document.getElementById('emom-name').value='';
+    document.getElementById('emom-dur').value=10;
+    // Remettre 4 exos par défaut
+    emomInitDefault();
+}
+
+function emomInitDefault() {
+    emomAddExo('', 0);
+}
+
+/* ══════════════════════════════════════
+   EMOM — EXÉCUTION
+══════════════════════════════════════ */
+var emomInterval=null, emomRunning=false;
+var emomSec=60, emomCurMin=0, emomTotMin=10;
+var emomGroupes=[];
+
+function emomLancer() {
+    emomGroupes=getGroupes('emom-groupe-list');
+    emomTotMin=parseInt(document.getElementById('emom-dur').value)||10;
+    emomCurMin=0; emomSec=60;
+    clearInterval(emomInterval); emomRunning=false;
+    document.getElementById('emom-exec-title').textContent=document.getElementById('emom-name').value.trim()||'Séance EMOM';
+    document.getElementById('emom-exec-label').textContent='PRÊT';
+    document.getElementById('emom-exec-time').textContent='60';
+    document.getElementById('emom-exec-info').textContent='';
+    renderInstru('emom-exec-instru', emomGroupes);
+    document.getElementById('emom-btn-start').disabled=false;
+    document.getElementById('emom-btn-pause').disabled=true;
+    setBtnActive('emom-btn-pause',false);
+    showMode('emom','exec');
+}
+
+function emomExecStart() {
+    if (emomRunning) return;
+    if (emomCurMin===0) {
+        emomCurMin=1; emomSec=60;
+        bipTravail(); emomExecRender();
+    }
+    emomRunning=true;
+    setBtnActive('emom-btn-pause',false);
+    document.getElementById('emom-btn-start').disabled=true;
+    document.getElementById('emom-btn-pause').disabled=false;
+    emomInterval=setInterval(function(){
+        emomSec--;
+        if (emomSec<=3&&emomSec>0) { bipCountdown(); document.getElementById('emom-exec-time').textContent=emomSec; }
+        else if (emomSec===0) { document.getElementById('emom-exec-time').textContent='0'; }
+        else if (emomSec<0) {
+            emomSec=0;
+            if (emomCurMin>=emomTotMin) { emomExecFinish(); }
+            else { emomCurMin++; emomSec=60; bipTravail(); emomExecRender(); }
+        } else { emomExecRender(); }
+    },1000);
+}
+
+function emomExecRender() {
+    document.getElementById('emom-exec-label').textContent='🔁 TRAVAIL — Minute '+emomCurMin+'/'+emomTotMin;
+    document.getElementById('emom-exec-time').textContent=emomSec;
+    document.getElementById('emom-exec-info').textContent=(emomTotMin-emomCurMin)>0?(emomTotMin-emomCurMin)+' minute(s) restante(s)':'🏁 Dernière minute !';
+    renderInstru('emom-exec-instru', emomGroupes);
+}
+
+function emomExecFinish() {
+    clearInterval(emomInterval); emomRunning=false;
+    document.getElementById('emom-exec-label').textContent='✅ TERMINÉ !';
+    document.getElementById('emom-exec-time').textContent='0';
+    document.getElementById('emom-exec-info').textContent=emomTotMin+' minutes complétées !';
+    document.getElementById('emom-exec-instru').innerHTML='<div class="instru-line" style="color:#1a6b3c">Bravo ! Belle séance 💪</div>';
+    document.getElementById('emom-exec-instru').style.display='block';
+    bipFin();
+    document.getElementById('emom-btn-start').disabled=false;
+    document.getElementById('emom-btn-pause').disabled=true;
+}
+
+function emomExecPause() {
+    if (!emomRunning) return;
+    clearInterval(emomInterval); emomRunning=false;
+    setBtnActive('emom-btn-pause',true);
+    document.getElementById('emom-btn-start').disabled=false;
+    document.getElementById('emom-btn-pause').disabled=false;
+    document.getElementById('emom-exec-label').textContent='⏸ EN PAUSE';
+}
+
+function emomExecReset() {
+    clearInterval(emomInterval); emomRunning=false;
+    emomCurMin=0; emomSec=60;
+    document.getElementById('emom-exec-label').textContent='PRÊT';
+    document.getElementById('emom-exec-time').textContent='60';
+    document.getElementById('emom-exec-info').textContent='';
+    renderInstru('emom-exec-instru', emomGroupes);
+    document.getElementById('emom-btn-start').disabled=false;
+    document.getElementById('emom-btn-pause').disabled=true;
+    setBtnActive('emom-btn-pause',false);
+}
+
+/* ══════════════════════════════════════
+   FOR TIME — CONFIG
+══════════════════════════════════════ */
+function ftAddExo(textVal, colorIdx) {
+    addGroupe('ft-groupe-list', textVal, colorIdx);
+}
+
+function ftResetConfig() {
+    if (!confirm('Effacer la configuration ?')) return;
+    document.getElementById('ft-groupe-list').innerHTML='';
+    document.getElementById('ft-name').value='';
+    ftAddExo('', 0);
+}
+
+/* ══════════════════════════════════════
+   FOR TIME — EXÉCUTION
+══════════════════════════════════════ */
+var ftInterval=null, ftRunning=false, ftMs=0;
+var ftGroupes=[];
+
+function ftLancer() {
+    ftGroupes=getGroupes('ft-groupe-list');
+    ftMs=0; clearInterval(ftInterval); ftRunning=false;
+    document.getElementById('ft-exec-title').textContent=document.getElementById('ft-name').value.trim()||'Séance FOR TIME';
+    document.getElementById('ft-exec-label').textContent='PRÊT';
+    document.getElementById('ft-exec-time').textContent='00:00:00';
+    document.getElementById('ft-rounds').value=0;
+    document.getElementById('ft-reps').value=0;
+    renderInstru('ft-exec-instru', ftGroupes);
+    setPhaseStyle(document.getElementById('ft-exec-display'),'travail');
+    document.getElementById('ft-btn-start').disabled=false;
+    document.getElementById('ft-btn-pause').disabled=true;
+    setBtnActive('ft-btn-pause',false);
+    showMode('fortime','exec');
+}
+
+function ftExecStart() {
+    if (ftRunning) return;
+    ftRunning=true;
+    setBtnActive('ft-btn-pause',false);
+    document.getElementById('ft-exec-label').textContent='🏁 EN COURS';
+    document.getElementById('ft-btn-start').disabled=true;
+    document.getElementById('ft-btn-pause').disabled=false;
+    var last=Date.now()-ftMs;
+    ftInterval=setInterval(function(){
+        ftMs=Date.now()-last;
+        var m=Math.floor(ftMs/60000);
+        var s=Math.floor((ftMs%60000)/1000);
+        var cs=Math.floor((ftMs%1000)/10);
+        document.getElementById('ft-exec-time').textContent=pad(m)+':'+pad(s)+':'+pad(cs);
+    },30);
+}
+
+function ftExecPause() {
+    if (!ftRunning) return;
+    clearInterval(ftInterval); ftRunning=false;
+    setBtnActive('ft-btn-pause',true);
+    document.getElementById('ft-btn-start').disabled=false;
+    document.getElementById('ft-btn-pause').disabled=false;
+    document.getElementById('ft-exec-label').textContent='⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('ft-exec-display'),'');
+}
+
+function ftExecReset() {
+    clearInterval(ftInterval); ftRunning=false; ftMs=0;
+    document.getElementById('ft-exec-label').textContent='PRÊT';
+    document.getElementById('ft-exec-time').textContent='00:00:00';
+    document.getElementById('ft-rounds').value=0;
+    document.getElementById('ft-reps').value=0;
+    setPhaseStyle(document.getElementById('ft-exec-display'),'travail');
+    document.getElementById('ft-btn-start').disabled=false;
+    document.getElementById('ft-btn-pause').disabled=true;
+    setBtnActive('ft-btn-pause',false);
 }
 
 /* Init */
 window.addEventListener('DOMContentLoaded', function() {
-    // Phases par défaut
-    addPhase('warmup',  600, 'Échauffement général — course légère, mobilité');
-    addPhase('travail', 30,  'Effectuez les exercices au maximum de vos capacités');
-    addPhase('repos',   15,  'Récupération — respirez calmement');
+    // TABATA — 3 phases par défaut
+    tabAddPhase('warmup', 600, [{text:'', colorIdx:0}]);
+    tabAddPhase('travail', 30, [{text:'', colorIdx:0}]);
+    tabAddPhase('repos',   15, [{text:'', colorIdx:0}]);
 
-    var backButton = document.getElementById('backToTop');
+    // AMRAP — 1 exo par défaut
+    amrapAddExo('', 0);
+
+    // FOR TIME — 1 exo par défaut
+    ftAddExo('', 0);
+
+    // EMOM — 1 exo par défaut
+    emomInitDefault();
+
+    var backButton=document.getElementById('backToTop');
     if (backButton) {
-        window.onscroll = function() { backButton.style.display = (window.scrollY > 300) ? 'block' : 'none'; };
-        backButton.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        window.onscroll=function(){backButton.style.display=(window.scrollY>300)?'block':'none';};
+        backButton.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
     }
 });
 </script>
