@@ -325,7 +325,7 @@
                 </ul>
             </li>
             <li><a href="chrono.html">⏱ Chronos</a></li>
-            <li><a href="seance_perso.html">🎯 Créer ta séance</a></li>
+            <li><a href="seance_perso.html">🎯 Créer sa séance</a></li>
         </ul>
         <div class="nav-spacer"></div>
     </div>
@@ -1337,7 +1337,15 @@ function addSeqItem() {
 function stepSeq(id,delta) {
     var li=document.getElementById(id);
     var input=li.querySelector('input');
-    input.value=Math.max(1,Math.min(3600,(parseInt(input.value)||30)+delta));
+    var val=parseInt(input.value)||30;
+    var absDelta=Math.abs(delta);
+    var newVal;
+    if (absDelta>1 && absDelta%5===0) {
+        newVal = delta>0 ? Math.ceil((val+1)/absDelta)*absDelta : Math.floor((val-1)/absDelta)*absDelta;
+    } else {
+        newVal = val+delta;
+    }
+    input.value=Math.max(1,Math.min(3600,newVal));
 }
 
 function updateSeqStyle(sel) {
