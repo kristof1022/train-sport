@@ -1341,6 +1341,18 @@ function chargerDepuisLocalStorage() {
             tabAddPhase('repos',   c.repos   || 10, [{text: 'Récupération', colorIdx: 0}]);
         });
     }
+    else if (c.type === 'surmesure') {
+        var tabSm = document.querySelector('.seance-tab[onclick*="tabata"]');
+        if (tabSm) showSeance('tabata', tabSm);
+        document.getElementById('tab-name').value = c.nom || '';
+        var smList = document.getElementById('tab-phases-list');
+        smList.innerHTML = '';
+        (c.phases || []).forEach(function(ph, i) {
+            var typeMap = { travail:'travail', repos:'repos', warmup:'warmup', recup:'recup' };
+            var t = typeMap[ph.type] || 'travail';
+            tabAddPhase(t, ph.sec, [{text: ph.text || '', colorIdx: i % gColors.length}]);
+        });
+    }
     return true;
 }
 

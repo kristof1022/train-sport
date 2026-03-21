@@ -5,7 +5,19 @@ const workouts = [
     { title: "Le WOD Lunges & Co", material: ["poids-corps"], body: "bas", duration: 20, type: "AMRAP", level: "Facile", desc: "<strong>AMRAP 20 min :</strong> 20 Jumping Lunges(fentes), 20 Sit-ups(abdos), 20 Air Squats.",
       details: { format_label: "AMRAP 20 MINUTES", intro: "Réaliser les exercices :", exercises: [
           { text: "20 Fentes sautées (Jumping lunges)" }, { text: "20 Sit-ups (abdos)" }, { text: "20 Squats poids de corps (air squats)" }
-        ], conseil: "But d'un AMRAP : faire le plus de tours dans le temps imparti. Essayer de garder un rythme régulier du début à la fin." }},
+        ], conseil: "But d'un AMRAP : faire le plus de tours dans le temps imparti. Essayer de garder un rythme régulier du début à la fin.",
+      chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "Le Lunges & Co",
+          duree_min: 20,
+          exercices: [
+            { text: "20 Fentes sautées (Jumping lunges)" },
+            { text: "20 Sit-ups (abdos)" },
+            { text: "20 Squats poids de corps (air squats)" }
+          ]
+        }
+    }},
 
     { title: "Le WOD Cindy", material: ["traction"], body: "complet", duration: 20, type: "AMRAP", level: "Moyen", desc: "<strong>AMRAP 20 min :</strong> 5 Pull-ups(tractions), 10 Push-ups(pompes), 15 Air Squats.",
       details: { format_label: "AMRAP 20 MINUTES", intro: "Réaliser les exercices :", exercises: [
@@ -31,7 +43,19 @@ const workouts = [
           { text: "5 Handstand Push-ups (pompes en poirier contre un mur)" }, { text: "10 Pistols (squats sur une seule jambe)" }, { text: "15 Tractions (pull-ups)" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "HSPU → pompes avec pieds surélevés" }, { text: "Pistols → fentes arrières alternées (ou pistols en tenant un poteau)" }
-        ]}, conseil: "AMRAP = autant de répétitions que possible en enchaînant les séries pendant 20 minutes." }},
+        ]}, conseil: "AMRAP = autant de répétitions que possible en enchaînant les séries pendant 20 minutes.",
+        chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "Le WOD Mary",
+          duree_min: 20,
+          exercices: [
+            { text: "5 Handstand Push-ups (pompes en poirier contre un mur)" },
+            { text: "10 Pistols (squats sur une seule jambe)" },
+            { text: "15 Tractions (pull-ups)" }
+          ]
+        }       
+      }},
 
     { title: "Le WOD Nicole", material: ["traction"], body: "complet", duration: 20, type: "AMRAP", level: "Intense", desc: "Run 400m, Max Pull-ups(tractions).",
       details: { format_label: "AMRAP 20 MINUTES", exercises: [
@@ -377,28 +401,28 @@ const workouts = [
           { text: "Étape 1 : 36 reps × 4 exercices (1 fois)" }, { text: "Étape 2 : 18 reps × 4 exercices (2 fois)" }, { text: "Étape 3 : 12 reps × 4 exercices (3 fois)" }, { text: "Étape 4 : 9 reps × 4 exercices (4 fois)" }, { text: "Étape 5 : 6 reps × 4 exercices (6 fois)" }
         ], conseil: "720 reps au total. À chaque étape on effectue 36 reps de chaque mouvement." }},
 
-    { title: "WOD HYROX ANDRE", material: ["poids-corps", "rameur"], body: "complet", duration: 0, type: "HYROX", level: "Intense", desc: "<strong>FOR TIME:</strong> alternance Rameur(row), Burpees.",
-      details: { format_label: "HYROX — FOR TIME", exercises: [
+    { title: "WOD HYBRID ANDRE", material: ["poids-corps", "rameur"], body: "complet", duration: 0, type: "HYBRID", level: "Intense", desc: "<strong>FOR TIME:</strong> alternance Rameur(row), Burpees.",
+      details: { format_label: "HYBRID — FOR TIME", exercises: [
           { text: "1000m Rameur" }, { text: "50 Burpees" }, { text: "800m Rameur" }, { text: "40 Burpees" }, { text: "600m Rameur" }, { text: "30 Burpees" }, { text: "400m Rameur" }, { text: "20 Burpees" }, { text: "200m Rameur" }, { text: "10 Burpees" }
         ], conseil: "Durée estimée 40 minutes." }},
 
-    { title: "WOD HYROX DOMINO", material: ["poids-corps", "tapis-incurve"], body: "complet", duration: 0, type: "HYROX", level: "Moyen", desc: "<strong>FOR TIME:</strong> alternance Course à pied(run), Squats/Burpees/Pompes(Push-ups)/Sit-ups(abdos).",
-      details: { format_label: "HYROX — FOR TIME", exercises: [
+    { title: "WOD HYBRID DOMINO", material: ["poids-corps", "tapis-incurve"], body: "complet", duration: 0, type: "HYBRID", level: "Moyen", desc: "<strong>FOR TIME:</strong> alternance Course à pied(run), Squats/Burpees/Pompes(Push-ups)/Sit-ups(abdos).",
+      details: { format_label: "HYBRID — FOR TIME", exercises: [
           { text: "5 min Course à pied" }, { text: "50 Squats au poids de corps" }, { text: "5 min Course à pied" }, { text: "50 Burpees" }, { text: "5 min Course à pied" }, { text: "50 Pompes" }, { text: "5 min Course à pied" }, { text: "50 Sit-ups (abdos)" }
         ], conseil: "Durée estimée 45 minutes." }},
 
-    { title: "WOD HYROX 4 TOURS#1", material: ["ballon-leste", "tapis-incurve", "traction"], body: "complet", duration: 0, type: "HYROX", level: "Intense", desc: "<strong>4 TOURS FOR TIME:</strong> 600m. Course à pied(run), 30 Lancers de ballon lesté(wall-ball), 20 Sit-ups(abdos), 20 Tractions(pull-ups).",
-      details: { format_label: "HYROX — 4 TOURS FOR TIME", intro: "Effectuer 4 tours :", exercises: [
+    { title: "WOD HYBRID 4 TOURS#1", material: ["ballon-leste", "tapis-incurve", "traction"], body: "complet", duration: 0, type: "HYBRID", level: "Intense", desc: "<strong>4 TOURS FOR TIME:</strong> 600m. Course à pied(run), 30 Lancers de ballon lesté(wall-ball), 20 Sit-ups(abdos), 20 Tractions(pull-ups).",
+      details: { format_label: "HYBRID — 4 TOURS FOR TIME", intro: "Effectuer 4 tours :", exercises: [
           { text: "600m de course à pied" }, { text: "30 Wall-Balls (ballon lesté)" }, { text: "20 Sit-ups (abdos)" }, { text: "20 Tractions (pull-ups)" }
         ], conseil: "-" }},
 
-    { title: "WOD HYROX 4 TOURS#2", material: ["rameur", "tapis-incurve", "box-jump", "ski-erg"], body: "complet", duration: 0, type: "HYROX", level: "Moyen", desc: "<strong>4 TOUS FOR TIME:</strong> 400m. Course à pied(run), 15 Burpees Box-jump Over, 400m. de rameur(row), 400 m. de SkiERG.",
-      details: { format_label: "HYROX — 4 TOURS FOR TIME", intro: "Effectuer 4 tours :", exercises: [
+    { title: "WOD HYBRID 4 TOURS#2", material: ["rameur", "tapis-incurve", "box-jump", "ski-erg"], body: "complet", duration: 0, type: "HYBRID", level: "Moyen", desc: "<strong>4 TOUS FOR TIME:</strong> 400m. Course à pied(run), 15 Burpees Box-jump Over, 400m. de rameur(row), 400 m. de SkiERG.",
+      details: { format_label: "HYBRID — 4 TOURS FOR TIME", intro: "Effectuer 4 tours :", exercises: [
           { text: "400m de course à pied (rapide)" }, { text: "15 Burpees Box Jump Over" }, { text: "400m de Rameur (rapide)" }, { text: "400m de SkiERG (rapide)" }
         ], conseil: "Ajuster la hauteur de la box-jump selon le niveau, ou effectuer des burpees simples." }},
 
-    { title: "WOD HYROX AMRAP40", material: ["rameur", "tapis-incurve", "ballon-leste", "sand-bag"], body: "complet", duration: 40, type: "HYROX", level: "Moyen", desc: "<strong>AMRAP de 40 minutes:</strong> 1km de Rameur(row), 20 Fentes marchées avec sandbag(Lunges), 1km de Course à pied(run), 20 lancé de ballon lesté(wall-balls).",
-      details: { format_label: "HYROX — AMRAP 40 MINUTES", intro: "Enchaîner le circuit en effectuant un maximum de tours :", exercises: [
+    { title: "WOD HYBRID AMRAP40", material: ["rameur", "tapis-incurve", "ballon-leste", "sand-bag"], body: "complet", duration: 40, type: "HYBRID", level: "Moyen", desc: "<strong>AMRAP de 40 minutes:</strong> 1km de Rameur(row), 20 Fentes marchées avec sandbag(Lunges), 1km de Course à pied(run), 20 lancé de ballon lesté(wall-balls).",
+      details: { format_label: "HYBRID — AMRAP 40 MINUTES", intro: "Enchaîner le circuit en effectuant un maximum de tours :", exercises: [
           { text: "1 km de Rameur" }, { text: "20 Fentes marchées avec SandBag" }, { text: "1 km de Course à pied" }, { text: "20 Lancés de ballon lesté contre un mur (wall-balls)" }
         ], conseil: "Pour les fentes et les wall-balls, adapter le poids en fonction du niveau et/ou de votre forme du jour." }},
 
@@ -488,6 +512,7 @@ const workouts = [
         format_label: "CARDIO PYRAMIDAL — 40 MINUTES",
         type_special: "run_tempo",
         conseil: "Séance parfaite sur tapis incurvé. Le niveau correspond approximativement aux paliers du Luc Léger. Min 1-10 : échauffement avec 3 accélérations de 30 sec. Min 33-40 : récupération course lente.",
+        chargeable: true,
         niveaux: [
           { n: 1, phases: [
             { min: "10-11", vitesse: "9 à 10 km/h", type: "effort" },
@@ -829,10 +854,29 @@ function openModal(index) {
         }
         document.getElementById('modal-body').innerHTML = html;
         window._runTempoNiveaux = d.niveaux;
+        window._runTempoNiveauActif = 1;
         selectNiveau(1);
+
+        // Bouton Charger pour Run Tempo
+        var footer = document.getElementById('modal-footer');
+        var existingBtn = document.getElementById('btn-charger');
+        if (existingBtn) existingBtn.remove();
         var rtOverlay = document.getElementById('modal-overlay');
         rtOverlay.classList.add('open');
         document.body.style.overflow = 'hidden';
+
+        // Bouton Charger — ajouté après l'ouverture de la modale
+        var footer2 = document.getElementById('modal-footer');
+        var existingBtn2 = document.getElementById('btn-charger');
+        if (existingBtn2) existingBtn2.remove();
+        if (d.chargeable && footer2) {
+            var btnCharger2 = document.createElement('button');
+            btnCharger2.id = 'btn-charger';
+            btnCharger2.className = 'btn-modal-charger';
+            btnCharger2.textContent = '🚀 Charger dans Créer sa séance';
+            btnCharger2.onclick = function() { chargerSeance({ type: 'run_tempo' }); };
+            footer2.insertBefore(btnCharger2, footer2.firstChild);
+        }
         return;
     }
 
@@ -925,11 +969,39 @@ function openModal(index) {
 }
 
 function chargerSeance(chargement) {
+    // Cas spécial Run Tempo : construire les phases depuis le niveau actif
+    if (chargement && chargement.type === 'run_tempo') {
+        var niveauActif = window._runTempoNiveauActif || 1;
+        var niveaux = window._runTempoNiveaux;
+        var niveau = niveaux ? niveaux.find(function(nv) { return nv.n === niveauActif; }) : null;
+        if (niveau) {
+            var phases = [];
+            // Échauffement 10 min
+            phases.push({ type: 'warmup', sec: 600, text: 'Échauffement — course lente avec 3 accélérations de 30sec' });
+            // Phases du niveau sélectionné
+            niveau.phases.forEach(function(p) {
+                var dureeMin = p.min.split('-');
+                var debut = parseFloat(dureeMin[0]);
+                var fin = parseFloat(dureeMin[1]);
+                var sec = Math.round((fin - debut) * 60);
+                var type = p.type === 'effort' ? 'travail' : 'repos';
+                phases.push({ type: type, sec: sec, text: p.vitesse });
+            });
+            // Récupération 7 min
+            phases.push({ type: 'recup', sec: 420, text: 'Récupération post-entraînement — course lente' });
+            chargement = {
+                type: 'surmesure',
+                nom: 'Run Tempo — Niveau ' + niveauActif,
+                phases: phases
+            };
+        }
+    }
     var encoded = encodeURIComponent(JSON.stringify(chargement));
     window.location.href = 'seances_perso.html?seance=' + encoded;
 }
 
 function selectNiveau(n) {
+    window._runTempoNiveauActif = n; // Mémoriser le niveau sélectionné
     var niveaux = window._runTempoNiveaux;
     if (!niveaux) return;
     var niveau = niveaux.find(function(nv) { return nv.n === n; });

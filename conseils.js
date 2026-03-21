@@ -10,10 +10,10 @@ const conseils = [
         desc: "QR CODE de l'appli",
         details: {
              contenu: [
-                { type: "texte", texte: "<strong>partage le QR code à tous le monde</strong>" },
+                { type: "texte", texte: "<strong>partage le QR code à tout le monde</strong>" },
                 
                 { type: "separateur" },
-                { type: "image", src: "images/qrcodeapp.png", alt: "QR CODE" },
+                { type: "image", src: "images/qrcodeTHT.png", alt: "QR CODE" },
                 ]
          }
      },
@@ -25,8 +25,8 @@ const conseils = [
         desc: "Deux fiches sur le crosstraining : un lexique matériels et entraînement / un guide des mouvements.",
         details: {
             contenu: [
-                { type: "image", src: "docs/lexique_crossfit1.jpg", alt: "Lexique crosstraining 1" },
-                { type: "image", src: "docs/lexique_crossfit2.jpg", alt: "Lexique crosstraining 2" }
+                { type: "image", src: "docs/lexique_crosstraining1.jpg", alt: "Lexique crosstraining 1" },
+                { type: "image", src: "docs/lexique_crosstraining2.jpg", alt: "Lexique crosstraining 2" }
             ]
         }
     },
