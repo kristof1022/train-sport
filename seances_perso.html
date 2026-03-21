@@ -1345,6 +1345,10 @@ function chargerDepuisLocalStorage() {
         var tabSm = document.querySelector('.seance-tab[onclick*="tabata"]');
         if (tabSm) showSeance('tabata', tabSm);
         document.getElementById('tab-name').value = c.nom || '';
+        // Gérer le champ repeat (répétitions de la séquence)
+        if (c.repeat) {
+            document.getElementById('tab-repeat').value = c.repeat;
+        }
         var smList = document.getElementById('tab-phases-list');
         smList.innerHTML = '';
         (c.phases || []).forEach(function(ph, i) {

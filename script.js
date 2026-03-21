@@ -2,7 +2,162 @@
 
 const workouts = [
 
-    { title: "Le WOD Lunges & Co", material: ["poids-corps"], body: "bas", duration: 20, type: "AMRAP", level: "Facile", desc: "<strong>AMRAP 20 min :</strong> 20 Jumping Lunges(fentes), 20 Sit-ups(abdos), 20 Air Squats.",
+  
+/* SEANCES TABATA */
+  
+    { title: "WOD TABATA 30/10", material: ["poids-corps"], body: "complet", duration: 6.5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos :</strong> Squats, Burpees, Mountain Climbers, Jumping jacks, Fente avant(lunges).",
+      details: { format_label: "TABATA — 6 min 30", intro: "30 sec travail / 10 sec repos — 2 tours complets :", exercises: [
+          { text: "30 sec SQUATS / 10 sec repos" }, { text: "30 sec BURPEES / 10 sec repos" }, { text: "30 sec MOUNTAIN CLIMBERS / 10 sec repos" }, { text: "30 sec JUMPING JACKS / 10 sec repos" }, { text: "30 sec FENTES AVANT / 10 sec repos" }, { text: "→ Répéter une 2ème fois (même ordre)" }
+        ], conseil: "30 secondes de travail / 10 secondes de repos.",
+        chargeable: true,
+        chargement: {
+          type: "tabata",
+          nom: "WOD TABATA 30/10",
+          travail: 30,
+          repos: 10,
+          rounds: 10,
+          exercices: [
+            { text: "SQUATS" },
+            { text: "BURPEES" },
+            { text: "MOUNTAIN CLIMBERS" },
+            { text: "JUMPING JACKS" },
+            { text: "FENTES AVANT" },
+            { text: "SQUATS" },
+            { text: "BURPEES" },
+            { text: "MOUNTAIN CLIMBERS" },
+            { text: "JUMPING JACKS" },
+            { text: "FENTES AVANT" }
+          ]
+        }       
+        }},
+
+    { title: "WOD TABATA 40/10", material: ["poids-corps"], body: "complet", duration: 10, type: "TABATA", level: "Facile", desc: "<strong>40 sec travail / 10 sec repos :</strong> Squats sautées, Pompes(push-ups), Sit-ups(abdos), Burpees.",
+      details: { format_label: "TABATA — 9 min 30", intro: "3 tours avec 40 sec de travail et 10 sec de repos :", exercises: [
+          { text: "40 sec SQUATS SAUTÉS / 10 sec repos" }, { text: "40 sec POMPES / 10 sec repos" }, { text: "40 sec SIT-UPS / 10 sec repos" }, { text: "40 sec BURPEES / 10 sec repos" }, { text: "→ Répéter 3 tours au total" }
+        ], scaled: { intro: "VERSION SCALED :", exercises: [
+          { text: "Remplacer les sit-ups par des crunches" }, { text: "Pompes sur les genoux ou inclinées" }, { text: "Burpees sans saut et/ou sans pompe" }
+        ]}, conseil: "40 secondes de travail / 10 secondes de repos.",
+        chargeable: true,
+        chargement: {
+          type: "tabata",
+          nom: "WOD TABATA 40/10",
+          travail: 40,
+          repos: 10,
+          rounds: 15,
+          exercices: [
+            { text: "SQUATS SAUTÉS" },
+            { text: "POMPES" },
+            { text: "SIT-UPS" },
+            { text: "BURPEES" },
+            { text: "SQUATS SAUTÉS" },
+            { text: "POMPES" },
+            { text: "SIT-UPS" },
+            { text: "BURPEES" },
+            { text: "SQUATS SAUTÉS" },
+            { text: "POMPES" },
+            { text: "SIT-UPS" },
+            { text: "BURPEES" }
+          ]
+        }              
+    }},
+
+    { title: "WOD TABATA 30/10 ABDOS", material: ["poids-corps"], body: "abdos", duration: 5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos pour les abdos :</strong> focus gainage.",
+      details: { format_label: "TABATA ABDOS — 5 min 10", intro: "30 sec travail / 10 sec repos — 2 tours :", exercises: [
+          { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }
+        ], conseil: "30 secondes de travail / 10 secondes de repos. Focus gainage.",
+        chargeable: true,
+        chargement: {
+          type: "tabata",
+          nom: "WOD TABATA 30/10 ABDOS",
+          travail: 30,
+          repos: 10,
+          rounds: 8,
+          exercices: [
+            { text: "Gainage sur les coudes" },
+            { text: "Gainage latéral gauche" },
+            { text: "Gainage sur les mains" },
+            { text: "Gainage latéral droit" },
+            { text: "Gainage sur les coudes" },
+            { text: "Gainage latéral gauche" },
+            { text: "Gainage sur les mains" },
+            { text: "Gainage latéral droit" }
+          ]
+        }
+      }},  
+
+  
+/* SEANCES AMRAP */
+  
+  { title: "WOD AMRAP 6 EXOS", material: ["poids-corps"], body: "complet", duration: 28, type: "AMRAP", level: "Facile", 
+   desc: "<strong>4 tours (1' repos) :</strong> 1 min Burpees, 1 min Pompes(push-ups), 1 min Squat jump, 1 min Marche de l'ours, 1 min Mountain climber, 1 min Sit-up(abdos).",
+      details: { format_label: "AMRAP 28 MINUTES", intro: "Réaliser 4 rounds (1 min repos entre chaque) :", 
+                exercises: [
+                  { text: "1 minute Burpees" }, { text: "1 minute Pompes" }, { text: "1 minute Squat jump" }, 
+                  { text: "1 minute Marche de l'ours" }, { text: "1 minute Mountain climber" }, { text: "1 minute Sit-up (abdos)" }, { text: "1 minute de repos" }
+                ], 
+                scaled: { intro: "VERSION SCALED :", 
+                exercises: [
+                { text: "Pompes inclinées ou sur genoux" }, { text: "Burpees sans saut et/ou sans pompe" }, { text: "Remplacer les sit-ups par des crunches" }
+                ]},
+                conseil: "-",
+               chargeable: true,
+                  chargement: {
+                  type: "surmesure",
+                  nom: "WOD AMRAP 6 EXOS",
+                  repeat: 4,
+                  phases: [
+                      { type: "travail", sec: 60, text: "Burpees" },
+                      { type: "travail", sec: 60, text: "Pompes" },
+                      { type: "travail", sec: 60, text: "Squat jump" },
+                      { type: "travail", sec: 60, text: "Marche de l'ours" },
+                      { type: "travail", sec: 60, text: "Mountain climber" },
+                      { type: "travail", sec: 60, text: "Sit-up (abdos)" },
+                      { type: "repos",   sec: 60, text: "Repos" }
+                  ]
+                  }
+               }},
+
+    { title: "WOD AMRAP 4 EXOS", material: ["traction"], body: "complet", duration: 30, type: "AMRAP", level: "Moyen", desc: "<strong>Pendant 30 min :</strong> 5 Burpees, 7 Tractions(pull-ups), 10 Pompes(push-ups), 15 Squats.",
+      details: { format_label: "AMRAP 30 MINUTES", intro: "Enchaîner les exercices suivants pendant 30 minutes :", exercises: [
+          { text: "5 Burpees" }, { text: "7 Tractions (pull-ups)" }, { text: "10 Pompes" }, { text: "15 Squats" }
+        ], scaled: { intro: "VERSION SCALED :", exercises: [
+          { text: "Pompes inclinées ou sur les genoux" }, { text: "Burpees sans saut et/ou sans pompe" }, { text: "Tractions TRX ou avec élastique" }
+        ]}, conseil: "-",
+        chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "WOD AMRAP 4 EXOS",
+          duree_min: 30,
+          exercices: [
+            { text: "5 Burpees" },
+            { text: "7 Tractions (pull-ups)" },
+            { text: "10 Pompes" },
+            { text: "15 Squats" },
+          ]
+        }
+    }},
+
+    { title: "WOD AMRAP 3 EXOS", material: ["traction", "poids-corps"], body: "complet", duration: 20, type: "AMRAP", level: "Facile", desc: "<strong>Pendant 20 min :</strong> 5 Tractions(pull-ups), 10 Pompes(push-ups), 15 Squats.",
+      details: { format_label: "AMRAP 20 MINUTES", intro: "Enchaîner les exercices suivants pendant 20 minutes :", exercises: [
+          { text: "5 Tractions (pull-ups)" }, { text: "10 Pompes" }, { text: "15 Squats" }
+        ], scaled: { intro: "VERSION SCALED :", exercises: [
+          { text: "Tractions TRX ou avec élastique" }, { text: "Pompes inclinées ou sur les genoux" }
+        ]}, conseil: "-",
+          chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "WOD AMRAP 3 EXOS",
+          duree_min: 20,
+          exercices: [
+            { text: "5 Tractions (pull-ups)" },
+            { text: "10 Pompes" },
+            { text: "15 Squats" },
+          ]
+        }            
+        }},
+  
+  
+  { title: "Le WOD Lunges & Co", material: ["poids-corps"], body: "bas", duration: 20, type: "AMRAP", level: "Facile", desc: "<strong>AMRAP 20 min :</strong> 20 Jumping Lunges(fentes), 20 Sit-ups(abdos), 20 Air Squats.",
       details: { format_label: "AMRAP 20 MINUTES", intro: "Réaliser les exercices :", exercises: [
           { text: "20 Fentes sautées (Jumping lunges)" }, { text: "20 Sit-ups (abdos)" }, { text: "20 Squats poids de corps (air squats)" }
         ], conseil: "But d'un AMRAP : faire le plus de tours dans le temps imparti. Essayer de garder un rythme régulier du début à la fin.",
@@ -57,10 +212,21 @@ const workouts = [
         }       
       }},
 
-    { title: "Le WOD Nicole", material: ["traction"], body: "complet", duration: 20, type: "AMRAP", level: "Intense", desc: "Run 400m, Max Pull-ups(tractions).",
+    { title: "Le WOD Nicole", material: ["traction", "tapis-incurve"], body: "complet", duration: 20, type: "AMRAP", level: "Intense", desc: "Run 400m, Max Pull-ups(tractions).",
       details: { format_label: "AMRAP 20 MINUTES", exercises: [
           { text: "400 mètres de course à pied" }, { text: "Maximum de tractions (pull-ups)" }
-        ], conseil: "Le score est le nombre total de tractions effectuées." }},
+        ], conseil: "Le score est le nombre total de tractions effectuées.",
+          chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "Le WOD Nicole",
+          duree_min: 20,
+          exercices: [
+            { text: "400 mètres de course à pied" },
+            { text: "Maximum de tractions (pull-ups)" }
+          ]
+        }            
+      }},
 
     { title: "Le WOD Jump & Push", material: ["box-jump"], body: "complet", duration: 20, type: "AMRAP", level: "Moyen", desc: "10 Box Jumps, 15 Push-ups(pompes), 20 Sit-ups(abdos).",
       details: { format_label: "AMRAP 20 MINUTES", exercises: [
@@ -84,62 +250,7 @@ const workouts = [
           { text: "Burpees — maximum de répétitions" }
         ], conseil: "Max de burpees en 7 minutes. Privilégier un maximum de répétitions sans pause. Les plus forts touchent lors du saut une barre à 15 cm au-dessus de la position bras levés." }},
 
-    { title: "WOD AMRAP 6 EXOS", material: ["poids-corps"], body: "complet", duration: 28, type: "AMRAP", level: "Facile", desc: "<strong>4 tours (1' repos) :</strong> 1 min Burpees, 1 min Pompes(push-ups), 1 min Squat jump, 1 min Marche de l'ours, 1 min Mountain climber, 1 min Sit-up(abdos).",
-      details: { format_label: "AMRAP 28 MINUTES", intro: "Réaliser 4 rounds (1 min repos entre chaque) :", exercises: [
-          { text: "1 minute Burpees" }, { text: "1 minute Pompes" }, { text: "1 minute Squat jump" }, { text: "1 minute Marche de l'ours" }, { text: "1 minute Mountain climber" }, { text: "1 minute Sit-up (abdos)" }, { text: "1 minute de repos" }
-        ], scaled: { intro: "VERSION SCALED :", exercises: [
-          { text: "Pompes inclinées ou sur genoux" }, { text: "Burpees sans saut et/ou sans pompe" }, { text: "Remplacer les sit-ups par des crunches" }
-        ]}, conseil: "-" }},
-
-    { title: "WOD AMRAP 4 EXOS", material: ["traction"], body: "complet", duration: 30, type: "AMRAP", level: "Moyen", desc: "<strong>Pendant 30 min :</strong> 5 Burpees, 7 Tractions(pull-ups), 10 Pompes(push-ups), 15 Squats.",
-      details: { format_label: "AMRAP 30 MINUTES", intro: "Enchaîner les exercices suivants pendant 30 minutes :", exercises: [
-          { text: "5 Burpees" }, { text: "7 Tractions (pull-ups)" }, { text: "10 Pompes" }, { text: "15 Squats" }
-        ], scaled: { intro: "VERSION SCALED :", exercises: [
-          { text: "Pompes inclinées ou sur les genoux" }, { text: "Burpees sans saut et/ou sans pompe" }, { text: "Tractions TRX ou avec élastique" }
-        ]}, conseil: "-" }},
-
-    { title: "WOD AMRAP 3 EXOS", material: ["traction", "poids-corps"], body: "complet", duration: 20, type: "AMRAP", level: "Facile", desc: "<strong>Pendant 20 min :</strong> 5 Tractions(pull-ups), 10 Pompes(push-ups), 15 Squats.",
-      details: { format_label: "AMRAP 20 MINUTES", intro: "Enchaîner les exercices suivants pendant 20 minutes :", exercises: [
-          { text: "5 Tractions (pull-ups)" }, { text: "10 Pompes" }, { text: "15 Squats" }
-        ], scaled: { intro: "VERSION SCALED :", exercises: [
-          { text: "Tractions TRX ou avec élastique" }, { text: "Pompes inclinées ou sur les genoux" }
-        ]}, conseil: "-" }},
-
-    { title: "WOD TABATA 30/10", material: ["poids-corps"], body: "complet", duration: 6.5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos :</strong> Squats, Burpees, Mountain Climbers, Jumping jacks, Fente avant(lunges).",
-      details: { format_label: "TABATA — 6 min 30", intro: "30 sec travail / 10 sec repos — 2 tours complets :", exercises: [
-          { text: "30 sec SQUATS / 10 sec repos" }, { text: "30 sec BURPEES / 10 sec repos" }, { text: "30 sec MOUNTAIN CLIMBERS / 10 sec repos" }, { text: "30 sec JUMPING JACKS / 10 sec repos" }, { text: "30 sec FENTE AVANT / 10 sec repos" }, { text: "→ Répéter une 2ème fois (même ordre)" }
-        ], conseil: "30 secondes de travail / 10 secondes de repos." }},
-
-    { title: "WOD TABATA 40/10", material: ["poids-corps"], body: "complet", duration: 9.5, type: "TABATA", level: "Facile", desc: "<strong>40 sec travail / 10 sec repos :</strong> Squats sautées, Pompes(push-ups), Sit-ups(abdos), Burpees.",
-      details: { format_label: "TABATA — 9 min 30", intro: "3 tours avec 40 sec de travail et 10 sec de repos :", exercises: [
-          { text: "40 sec SQUATS SAUTÉS / 10 sec repos" }, { text: "40 sec POMPES / 10 sec repos" }, { text: "40 sec SIT-UPS / 10 sec repos" }, { text: "30 sec BURPEES / 10 sec repos" }, { text: "→ Répéter 3 tours au total" }
-        ], scaled: { intro: "VERSION SCALED :", exercises: [
-          { text: "Remplacer les sit-ups par des crunches" }, { text: "Pompes sur les genoux ou inclinées" }, { text: "Burpees sans saut et/ou sans pompe" }
-        ]}, conseil: "40 secondes de travail / 10 secondes de repos." }},
-
-    { title: "WOD TABATA 30/10 ABDOS", material: ["poids-corps"], body: "abdos", duration: 5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos pour les abdos :</strong> focus gainage.",
-      details: { format_label: "TABATA ABDOS — 5 min 10", intro: "30 sec travail / 10 sec repos — 2 tours :", exercises: [
-          { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }
-        ], conseil: "30 secondes de travail / 10 secondes de repos. Focus gainage.",
-        chargeable: true,
-        chargement: {
-          type: "tabata",
-          nom: "WOD TABATA 30/10 ABDOS",
-          travail: 30,
-          repos: 10,
-          rounds: 8,
-          exercices: [
-            { text: "Gainage sur les coudes" },
-            { text: "Gainage latéral gauche" },
-            { text: "Gainage sur les mains" },
-            { text: "Gainage latéral droit" },
-            { text: "Gainage sur les coudes" },
-            { text: "Gainage latéral gauche" },
-            { text: "Gainage sur les mains" },
-            { text: "Gainage latéral droit" }
-          ]
-        }
-      }},
+      
 
     { title: "Le WOD Death by Burpees", material: ["poids-corps"], body: "complet", duration: 15, type: "EMOM", level: "Intense", desc: "<strong>EMOM :</strong> Minute 1 : 1 Burpee, Minute 2 : 2 Burpees...",
       details: { format_label: "EMOM 15 MINUTES", exercises: [
@@ -737,6 +848,30 @@ const fractionneSéances = {
     ]
 };
 
+// =============================================
+// FAVORIS
+// =============================================
+
+function getFavoris() {
+    try { return JSON.parse(localStorage.getItem('favoris') || '[]'); }
+    catch(e) { return []; }
+}
+
+function toggleFavori(title, btn) {
+    var favoris = getFavoris();
+    var idx = favoris.indexOf(title);
+    if (idx === -1) {
+        favoris.push(title);
+        btn.textContent = '❤️';
+        btn.title = 'Retirer des favoris';
+    } else {
+        favoris.splice(idx, 1);
+        btn.textContent = '🤍';
+        btn.title = 'Ajouter aux favoris';
+    }
+    localStorage.setItem('favoris', JSON.stringify(favoris));
+}
+
 function displayWorkouts() {
     const grid = document.getElementById('workout-grid');
     
@@ -749,7 +884,9 @@ function displayWorkouts() {
     const bodyFilter = document.getElementById('filter-body').value;
     const timeFilter = document.getElementById('filter-time').value;
     const typeFilter = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
-    const levelFilter = document.getElementById('levelFilter') ? document.getElementById('levelFilter').value : 'all'; // AJOUT
+    const levelFilter = document.getElementById('levelFilter') ? document.getElementById('levelFilter').value : 'all';
+    const favorisFilter = document.getElementById('filter-favoris') ? document.getElementById('filter-favoris').value : 'all';
+    const favoris = getFavoris();
 
     const filtered = workouts.filter(w => {
         const matchSearch = w.title.toLowerCase().includes(searchTerm) || 
@@ -766,7 +903,8 @@ function displayWorkouts() {
         else if (timeFilter === 'long') matchTime = w.duration > 30;
         else if (timeFilter === 'libre') matchTime = w.duration === 0;
 
-        return matchSearch && matchMat && matchBody && matchType && matchLevel && matchTime;
+        const matchFavoris = favorisFilter === 'all' || (favorisFilter === 'favoris' && favoris.includes(w.title));
+        return matchSearch && matchMat && matchBody && matchType && matchLevel && matchTime && matchFavoris;
     });
 
     // Gestion du compteur
@@ -789,17 +927,21 @@ function displayWorkouts() {
         const durationText = workout.duration === 0 ? "Temps libre" : `${workout.duration} min`;
 
         // Bouton modale si details dispo, sinon fallback PDF
-        const btnHtml = workout.details
-            ? `<button onclick="openModal(${workouts.indexOf(workout)})" class="btn-full">📋 Voir la séance</button>`
-            : `<a href="${workout.pdf || '#'}" target="_blank" class="btn-full">Ouvrir la fiche PDF</a>`;
+        const btnHtml = workout.details ?
+            `<button onclick="openModal(${workouts.indexOf(workout)})" class="btn-full">📋 Voir la séance</button>` :
+            `<a href="${workout.pdf || '#'}" target="_blank" class="btn-full">Ouvrir la fiche PDF</a>`;
+
+        const isFavori = favoris.includes(workout.title);
+        const titleEscaped = workout.title.replace(/'/g, "\\'");
+        const favBtn = `<button class="btn-favori" onclick="toggleFavori('${titleEscaped}', this)" title="${isFavori ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${isFavori ? '❤️' : '🤍'}</button>`;
 
         grid.innerHTML += `
             <div class="card ${typeClass}">
                 <div>
-                    ${materialTags}
-                    <span class="tag tag-body">${workout.body}</span>
-                    <span class="tag tag-time">${durationText}</span>
-                    <span class="tag tag-${workout.level.toLowerCase()}">${workout.level}</span>
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div style="flex:1;">${materialTags}<span class="tag tag-body">${workout.body}</span><span class="tag tag-time">${durationText}</span><span class="tag tag-${workout.level.toLowerCase()}">${workout.level}</span></div>
+                        ${favBtn}
+                    </div>
                     <h3>${workout.title}</h3>
                     <div class="card-desc">${workout.desc}</div>
                 </div>
@@ -838,7 +980,7 @@ function openModal(index) {
     let html = '';
 
     // Cas spécial RUN TEMPO : sélecteur de niveau (traitement avant tout le reste)
-    if (d.type_special === 'run_tempo') {
+    if (d.type_special === 'run_tempo' || d.type_special === 'avec_niveaux') {
         html += '<p class="modal-format-label">' + d.format_label + '</p>';
         html += '<div class="run-tempo-selector">';
         html += '<p class="modal-section-title">Choisir votre niveau</p>';
@@ -853,8 +995,8 @@ function openModal(index) {
             html += '<div class="modal-conseil"><strong>&#x1F4A1; Conseil</strong>' + d.conseil + '</div>';
         }
         document.getElementById('modal-body').innerHTML = html;
-        window._runTempoNiveaux = d.niveaux;
-        window._runTempoNiveauActif = 1;
+        window._niveauxActifs = d.niveaux;
+        window._niveauActif = 1;
         selectNiveau(1);
 
         // Bouton Charger pour Run Tempo
@@ -874,7 +1016,7 @@ function openModal(index) {
             btnCharger2.id = 'btn-charger';
             btnCharger2.className = 'btn-modal-charger';
             btnCharger2.textContent = '🚀 Charger dans Créer sa séance';
-            btnCharger2.onclick = function() { chargerSeance({ type: 'run_tempo' }); };
+            btnCharger2.onclick = function() { chargerSeance({ type: 'avec_niveaux' }); };
             footer2.insertBefore(btnCharger2, footer2.firstChild);
         }
         return;
@@ -951,16 +1093,16 @@ function openModal(index) {
     document.getElementById('modal-body').innerHTML = html;
 
     // Bouton "Charger dans Créer sa séance" si chargeable
-    var footer = document.getElementById('modal-footer');
-    var existingBtn = document.getElementById('btn-charger');
-    if (existingBtn) existingBtn.remove();
+    var footerMain = document.getElementById('modal-footer');
+    var existingBtnMain = document.getElementById('btn-charger');
+    if (existingBtnMain) existingBtnMain.remove();
     if (d.chargeable && d.chargement) {
         var btnCharger = document.createElement('button');
         btnCharger.id = 'btn-charger';
         btnCharger.className = 'btn-modal-charger';
         btnCharger.textContent = '🚀 Charger dans Créer sa séance';
         btnCharger.onclick = function() { chargerSeance(d.chargement); };
-        footer.insertBefore(btnCharger, footer.firstChild);
+        footerMain.insertBefore(btnCharger, footerMain.firstChild);
     }
 
     const modalOverlay = document.getElementById('modal-overlay');
@@ -970,9 +1112,9 @@ function openModal(index) {
 
 function chargerSeance(chargement) {
     // Cas spécial Run Tempo : construire les phases depuis le niveau actif
-    if (chargement && chargement.type === 'run_tempo') {
-        var niveauActif = window._runTempoNiveauActif || 1;
-        var niveaux = window._runTempoNiveaux;
+    if (chargement && chargement.type === 'avec_niveaux') {
+        var niveauActif = window._niveauActif || 1;
+        var niveaux = window._niveauxActifs;
         var niveau = niveaux ? niveaux.find(function(nv) { return nv.n === niveauActif; }) : null;
         if (niveau) {
             var phases = [];
@@ -1001,8 +1143,8 @@ function chargerSeance(chargement) {
 }
 
 function selectNiveau(n) {
-    window._runTempoNiveauActif = n; // Mémoriser le niveau sélectionné
-    var niveaux = window._runTempoNiveaux;
+    window._niveauActif = n; // Mémoriser le niveau sélectionné
+    var niveaux = window._niveauxActifs;
     if (!niveaux) return;
     var niveau = niveaux.find(function(nv) { return nv.n === n; });
     if (!niveau) return;
@@ -1044,6 +1186,8 @@ function closeModal() {
 
 document.querySelectorAll('.filter-bar select').forEach(function(select) {
     select.addEventListener('change', displayWorkouts);
+    const favorisSelect = document.getElementById('filter-favoris');
+    if (favorisSelect) favorisSelect.addEventListener('change', displayWorkouts);
 });
 
 const searchField = document.getElementById('search-input');

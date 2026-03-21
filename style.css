@@ -720,3 +720,18 @@ main h1, main h2 {
 .conseil-media {
     margin-bottom: 4px;
 }
+
+/* =============================================
+   BOUTON FAVORI
+   ============================================= */
+.btn-favori {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 2px 4px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+}
+.btn-favori:hover { transform: scale(1.3); }
