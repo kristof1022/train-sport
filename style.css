@@ -11,6 +11,7 @@ body {
 nav {
     background-color: #000;
     color: white;
+    border-bottom: 2px solid #888888;
 }
 
 .nav-container {
@@ -517,6 +518,24 @@ main {
 }
 
 #modal-footer .btn-modal-close:hover { background: #333; }
+
+/* Bouton charger dans créer sa séance */
+.btn-modal-charger {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #1a237e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.btn-modal-charger:hover { background: #283593; }
 
 /* =============================================
    BANDEAU EBOOK EN BAS DE PAGE

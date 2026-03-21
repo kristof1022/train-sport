@@ -4,7 +4,20 @@ const workouts = [
     { title: "Le WOD du Voyageur", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "100 Air Squats, 50 Push-ups(pompes), 100 Sit-ups(abdos), 50 Push-ups, 100 Air Squats.",
       details: { format_label: "FOR TIME", exercises: [
           { text: "100 Air squats" }, { text: "50 Pompes (push-ups)" }, { text: "100 Sit-ups (abdos)" }, { text: "50 Pompes (push-ups)" }, { text: "100 Air squats" }
-        ], conseil: "Durée estimée 20 minutes. Entraînement parfait en déplacement." }},
+        ], conseil: "Durée estimée 20 minutes. Entraînement parfait en déplacement.",
+        chargeable: true,
+        chargement: {
+          type: "fortime",
+          nom: "Le WOD du Voyageur",
+          exercices: [
+            { text: "100 Air squats" },
+            { text: "50 Pompes (push-ups)" },
+            { text: "100 Sit-ups (abdos)" },
+            { text: "50 Pompes (push-ups)" },
+            { text: "100 Air squats" }
+          ]
+        }
+      }},
 
     { title: "Le WOD 10 to 1", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "10-9-8-7-6-5-4-3-2-1 répétitions de : Burpees et Sit-ups(abdos).",
       details: { format_label: "FOR TIME", intro: "Réaliser 10 puis 9 / 8 / 7 / 6 / 5 / 4 / 3 / 2 / 1 reps des exercices suivants :", exercises: [
@@ -28,7 +41,19 @@ const workouts = [
           { text: "5 Tractions (pull-ups)" }, { text: "10 Pompes (push-ups)" }, { text: "15 Squats poids de corps (air squats)" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "5 Tractions australiennes ou tractions TRX" }, { text: "10 Pompes sur les genoux ou pompes inclinées" }, { text: "15 Squats poids de corps (air squats)" }
-        ]}, conseil: "But d'un AMRAP : faire le plus de tours dans le temps imparti. Essayer de garder un rythme régulier du début à la fin." }},
+        ]}, conseil: "But d'un AMRAP : faire le plus de tours dans le temps imparti. Essayer de garder un rythme régulier du début à la fin.",
+        chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "Le WOD Cindy",
+          duree_min: 20,
+          exercices: [
+            { text: "5 Tractions (pull-ups)" },
+            { text: "10 Pompes (push-ups)" },
+            { text: "15 Squats poids de corps (air squats)" }
+          ]
+        }
+      }},
 
     { title: "Le WOD Death by Burpees", material: ["poids-corps"], body: "complet", duration: 15, type: "EMOM", level: "Intense", desc: "<strong>EMOM :</strong> Minute 1 : 1 Burpee, Minute 2 : 2 Burpees...",
       details: { format_label: "EMOM 15 MINUTES", exercises: [
@@ -69,7 +94,19 @@ const workouts = [
           { text: "5 Tractions (pull-ups)" }, { text: "10 Pompes (push-ups)" }, { text: "15 Squats au poids de corps (air squats)" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "5 Tractions australiennes ou tractions TRX" }, { text: "10 Pompes inclinées ou sur les genoux" }, { text: "15 Squats au poids de corps (air squats)" }
-        ]}, conseil: "Effectuer tous les mouvements dans la minute. Le reste du temps sert de repos." }},
+        ]}, conseil: "Effectuer tous les mouvements dans la minute. Le reste du temps sert de repos.",
+        chargeable: true,
+        chargement: {
+          type: "emom",
+          nom: "Le WOD Chelsea",
+          duree_min: 30,
+          exercices: [
+            { text: "5 Tractions (pull-ups)" },
+            { text: "10 Pompes (push-ups)" },
+            { text: "15 Squats au poids de corps (air squats)" }
+          ]
+        }
+      }},
     
     { title: "Le WOD Candy", material: ["traction"], body: "complet", duration: 0, type: "FOR TIME", level: "Intense", desc: "5 rounds : 20 Pull-ups(tractions), 40 Push-ups(pompes), 60 Squats.",
       details: { format_label: "FOR TIME", intro: "Réaliser 5 rounds :", exercises: [
@@ -473,8 +510,27 @@ const workouts = [
     
     { title: "WOD TABATA 30/10 ABDOS", material: ["poids-corps"], body: "abdos", duration: 5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos pour les abdos :</strong> focus gainage.",
       details: { format_label: "TABATA ABDOS — 5 min 10", intro: "30 sec travail / 10 sec repos — 2 tours :", exercises: [
-          { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }, { text: "→ Répéter une 2ème fois (même ordre)" }
-        ], conseil: "30 secondes de travail / 10 secondes de repos. Focus gainage." }},
+          { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }
+        ], conseil: "30 secondes de travail / 10 secondes de repos. Focus gainage.",
+        chargeable: true,
+        chargement: {
+          type: "tabata",
+          nom: "WOD TABATA 30/10 ABDOS",
+          travail: 30,
+          repos: 10,
+          rounds: 8,
+          exercices: [
+            { text: "Gainage sur les coudes" },
+            { text: "Gainage latéral gauche" },
+            { text: "Gainage sur les mains" },
+            { text: "Gainage latéral droit" },
+            { text: "Gainage sur les coudes" },
+            { text: "Gainage latéral gauche" },
+            { text: "Gainage sur les mains" },
+            { text: "Gainage latéral droit" }
+          ]
+        }
+      }},
     
     { title: "WOD For Time 6 EXOS#1", material: ["traction", "poids-corps", "station-dips"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "<strong>4 tours (1' repos) :</strong> 10 Tractions(pull-ups), 15 Tractions australiennes, 10 Dips, 15 Pompes diamant(push-ups), 10 Fentes/jambe(lunges), 15 Squats.",
       details: { format_label: "FOR TIME", intro: "Réaliser 4 rounds (1 min repos entre chaque) :", exercises: [
@@ -747,9 +803,27 @@ function openModal(index) {
 
     document.getElementById('modal-body').innerHTML = html;
 
+    // Bouton "Charger dans Créer sa séance" si chargeable
+    var footer = document.getElementById('modal-footer');
+    var existingBtn = document.getElementById('btn-charger');
+    if (existingBtn) existingBtn.remove();
+    if (d.chargeable && d.chargement) {
+        var btnCharger = document.createElement('button');
+        btnCharger.id = 'btn-charger';
+        btnCharger.className = 'btn-modal-charger';
+        btnCharger.textContent = '🚀 Charger dans Créer sa séance';
+        btnCharger.onclick = function() { chargerSeance(d.chargement); };
+        footer.insertBefore(btnCharger, footer.firstChild);
+    }
+
     const modalOverlay = document.getElementById('modal-overlay');
     modalOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+}
+
+function chargerSeance(chargement) {
+    var encoded = encodeURIComponent(JSON.stringify(chargement));
+    window.location.href = 'seances_perso.html?seance=' + encoded;
 }
 
 function selectNiveau(n) {
