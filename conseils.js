@@ -4,8 +4,23 @@ const conseils = [
 
     // --- EXEMPLE AVEC MODALE RICHE ---
     {
+        title: "PARTAGE MOI",
+        categorie: "Entraînement",
+        tags: ["QR CODE"],
+        desc: "QR CODE de l'appli",
+        details: {
+             contenu: [
+                { type: "texte", texte: "<strong>partage le QR code à tous le monde</strong>" },
+                
+                { type: "separateur" },
+                { type: "image", src: "images/qrcodeapp.png", alt: "QR CODE" },
+                ]
+         }
+     },
+    
+    {
         title: "CROSSTRAINING — Lexique",
-        categorie: "Lexique",
+        categorie: "Entraînement",
         tags: ["crosstraining", "lexique", "matériel"],
         desc: "Deux fiches sur le crosstraining : un lexique matériels et entraînement / un guide des mouvements.",
         details: {
@@ -15,6 +30,43 @@ const conseils = [
             ]
         }
     },
+    
+    //{
+    //    title: "CONCENTRIQUE / EXCENTRIQUE : Le cycle du mouvement",
+    //    categorie: "Entraînement",
+     //   tags: ["technique"],
+    //    desc: "Deux phases dans le mouvement à identifier pour progresser.",
+    //    details: {
+    //         contenu: [
+    //             { type: "texte", texte: "Dans presque chaque exercice de renforcement, le muscle passe par deux phases distinctes. Savoir les identifier et les manipuler est la clé pour progresser." },
+    //             { type: "separateur" },
+     //            { type: "texte", texte: "<strong style='font-size:1.1em; color:#000;'>📌 1-la phase concentrique :</strong>" },
+    //             { type: "texte", texte: "• Pieds écartés à largeur d'épaules\n• Genoux dans l'axe des pieds\n• Dos droit, poitrine haute\n• Descendre jusqu'aux hanches sous les genoux" },
+    //             { type: "image", src: "images/squat.jpg", alt: "Position du squat" },
+    //             { type: "youtube", id: "VOTRE_ID_YOUTUBE" },
+    //             { type: "video_locale", src: "videos/squat.mp4" }
+    //         ]
+    //     }
+     //},
+    
+    {
+        title: "ECHAUFFEMENT",
+        categorie: "Entraînement",
+        tags: ["technique"],
+        desc: "A quoi ça sert?",
+        details: {
+             contenu: [
+                { type: "texte", texte: "<strong>Pourquoi s'échauffer ?</strong>" },
+                { type: "texte", texte: "L'échauffement est <em>indispensable</em> avant tout effort." },
+                { type: "separateur" },
+                 { type: "texte", texte: "<strong style='font-size:1.1em; color:#000;'>📌 Les 3 règles d'or :</strong>" },
+                 { type: "separateur" },
+                { type: "texte", texte: "• <strong>5 à 10 minutes</strong> minimum" },
+                { type: "texte", texte: "• Progressif et <em>jamais statique</em>" },
+                { type: "texte", texte: "• Spécifique à la séance du jour" },
+            ]
+         }
+     },
 
     // --- EXEMPLE AVEC LIEN PDF ---
     // {

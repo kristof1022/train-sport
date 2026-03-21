@@ -19,6 +19,53 @@ const workouts = [
         }
       }},
 
+    {
+        title: "Séance Pompes",
+        material: ["poids-corps"],
+        body: "haut",
+        duration: 0,
+        type: "MUSCU",
+        level: "Facile",
+        desc: "Programme progressif pour améliorer son nombre maximum de répétitions en pompes.",
+        details: {
+            format_label: "PROGRAMME POMPES PROGRESSIF",
+            exercises: [
+                { text: "1️⃣ Faire son maximum de pompes en une série" },
+                { text: "2️⃣ Diviser ce résultat par 2 → c'est votre nombre de reps par série" },
+                { text: "3️⃣ Réaliser 5 séries de (max ÷ 2) avec 1min30 à 2min de repos entre chaque" },
+                { text: "4️⃣ Répéter 1 à 2 fois par jour" }
+            ],
+            intro: "La formule est simple :",
+            exemple: {
+                titre: "Exemple concret",
+                texte: "Votre max est 26 pompes → vous faites 5 × 13. Pour progresser, ajoutez 1 rep sur la 1ère série d'abord, puis les suivantes progressivement :",
+                series: ["13 13 13 13 13", "14 13 13 13 13", "14 14 13 13 13", "14 14 14 13 13", "…"]
+            },
+            gainage: [
+                { text: "🧱 Gainage en appui sur les coudes" },
+                { text: "🧱 Gainage en appui sur les mains" },
+                { text: "🧱 Gainage de côté (gauche et droit)" },
+                { text: "🧱 Gainage commando" }
+            ],
+            conseil: "Rien ne vous empêche d'ajouter des reps sur les genoux. Le gainage statique ou dynamique peut vous aider à vous tonifier en complément."
+        }
+    },
+
+    {
+        title: "Séances Fractionné course",
+        material: ["poids-corps", "tapis-incurve"],
+        body: "complet",
+        duration: 0,
+        type: "CARDIO",
+        level: "Moyen",
+        desc: "Séances de fractionné en course à pied pour s'améliorer au Luc Léger. Deux niveaux : débutant et confirmé.",
+        details: {
+            format_label: "FRACTIONNÉ COURSE À PIED",
+            type_special: "fractionne",
+            conseil: "S'échauffer en courant 10 minutes avant chaque séance. Alterner courses rapides et récupérations, sur piste (distances) ou en nature (temps d'effort)."
+        }
+    },
+
     { title: "Le WOD 10 to 1", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "10-9-8-7-6-5-4-3-2-1 répétitions de : Burpees et Sit-ups(abdos).",
       details: { format_label: "FOR TIME", intro: "Réaliser 10 puis 9 / 8 / 7 / 6 / 5 / 4 / 3 / 2 / 1 reps des exercices suivants :", exercises: [
           { text: "Burpees" }, { text: "Sit-ups (abdos)" }
@@ -664,6 +711,32 @@ const workouts = [
     
 ];
 
+// Données séances fractionné course
+const fractionneSéances = {
+    debutant: [
+        { seance: "10 × 200m vite",        recup: "100m de récupération" },
+        { seance: "12 × 30 sec effort",     recup: "30 sec de récupération" },
+        { seance: "6 × 400m",               recup: "200m de récupération" },
+        { seance: "8 × 1 min effort",       recup: "1 min de récupération" },
+        { seance: "3 × 800m",               recup: "400m de récupération" },
+        { seance: "3 × 3 min effort",       recup: "1 min 30 de récupération" },
+        { seance: "3 × 1000m",              recup: "400m de récupération" },
+        { seance: "3 × 5 min effort",       recup: "2 min 30 de récupération" },
+        { seance: "2 × 2000m",              recup: "600m de récupération" }
+    ],
+    confirme: [
+        { seance: "2 × (8 × 200m)",         recup: "r=40s, R=2min entre séries" },
+        { seance: "2 × (10 × 30sec-30sec)", recup: "R=2min entre séries" },
+        { seance: "10 × 400m",              recup: "Récup = 1 min" },
+        { seance: "10 × 1min30",            recup: "Récup = 1 min" },
+        { seance: "6 × 800m",               recup: "R = 1 min 30" },
+        { seance: "7 × 3 min",              recup: "R = 1 min 30" },
+        { seance: "5 × 1000m",              recup: "R = 2 min" },
+        { seance: "5 × 4 min",              recup: "R = 2 min" },
+        { seance: "3000m - 2000m - 1000m",  recup: "R = 2 min 30" }
+    ]
+};
+
 function displayWorkouts() {
     const grid = document.getElementById('workout-grid');
     
@@ -793,9 +866,64 @@ function openModal(index) {
     if (d.image) html += '<img src="' + d.image + '" alt="" style="width:100%; border-radius:8px; margin-bottom:12px;">';
     if (d.video) {html += '<video src="' + d.video + '" controls style="width:100%; border-radius:8px; margin-bottom:12px;"></video>';}
     if (d.youtube) {html += '<a href="https://www.youtube.com/watch?v=' + d.youtube + '" target="_blank" class="btn-full" style="margin-bottom:12px;">▶ Voir la vidéo sur YouTube</a>';}
+    // Cas spécial fractionné course
+    if (d.type_special === 'fractionne') {
+        html += '<p class="modal-intro">🔥 S\'échauffer 10 minutes avant chaque séance.</p>';
+        html += '<div class="modal-scaled" style="margin-bottom:12px">';
+        html += '<p class="modal-section-title">🟢 Coureur Débutant</p>';
+        html += '<ul class="modal-exercises">';
+        fractionneSéances.debutant.forEach(function(s) {
+            html += '<li><strong>' + s.seance + '</strong> — ' + s.recup + '</li>';
+        });
+        html += '</ul></div>';
+        html += '<div class="modal-scaled">';
+        html += '<p class="modal-section-title">🔴 Coureur Confirmé (- de 40min au 10km)</p>';
+        html += '<ul class="modal-exercises">';
+        fractionneSéances.confirme.forEach(function(s) {
+            html += '<li><strong>' + s.seance + '</strong> — ' + s.recup + '</li>';
+        });
+        html += '</ul></div>';
+        if (d.conseil) html += '<div class="modal-conseil"><strong>&#x1F4A1; Conseil</strong>' + d.conseil + '</div>';
+        document.getElementById('modal-body').innerHTML = html;
+        var overlay = document.getElementById('modal-overlay');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+
     html += '<ul class="modal-exercises">';
     d.exercises.forEach(function(ex) { html += '<li>' + ex.text + '</li>'; });
     html += '</ul>';
+
+    // Exemple concret (ex: séance pompes)
+    if (d.exemple) {
+        html += '<div class="modal-scaled">';
+        html += '<p class="modal-section-title">&#x1F4CA; ' + d.exemple.titre + '</p>';
+        html += '<p class="modal-intro">' + d.exemple.texte + '</p>';
+        html += '<ul class="modal-exercises">';
+        d.exemple.series.forEach(function(s) {
+            html += '<li style="font-family:monospace;letter-spacing:4px;font-weight:bold">' + s + '</li>';
+        });
+        html += '</ul></div>';
+    }
+
+    // Gainage complémentaire
+    if (d.gainage) {
+        html += '<div class="modal-scaled">';
+        html += '<p class="modal-section-title">Gainage complémentaire</p>';
+        html += '<ul class="modal-exercises">';
+        d.gainage.forEach(function(ex) { html += '<li>' + ex.text + '</li>'; });
+        html += '</ul></div>';
+    }
+
+    // Version scaled
+    if (d.scaled) {
+        html += '<div class="modal-scaled">';
+        if (d.scaled.intro) html += '<p class="modal-intro">' + d.scaled.intro + '</p>';
+        html += '<ul class="modal-exercises">';
+        d.scaled.exercises.forEach(function(ex) { html += '<li>' + ex.text + '</li>'; });
+        html += '</ul></div>';
+    }
 
     if (d.conseil) {
         html += '<div class="modal-conseil"><strong>&#x1F4A1; Conseil</strong>' + d.conseil + '</div>';
@@ -907,3 +1035,48 @@ function tirageAleatoire() {
         if (wodChoisi.pdf) window.open(wodChoisi.pdf, '_blank');
     }
 }
+
+// ══════════════════════════════════════════════════════════════
+// EXEMPLE DE CODAGE — MODALE AVEC IMAGE, VIDÉO ET YOUTUBE
+// (Décommenter et adapter pour utiliser)
+// ══════════════════════════════════════════════════════════════
+
+//    {
+//        title: "Nom de la séance",
+//        material: ["poids-corps"],
+//        body: "complet",
+//        duration: 20,
+//        type: "FOR TIME",
+//        level: "Moyen",
+//        desc: "Description courte de la séance.",
+//        details: {
+//            format_label: "FOR TIME",
+//            intro: "Texte d'introduction optionnel.",
+//
+//            // ── Image locale (fichier dans le dossier images/) ──
+//            image: "images/nom_image.jpg",
+//
+//            // ── Vidéo locale (fichier dans le dossier videos/) ──
+//            video: "videos/nom_video.mp4",
+//
+//            // ── Lien YouTube (ID de la vidéo uniquement) ────────
+//            // URL : https://www.youtube.com/watch?v=ABC123xyz
+//            //                                        ^^^^^^^^^^^  ← cet ID
+//            youtube: "ABC123xyz",
+//
+//            exercises: [
+//                { text: "10 Burpees" },
+//                { text: "15 Air Squats" },
+//                { text: "20 Sit-ups" }
+//            ],
+//            scaled: {
+//                intro: "VERSION SCALED :",
+//                exercises: [
+//                    { text: "10 Burpees sans saut" },
+//                    { text: "15 Air Squats" }
+//                ]
+//            },
+//            conseil: "Texte du conseil affiché en bas de la modale."
+//        }
+//    },
+

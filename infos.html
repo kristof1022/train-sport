@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/2090184-cddc39_ico.png">
+    <title>Infos Pratiques</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/2090184-cddc39.png" alt="Logo">
+            </a>
+        </div>
+        <ul>
+            <li><a href="index.html">Entraînements</a></li>
+            <li><a href="infos.html">Infos Pratiques</a></li>
+            <li><a href="chrono.html">Chronos</a></li>
+            <li><a href="seances_perso.html">Créer sa séance</a></li>
+        </ul>
+        <div class="nav-spacer"></div>
+    </div>
+</nav>
+
+<main>
+    <h2 style="text-align: center;">Conseils et modes d'emploi</h2>
+
+    <!-- Filtre -->
+    <div class="filter-bar" style="margin-bottom: 24px;">
+        <select id="filter-infos" onchange="filterInfos(this.value)">
+            <option value="all">🔼 Tout afficher 🔼</option>
+            <option value="conseils">Conseils</option>
+            <option value="modeemploi">Modes d'emploi</option>
+        </select>
+    </div>
+
+    <!-- Grille conseils -->
+    <div id="section-conseils">
+        <div id="conseils-grid" class="card-grid"></div>
+    </div>
+
+    <!-- Grille modes d'emploi -->
+    <div id="section-modeemploi">
+        <div class="card-grid">
+            <div class="card card-muscu">
+                <div>
+                    <span class="tag tag-material">Cardio</span>
+                    <span class="tag tag-body">Concept2</span>
+                    <h3>BikeErg Concept2</h3>
+                    <div class="card-desc">
+                        Manuel d'utilisation complet : réglage de la selle, du guidon, utilisation de l'écran PM5 et conseils d'entretien.
+                    </div>
+                </div>
+                <div class="card-buttons">
+                    <a href="docs/Concept2_BikeErg_Manual.pdf" target="_blank" class="btn-full">Voir le manuel PDF</a>
+                </div>
+            </div>
+
+            <div class="card card-muscu">
+                <div>
+                    <span class="tag tag-material">Cardio</span>
+                    <span class="tag tag-body">Concept2</span>
+                    <h3>Rameur Concept2</h3>
+                    <div class="card-desc">
+                        Guide d'utilisation du PM5.
+                    </div>
+                </div>
+                <div class="card-buttons">
+                    <a href="docs/PM5_QuickStartGuide_MultiLanguage_rameur.pdf" target="_blank" class="btn-full">Voir le manuel PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Modale conseil -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-box">
+        <button id="modal-close" aria-label="Fermer">✕</button>
+        <div id="modal-header">
+            <h2 id="modal-title"></h2>
+            <div class="modal-badges" id="modal-badges"></div>
+        </div>
+        <div id="modal-body"></div>
+        <div id="modal-footer">
+            <button class="btn-modal-close" onclick="closeModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<button id="backToTop" title="Retour en haut">↑</button>
+
+<script src="conseils.js"></script>
+<script>
+function filterInfos(val) {
+    var conseils   = document.getElementById('section-conseils');
+    var modeemploi = document.getElementById('section-modeemploi');
+    if (val === 'conseils') {
+        conseils.style.display   = 'block';
+        modeemploi.style.display = 'none';
+    } else if (val === 'modeemploi') {
+        conseils.style.display   = 'none';
+        modeemploi.style.display = 'block';
+    } else {
+        conseils.style.display   = 'block';
+        modeemploi.style.display = 'block';
+    }
+}
+</script>
+
+</body>
+</html>
