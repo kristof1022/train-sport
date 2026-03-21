@@ -231,28 +231,59 @@ const workouts = [
     { title: "Le WOD Jump & Push", material: ["box-jump"], body: "complet", duration: 20, type: "AMRAP", level: "Moyen", desc: "10 Box Jumps, 15 Push-ups(pompes), 20 Sit-ups(abdos).",
       details: { format_label: "AMRAP 20 MINUTES", exercises: [
           { text: "10 Box jumps (sauts sur boîte/banc)" }, { text: "15 Pompes (push-ups)" }, { text: "20 Sit-ups (abdos)" }
-        ], conseil: "On peut remplacer les box jumps par des squats jumps (sans matériel)." }},
+        ], conseil: "On peut remplacer les box jumps par des squats jumps (sans matériel).",
+        chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "Le WOD Jump & Push",
+          duree_min: 20,
+          exercices: [
+            { text: "10 Box jumps (sauts sur boîte/banc)" },
+            { text: "15 Pompes (push-ups)" },
+            { text: "20 Sit-ups (abdos)" }
+          ]
+        }                   
+        }},
 
     { title: "Le WOD Plank & Push", material: ["poids-corps"], body: "complet", duration: 15, type: "AMRAP", level: "Facile", desc: "10 Push-ups(pompes), 20 Sit-ups(abdos), 30 sec Plank(gainage planche-abdos).",
       details: { format_label: "AMRAP 15 MINUTES", exercises: [
           { text: "10 Pompes (push-ups)" }, { text: "20 Sit-ups (abdos)" }, { text: "30 sec de gainage en planche" }
-        ], conseil: "Sur la planche, aspirer le nombril et serrer les fessiers." }},
+        ], conseil: "Sur la planche, aspirer le nombril et serrer les fessiers.",
+        chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "Le WOD Plank & Push",
+          duree_min: 15,
+          exercices: [
+            { text: "10 Pompes (push-ups)" }, { text: "20 Sit-ups (abdos)" }, { text: "30 sec de gainage en planche" }
+          ]
+        }               
+        }},
 
     { title: "Le WOD Cindy XXX", material: ["traction"], body: "complet", duration: 20, type: "AMRAP", level: "Intense", desc: "<strong>AMRAP 20 min :</strong> WOD CINDY version hard ; Pull-ups(tractions), Push-ups(pompes), Air Squats.",
       details: { format_label: "AMRAP 20 MINUTES", intro: "Enchaîner les séries progressives :", exercises: [
-          { text: "10 Pull-Ups + 20 Push-Ups + 30 Air Squats" }, { text: "15 Pull-Ups + 30 Push-Ups + 45 Air Squats" }, { text: "20 Pull-Ups + 40 Push-Ups + 60 Air Squats" }, { text: "25 Pull-Ups + 50 Push-Ups + 75 Air Squats" }, { text: "30 Pull-Ups + 60 Push-Ups + 90 Air Squats" }
+          { text: "10 Pull-Ups(tractions) + 20 Push-Ups(pompes) + 30 Air Squats" }, { text: "15 Pull-Ups + 30 Push-Ups + 45 Air Squats" }, { text: "20 Pull-Ups + 40 Push-Ups + 60 Air Squats" }, { text: "25 Pull-Ups + 50 Push-Ups + 75 Air Squats" }, { text: "30 Pull-Ups + 60 Push-Ups + 90 Air Squats" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "Remplacer les tractions par des tractions australiennes ou TRX" }, { text: "Pompes sur les genoux ou inclinées" }
-        ]}, conseil: "Version musclée du WOD CINDY." }},
+        ]}, conseil: "Version musclée du WOD CINDY.",
+        chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "Le WOD Cindy XXX",
+          duree_min: 20,
+          exercices: [
+            { text: "10 Pull-Ups(tractions)" }, { text: "20 Push-Ups(pompes)" }, { text: "30 Air Squats" },
+            { text: "15 Pull-Ups(tractions)" }, { text: "30 Push-Ups(pompes)" }, { text: "45 Air Squats" },
+            { text: "20 Pull-Ups(tractions)" }, { text: "40 Push-Ups(pompes)" }, { text: "60 Air Squats" },
+            { text: "25 Pull-Ups(tractions)" }, { text: "50 Push-Ups(pompes)" }, { text: "75 Air Squats" },
+            { text: "30 Pull-Ups(tractions)" }, { text: "60 Push-Ups(pompes)" }, { text: "90 Air Squats" }
+          ]
+        }                
+        }},
 
-    { title: "Le WOD Open 12.1", material: ["poids-corps"], body: "complet", duration: 7, type: "AMRAP", level: "Facile", desc: "<strong>AMRAP 7 min :</strong> Maximum de Burpees.",
-      details: { format_label: "AMRAP 7 MINUTES", exercises: [
-          { text: "Burpees — maximum de répétitions" }
-        ], conseil: "Max de burpees en 7 minutes. Privilégier un maximum de répétitions sans pause. Les plus forts touchent lors du saut une barre à 15 cm au-dessus de la position bras levés." }},
-
-      
-
-    { title: "Le WOD Death by Burpees", material: ["poids-corps"], body: "complet", duration: 15, type: "EMOM", level: "Intense", desc: "<strong>EMOM :</strong> Minute 1 : 1 Burpee, Minute 2 : 2 Burpees...",
+/* SEANCES EMOM */  
+  
+      { title: "Le WOD Death by Burpees", material: ["poids-corps"], body: "complet", duration: 15, type: "EMOM", level: "Intense", desc: "<strong>EMOM :</strong> Minute 1 : 1 Burpee, Minute 2 : 2 Burpees...",
       details: { format_label: "EMOM 15 MINUTES", exercises: [
           { text: "1ère minute : 1 burpee (reste de la minute = repos)" },
           { text: "2ème minute : 2 burpees" }, { text: "3ème minute : 3 burpees" },
@@ -260,7 +291,17 @@ const workouts = [
           { text: "15ème minute : 15 burpees" }
         ], scaled: { intro: "VERSION SCALED — 2 suggestions :", exercises: [
           { text: "Faire les burpees sans saut" }, { text: "Faire les burpees sans la pompe" }
-        ]}, conseil: "EMOM : faire le nombre de répétitions prévu, le reste du temps dans la minute sert à se reposer. Cela se corse à partir de la 10ème minute." }},
+        ]}, conseil: "EMOM : faire le nombre de répétitions prévu, le reste du temps dans la minute sert à se reposer. Cela se corse à partir de la 10ème minute.",
+        chargeable: true,
+        chargement: {
+          type: "emom",
+          nom: "Le WOD Death by Burpees",
+          duree_min: 15,
+          exercices: [
+            { text: "Minute 1➔1 burpee \nMinute 2➔2 burpees \nMinute 3➔3 burpees \n.... \n.... \nMinute 15➔15 burpees" }
+            ]
+        }       
+        }},
 
     { title: "Le WOD Chelsea", material: ["traction"], body: "complet", duration: 30, type: "EMOM", level: "Moyen", desc: "<strong>EMOM 30 min :</strong> 5 Pull-ups(tractions), 10 Push-ups(pompes), 15 Squats.",
       details: { format_label: "EMOM 30 MINUTES", exercises: [
@@ -281,25 +322,77 @@ const workouts = [
         }
       }},
 
-    { title: "Le WOD Orbison", material: ["poids-corps"], body: "complet", duration: 0, type: "EMOM", level: "Moyen", desc: "<strong>EMOM 20 min :</strong> 4 Burpees, 6 Air Squats, 8 Sit-Ups(abdos).",
+
+  
+    { title: "Le WOD Orbison", material: ["poids-corps"], body: "complet", duration: 20, type: "EMOM", level: "Moyen", desc: "<strong>EMOM 20 min :</strong> 4 Burpees, 6 Air Squats, 8 Sit-Ups(abdos).",
       details: { format_label: "EMOM 20 MINUTES", exercises: [
           { text: "4 Burpees" }, { text: "6 Air squats" }, { text: "8 Sit-ups (abdos)" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "2 Burpees" }, { text: "3 Air squats" }, { text: "4 Sit-ups (abdos)" }
-        ]}, conseil: "Sur 1 minute, effectuer les 4 burpees, 6 air squats, 8 sit-ups. Le reste de la minute sert de repos. À enchaîner 20 fois." }},
+        ]}, conseil: "Sur 1 minute, effectuer les 4 burpees, 6 air squats, 8 sit-ups. Le reste de la minute sert de repos. À enchaîner 20 fois.",
+        chargeable: true,
+        chargement: {
+          type: "emom",
+          nom: "Le WOD Orbison",
+          duree_min: 20,
+          exercices: [
+            { text: "4 Burpees" }, { text: "6 Air squats" }, { text: "8 Sit-ups (abdos)" }
+          ]
+        }        
+        }},
 
     { title: "WOD 3 EXOS 10 MIN", material: ["poids-corps"], body: "complet", duration: 10, type: "EMOM", level: "Facile", desc: "<strong>Chaque minute :</strong> 5 Burpees, 10 Squats jump, 5 Pompes(push-ups).",
       details: { format_label: "EMOM 10 MINUTES", exercises: [
           { text: "5 Burpees" }, { text: "10 Squats jump" }, { text: "5 Pompes" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "5 Burpees sans saut et/ou sans pompes" }, { text: "10 Squats" }, { text: "5 Pompes inclinées ou sur les genoux" }
-        ]}, conseil: "EMOM : pendant la minute exécuter les burpees, squats jump et pompes. Le reste de la minute sert de repos." }},
+        ]}, conseil: "EMOM : pendant la minute exécuter les burpees, squats jump et pompes. Le reste de la minute sert de repos.",
+        chargeable: true,
+        chargement: {
+          type: "emom",
+          nom: "WOD 3 EXOS 10 MIN",
+          duree_min: 10,
+          exercices: [
+            { text: "5 Burpees" }, { text: "10 Squats jump" }, { text: "5 Pompes" }
+          ]
+        }        
+        }},
 
     { title: "WOD Burpees Pyramide", material: ["poids-corps"], body: "complet", duration: 16, type: "EMOM", level: "Intense", desc: "<strong>Pyramide Burpees :</strong> Commencer à 6 burpees la 1ère min, puis gravir et descendre la pyramide pendant 16 minutes",
-      details: { format_label: "EMOM 16 MINUTES — PYRAMIDE BURPEES", intro: "Monter puis descendre la pyramide :", exercises: [
+      details: { format_label: "EMOM 16 MINUTES — PYRAMIDE BURPEES", intro: "Monter puis descendre la pyramide :",
+                // ── Image locale (fichier dans le dossier images/) ──
+                image: "images/PyrBurpees.png",
+                exercises: [
           { text: "Min 1 : 6 burpees → Min 2 : 7 → Min 3 : 8 → Min 4 : 9 → Min 5 : 10 → Min 6 : 11 → Min 7 : 12 → Min 8 : 13" }, { text: "Min 9 : 13 → Min 10 : 12 → Min 11 : 11 → Min 12 : 10 → Min 13 : 9 → Min 14 : 8 → Min 15 : 7 → Min 16 : 6" }, { text: "Total : 152 burpees" }
-        ], conseil: "EMOM : exécuter les burpees pendant la minute, le reste sert de repos. Selon le niveau, partir de plus bas (ex : 1ère min = 2 burpees)." }},
+        ], conseil: "EMOM : exécuter les burpees pendant la minute, le reste sert de repos. Selon le niveau, partir de plus bas (ex : 1ère min = 2 burpees).",
+        chargeable: true,
+                  chargement: {
+                  type: "surmesure",
+                  nom: "WOD Burpees Pyramide",
+                  repeat: 0,
+                  phases: [
+                    { type: "travail", sec: 60, text: "6 Burpees" },
+                    { type: "travail", sec: 60, text: "7 Burpees" },
+                    { type: "travail", sec: 60, text: "8 Burpees" },
+                    { type: "travail", sec: 60, text: "9 Burpees" },
+                    { type: "travail", sec: 60, text: "10 Burpees" },
+                    { type: "travail", sec: 60, text: "11 Burpees" },
+                    { type: "travail", sec: 60, text: "12 Burpees" },
+                    { type: "travail", sec: 60, text: "13 Burpees" },
+                    { type: "travail", sec: 60, text: "13 Burpees" },
+                    { type: "travail", sec: 60, text: "12 Burpees" },
+                    { type: "travail", sec: 60, text: "11 Burpees" },
+                    { type: "travail", sec: 60, text: "10 Burpees" },
+                    { type: "travail", sec: 60, text: "9 Burpees" },
+                    { type: "travail", sec: 60, text: "8 Burpees" },
+                    { type: "travail", sec: 60, text: "7 Burpees" },
+                    { type: "travail", sec: 60, text: "6 Burpees" },
+                  ]
+                  }       
+        }},
 
+/* SEANCES FOR TIME */    
+  
     { title: "Le WOD du Voyageur", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "100 Air Squats, 50 Push-ups(pompes), 100 Sit-ups(abdos), 50 Push-ups, 100 Air Squats.",
       details: { format_label: "FOR TIME", exercises: [
           { text: "100 Air squats" }, { text: "50 Pompes (push-ups)" }, { text: "100 Sit-ups (abdos)" }, { text: "50 Pompes (push-ups)" }, { text: "100 Air squats" }
@@ -321,14 +414,32 @@ const workouts = [
     { title: "Le WOD 10 to 1", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "10-9-8-7-6-5-4-3-2-1 répétitions de : Burpees et Sit-ups(abdos).",
       details: { format_label: "FOR TIME", intro: "Réaliser 10 puis 9 / 8 / 7 / 6 / 5 / 4 / 3 / 2 / 1 reps des exercices suivants :", exercises: [
           { text: "Burpees" }, { text: "Sit-ups (abdos)" }
-        ], conseil: "Format dégressif — durée estimée 15 minutes." }},
+        ], conseil: "Format dégressif — durée estimée 15 minutes.",
+        chargeable: true,
+        chargement: {
+          type: "fortime",
+          nom: "Le WOD 10 to 1",
+          exercices: [
+            { text: "10 Burpees  /  10 Sit-ups (abdos) \n9 Burpees  /  9 Sit-ups (abdos) \n8 Burpees  /  8 Sit-ups (abdos) \n7 Burpees  /  7 Sit-ups (abdos) \n6 Burpees  /  6 Sit-ups (abdos) \n5 Burpees  /  5 Sit-ups (abdos) \n4 Burpees  /  4 Sit-ups (abdos) \n3 Burpees  /  3 Sit-ups (abdos) \n2 Burpees  /  2 Sit-ups (abdos) \n1 Burpees  /  1 Sit-ups (abdos)" },
+          ]
+        }
+      }},
 
     { title: "Le WOD Annie", material: ["corde"], body: "complet", duration: 0, type: "FOR TIME", level: "Intense", desc: "50-40-30-20-10 : Double-Unders et Sit-ups(abdos).",
       details: { format_label: "FOR TIME", intro: "Réaliser 50 puis 40 / 30 / 20 / 10 reps :", exercises: [
           { text: "Double unders (corde à sauter)" }, { text: "Sit-ups (abdos)" }
         ], scaled: { intro: "VERSION SCALED — même schéma 50 / 40 / 30 / 20 / 10 :", exercises: [
           { text: "Single unders (corde à sauter)" }, { text: "Sit-ups (abdos)" }
-        ]}, conseil: "Faire 50 DU - 50 sit-ups, puis 40 DU - 40 sit-ups, etc. Si difficile avec les double unders, faire des single unders. Le but est d'aller vite — faire les reps unbroken (sans pause)." }},
+        ]}, conseil: "Faire 50 DU - 50 sit-ups, puis 40 DU - 40 sit-ups, etc. Si difficile avec les double unders, faire des single unders. Le but est d'aller vite — faire les reps unbroken (sans pause).",
+        chargeable: true,
+        chargement: {
+          type: "fortime",
+          nom: "Le WOD Annie",
+          exercices: [
+            { text: "50 Double unders (corde à sauter, 2 tours pour 1 saut)  /  50 Sit-ups (abdos) \n40 Double unders  /  40 Sit-ups (abdos) \n30 Double unders  /  30 Sit-ups (abdos) \n20 Double unders  /  20 Sit-ups (abdos) \n10 Double unders  /  10 Sit-ups (abdos) \n<em>Version scaled : faire de simple saut à la corde</em>" },
+          ]
+        }        
+        }},
 
     { title: "Le WOD Angie", material: ["traction"], body: "complet", duration: 0, type: "FOR TIME", level: "Intense", desc: "100 Pull-ups(tractions), 100 Push-ups(pompes), 100 Sit-ups(abdos), 100 Squats.",
       details: { format_label: "FOR TIME", exercises: [
