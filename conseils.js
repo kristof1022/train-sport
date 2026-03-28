@@ -19,6 +19,29 @@ const conseils = [
      },
     
     {
+        title: "MODE D'EMPLOI",
+        categorie: "Entraînement",
+        tags: ["PDF"],
+        desc: "Comment utiliser l'appli",
+        pdf: "docs/modedemploi.pdf"
+         
+     },
+    
+    {
+        title: "CONTACT",
+        categorie: "Entraînement",
+        tags: ["CONTACT"],
+        desc: "votre avis m'intéresse",
+        details: {
+             contenu: [
+                { type: "texte", texte: "N'hésitez pas à m'écrire pour partager votre retour d'expérience sur le site : suggestion, ajout de séance d'entraînement... 🙂" },
+                { type: "separateur" },
+                { type: "email_contact", adresse: "totalhybridtraining@gmail.com", sujet: "Avis sur le site" },
+                ]
+         }
+     },
+    
+    {
         title: "CROSSTRAINING — Lexique",
         categorie: "Entraînement",
         tags: ["crosstraining", "lexique", "matériel"],
@@ -202,6 +225,28 @@ function openModalConseil(index) {
 
         else if (bloc.type === 'separateur') {
             html += '<hr style="border:none; border-top:1px solid #eee; margin:14px 0;">';
+        }
+
+        else if (bloc.type === 'lien') {
+            html += '<div style="text-align:center; margin:12px 0;">' +
+                    '<a href="' + bloc.url + '" class="btn-full" style="display:inline-block;">' +
+                    bloc.texte +
+                    '</a></div>';
+        }
+
+        else if (bloc.type === 'email_contact') {
+            var sujetEncode = encodeURIComponent(bloc.sujet || '');
+            var gmailUrl = 'https://mail.google.com/mail/?view=cm&to=' + bloc.adresse + '&su=' + sujetEncode;
+            html += '<div style="text-align:center; margin:16px 0;">' +
+                    '<div style="background:#f0f0f0; border-radius:8px; padding:10px 16px; display:inline-block; margin-bottom:14px;">' +
+                    '<span style="font-size:0.82em; color:#666; display:block; margin-bottom:4px;">Adresse email</span>' +
+                    '<span style="font-weight:700; color:#222; font-size:1em; user-select:all;">' + bloc.adresse + '</span>' +
+                    '</div>' +
+                    '<br>' +
+                    '<a href="' + gmailUrl + '" target="_blank" class="btn-full" style="display:inline-block;">' +
+                    '📧 Ouvrir dans Gmail' +
+                    '</a>' +
+                    '</div>';
         }
 
     });
