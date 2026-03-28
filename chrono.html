@@ -897,15 +897,58 @@ var tabInterval=null; var tabRunning=false;
 var tabPhase='travail'; var tabSec=0; var tabTotalSec=0;
 var tabCurRound=0; var tabTotRounds=0;
 
+// ══════════════════════════════════════════════════════
+// COMPTE À REBOURS PRET ? (5 sec) — commun à tous
+// ══════════════════════════════════════════════════════
+function lancerAvecCompte(labelId, timeId, displayId, callback) {
+    var sec = 5;
+    var labelEl  = document.getElementById(labelId);
+    var timeEl   = document.getElementById(timeId);
+    var displayEl = document.getElementById(displayId);
+
+    // Afficher fond noir + PRÊT ?
+    if (displayEl) { displayEl.classList.remove('phase-travail','phase-repos','phase-warmup','phase-recup'); displayEl.classList.add('phase-countdown'); }
+    if (labelEl)  labelEl.textContent  = 'PRÊT ?';
+    if (timeEl)   timeEl.textContent   = sec;
+
+    var countInterval = setInterval(function() {
+        sec--;
+        if (sec > 0) {
+            if (timeEl) timeEl.textContent = sec;
+            bipCountdown();
+        } else if (sec === 0) {
+            if (timeEl) timeEl.textContent = '0';
+        } else {
+            clearInterval(countInterval);
+            if (displayEl) displayEl.classList.remove('phase-countdown');
+            callback();
+        }
+    }, 1000);
+}
+
 function tabataStart() {
     if (tabRunning) return;
     if (tabCurRound===0) {
-        tabTotRounds = parseInt(document.getElementById('tab-rounds').value)||8;
-        tabCurRound=1; tabPhase='travail';
-        tabSec = parseInt(document.getElementById('tab-work').value)||20;
-        tabTotalSec=tabSec;
-        document.getElementById('tab-tot').textContent=tabTotRounds;
-        bipTravail(); tabataRender();
+        lancerAvecCompte('tabata-label','tabata-time','tabata-display', function() {
+            tabTotRounds = parseInt(document.getElementById('tab-rounds').value)||8;
+            tabCurRound=1; tabPhase='travail';
+            tabSec = parseInt(document.getElementById('tab-work').value)||20;
+            tabTotalSec=tabSec;
+            document.getElementById('tab-tot').textContent=tabTotRounds;
+            bipTravail(); tabataRender();
+            tabRunning=true;
+            setBtnActive('btn-tab-pause', false);
+            document.getElementById('btn-tab-start').disabled=true;
+            document.getElementById('btn-tab-pause').disabled=false;
+            tabInterval = setInterval(function() {
+                tabSec--;
+                if (tabSec<=3 && tabSec>0) { bipCountdown(); document.getElementById('tabata-time').textContent=tabSec; }
+                else if (tabSec===0) { document.getElementById('tabata-time').textContent='0'; }
+                else if (tabSec<0)   { tabSec=0; tabNextPhase(); }
+                else { tabataRender(); }
+            }, 1000);
+        });
+        return;
     }
     tabRunning=true;
     setBtnActive('btn-tab-pause', false);
@@ -1002,6 +1045,22 @@ var ftRunning = false;
 
 function fortimeStart() {
     if (ftRunning) return;
+    if (ftMs === 0) {
+        lancerAvecCompte('fortime-label','fortime-time','fortime-display', function() {
+            document.getElementById('fortime-label').textContent = '🏁 EN COURS';
+            setPhaseStyle(document.getElementById('fortime-display'), 'travail');
+            document.getElementById('btn-ft-start').disabled = true;
+            document.getElementById('btn-ft-pause').disabled = false;
+            setBtnActive('btn-ft-pause', false);
+            ftRunning = true;
+            var last = Date.now() - ftMs;
+            ftInterval = setInterval(function() {
+                ftMs = Date.now() - last;
+                document.getElementById('fortime-time').textContent = formatMSec(ftMs);
+            }, 30);
+        });
+        return;
+    }
     ftRunning = true;
     var last = Date.now() - ftMs;
     ftInterval = setInterval(function() {
@@ -1053,6 +1112,16 @@ function amrapStart() {
         amrapTotal = (m * 60 + s) * 1000;
         amrapMs = amrapTotal;
         if (amrapMs <= 0) return;
+        lancerAvecCompte('amrap-label','amrap-time','amrap-display', function() {
+            amrapRunning = true;
+            setBtnActive('btn-amrap-pause', false);
+            document.getElementById('amrap-label').textContent = '🔄 EN COURS';
+            setPhaseStyle(document.getElementById('amrap-display'), 'travail');
+            document.getElementById('btn-amrap-start').disabled = true;
+            document.getElementById('btn-amrap-pause').disabled = false;
+            amrapRunAfterCountdown();
+        });
+        return;
     }
     amrapRunning = true;
     setBtnActive('btn-amrap-pause', false);
@@ -1060,6 +1129,10 @@ function amrapStart() {
     setPhaseStyle(document.getElementById('amrap-display'), 'travail');
     document.getElementById('btn-amrap-start').disabled = true;
     document.getElementById('btn-amrap-pause').disabled = false;
+    amrapRunAfterCountdown();
+}
+
+function amrapRunAfterCountdown() {
     var last = Date.now();
     var lastSecShown = -1;
     amrapInterval = setInterval(function() {
@@ -1127,18 +1200,30 @@ var emomTotMin   = 10;
 function emomStart() {
     if (emomRunning) return;
     if (emomCurMin === 0) {
-        emomTotMin = parseInt(document.getElementById('emom-min').value) || 10;
-        document.getElementById('emom-tot').textContent = emomTotMin;
-        emomCurMin = 1;
-        emomSec    = 60;
-        bipTravail();
-        emomRender();
+        lancerAvecCompte('emom-label','emom-time','emom-display', function() {
+            emomTotMin = parseInt(document.getElementById('emom-min').value) || 10;
+            document.getElementById('emom-tot').textContent = emomTotMin;
+            emomCurMin = 1;
+            emomSec    = 60;
+            bipTravail();
+            emomRender();
+            emomRunning = true;
+            setBtnActive('btn-emom-pause', false);
+            document.getElementById('btn-emom-start').disabled = true;
+            document.getElementById('btn-emom-pause').disabled = false;
+            emomRunInterval();
+        });
+        return;
     }
     emomRunning = true;
     setBtnActive('btn-emom-pause', false);
     document.getElementById('btn-emom-start').disabled = true;
     document.getElementById('btn-emom-pause').disabled = false;
 
+    emomRunInterval();
+}
+
+function emomRunInterval() {
     emomInterval = setInterval(function() {
         emomSec--;
         if (emomSec <= 3 && emomSec > 0) {
@@ -1240,11 +1325,25 @@ function buildPyrSeq() {
 
 function pyramideStart() {
     if (pyrRunning) return;
-    if (pyrSeq.length===0||pyrIdx===0) { buildPyrSeq(); pyrIdx=0; pyrAdvance(); }
+    if (pyrSeq.length===0||pyrIdx===0) {
+        lancerAvecCompte('pyramide-label','pyramide-time','pyramide-display', function() {
+            buildPyrSeq(); pyrIdx=0; pyrAdvance();
+            pyrRunning=true;
+            setBtnActive('btn-pyr-pause', false);
+            document.getElementById('btn-pyr-start').disabled=true;
+            document.getElementById('btn-pyr-pause').disabled=false;
+            pyrRunInterval();
+        });
+        return;
+    }
     pyrRunning=true;
     setBtnActive('btn-pyr-pause', false);
     document.getElementById('btn-pyr-start').disabled=true;
     document.getElementById('btn-pyr-pause').disabled=false;
+    pyrRunInterval();
+}
+
+function pyrRunInterval() {
     pyrInterval=setInterval(function() {
         pyrSec--;
         if (pyrSec<=3&&pyrSec>0) { bipCountdown(); document.getElementById('pyramide-time').textContent=pyrSec; }
@@ -1379,13 +1478,25 @@ function seqStart() {
     if(seqItems.length===0||seqCur===0){
         buildSeqItems();
         if(seqItems.length===0) return;
-        seqCur=0; seqRepeat=parseInt(document.getElementById('seq-repeat').value)||1; seqRepCur=1;
-        seqAdvance();
+        lancerAvecCompte('surmesure-label','surmesure-time','surmesure-display', function() {
+            seqCur=0; seqRepeat=parseInt(document.getElementById('seq-repeat').value)||1; seqRepCur=1;
+            seqAdvance();
+            seqRunning=true;
+            setBtnActive('btn-seq-pause', false);
+            document.getElementById('btn-seq-start').disabled=true;
+            document.getElementById('btn-seq-pause').disabled=false;
+            seqRunInterval();
+        });
+        return;
     }
     seqRunning=true;
     setBtnActive('btn-seq-pause', false);
     document.getElementById('btn-seq-start').disabled=true;
     document.getElementById('btn-seq-pause').disabled=false;
+    seqRunInterval();
+}
+
+function seqRunInterval() {
     seqInterval=setInterval(function(){
         seqSec--;
         if(seqSec<=3&&seqSec>0){ bipCountdown(); document.getElementById('surmesure-time').textContent=seqSec; }

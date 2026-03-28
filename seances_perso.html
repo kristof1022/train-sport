@@ -333,7 +333,7 @@
         /* Next phase bar */
         .next-phase-bar {
             background: #0a0a1a; padding: 12px 20px;
-            border-bottom: 1px solid #1a1a2e;
+            border-bottom: 1px solid #1a1a2e; text-align: center;
         }
         .next-phase-label { font-size: 0.78em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
         .next-phase-info  { font-size: 0.92em; color: #ccc; font-weight: 600; }
@@ -904,13 +904,56 @@ function tabLancer() {
     showMode('tabata','exec');
 }
 
+// ══════════════════════════════════════════════════════
+// COMPTE À REBOURS PRÊT ? (5 sec)
+// ══════════════════════════════════════════════════════
+function lancerAvecCompte(labelId, timeId, displayId, callback) {
+    var sec = 5;
+    var labelEl   = document.getElementById(labelId);
+    var timeEl    = document.getElementById(timeId);
+    var displayEl = document.getElementById(displayId);
+    if (displayEl) {
+        displayEl.classList.remove('phase-travail','phase-repos','phase-warmup','phase-recup');
+        displayEl.classList.add('phase-warmup');
+    }
+    if (labelEl)   labelEl.textContent = 'PRÊT ?';
+    if (timeEl)    timeEl.textContent  = sec;
+    var countInterval = setInterval(function() {
+        sec--;
+        if (sec > 0) {
+            if (timeEl) timeEl.textContent = sec;
+            bipCountdown();
+        } else if (sec === 0) {
+            if (timeEl) timeEl.textContent = '0';
+        } else {
+            clearInterval(countInterval);
+            if (displayEl) displayEl.classList.remove('phase-warmup');
+            callback();
+        }
+    }, 1000);
+}
+
 function tabExecStart() {
     if (tabExecRunning||tabExecPhases.length===0) return;
     if (tabExecSec===0) {
-        tabExecSec=tabExecPhases[tabExecCur].sec;
-        tabExecTotalSec=tabExecSec;
-        tabExecBip(tabExecPhases[tabExecCur].type);
-        tabExecRender();
+        lancerAvecCompte('tab-exec-label','tab-exec-time','tab-exec-display', function() {
+            tabExecSec=tabExecPhases[tabExecCur].sec;
+            tabExecTotalSec=tabExecSec;
+            tabExecBip(tabExecPhases[tabExecCur].type);
+            tabExecRender();
+            tabExecRunning=true;
+            setBtnActive('tab-btn-pause',false);
+            document.getElementById('tab-btn-start').disabled=true;
+            document.getElementById('tab-btn-pause').disabled=false;
+            tabExecInterval=setInterval(function(){
+                tabExecSec--;
+                if (tabExecSec<=3&&tabExecSec>0) { bipCountdown(); document.getElementById('tab-exec-time').textContent=tabExecSec; }
+                else if (tabExecSec===0) { document.getElementById('tab-exec-time').textContent='0'; }
+                else if (tabExecSec<0)   { tabExecSec=0; tabExecNext(); }
+                else { tabExecRender(); }
+            },1000);
+        });
+        return;
     }
     tabExecRunning=true;
     setBtnActive('tab-btn-pause',false);
@@ -1068,11 +1111,29 @@ function amrapLancer() {
 
 function amrapExecStart() {
     if (amrapRunning) return;
+    if (amrapMs > 0 || amrapCurMin === 0) {
+        if (amrapMs === amrapTotal) {
+            lancerAvecCompte('amrap-exec-label','amrap-exec-time','amrap-exec-display', function() {
+                amrapRunning=true;
+                setBtnActive('amrap-btn-pause',false);
+                document.getElementById('amrap-exec-label').textContent='🔄 EN COURS';
+                setPhaseStyle(document.getElementById('amrap-exec-display'),'travail');
+                document.getElementById('amrap-btn-start').disabled=true;
+                document.getElementById('amrap-btn-pause').disabled=false;
+                amrapRunCore();
+            });
+            return;
+        }
+    }
     amrapRunning=true;
     setBtnActive('amrap-btn-pause',false);
     document.getElementById('amrap-exec-label').textContent='🔄 EN COURS';
     document.getElementById('amrap-btn-start').disabled=true;
     document.getElementById('amrap-btn-pause').disabled=false;
+    amrapRunCore();
+}
+
+function amrapRunCore() {
     var last=Date.now();
     var lastSecShown=-1;
     amrapInterval=setInterval(function(){
@@ -1170,13 +1231,34 @@ function emomLancer() {
 function emomExecStart() {
     if (emomRunning) return;
     if (emomCurMin===0) {
-        emomCurMin=1; emomSec=60;
-        bipTravail(); emomExecRender();
+        lancerAvecCompte('emom-exec-label','emom-exec-time','emom-exec-display', function() {
+            emomCurMin=1; emomSec=60;
+            bipTravail(); emomExecRender();
+            emomRunning=true;
+            setBtnActive('emom-btn-pause',false);
+            document.getElementById('emom-btn-start').disabled=true;
+            document.getElementById('emom-btn-pause').disabled=false;
+            emomRunCore();
+        });
+        return;
     }
     emomRunning=true;
     setBtnActive('emom-btn-pause',false);
     document.getElementById('emom-btn-start').disabled=true;
     document.getElementById('emom-btn-pause').disabled=false;
+    emomInterval=setInterval(function(){
+        emomSec--;
+        if (emomSec<=3&&emomSec>0) { bipCountdown(); document.getElementById('emom-exec-time').textContent=emomSec; }
+        else if (emomSec===0) { document.getElementById('emom-exec-time').textContent='0'; }
+        else if (emomSec<0) {
+            emomSec=0;
+            if (emomCurMin>=emomTotMin) { emomExecFinish(); }
+            else { emomCurMin++; emomSec=60; bipTravail(); emomExecRender(); }
+        } else { emomExecRender(); }
+    },1000);
+}
+
+function emomRunCore() {
     emomInterval=setInterval(function(){
         emomSec--;
         if (emomSec<=3&&emomSec>0) { bipCountdown(); document.getElementById('emom-exec-time').textContent=emomSec; }
@@ -1267,11 +1349,27 @@ function ftLancer() {
 
 function ftExecStart() {
     if (ftRunning) return;
+    if (ftMs===0) {
+        lancerAvecCompte('ft-exec-label','ft-exec-time','ft-exec-display', function() {
+            ftRunning=true;
+            setBtnActive('ft-btn-pause',false);
+            document.getElementById('ft-exec-label').textContent='🏁 EN COURS';
+            setPhaseStyle(document.getElementById('ft-exec-display'),'travail');
+            document.getElementById('ft-btn-start').disabled=true;
+            document.getElementById('ft-btn-pause').disabled=false;
+            ftRunCore();
+        });
+        return;
+    }
     ftRunning=true;
     setBtnActive('ft-btn-pause',false);
     document.getElementById('ft-exec-label').textContent='🏁 EN COURS';
     document.getElementById('ft-btn-start').disabled=true;
     document.getElementById('ft-btn-pause').disabled=false;
+    ftRunCore();
+}
+
+function ftRunCore() {
     var last=Date.now()-ftMs;
     ftInterval=setInterval(function(){
         ftMs=Date.now()-last;

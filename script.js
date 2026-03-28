@@ -808,75 +808,204 @@ const workouts = [
           { text: "10 Hollow Rocks" }, { text: "10 V-Ups" }, { text: "10 Tucks-Ups" }, { text: "10 sec Hollow Hold" }, { text: "1 minute de pause" }
         ], scaled: { intro: "VERSION SCALED — 5 rounds :", exercises: [
           { text: "10 Hollow Rock Scaled" }, { text: "10 Sit-Ups" }, { text: "10 Tucks-Ups" }, { text: "10 sec Hollow Hold Scaled" }, { text: "1 minute de pause" }
-        ]}, conseil: "-" }},
+        ]}, conseil: "-",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "Le WOD Durante Core",
+        exercices: [
+            { text: "<u>5 ROUNDS :</u>" },
+            { text: "10 Hollow Rocks" }, { text: "10 V-Ups" }, { text: "10 Tucks-Ups" }, { text: "10 sec Hollow Hold" }, { text: "1 minute de pause" }
+        ]
+        }       
+        }},
 
     { title: "Le WOD Dee", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "4 rounds : 40 Air Squats, 30 Hand Release Push-Up(pompes), 20 Burpees.",
       details: { format_label: "FOR TIME", intro: "Réaliser 4 rounds :", exercises: [
           { text: "40 Air Squats" }, { text: "30 Pompes avec décollement des mains en position basse (Hand Release Push-Ups)" }, { text: "20 Burpees" }, { text: "400m de course à pied (run)" }
         ], scaled: { intro: "VERSION SCALED — 4 rounds :", exercises: [
           { text: "40 Air Squats" }, { text: "30 Pompes ou pompes sur les genoux" }, { text: "20 Burpees" }, { text: "400m de course à pied" }
-        ]}, conseil: "-" }},
+        ]}, conseil: "-",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "Le WOD Dee",
+        exercices: [
+            { text: "<u>4 ROUNDS :</u>" },
+            { text: "40 Air Squats" }, { text: "30 Pompes avec décollement des mains en position basse (Hand Release Push-Ups)" }, { text: "20 Burpees" }, { text: "400m de course à pied (run)" }
+        ]
+        }              
+        }},
 
     { title: "Le WOD Riley", material: ["poids-corps","gilet-leste"], body: "complet", duration: 0, level: "Intense", type: "FOR TIME", desc: "2.4km Run, 150 Burpees, 2.4km Run.",
       details: { format_label: "FOR TIME", intro: "Avec gilet lesté de 9 kg/6 kg :", exercises: [
           { text: "2400m de course à pied (run)" }, { text: "150 Burpees" }, { text: "2400m de course à pied" }
         ], scaled: { intro: "VERSION SCALED (avec ou sans gilet) :", exercises: [
           { text: "1000m de course à pied" }, { text: "100 Burpees" }, { text: "1000m de course à pied" }
-        ]}, conseil: "-" }},
+        ]}, conseil: "-",
+        chargeable: true,
+        chargement: {
+          type: "fortime",
+          nom: "Le WOD Riley",
+          exercices: [
+            { text: "1000m de course à pied" }, { text: "100 Burpees" }, { text: "1000m de course à pied" }, { text: "<em>version avec un gilet : 9kg/6kg </em>" }
+             ]
+        }              
+        }},
 
     { title: "WOD For Time 6 EXOS#1", material: ["traction", "station-dips"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "<strong>4 tours (1' repos) :</strong> 10 Tractions(pull-ups), 15 Tractions australiennes, 10 Dips, 15 Pompes diamant(push-ups), 10 Fentes/jambe(lunges), 15 Squats.",
       details: { format_label: "FOR TIME", intro: "Réaliser 4 rounds (1 min repos entre chaque) :", exercises: [
           { text: "10 Tractions (pull-ups)" }, { text: "15 Tractions australiennes" }, { text: "10 Dips" }, { text: "15 Pompes diamant" }, { text: "10 Fentes/jambe (lunges)" }, { text: "15 Squats" }, { text: "1 minute de repos" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "Pompes inclinées ou sur genoux" }, { text: "Tractions avec TRX ou élastique" }
-        ]}, conseil: "-" }},
+        ]}, conseil: "-",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD For Time 6 EXOS#1",
+        exercices: [
+            { text: "<u>4 ROUNDS :</u>" },
+            { text: "10 Tractions (pull-ups)" }, { text: "15 Tractions australiennes" }, { text: "10 Dips" }, { text: "15 Pompes diamant" }, { text: "10 Fentes/jambe (lunges)" }, { text: "15 Squats" }, { text: "1 minute de repos" }
+        ]
+        }       
+        }},
 
     { title: "WOD 500 REPS", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "50 Montées de genoux, 50 Squats, 50 Demi squats sautés, 50 Pompes(push-ups), 50 Mountains climbers, 50 Coups de genoux, 50 Fentes(lunges), 50 Directs bras gauche/droit, 50 Burpees, 50 Jumping jacks.",
       details: { format_label: "FOR TIME", exercises: [
           { text: "50 Montées de genoux" }, { text: "50 Squats" }, { text: "50 Demi-squats sautés (position basse)" }, { text: "50 Pompes" }, { text: "50 Mountains climbers" }, { text: "50 Coups de genoux" }, { text: "50 Fentes (vers l'avant)" }, { text: "50 Directs bras avant / bras arrière" }, { text: "50 Burpees" }, { text: "50 Jumping jacks" }
-        ], conseil: "WOD orienté sport de combat." }},
+        ], conseil: "WOD orienté sport de combat.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD 500 REPS",
+        exercices: [
+            { text: "50 Montées de genoux" }, { text: "50 Squats" }, { text: "50 Demi-squats sautés (position basse)" }, { text: "50 Pompes" }, { text: "50 Mountains climbers" }, { text: "50 Coups de genoux" }, { text: "50 Fentes (vers l'avant)" }, { text: "50 Directs bras avant / bras arrière" }, { text: "50 Burpees" }, { text: "50 Jumping jacks" }
+        ]
+        }        
+        }},
 
     { title: "WOD For Time 6 EXOS#2", material: ["traction"], body: "complet", duration: 0, type: "FOR TIME", level: "Moyen", desc: "<strong>4 tours (1' repos) :</strong> 15 Burpees, 15 Squats jump, 15 Pompes(push-ups), 15 Tractions(pull-ups), 15 Fentes(lunges), 15 Sit-ups(abdos).",
       details: { format_label: "FOR TIME", intro: "Réaliser 4 rounds (1 min repos entre chaque) :", exercises: [
           { text: "15 Burpees" }, { text: "15 Squats jump" }, { text: "15 Pompes" }, { text: "15 Tractions (pull-ups)" }, { text: "15 Fentes (lunges)" }, { text: "15 Sit-ups (abdos)" }, { text: "1 minute de repos" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "Pompes inclinées ou sur genoux" }, { text: "Tractions avec TRX ou élastique" }, { text: "Remplacer les sit-ups par des crunches" }
-        ]}, conseil: "-" }},
+        ]}, conseil: "-",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD For Time 6 EXOS#2",
+        exercices: [
+            { text: "<u>4 ROUNDS :</u>" },
+            { text: "15 Burpees" }, { text: "15 Squats jump" }, { text: "15 Pompes" }, { text: "15 Tractions (pull-ups)" }, { text: "15 Fentes (lunges)" }, { text: "15 Sit-ups (abdos)" }, { text: "1 minute de repos" }
+        ]
+        }       
+        }},
 
     { title: "WOD 1000 REPS", material: ["traction", "station-dips", "box-jump"], body: "complet", duration: 0, type: "FOR TIME", level: "Intense", desc: "100 Tractions australiennes(pull-ups), 100 Pompes diamants(push-ups), 100 Squats jumps, 100 Mountain climbers, 100 Burpees, 100 Dips, 100 Gainage dynamique, 100 Box jumps, 100 Relevés de jambe, 100 Fentes marchées(walking lunges)",
       details: { format_label: "FOR TIME — 1000 REPS", exercises: [
           { text: "100 Tractions australiennes" }, { text: "100 Pompes diamants" }, { text: "100 Squats jump" }, { text: "100 Mountain climbers" }, { text: "100 Burpees" }, { text: "100 Dips" }, { text: "100 Gainage dynamique" }, { text: "100 Box jump" }, { text: "100 Relevés de jambes" }, { text: "100 Fentes marchées (walking lunges)" }
-        ], conseil: "WOD haut niveau." }},
+        ], conseil: "WOD haut niveau.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD 1000 REPS",
+        exercices: [
+            { text: "100 Tractions australiennes" }, { text: "100 Pompes diamants" }, { text: "100 Squats jump" }, { text: "100 Mountain climbers" }, { text: "100 Burpees" }, { text: "100 Dips" }, { text: "100 Gainage dynamique" }, { text: "100 Box jump" }, { text: "100 Relevés de jambes" }, { text: "100 Fentes marchées (walking lunges)" }
+        ]
+        }       
+        }},
 
     { title: "WOD BRI", material: ["poids-corps"], body: "complet", duration: 0, type: "FOR TIME", level: "Intense", desc: "<strong>36Reps / 2X18Reps / 3x12Reps / 4X9Reps / 6X6Reps :</strong> Burpees, Pompes(push-ups), Sit-ups(abdos), Squats.",
-      details: { format_label: "FOR TIME — 720 REPS", intro: "À chaque étape : Burpees / Push-ups / Sit-ups / Squats", exercises: [
+      details: { format_label: "FOR TIME — 720 REPS", intro: "À chaque étape : Burpees / Push-ups(pompes) / Sit-ups(abdos) / Squats", exercises: [
           { text: "Étape 1 : 36 reps × 4 exercices (1 fois)" }, { text: "Étape 2 : 18 reps × 4 exercices (2 fois)" }, { text: "Étape 3 : 12 reps × 4 exercices (3 fois)" }, { text: "Étape 4 : 9 reps × 4 exercices (4 fois)" }, { text: "Étape 5 : 6 reps × 4 exercices (6 fois)" }
-        ], conseil: "720 reps au total. À chaque étape on effectue 36 reps de chaque mouvement." }},
+        ], conseil: "720 reps au total. À chaque étape on effectue 36 reps de chaque mouvement.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD BRI",
+        exercices: [
+            { text: "Étape 1 : 36reps BURPEES / 36reps POMPES / 36reps SIT-UPS / 36reps SQUATS ➡️ <u>1 fois</u>" }, 
+            { text: "Étape 2 : 18reps BURPEES / 18reps POMPES / 18reps SIT-UPS / 18reps SQUATS ➡️ <u>2 fois</u>" }, 
+            { text: "Étape 3 : 12reps BURPEES / 12reps POMPES / 12reps SIT-UPS / 12reps SQUATS ➡️ <u>3 fois</u>" }, 
+            { text: "Étape 4 : 09reps BURPEES / 09reps POMPES / 09reps SIT-UPS / 09reps SQUATS ➡️ <u>4 fois</u>" }, 
+            { text: "Étape 4 : 06reps BURPEES / 06reps POMPES / 06reps SIT-UPS / 06reps SQUATS ➡️ <u>6 fois</u>" },
+        ]
+        }        
+        }},
 
     { title: "WOD HYBRID ANDRE", material: ["rameur"], body: "complet", duration: 0, type: "HYBRID", level: "Intense", desc: "<strong>FOR TIME:</strong> alternance Rameur(row), Burpees.",
       details: { format_label: "HYBRID — FOR TIME", exercises: [
           { text: "1000m Rameur" }, { text: "50 Burpees" }, { text: "800m Rameur" }, { text: "40 Burpees" }, { text: "600m Rameur" }, { text: "30 Burpees" }, { text: "400m Rameur" }, { text: "20 Burpees" }, { text: "200m Rameur" }, { text: "10 Burpees" }
-        ], conseil: "Durée estimée 40 minutes." }},
+        ], conseil: "Durée estimée 40 minutes.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD HYBRID ANDRE",
+        exercices: [
+            { text: "1000m Rameur" }, { text: "50 Burpees" }, { text: "800m Rameur" }, { text: "40 Burpees" }, { text: "600m Rameur" }, { text: "30 Burpees" }, { text: "400m Rameur" }, { text: "20 Burpees" }, { text: "200m Rameur" }, { text: "10 Burpees" }
+        ]
+        }       
+        }},
 
     { title: "WOD HYBRID DOMINO", material: ["poids-corps", "tapis-incurve"], body: "complet", duration: 0, type: "HYBRID", level: "Moyen", desc: "<strong>FOR TIME:</strong> alternance Course à pied(run), Squats/Burpees/Pompes(Push-ups)/Sit-ups(abdos).",
       details: { format_label: "HYBRID — FOR TIME", exercises: [
-          { text: "5 min Course à pied" }, { text: "50 Squats au poids de corps" }, { text: "5 min Course à pied" }, { text: "50 Burpees" }, { text: "5 min Course à pied" }, { text: "50 Pompes" }, { text: "5 min Course à pied" }, { text: "50 Sit-ups (abdos)" }
-        ], conseil: "Durée estimée 45 minutes." }},
+          { text: "5 min Course à pied" }, { text: "50 Squats au poids de corps" }, { text: "5 min Course à pied" }, { text: "50 Burpees" }, { text: "5 min Course à pied" }, { text: "50 Pompes (Push-ups)" }, { text: "5 min Course à pied" }, { text: "50 Sit-ups (abdos)" }
+        ], conseil: "Durée estimée 45 minutes.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD HYBRID DOMINO",
+        exercices: [
+            { text: "5 min Course à pied" }, { text: "50 Squats au poids de corps" }, { text: "5 min Course à pied" }, { text: "50 Burpees" }, { text: "5 min Course à pied" }, { text: "50 Pompes" }, { text: "5 min Course à pied" }, { text: "50 Sit-ups (abdos)" }
+        ]
+        }       
+        }},
 
     { title: "WOD HYBRID 4 TOURS#1", material: ["ballon-leste", "tapis-incurve", "traction"], body: "complet", duration: 0, type: "HYBRID", level: "Intense", desc: "<strong>4 TOURS FOR TIME:</strong> 600m. Course à pied(run), 30 Lancers de ballon lesté(wall-ball), 20 Sit-ups(abdos), 20 Tractions(pull-ups).",
       details: { format_label: "HYBRID — 4 TOURS FOR TIME", intro: "Effectuer 4 tours :", exercises: [
           { text: "600m de course à pied" }, { text: "30 Wall-Balls (ballon lesté)" }, { text: "20 Sit-ups (abdos)" }, { text: "20 Tractions (pull-ups)" }
-        ], conseil: "-" }},
+        ], conseil: "-",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD HYBRID 4 TOURS#1",
+        exercices: [
+            { text: "<u>4 ROUNDS :</u>" },
+            { text: "600m de course à pied" }, { text: "30 Wall-Balls (ballon lesté)" }, { text: "20 Sit-ups (abdos)" }, { text: "20 Tractions (pull-ups)" }
+        ]
+        }       
+        }},
 
     { title: "WOD HYBRID 4 TOURS#2", material: ["rameur", "tapis-incurve", "box-jump", "ski-erg"], body: "complet", duration: 0, type: "HYBRID", level: "Moyen", desc: "<strong>4 TOUS FOR TIME:</strong> 400m. Course à pied(run), 15 Burpees Box-jump Over, 400m. de rameur(row), 400 m. de SkiERG.",
       details: { format_label: "HYBRID — 4 TOURS FOR TIME", intro: "Effectuer 4 tours :", exercises: [
           { text: "400m de course à pied (rapide)" }, { text: "15 Burpees Box Jump Over" }, { text: "400m de Rameur (rapide)" }, { text: "400m de SkiERG (rapide)" }
-        ], conseil: "Ajuster la hauteur de la box-jump selon le niveau, ou effectuer des burpees simples." }},
+        ], conseil: "Ajuster la hauteur de la box-jump selon le niveau, ou effectuer des burpees simples.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD HYBRID 4 TOURS#2",
+        exercices: [
+            { text: "<u>4 ROUNDS :</u>" },
+            { text: "400m de course à pied (rapide)" }, { text: "15 Burpees Box Jump Over" }, { text: "400m de Rameur (rapide)" }, { text: "400m de SkiERG (rapide)" }
+        ]
+        }       
+        }},
 
     { title: "WOD HYBRID AMRAP40", material: ["rameur", "tapis-incurve", "ballon-leste", "sand-bag"], body: "complet", duration: 40, type: "HYBRID", level: "Moyen", desc: "<strong>AMRAP de 40 minutes:</strong> 1km de Rameur(row), 20 Fentes marchées avec sandbag(Lunges), 1km de Course à pied(run), 20 lancé de ballon lesté(wall-balls).",
       details: { format_label: "HYBRID — AMRAP 40 MINUTES", intro: "Enchaîner le circuit en effectuant un maximum de tours :", exercises: [
           { text: "1 km de Rameur" }, { text: "20 Fentes marchées avec SandBag" }, { text: "1 km de Course à pied" }, { text: "20 Lancés de ballon lesté contre un mur (wall-balls)" }
-        ], conseil: "Pour les fentes et les wall-balls, adapter le poids en fonction du niveau et/ou de votre forme du jour." }},
+        ], conseil: "Pour les fentes et les wall-balls, adapter le poids en fonction du niveau et/ou de votre forme du jour.",
+        chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "WOD HYBRID AMRAP40",
+          duree_min: 40,
+          exercices: [
+            { text: "1 km de Rameur" }, { text: "20 Fentes marchées avec SandBag" }, { text: "1 km de Course à pied" }, { text: "20 Lancés de ballon lesté contre un mur (wall-balls)" }
+          ]
+        }
+                
+      }},
 
     {
         title: "Séance Pompes",
@@ -912,27 +1041,66 @@ const workouts = [
 
     { title: "RENFO Haut & Postérieur", material: ["barre"], body: "complet", duration: 0, type: "MUSCU", level: "Moyen", desc: "5 rounds : 10 Deadlifts (soulevé de terre), 10 Bench Press (développé couché).",
       details: { format_label: "MUSCU / RENFORCEMENT", intro: "Réaliser 5 séries de ces 2 exercices (superset) :", exercises: [
-          { text: "10 Soulevé de terre (Deadlift → renforcement chaîne postérieure)" }, { text: "10 Développé couché (Bench Press → renforcement pectoraux, triceps, avant de l'épaule)" }
-        ], conseil: "Entraînement barre libre — adapter la charge à votre niveau. Demander conseils si vous débutez sur ces mouvements." }},
+          { text: "10 Soulevés de terre (Deadlift → renforcement chaîne postérieure)" }, { text: "10 Développés couchés (Bench Press → renforcement pectoraux, triceps, avant de l'épaule)" }
+        ], conseil: "Entraînement barre libre — adapter la charge à votre niveau. Demander conseils si vous débutez sur ces mouvements.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "RENFO Haut & Postérieur",
+        exercices: [
+            { text: "<u>5 ROUNDS :</u>" },
+            { text: "10 Soulevés de terre" }, { text: "10 Développés couchés" }
+        ]
+        }     
+        }},
 
     { title: "WOD 300", material: ["barre", "haltere", "box-jump", "traction"], body: "complet", duration: 0, type: "MUSCU", level: "Intense", desc: "<strong>l'entrainement spartiate :</strong> 25 Tractions, 50 Deadlifts(soulevé de terre), 50 Pompes(push-ups), 50 Box jumps, 50 relevés de jambes avec barre, 50 Arrachés épaules à 1 bras(25-25), 25 Tractions.",
       details: { format_label: "FOR TIME — L'ENTRAÎNEMENT SPARTIATE", exercises: [
           { text: "25 Tractions (pull-ups)" }, { text: "50 Soulevé de terre 60 kg (deadlift)" }, { text: "50 Pompes (push-ups)" }, { text: "50 Sauts box jump" }, { text: "50 Relevés de jambes avec barre 60 kg" }, { text: "50 Arrachés épaules 1 bras (25-25) — haltère 16 kg" }, { text: "25 Tractions (pull-ups)" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "Adapter les poids à son niveau" }, { text: "Pompes sur les genoux ou inclinées" }, { text: "Tractions australiennes ou TRX" }
-        ]}, conseil: "relevés de jambes avec barre : placer au sol sur le dos, tenir la barre olympique chargée bras tendus. Jambes tendues et jointes : position 1- la pointe de pieds touchent les disques de droite;position 2- les talons touchent le sol; position 3-les pointes de pied touchent les disques de gauche (on alterne donc 1 – 2 – 3 – 2 – 1 – 2 …)" }},
+        ]}, conseil: "relevés de jambes avec barre : placer au sol sur le dos, tenir la barre olympique chargée bras tendus. Jambes tendues et jointes : position 1- la pointe de pieds touchent les disques de droite;position 2- les talons touchent le sol; position 3-les pointes de pied touchent les disques de gauche (on alterne donc 1 – 2 – 3 – 2 – 1 – 2 …)",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "WOD 300",
+        exercices: [
+            { text: "25 Tractions (pull-ups)" }, { text: "50 Soulevé de terre 60 kg (deadlift)" }, { text: "50 Pompes (push-ups)" }, { text: "50 Sauts box jump" }, { text: "50 Relevés de jambes avec barre 60 kg" }, { text: "50 Arrachés épaules 1 bras (25-25) — haltère 16 kg" }, { text: "25 Tractions (pull-ups)" }
+        ]
+        }     
+          }},
 
     { title: "RENFO 10TOURS/3EXOS", material: ["poids-corps"], body: "complet", duration: 0, type: "MUSCU", level: "Facile", desc: "10 Squats, 5 Pompes(push-ups), 10 Sit-ups(abdos).",
       details: { format_label: "RENFO — 10 TOURS", intro: "Enchaîner les 10 tours :", exercises: [
           { text: "10 Squats" }, { text: "5 Pompes" }, { text: "10 Sit-ups (abdos)" }, { text: "30 sec à 1 min de repos entre les tours" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "Pompes inclinées ou sur les genoux" }, { text: "Remplacer les sit-ups par des crunches" }
-        ]}, conseil: "-" }},
+        ]}, conseil: "-",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "RENFO 10TOURS/3EXOS",
+        exercices: [
+            { text: "<u>10 ROUNDS :</u>" },
+            { text: "10 Squats" }, { text: "5 Pompes" }, { text: "10 Sit-ups (abdos)" }, { text: "30 sec à 1 min de repos entre les tours" }
+        ]
+        }       
+        }},
 
     { title: "RENFO 5TOURS/3EXOS", material: ["station-dips"], body: "complet", duration: 0, type: "MUSCU", level: "Facile", desc: "20 Squats, 10 Dips, 1 min de gainage(abdos).",
       details: { format_label: "RENFO — 5 TOURS", intro: "Enchaîner les 5 tours :", exercises: [
           { text: "20 Squats" }, { text: "10 Dips" }, { text: "1 minute de gainage" }, { text: "1 minute de repos" }
-        ], conseil: "Alterner le type de gainage (latéral, dynamique, appui main, appui coude). Dips : sur station ou entre 2 bancs." }},
+        ], conseil: "Alterner le type de gainage (latéral, dynamique, appui main, appui coude). Dips : sur station ou entre 2 bancs.",
+        chargeable: true,
+        chargement: {
+        type: "fortime",
+        nom: "RENFO 5TOURS/3EXOS",
+        exercices: [
+            { text: "<u>5 ROUNDS :</u>" },
+            { text: "20 Squats" }, { text: "10 Dips" }, { text: "1 minute de gainage" }, { text: "1 minute de repos" }
+        ]
+        }        
+        }},
 
     {
         title: "Séances Fractionné course",
@@ -952,12 +1120,68 @@ const workouts = [
     { title: "Séance BikeERG orientée FORCE", material: ["bike-erg"], body: "bas", duration: 40, type: "CARDIO", level: "Intense", desc: "séance de fractionné pendant 40 minutes.",
       details: { format_label: "SÉANCE CARDIO — 40 MINUTES", exercises: [
           { text: "Échauffement : 10 minutes (damper 2-3)" }, { text: "Fractionné : 20 minutes — 10 fois :" }, { text: "→ 1 minute d'effort (damper et RPM selon niveau, min. 70-75 RPM)" }, { text: "→ 1 minute de récupération" }, { text: "Récupération : 10 minutes (damper 2-3)" }
-        ], conseil: "40 minutes avec 20 de fractionné. Adapter le damper (minimum 4) et le RPM. Le RPM doit rester constant pendant les minutes d'effort." }},
+        ], conseil: "40 minutes avec 20 de fractionné. Adapter le damper (minimum 4) et le RPM. Le RPM doit rester constant pendant les minutes d'effort.",
+        chargeable: true,
+                  chargement: {
+                  type: "surmesure",
+                  nom: "BikeERG orientée FORCE 40 minutes",
+                  repeat: 0,
+                  phases: [
+                    { type: "warmup", sec: 600, text: "échauffement : mettre le damper(levier de résistance) sur 2-3" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "recup", sec: 600, text: "retour au calme : damper 2-3" },
+                  ]
+                  }       
+        }},
 
     { title: "Séance intervalle BikeERG", material: ["bike-erg"], body: "bas", duration: 30, type: "CARDIO", level: "Moyen", desc: "séance de fractionné pendant 30 minutes.",
       details: { format_label: "SÉANCE CARDIO — 30 MINUTES", exercises: [
-          { text: "Échauffement : 10 minutes (damper 2-3)" }, { text: "Fractionné : 10 minutes — 10 fois :" }, { text: "→ 1 minute intensité max. (pédalage le plus rapide possible)" }, { text: "→ 1 minute de récupération" }, { text: "Récupération : 10 minutes (damper 2-3)" }
-        ], conseil: "Adapter le damper (minimum 3) et le RPM selon votre niveau." }},
+          { text: "Échauffement : 10 minutes (damper 2-3)" }, { text: "Fractionné : 14 minutes — 7 fois :" }, { text: "→ 1 minute intensité max. (pédalage le plus rapide possible)" }, { text: "→ 1 minute de récupération" }, { text: "Récupération : 10 minutes (damper 2-3)" }
+        ], conseil: "Adapter le damper (minimum 3) et le RPM selon votre niveau.",
+        chargeable: true,
+                  chargement: {
+                  type: "surmesure",
+                  nom: "Séance intervalle BikeERG 30 minutes",
+                  repeat: 0,
+                  phases: [
+                    { type: "warmup", sec: 600, text: "échauffement : mettre le damper(levier de résistance) sur 2-3" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute intensité max. | damper 3 mini | pédalage le plus rapide possible" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute intensité max. | damper 3 mini | pédalage le plus rapide possible" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute intensité max. | damper 3 mini | pédalage le plus rapide possible" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute intensité max. | damper 3 mini | pédalage le plus rapide possible" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute intensité max. | damper 3 mini | pédalage le plus rapide possible" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute intensité max. | damper 3 mini | pédalage le plus rapide possible" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "travail", sec: 60, text: "🚴 1 minute intensité max. | damper 3 mini | pédalage le plus rapide possible" },
+                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
+                    { type: "recup", sec: 360, text: "retour au calme : damper 2-3" },
+                  ]
+                  }       
+        }},
 
 
     // ══════════════════════════════════════════════════════════
