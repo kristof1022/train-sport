@@ -1621,7 +1621,7 @@ function selectNiveauErgo(n) {
     var deroulé = [
         { min: "0:00-0:02",   label: "Echauffement 1/3 : Mobilisation articulaire",                  cls: "run-recup" },
         { min: "0:02-0:06",   label: "Echauffement 2/3 : BikeErg ou run léger",                       cls: "run-recup" },
-        { min: "0:06-0:07:30",label: "Echauffement 1/3 : BikeErg ou run — on augmente le rythme",           cls: "run-recup" },
+        { min: "0:06-0:07:30",label: "Echauffement 3/3 : BikeErg ou run — on augmente le rythme",           cls: "run-recup" },
         { min: "0:07:30-0:08",label: "⏸ Transition vers SkiErg",                  cls: "run-recup" },
         { min: "0:08-0:13",   label: "⛷️ SkiErg — " + niveau.skierg + " /500m",   cls: "run-effort" },
         { min: "0:13-0:14",   label: "⏸ Repos / transition Rameur",                cls: "run-recup" },
@@ -1662,7 +1662,7 @@ function chargerSeanceErgo() {
         // Échauffement
         { type: 'warmup', sec: 120,  text: 'Echauffement 1/3 : Mobilisation articulaire' },
         { type: 'warmup', sec: 240,  text: 'Echauffement 2/3 : BikeErg ou run léger' },
-        { type: 'warmup', sec: 90,   text: 'Echauffement 1/3 : BikeErg ou run — 2 accélérations de 30sec' },
+        { type: 'warmup', sec: 90,   text: 'Echauffement 3/3 : BikeErg ou run — on augmente le rythme' },
         { type: 'repos',  sec: 30,   text: 'Transition vers SkiErg, début de la première séquence' },
         // Tour 1
         { type: 'travail', sec: 300, text: '⛷️ SkiErg — ' + niveau.skierg + ' /500m' },
