@@ -466,9 +466,8 @@ function openModalConseil(index) {
 }
 
 function scrollToMouvement(targetId) {
-    var target  = document.getElementById(targetId);
-    var overlay = document.getElementById('modal-overlay');
-    if (target && overlay) {
+    var target = document.getElementById(targetId);
+    if (target) {
         // Effacer la recherche pour que le mouvement cible soit visible
         var input = document.getElementById('lexique-search');
         if (input) {
@@ -479,9 +478,8 @@ function scrollToMouvement(targetId) {
         target.style.background = '#fffde7';
         target.style.borderRadius = '8px';
         setTimeout(function(){ target.style.background = ''; target.style.borderRadius = ''; }, 1500);
-        // Scroll — calcul depuis le haut de l'overlay
-        var offsetTop = target.offsetTop - 80;
-        overlay.scrollTo({ top: offsetTop, behavior: 'smooth' });
+        // scrollIntoView — fonctionne sur PC et smartphone
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
