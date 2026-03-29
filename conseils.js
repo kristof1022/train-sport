@@ -389,7 +389,7 @@ function openModalConseil(index) {
                             var rect = modalBox.getBoundingClientRect();
                             topBtn.style.right = (window.innerWidth - rect.right + 10) + 'px';
                         }
-                        topBtn.style.display = 'block';
+                        topBtn.style.display = 'none'; // bouton désactivé
                     } else {
                         topBtn.style.display = 'none';
                     }
