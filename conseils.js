@@ -150,7 +150,7 @@ const conseils = [
                     id: "sit-up",
                     titre: "Sit-up",
                     image: "images/mouvements/SITUP.png",
-                    explication: "Allongé sur le dos, genoux fléchis, monter le buste jusqu'à la position assise.",
+                    explication: "Allongé sur le dos, genoux fléchis, monter le buste jusqu'à la position assise et toucher les chevilles avec les mains.",
                     muscles: {
                         principaux:  ["Abdominaux"],
                         secondaires: ["Fléchisseurs de hanche", "Core"]
@@ -352,12 +352,6 @@ function openModalConseil(index) {
             htmlLex += '</div>';
         });
         htmlLex += '</div>';
-        // Bouton retour en haut de la modale
-        htmlLex += '<button id="lexique-top-btn" onclick="scrollLexiqueTop()" ' +
-                   'style="display:none; position:sticky; bottom:0; left:100%; ' +
-                   'background:#000; color:#fff; border:none; border-radius:50%; ' +
-                   'width:38px; height:38px; font-size:1.1em; cursor:pointer; ' +
-                   'box-shadow:0 2px 8px rgba(0,0,0,0.3);">↑</button>';
         document.getElementById('modal-body').innerHTML = htmlLex;
         document.getElementById('modal-overlay').classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -372,12 +366,22 @@ function openModalConseil(index) {
                     });
                 });
             }
-            // Bouton ↑ selon le scroll de la modale
-            var modalBox = document.getElementById('modal-box');
-            var topBtn   = document.getElementById('lexique-top-btn');
-            if (modalBox && topBtn) {
-                modalBox.addEventListener('scroll', function() {
-                    topBtn.style.display = modalBox.scrollTop > 200 ? 'block' : 'none';
+            // Bouton ↑ : créé dans modal-box (pas dans modal-body) pour rester visible
+            var modalBox2 = document.getElementById('modal-box');
+            var overlay2  = document.getElementById('modal-overlay');
+            if (modalBox2 && overlay2) {
+                var topBtn = document.createElement('button');
+                topBtn.id = 'lexique-top-btn';
+                topBtn.textContent = '↑';
+                topBtn.setAttribute('style',
+                    'display:none; position:absolute; bottom:70px; right:14px; z-index:10;' +
+                    'background:#000; color:#fff; border:none; border-radius:50%;' +
+                    'width:40px; height:40px; font-size:1.1em; cursor:pointer;' +
+                    'box-shadow:0 2px 8px rgba(0,0,0,0.4);');
+                topBtn.onclick = scrollLexiqueTop;
+                modalBox2.appendChild(topBtn);
+                overlay2.addEventListener('scroll', function onLexScroll() {
+                    topBtn.style.display = overlay2.scrollTop > 200 ? 'block' : 'none';
                 });
             }
         }, 100);
@@ -488,6 +492,9 @@ function scrollLexiqueTop() {
 function closeModal() {
     document.getElementById('modal-overlay').classList.remove('open');
     document.body.style.overflow = '';
+    // Supprimer le bouton ↑ du lexique s'il existe
+    var btn = document.getElementById('lexique-top-btn');
+    if (btn) btn.remove();
 }
 
 window.addEventListener('DOMContentLoaded', function() {
