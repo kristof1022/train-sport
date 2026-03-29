@@ -366,7 +366,35 @@ function openModalConseil(index) {
                     });
                 });
             }
+            // Bouton ↑ en position fixed — fonctionne sur mobile et PC
+            var overlay2 = document.getElementById('modal-overlay');
+            if (overlay2) {
+                var topBtn = document.createElement('button');
+                topBtn.id = 'lexique-top-btn';
+                topBtn.textContent = '↑';
+                // Position sticky dans modal-footer — suit le scroll, reste dans la modale
+                topBtn.setAttribute('style',
+                    'display:none; position:fixed; bottom:70px; right:10px; z-index:2000;' +
+                    'background:#000; color:#fff; border:none; border-radius:50%;' +
+                    'width:44px; height:44px; font-size:1.2em; cursor:pointer;' +
+                    'box-shadow:0 2px 10px rgba(0,0,0,0.5); -webkit-tap-highlight-color:transparent;');
+                topBtn.onclick = scrollLexiqueTop;
+                document.getElementById('modal-body').appendChild(topBtn);
 
+                overlay2.addEventListener('scroll', function() {
+                    if (overlay2.scrollTop > 200) {
+                        // Recalculer right à chaque scroll pour coller à la modale
+                        var modalBox = document.getElementById('modal-box');
+                        if (modalBox) {
+                            var rect = modalBox.getBoundingClientRect();
+                            topBtn.style.right = (window.innerWidth - rect.right + 10) + 'px';
+                        }
+                        topBtn.style.display = 'block';
+                    } else {
+                        topBtn.style.display = 'none';
+                    }
+                });
+            }
         }, 100);
         return;
     }
@@ -467,9 +495,23 @@ function scrollToMouvement(targetId) {
     }
 }
 
+function scrollLexiqueTop() {
+    var overlay = document.getElementById('modal-overlay');
+    if (overlay) overlay.scrollTo({ top: 0, behavior: 'smooth' });
+    // Cacher le bouton après clic
+    var btn = document.getElementById('lexique-top-btn');
+    if (btn) btn.style.display = 'none';
+}
+
 function closeModal() {
     document.getElementById('modal-overlay').classList.remove('open');
     document.body.style.overflow = '';
+    // Supprimer le bouton ↑ du lexique s'il existe
+    var btn = document.getElementById('lexique-top-btn');
+    if (btn) btn.remove();
+    // Retirer le listener de scroll (nettoyage)
+    var overlay = document.getElementById('modal-overlay');
+    if (overlay) overlay.onscroll = null;
 }
 
 window.addEventListener('DOMContentLoaded', function() {
