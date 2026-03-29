@@ -1662,7 +1662,7 @@ function openModal(index) {
 
     html += '<p class="modal-format-label">' + d.format_label + '</p>';
     if (d.intro) html += '<p class="modal-intro">' + d.intro + '</p>';
-    if (d.image) html += '<img src="' + d.image + '" alt="" style="width:100%; border-radius:8px; margin-bottom:12px;">';
+    if (d.image) html += '<div style="text-align:center;"><img src="' + d.image + '" alt="" style="max-width:100%; max-height:420px; width:auto; height:auto; border-radius:8px; margin-bottom:12px; display:inline-block;"></div>';
     if (d.video) {html += '<video src="' + d.video + '" controls style="width:100%; border-radius:8px; margin-bottom:12px;"></video>';}
     if (d.youtube) {html += '<a href="https://www.youtube.com/watch?v=' + d.youtube + '" target="_blank" class="btn-full" style="margin-bottom:12px;">▶ Voir la vidéo sur YouTube</a>';}
     // Cas spécial fractionné course

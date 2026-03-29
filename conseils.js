@@ -91,6 +91,124 @@ const conseils = [
          }
      },
 
+    // ══════════════════════════════════════════════════════
+    // LEXIQUE DES MOUVEMENTS
+    // ══════════════════════════════════════════════════════
+    {
+        title: "LEXIQUE DES MOUVEMENTS",
+        categorie: "Technique",
+        tags: ["lexique", "mouvements", "muscles"],
+        desc: "Description et muscles sollicités pour chaque mouvement. Recherche par nom ou muscle.",
+        details: {
+            type_special: "lexique",
+            mouvements: [
+                
+                {
+                    id: "burpee",
+                    titre: "Burpee",
+                    image: "images/mouvements/burpee.png",
+                    explication: "Depuis la position debout : descendre au sol (pompe), se relever et sauter avec les bras levés.",
+                    muscles: {
+                        principaux:  ["Pectoraux", "Quadriceps", "Fessiers"],
+                        secondaires: ["Triceps", "Deltoïdes", "Core", "Cardio"]
+                    },
+                    liens: [
+                        
+                    ]
+                },
+                
+                {
+                    id: "DC",
+                    titre: "Dévellopé couché (Bench press)",
+                    image: "images/mouvements/DC.png",
+                    explication: "Allongé sur un banc, descendre la barre jusqu'à effleurer la poitrine puis pousser jusqu'à l'extension complète des bras, coudes légèrement rentrés.",
+                    muscles: {
+                        principaux:  ["Pectoraux"],
+                        secondaires: ["Triceps", "Deltoïdes"]
+                    },
+                    liens: [
+                        { type: "Mouvement similaire", id: "pompe" }
+                    ]
+                },
+                
+                {
+                    id: "pompe",
+                    titre: "Pompe (Push-up)",
+                    image: "images/mouvements/pompe.png",
+                    explication: "En appui sur les mains et les pieds, descendre la poitrine jusqu'au sol puis remonter en gardant le corps gainé.",
+                    muscles: {
+                        principaux:  ["Pectoraux", "Triceps"],
+                        secondaires: ["Deltoïdes", "Core", "Rhomboïdes"]
+                    },
+                    liens: [
+                        
+                        { type: "Mouvement antagoniste", id: "traction" }
+                    ]
+                },
+                
+                {
+                    id: "sit-up",
+                    titre: "Sit-up",
+                    image: "images/mouvements/SITUP.png",
+                    explication: "Allongé sur le dos, genoux fléchis, monter le buste jusqu'à la position assise.",
+                    muscles: {
+                        principaux:  ["Abdominaux"],
+                        secondaires: ["Fléchisseurs de hanche", "Core"]
+                    },
+                    liens: [
+                        
+                    ]
+                },
+                
+                {
+                    id: "squat",
+                    titre: "Squat",
+                    image: "images/mouvements/squat.png",
+                    explication: "Pieds écartés à largeur d'épaules, descendre jusqu'aux hanches sous les genoux, dos droit, poitrine haute.",
+                    muscles: {
+                        principaux:  ["Quadriceps", "Fessiers"],
+                        secondaires: ["Ischio-jambiers", "Mollets", "Core"]
+                    },
+                    liens: [
+                        
+                        
+                    ]
+                },
+                
+                {
+                    id: "SDT",
+                    titre: "Soulevé de terre (Deadlift)",
+                    image: "images/mouvements/SDT.png",
+                    explication: "Pieds écartés à largeur de hanches, barre au-dessus des pieds, dos droit et gainé, pousser le sol pour monter avec la barre le long des jambes jusqu'à l'extension complète.",
+                    muscles: {
+                        principaux:  ["Ischio-jambiers", "Fessiers", "Dorsaux"],
+                        secondaires: ["Quadriceps", "Trapèzes", "Core", "Avant-bras"]
+                    },
+                    liens: [
+                        
+                        
+                    ]
+                },
+                
+                
+                {
+                    id: "traction",
+                    titre: "Traction (Pull-up)",
+                    image: "images/mouvements/traction.png",
+                    explication: "Suspendu à une barre, tirer le corps vers le haut jusqu'à ce que le menton dépasse la barre.",
+                    muscles: {
+                        principaux:  ["Dorsaux", "Biceps"],
+                        secondaires: ["Rhomboïdes", "Trapèzes", "Core"]
+                    },
+                    liens: [
+                        { type: "Mouvement antagoniste", id: "pompe" }
+                    ]
+                },
+                
+            ]
+        }
+    },
+
     // --- EXEMPLE AVEC LIEN PDF ---
     // {
     //     title: "Mon conseil en PDF",
@@ -178,6 +296,94 @@ function openModalConseil(index) {
         '<span class="modal-badge modal-badge-type">' + c.categorie + '</span>' +
         tagBadges;
 
+    // Cas spécial : LEXIQUE DES MOUVEMENTS
+    if (d.type_special === 'lexique') {
+        var htmlLex = '';
+        htmlLex += '<div style="margin-bottom:14px;">';
+        htmlLex += '<input type="text" id="lexique-search" placeholder="🔍 Rechercher un mouvement ou un muscle..." ';
+        htmlLex += 'style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid #ddd; font-size:0.95em; box-sizing:border-box;">';
+        htmlLex += '</div>';
+        htmlLex += '<div id="lexique-liste">';
+        (d.mouvements || []).forEach(function(mv) {
+            var princ = (mv.muscles.principaux || []).join(', ');
+            var secon = (mv.muscles.secondaires || []).join(', ');
+            var mvId  = mv.id ? 'lexique-mv-' + mv.id : '';
+            htmlLex += '<div class="lexique-item"' + (mvId ? ' id="' + mvId + '"' : '') +
+                       ' data-search="' + (mv.titre + ' ' + princ + ' ' + secon).toLowerCase() + '" ';
+            htmlLex += 'style="border-bottom:1px solid #f0f0f0; padding:14px 0;">';
+            htmlLex += '<h4 style="margin:0 0 8px; font-size:1em; color:#000;">' + mv.titre + '</h4>';
+            if (mv.image) {
+                htmlLex += '<img src="' + mv.image + '" alt="' + mv.titre + '" ';
+                htmlLex += 'style="max-width:100%; max-height:350px; width:auto; height:auto; display:block; margin:0 auto 10px; border-radius:8px;" onerror="this.style.display=String.fromCharCode(110,111,110,101)">';
+            }
+            if (mv.youtube) {
+                htmlLex += '<iframe src="https://www.youtube.com/embed/' + mv.youtube + '" ' +
+                           'style="width:100%; aspect-ratio:16/9; border-radius:8px; border:none; margin-bottom:4px;" allowfullscreen></iframe>' +
+                           '<p style="font-size:0.78em; color:#999; text-align:center; margin-bottom:10px;">⚠️ Nécessite une connexion — ' +
+                           '<a href="https://www.youtube.com/watch?v=' + mv.youtube + '" target="_blank">ouvrir sur YouTube</a></p>';
+            }
+            if (mv.video) {
+                htmlLex += '<video src="' + mv.video + '" controls ' +
+                           'style="max-width:100%; max-height:350px; width:auto; display:block; margin:0 auto 10px; border-radius:8px;"></video>';
+            }
+            htmlLex += '<p style="font-size:0.9em; color:#444; margin:0 0 8px;">' + mv.explication + '</p>';
+            // Badges muscles
+            htmlLex += '<div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">';
+            (mv.muscles.principaux || []).forEach(function(m) {
+                htmlLex += '<span style="background:#fce4ec; color:#c62828; border-radius:12px; padding:3px 10px; font-size:0.78em; font-weight:700;">💪 ' + m + '</span>';
+            });
+            (mv.muscles.secondaires || []).forEach(function(m) {
+                htmlLex += '<span style="background:#e8f5e9; color:#2e7d32; border-radius:12px; padding:3px 10px; font-size:0.78em; font-weight:700;">+ ' + m + '</span>';
+            });
+            htmlLex += '</div>';
+            // Liens vers mouvements associés
+            if (mv.liens && mv.liens.length > 0) {
+                htmlLex += '<div style="margin-top:6px; font-size:0.82em; color:#666;">';
+                mv.liens.forEach(function(lien) {
+                    var targetId = 'lexique-mv-' + lien.id;
+                    var label = lien.id.replace(/-/g, ' ');
+                    htmlLex += '<span style="margin-right:10px;">🔗 <em>' + lien.type + ' :</em> ' +
+                               '<a href="#" onclick="scrollToMouvement(&quot;' + targetId + '&quot;); return false;" ' +
+                               'style="color:#1a237e; font-weight:700; text-decoration:none;">' +
+                               label + '</a></span>';
+                });
+                htmlLex += '</div>';
+            }
+            htmlLex += '</div>';
+        });
+        htmlLex += '</div>';
+        // Bouton retour en haut de la modale
+        htmlLex += '<button id="lexique-top-btn" onclick="scrollLexiqueTop()" ' +
+                   'style="display:none; position:sticky; bottom:0; left:100%; ' +
+                   'background:#000; color:#fff; border:none; border-radius:50%; ' +
+                   'width:38px; height:38px; font-size:1.1em; cursor:pointer; ' +
+                   'box-shadow:0 2px 8px rgba(0,0,0,0.3);">↑</button>';
+        document.getElementById('modal-body').innerHTML = htmlLex;
+        document.getElementById('modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        // Activer la recherche + scroll listener
+        setTimeout(function() {
+            var input = document.getElementById('lexique-search');
+            if (input) {
+                input.addEventListener('input', function() {
+                    var q = this.value.toLowerCase().trim();
+                    document.querySelectorAll('.lexique-item').forEach(function(item) {
+                        item.style.display = (!q || item.dataset.search.includes(q)) ? 'block' : 'none';
+                    });
+                });
+            }
+            // Bouton ↑ selon le scroll de la modale
+            var modalBox = document.getElementById('modal-box');
+            var topBtn   = document.getElementById('lexique-top-btn');
+            if (modalBox && topBtn) {
+                modalBox.addEventListener('scroll', function() {
+                    topBtn.style.display = modalBox.scrollTop > 200 ? 'block' : 'none';
+                });
+            }
+        }, 100);
+        return;
+    }
+
     // Corps — blocs de contenu
     let html = '';
     (d.contenu || []).forEach(function(bloc) {
@@ -193,9 +399,9 @@ function openModalConseil(index) {
         }
 
         else if (bloc.type === 'image') {
-            html += '<div class="conseil-media">' +
+            html += '<div class="conseil-media" style="text-align:center;">' +
                     '<img src="' + bloc.src + '" alt="' + (bloc.alt || '') + '" ' +
-                    'style="width:100%; border-radius:8px; margin-bottom:12px;">' +
+                    'style="max-width:100%; max-height:420px; width:auto; height:auto; border-radius:8px; margin-bottom:12px; display:inline-block;">' +
                     '</div>';
         }
 
@@ -254,6 +460,29 @@ function openModalConseil(index) {
     document.getElementById('modal-body').innerHTML = html;
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+}
+
+function scrollToMouvement(targetId) {
+    var target  = document.getElementById(targetId);
+    var overlay = document.getElementById('modal-overlay');
+    if (target && overlay) {
+        // Effacer la recherche pour que le mouvement cible soit visible
+        var input = document.getElementById('lexique-search');
+        if (input) { input.value = ''; document.querySelectorAll('.lexique-item').forEach(function(item){ item.style.display='block'; }); }
+        // Highlight temporaire
+        target.style.background = '#fffde7';
+        target.style.borderRadius = '8px';
+        setTimeout(function(){ target.style.background = ''; target.style.borderRadius = ''; }, 1500);
+        // Scroll dans l'overlay (c'est lui qui a overflow-y:auto)
+        var targetRect  = target.getBoundingClientRect();
+        var overlayRect = overlay.getBoundingClientRect();
+        overlay.scrollBy({ top: targetRect.top - overlayRect.top - 80, behavior: 'smooth' });
+    }
+}
+
+function scrollLexiqueTop() {
+    var overlay = document.getElementById('modal-overlay');
+    if (overlay) overlay.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function closeModal() {
