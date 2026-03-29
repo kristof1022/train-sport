@@ -352,7 +352,6 @@ function openModalConseil(index) {
             htmlLex += '</div>';
         });
         htmlLex += '</div>';
-
         document.getElementById('modal-body').innerHTML = htmlLex;
         document.getElementById('modal-overlay').classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -451,25 +450,20 @@ function openModalConseil(index) {
 }
 
 function scrollToMouvement(targetId) {
-    var target  = document.getElementById(targetId);
-    var overlay = document.getElementById('modal-overlay');
-    if (target && overlay) {
+    var target = document.getElementById(targetId);
+    if (target) {
         // Effacer la recherche pour que le mouvement cible soit visible
         var input = document.getElementById('lexique-search');
-        if (input) { input.value = ''; document.querySelectorAll('.lexique-item').forEach(function(item){ item.style.display='block'; }); }
+        if (input) {
+            input.value = '';
+            document.querySelectorAll('.lexique-item').forEach(function(item){ item.style.display='block'; });
+        }
         // Highlight temporaire
         target.style.background = '#fffde7';
         target.style.borderRadius = '8px';
         setTimeout(function(){ target.style.background = ''; target.style.borderRadius = ''; }, 1500);
-        // Scroll dans l'overlay (c'est lui qui a overflow-y:auto)
-        // Boucle offsetParent — compatible Android/iOS
-        var el = target;
-        var offsetTop = 0;
-        while (el && el !== overlay) {
-            offsetTop += el.offsetTop;
-            el = el.offsetParent;
-        }
-        overlay.scrollTo({ top: offsetTop - 80, behavior: 'smooth' });
+        // scrollIntoView — fonctionne sur PC et smartphone
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
