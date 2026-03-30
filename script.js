@@ -61,10 +61,10 @@ const workouts = [
         }              
     }},
 
-    { title: "WOD TABATA 30/10 ABDOS", material: ["poids-corps"], body: "abdos", duration: 5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos pour les abdos :</strong> focus gainage.",
+    { title: "WOD TABATA 30/10 ABDOS GAINAGE", material: ["poids-corps"], body: "abdos", duration: 5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos pour les abdos :</strong> focus gainage.",
       details: { format_label: "TABATA ABDOS — 5 min 10", intro: "30 sec travail / 10 sec repos — 2 tours :", exercises: [
           { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }
-        ], conseil: "30 secondes de travail / 10 secondes de repos. Focus gainage.",
+        ], conseil: "30 secondes de travail / 10 secondes de repos. Focus gainage, à enchaîner avec le WOD TABATA 30/10 CEINTURE ABDOMINALE DYNAMIQUE.",
         chargeable: true,
         chargement: {
           type: "tabata",
@@ -84,6 +84,39 @@ const workouts = [
           ]
         }
       }},  
+  
+    { title: "WOD TABATA 30/10 CEINTURE ABDOMINALE DYNAMIQUE", material: ["poids-corps"], body: "abdos", duration: 5, type: "TABATA", level: "Facile", 
+     desc: "<strong>30 sec travail / 10 sec repos pour la ceinture abdominale</strong>",
+     details: { format_label: "TABATA ABDOS — 5 min 10", intro: "30 sec travail / 10 sec repos — 2 tours :", 
+     exercises: [{ text: "30 sec Sit-ups / 10 sec repos" },
+                 { text: "30 sec de revelé de bassin, jambe droite tendue / 10 sec repos" },
+                 { text: "30 sec enroulement de bassin / 10 sec repos" },
+                 { text: "30 sec de revelé de bassin, jambe gauche tendue / 10 sec repos" },
+                 { text: "30 sec Sit-ups / 10 sec repos" },
+                 { text: "30 sec de revelé de bassin, jambe droite tendue / 10 sec repos" },
+                 { text: "30 sec enroulement de bassin / 10 sec repos" },
+                 { text: "30 sec de revelé de bassin, jambe gauche tendue / 10 sec repos" }
+        ], 
+     conseil: "30 secondes de travail / 10 secondes de repos. abdos en dynamique, à enchaîner avec le WOD TABATA 30/10 ABDOS GAINAGE.",
+        chargeable: true,
+        chargement: {
+          type: "tabata",
+          nom: "WOD TABATA 30/10 CEINTURE ABDOMINALE DYNAMIQUE",
+          travail: 30,
+          repos: 10,
+          rounds: 8,
+          exercices: [
+            { text: "Sit-ups" },
+            { text: "revelé de bassin, jambe droite tendue" },
+            { text: "enroulement de bassins" },
+            { text: "revelé de bassin, jambe gauche tendue" },
+            { text: "Sit-ups" },
+            { text: "revelé de bassin, jambe droite tendue" },
+            { text: "enroulement de bassin" },
+            { text: "revelé de bassin, jambe gauche tendue" }
+          ]
+        }
+      }},
 
   
 /* SEANCES AMRAP */
@@ -491,6 +524,24 @@ const workouts = [
           nom: "Le WOD Barbara",
           exercices: [
             { text: "20 Tractions (pull-ups)" }, { text: "30 Pompes (push-ups)" }, { text: "40 Sit-ups (abdos)" }, { text: "50 Squats au poids de corps (air squats)" }, { text: "<em>jusqu'à 3 minutes de pause entre les rounds<em>" },
+          ]
+        }
+    }},
+  
+    { title: "Le WOD FRAN", material: ["traction", "barre"], body: "complet", duration: 0, type: "FOR TIME", level: "Intense", desc: "3 rounds : 21-15-9 Thrusters (43/30 kg) + Tractions (Pull-ups)",
+      details: { format_label: "5 ROUNDS FOR TIME", intro: "Réaliser 3 rounds en dégressif :", exercises: [
+        { text: "21 Thrusters (43/30 kg) / 21 Tractions (Pull-ups)" },
+        { text: "15 Thrusters (43/30 kg) / 15 Tractions (Pull-ups)" },
+        { text: "09 Thrusters (43/30 kg) / 09 Tractions (Pull-ups)" }
+        ], conseil: "Le thruster est expliqué dans le lexique des mouvements (INFOS PRATIQUES).<br> 43kg pour les hommes; 30kg pour les femmes.",
+        chargeable: true,
+        chargement: {
+          type: "fortime",
+          nom: "Le WOD FRAN",
+          exercices: [
+            { text: "21 Thrusters (43/30 kg) / 21 Tractions (Pull-ups)" },
+            { text: "15 Thrusters (43/30 kg) / 15 Tractions (Pull-ups)" },
+            { text: "09 Thrusters (43/30 kg) / 09 Tractions (Pull-ups)" } 
           ]
         }
     }},

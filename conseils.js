@@ -190,6 +190,21 @@ const conseils = [
                     ]
                 },
                 
+                {
+                    id: "thruster",
+                    titre: "thruster",
+                    image: "images/mouvements/thruster.png",
+                    explication: "Pieds écartés à largeur de hanches, barre posé sur les clavicules, coude et avant bras à la perpendiculaire de la barre:<br>◾1:descendre sur une flexion de jambe, rentrer le nombril pour être bien stable, dos en position neutre <br>◾2:on évite en position basse d'arrondir le bas du dos. Si c'est le cas, moins descendre lors du mouvement suivant <br>◾3:remonter et utiliser la force de propulsion des jambes pour entamer le mouvement des bras vers le haut <br>◾4:développer pour amener la barre au dessus de votre tête bras tendus, ne pas cambrer. <br>◾Pendant le mouvement, les pieds restent bien campés au sol",
+                    muscles: {
+                        principaux:  ["Quadriceps", "Deltoïdes (Épaules)", "Fessiers", "Triceps"],
+                        secondaires: ["Ischio-jambiers", "Sangle Abdominale et Érecteurs du Rachis", "Trapèzes", "Avant-bras", "Mollets"]
+                    },
+                    liens: [
+                        
+                        
+                    ]
+                },
+                
                 
                 {
                     id: "traction",
