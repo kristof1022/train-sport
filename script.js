@@ -1006,6 +1006,35 @@ const workouts = [
         }
                 
       }},
+  
+    { title: "WOD HYBRID 3 PYRAMIDES RUN", material: ["poids-corps", "tapis-incurve"], body: "complet", duration: 0, type: "HYBRID", level: "Moyen", desc: "<strong>FOR TIME 3 ROUNDS:</strong> 200m run + 10 burpees, 400m run + 15 air squats, 600m run + 20 sit-ups(abdos), 400m run + 15 air squats, 200m run + 10 burpees.",
+      details: { format_label: "WOD HYBRID 3 PYRAMIDES RUN", intro: "Effectuer 3 tours :", exercises: [
+          { text: "200m run + 10 burpees" }, { text: "400m run + 15 air squats" }, { text: "600m run + 20 sit-ups(abdos)" }, { text: "400m run + 15 air squats" }, { text: "200m run + 10 burpees" }, { text: "prendre 1 min à 2 minutes de récup au besoin entre 2 rounds" }
+        ], conseil: "Pour les burpees, mieux vaut un rythme lent et faire les 10 répétitions sans coupure.",
+        chargeable: true,
+        chargement: {
+          type: "fortime",
+        nom: "WOD HYBRID 3 PYRAMIDES RUN",
+        exercices: [
+            { text: "<u>3 ROUNDS :</u>" },
+            { text: "200m run + 10 burpees" }, { text: "400m run + 15 air squats" }, { text: "600m run + 20 sit-ups(abdos)" }, { text: "400m run + 15 air squats" }, { text: "200m run + 10 burpees" }, { text: "<em>prendre 1 min à 2 minutes de récup au besoin entre 2 rounds</em>" }
+        ]
+        }
+      }},
+  
+    { title: "WOD P'F''T", material: ["poids-corps", "tapis-incurve", "rameur", "ballon-leste"], body: "complet", duration: 0, type: "HYBRID", level: "Intense", desc: "<strong>FOR TIME:</strong> 1000m de course à pied, 50 Burpees Broad Jumps, 100 fentes stationnaires, 1000m de rameur, 30 pompes relâchement des mains (push-ups hand release), 100 Wallballs (6 kg pour les hommes / 4 kg pour les femmes).",
+      details: { format_label: "WOD P'F''T", intro: "FOR TIME :", exercises: [
+          { text: "1000m de course à pied" }, { text: "50 Burpees Broad Jumps" }, { text: "100 fentes" }, { text: "1000m de rameur" }, { text: "30 pompes relâchement des mains (push-ups hand release)" }, { text: "100 Wallballs (6 kg/4 kg)" }
+        ], conseil: "Vous pouvez remplacer les burpees broad jump par de simples burpees. permet de connaître son niveau HYROX : <br>15 – 25 minutes : Hyrox PRO<br>25 – 35 minutes : Hyrox Open<br>30 – 40 minutes : Hyrox Doubles<br>35 – 45 minutes : Hyrox Relais",
+        chargeable: true,
+        chargement: {
+          type: "fortime",
+        nom: "WOD P'F''T",
+        exercices: [
+            { text: "1000m de course à pied" }, { text: "50 Burpees Broad Jumps" }, { text: "100 fentes" }, { text: "1000m de rameur" }, { text: "30 pompes relâchement des mains (push-ups hand release)" }, { text: "100 Wallballs (6 kg/4 kg)" }
+        ]
+        }
+      }},
 
     {
         title: "Séance Pompes",
