@@ -385,6 +385,7 @@
     <button class="seance-tab" onclick="showSeance('fortime', this)">🏁 FOR TIME</button>
     <button class="seance-tab" onclick="showSeance('amrap', this)">🔄 AMRAP</button>
     <button class="seance-tab" onclick="showSeance('emom', this)">🔁 EMOM</button>
+    <button class="seance-tab" onclick="showSeance('intervalles', this)">🏃 TOTAL INTERVALLES</button>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -661,6 +662,76 @@
             <button class="btn-ctrl btn-reset" onclick="ftExecReset()">↺ Reset</button>
             <button class="btn-ctrl btn-edit"  onclick="showMode('fortime','config')">✏️ Éditer</button>
             <button class="btn-ctrl btn-mute"  id="ft-btn-mute" onclick="toggleMute('ft')">🔔 Son</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL INTERVALLES
+══════════════════════════════════════ -->
+<div class="seance-panel" id="sp-intervalles">
+
+    <div class="mode-tabs" id="mti-tabs">
+        <button class="mode-tab active" id="mti-config" onclick="showMode('intervalles','config')">⚙️ Préparer</button>
+        <button class="mode-tab" id="mti-exec"   onclick="showMode('intervalles','exec')">▶ En séance</button>
+    </div>
+
+    <!-- Config INTERVALLES -->
+    <div id="cfg-intervalles" class="panel-inner">
+        <div class="seance-name-wrap">
+            <p class="config-title">📋 Nom de la séance</p>
+            <input type="text" class="seance-name-input" id="itv-name" placeholder="Ex : Running 12x400m..." maxlength="60">
+        </div>
+
+        <p class="config-title">⚡ Blocs de la séance</p>
+        <ul class="phases-list" id="itv-blocs-list"></ul>
+        <button class="btn-add-phase" onclick="itvAddBloc()">+ Ajouter un bloc</button>
+        <button class="btn-lancer" onclick="itvLancer()">▶ Lancer la séance</button>
+        <button class="btn-reset-config" onclick="itvResetConfig()">🗑 Tout effacer</button>
+    </div>
+
+    <!-- Exec INTERVALLES -->
+    <div id="exe-intervalles" style="display:none">
+        <div class="exec-header"><h3 id="itv-exec-title">Séance</h3></div>
+        <div class="phase-display" id="itv-exec-display">
+            <div class="phase-label" id="itv-exec-label">PRÊT</div>
+            <div class="phase-time-big" id="itv-exec-time">00:00</div>
+            <div class="phase-info" id="itv-exec-info"></div>
+            <div id="itv-total-wrap" style="display:none; margin-top:6px; font-size:0.78em; color:rgba(255,255,255,0.6); letter-spacing:0.06em;">
+                ⏱ Temps total : <span id="itv-total-time">00:00</span>
+            </div>
+        </div>
+        <div class="instru-display" id="itv-exec-instru"></div>
+        <!-- Compteurs reps / rounds (visibles seulement phase travail) -->
+        <div id="itv-counters" style="display:none; background:#0f0f1a; padding:10px 16px; border-top:1px solid #1a1a2e;">
+            <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
+                <div style="text-align:center;">
+                    <div style="font-size:0.7em; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">Reps</div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="btn-step" onclick="itvCounterAdj('reps',-1)" style="width:34px;height:34px;">−</button>
+                        <span id="itv-cnt-reps" style="font-size:1.4em; font-weight:900; color:#fff; min-width:36px; text-align:center;">0</span>
+                        <span id="itv-cnt-reps-obj" style="font-size:0.85em; color:var(--text-dim);"></span>
+                        <button class="btn-step" onclick="itvCounterAdj('reps',1)"  style="width:34px;height:34px;">+</button>
+                    </div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:0.7em; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">Rounds</div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button class="btn-step" onclick="itvCounterAdj('rounds',-1)" style="width:34px;height:34px;">−</button>
+                        <span id="itv-cnt-rounds" style="font-size:1.4em; font-weight:900; color:#fff; min-width:36px; text-align:center;">0</span>
+                        <span id="itv-cnt-rounds-obj" style="font-size:0.85em; color:var(--text-dim);"></span>
+                        <button class="btn-step" onclick="itvCounterAdj('rounds',1)"  style="width:34px;height:34px;">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="exec-controls">
+            <button class="btn-ctrl btn-start"  id="itv-btn-start"    onclick="itvExecStart()">▶ Start</button>
+            <button class="btn-ctrl btn-pause"  id="itv-btn-pause"    onclick="itvExecPause()" disabled>⏸ Pause</button>
+            <button class="btn-ctrl"            id="itv-btn-ok"       onclick="itvExecNext()"
+                style="background:#27ae60; color:#fff; font-size:1em;" disabled>✓ Étape suivante</button>
+            <button class="btn-ctrl btn-reset"  onclick="itvExecReset()">↺ Reset</button>
+            <button class="btn-ctrl btn-edit"   onclick="showMode('intervalles','config')">✏️ Éditer</button>
         </div>
     </div>
 </div>
@@ -1402,6 +1473,360 @@ function ftExecReset() {
     setBtnActive('ft-btn-pause',false);
 }
 
+
+/* ══════════════════════════════════════
+   INTERVALLES — CONFIG
+══════════════════════════════════════ */
+var itvBlocCounter = 0;
+
+function itvAddBloc(typeVal, repsVal, instrVal) {
+    var list = document.getElementById('itv-blocs-list');
+    itvBlocCounter++;
+    var id      = 'ib' + itvBlocCounter;
+    var repsId  = 'itv-reps-' + id;
+    var durId   = 'itv-dur-'  + id;
+    var instrId = 'itv-instr-'+ id;
+
+    var li = document.createElement('li');
+    li.className = 'phase-item type-' + (typeVal || 'travail');
+    li.id = id;
+
+    // Select type
+    var sel = document.createElement('select');
+    sel.className = 'phase-select';
+    sel.setAttribute('onchange', 'itvUpdateBlocStyle(this)');
+    [['warmup','🏃 Warm-up'],['travail','🔥 Travail'],['repos','⏱ Récup (timer)'],['recup','🧘 Retour calme']].forEach(function(opt) {
+        var o = document.createElement('option');
+        o.value = opt[0]; o.textContent = opt[1];
+        if ((!typeVal && opt[0]==='travail') || opt[0]===typeVal) o.selected = true;
+        sel.appendChild(o);
+    });
+
+    // Bouton supprimer
+    var btnDel = document.createElement('button');
+    btnDel.className = 'btn-del-phase';
+    btnDel.textContent = '✕';
+    btnDel.setAttribute('onclick', 'itvDelBloc("' + id + '")');
+
+    var topRow = document.createElement('div');
+    topRow.className = 'phase-top-row';
+    topRow.appendChild(sel);
+    topRow.appendChild(btnDel);
+    li.appendChild(topRow);
+
+    // Répétitions
+    var btnRepM = document.createElement('button'); btnRepM.className='btn-step'; btnRepM.textContent='−'; btnRepM.setAttribute('onclick','stepVal("'+repsId+'",-1)');
+    var inputRep = document.createElement('input'); inputRep.type='number'; inputRep.className='config-val'; inputRep.id=repsId; inputRep.value=repsVal||1; inputRep.min=1; inputRep.max=99;
+    var btnRepP = document.createElement('button'); btnRepP.className='btn-step'; btnRepP.textContent='+'; btnRepP.setAttribute('onclick','stepVal("'+repsId+'",1)');
+    var stepperRep = document.createElement('div'); stepperRep.className='stepper';
+    stepperRep.appendChild(btnRepM); stepperRep.appendChild(inputRep); stepperRep.appendChild(btnRepP);
+    var lblRep = document.createElement('label'); lblRep.textContent='Répétitions';
+    var rowRep = document.createElement('div'); rowRep.className='config-row'; rowRep.style.marginTop='8px';
+    rowRep.appendChild(lblRep); rowRep.appendChild(stepperRep);
+    li.appendChild(rowRep);
+
+    // Timer (repos uniquement)
+    var btnDurM = document.createElement('button'); btnDurM.className='btn-step'; btnDurM.textContent='−'; btnDurM.setAttribute('onclick','stepPhaseVal("'+durId+'",-5)');
+    var inputDur = document.createElement('input'); inputDur.type='number'; inputDur.className='config-val'; inputDur.id=durId; inputDur.value=60; inputDur.min=1; inputDur.max=3600;
+    var btnDurP = document.createElement('button'); btnDurP.className='btn-step'; btnDurP.textContent='+'; btnDurP.setAttribute('onclick','stepPhaseVal("'+durId+'",5)');
+    var stepperDur = document.createElement('div'); stepperDur.className='stepper';
+    stepperDur.appendChild(btnDurM); stepperDur.appendChild(inputDur); stepperDur.appendChild(btnDurP);
+    var lblDur = document.createElement('label'); lblDur.textContent='Durée (sec)';
+    var spanSec = document.createElement('span'); spanSec.textContent='sec'; spanSec.style.cssText='font-size:0.85em;color:var(--text-dim)';
+    var rowDur = document.createElement('div'); rowDur.className='config-row itv-timer-row'; rowDur.style.marginTop='4px';
+    // Pour travail : pas de timer. Pour repos/warmup/recup : timer optionnel via checkbox
+    var hasTimer = (typeVal === 'repos'); // repos = timer par défaut
+    if (['repos','warmup','recup'].indexOf(typeVal) < 0) rowDur.style.display='none';
+
+    // Checkbox "Avec timer" pour warmup et recup
+    var checkRow = document.createElement('div'); checkRow.className='config-row itv-check-timer'; checkRow.style.marginTop='6px';
+    if (['warmup','recup','travail'].indexOf(typeVal||'travail') < 0) checkRow.style.display='none';
+    var chk = document.createElement('input'); chk.type='checkbox'; chk.id='itv-chk-'+id; chk.style.marginRight='8px';
+    chk.checked = false;
+    var chkLbl = document.createElement('label'); chkLbl.textContent='Avec timer'; chkLbl.setAttribute('for','itv-chk-'+id);
+    chkLbl.style.cssText='font-size:0.85em;color:var(--text-dim);cursor:pointer;';
+    checkRow.appendChild(chk); checkRow.appendChild(chkLbl);
+    chk.addEventListener('change', function(){ rowDur.style.display = chk.checked ? 'flex' : 'none'; });
+    li.appendChild(checkRow);
+    rowDur.appendChild(lblDur); rowDur.appendChild(stepperDur); rowDur.appendChild(spanSec);
+    li.appendChild(rowDur);
+
+    // Objectifs reps / rounds (travail uniquement)
+    var rowObj = document.createElement('div'); rowObj.className='config-row itv-obj-row'; rowObj.style.marginTop='4px';
+    if ((typeVal||'travail') !== 'travail') rowObj.style.display='none';
+    var lblObj = document.createElement('label'); lblObj.textContent='Objectif reps / rounds';
+    var inpRepsObj = document.createElement('input'); inpRepsObj.type='number'; inpRepsObj.className='config-val'; inpRepsObj.id='itv-repsobj-'+id; inpRepsObj.value=0; inpRepsObj.min=0; inpRepsObj.max=999; inpRepsObj.style.cssText='width:52px;height:36px;';
+    inpRepsObj.placeholder='R';
+    var sep = document.createElement('span'); sep.textContent=' / '; sep.style.color='var(--text-dim)';
+    var inpRndsObj = document.createElement('input'); inpRndsObj.type='number'; inpRndsObj.className='config-val'; inpRndsObj.id='itv-rndsobj-'+id; inpRndsObj.value=0; inpRndsObj.min=0; inpRndsObj.max=999; inpRndsObj.style.cssText='width:52px;height:36px;';
+    var lblSmall = document.createElement('span'); lblSmall.textContent='(0 = libre)'; lblSmall.style.cssText='font-size:0.75em;color:var(--text-dim);';
+    rowObj.appendChild(lblObj); rowObj.appendChild(inpRepsObj); rowObj.appendChild(sep); rowObj.appendChild(inpRndsObj); rowObj.appendChild(lblSmall);
+    li.appendChild(rowObj);
+
+    // Instruction
+    var ta = document.createElement('textarea'); ta.className='groupe-textarea'; ta.id=instrId; ta.rows=2;
+    ta.placeholder='Instruction ex: Courir 400m à haute intensité...';
+    if (instrVal) ta.value = instrVal;
+    var divInstr = document.createElement('div'); divInstr.style.marginTop='8px';
+    divInstr.appendChild(ta);
+    li.appendChild(divInstr);
+
+    list.appendChild(li);
+}
+
+function itvUpdateBlocStyle(sel) {
+    var li = sel.closest('.phase-item');
+    li.className = 'phase-item type-' + sel.value;
+    var timerRow  = li.querySelector('.itv-timer-row');
+    var checkRow  = li.querySelector('.itv-check-timer');
+    var chk       = li.querySelector('input[type=checkbox]');
+    if (sel.value === 'repos') {
+        // Repos : timer toujours visible, pas de checkbox
+        if (checkRow) checkRow.style.display = 'none';
+        if (timerRow) timerRow.style.display  = 'flex';
+    } else if (sel.value === 'warmup' || sel.value === 'recup') {
+        // Warmup/recup : checkbox visible, timer selon état checkbox
+        if (checkRow) checkRow.style.display = 'flex';
+        if (timerRow) timerRow.style.display  = (chk && chk.checked) ? 'flex' : 'none';
+    } else {
+        // Travail : checkbox visible, timer selon état checkbox
+        if (checkRow) checkRow.style.display = 'flex';
+        if (timerRow) timerRow.style.display  = (chk && chk.checked) ? 'flex' : 'none';
+    }
+    var objRow = li.querySelector('.itv-obj-row');
+    if (objRow) objRow.style.display = sel.value === 'travail' ? 'flex' : 'none';
+}
+
+function itvDelBloc(id) {
+    var el = document.getElementById(id); if (el) el.remove();
+}
+
+function itvResetConfig() {
+    if (!confirm('Effacer la configuration ?')) return;
+    document.getElementById('itv-blocs-list').innerHTML = '';
+    document.getElementById('itv-name').value = '';
+    itvBlocCounter = 0;
+}
+
+/* ══════════════════════════════════════
+   INTERVALLES — EXÉCUTION
+══════════════════════════════════════ */
+var itvQueue = [];       // liste aplatie de tous les blocs à exécuter
+var itvCurIdx = 0;
+var itvInterval = null;
+var itvIntervalTotal = null;
+var itvRunning = false;
+var itvMs = 0;           // ms écoulées (chrono montant)
+var itvTimerSec = 0;     // secondes restantes (timer décompte)
+var itvMode = 'chrono';  // 'chrono' ou 'timer'
+var itvStarted = false;
+var itvTotalMs = 0;      // chrono total séance
+var itvCntReps = 0;      // compteur reps manuel
+var itvCntRounds = 0;    // compteur rounds manuel
+
+function itvLancer() {
+    var items = document.querySelectorAll('#itv-blocs-list .phase-item');
+    if (items.length === 0) { alert('Ajoutez au moins un bloc !'); return; }
+
+    itvQueue = [];
+    items.forEach(function(li) {
+        var type  = li.querySelector('.phase-select').value;
+        var repsId = 'itv-reps-' + li.id;
+        var durId  = 'itv-dur-'  + li.id;
+        var instrId= 'itv-instr-'+ li.id;
+        var reps     = parseInt(document.getElementById(repsId).value) || 1;
+        var dur      = parseInt(document.getElementById(durId) ? document.getElementById(durId).value : 0) || 0;
+        var instr    = document.getElementById(instrId).value.trim();
+        var chkEl    = li.querySelector('input[type=checkbox]');
+        var useTimer = (type === 'repos') || (chkEl && chkEl.checked);
+        var repsObjEl  = document.getElementById('itv-repsobj-' + li.id);
+        var rndsObjEl  = document.getElementById('itv-rndsobj-' + li.id);
+        var repsObj  = repsObjEl  ? (parseInt(repsObjEl.value)  || 0) : 0;
+        var rndsObj  = rndsObjEl  ? (parseInt(rndsObjEl.value)  || 0) : 0;
+        for (var r = 0; r < reps; r++) {
+            itvQueue.push({ type: type, dur: dur, instr: instr, repNum: r+1, repTotal: reps, useTimer: useTimer, repsObj: repsObj, rndsObj: rndsObj });
+        }
+    });
+
+    itvCurIdx = 0; itvMs = 0; itvTimerSec = 0; itvStarted = false;
+    clearInterval(itvInterval); itvRunning = false;
+
+    document.getElementById('itv-exec-title').textContent = document.getElementById('itv-name').value.trim() || 'Séance INTERVALLES';
+    document.getElementById('itv-btn-start').disabled = false;
+    document.getElementById('itv-btn-pause').disabled = true;
+    document.getElementById('itv-btn-ok').disabled    = true;
+    setBtnActive('itv-btn-pause', false);
+    showMode('intervalles', 'exec');
+    itvRender();
+}
+
+function itvRender() {
+    if (itvCurIdx >= itvQueue.length) { itvFinish(); return; }
+    var bloc = itvQueue[itvCurIdx];
+    setPhaseStyle(document.getElementById('itv-exec-display'), bloc.type);
+    var label = { warmup:'🏃 WARM-UP', travail:'🔥 TRAVAIL', repos:'⏱ RÉCUP', recup:'🧘 RETOUR AU CALME' }[bloc.type] || bloc.type.toUpperCase();
+    var repInfo = bloc.repTotal > 1 ? ' (' + bloc.repNum + '/' + bloc.repTotal + ')' : '';
+    document.getElementById('itv-exec-label').textContent = label + repInfo;
+
+    itvMode = (bloc.dur > 0 && (bloc.type === 'repos' || bloc.useTimer)) ? 'timer' : 'chrono';
+    if (itvMode === 'timer') {
+        itvTimerSec = bloc.dur; itvMs = 0;
+        document.getElementById('itv-exec-time').textContent = fmtSec(itvTimerSec);
+    } else {
+        itvMs = 0;
+        document.getElementById('itv-exec-time').textContent = '00:00';
+    }
+
+    // Instruction
+    var instrEl = document.getElementById('itv-exec-instru');
+    if (bloc.instr) {
+        instrEl.innerHTML = '<div class="instru-line" style="color:#333;">' + bloc.instr.replace(/\n/g,'<br>') + '</div>';
+        instrEl.style.display = 'block';
+    } else {
+        instrEl.innerHTML = ''; instrEl.style.display = 'none';
+    }
+
+    // Compteurs reps/rounds (travail uniquement)
+    itvCntReps = 0; itvCntRounds = 0;
+    var isWork = (bloc.type === 'travail');
+    document.getElementById('itv-counters').style.display = isWork ? 'block' : 'none';
+    if (isWork) {
+        document.getElementById('itv-cnt-reps').textContent   = '0';
+        document.getElementById('itv-cnt-rounds').textContent = '0';
+        document.getElementById('itv-cnt-reps-obj').textContent   = bloc.repsObj > 0 ? '/ ' + bloc.repsObj : '';
+        document.getElementById('itv-cnt-rounds-obj').textContent = bloc.rndsObj > 0 ? '/ ' + bloc.rndsObj : '';
+    }
+
+    // Prochaine étape
+    var next = itvQueue[itvCurIdx + 1];
+    var nextLabel = next ? ({ warmup:'Warm-up', travail:'Travail', repos:'Récup', recup:'Retour calme' }[next.type] || next.type) + (next.repTotal>1?' ('+next.repNum+'/'+next.repTotal+')':'') : '—';
+    document.getElementById('itv-exec-info').textContent = next ? 'Suivant : ' + nextLabel : '⭐ Dernière étape !';
+}
+
+function itvExecStart() {
+    if (itvRunning) return;
+    // Décompte 5s uniquement au tout début (premier bloc, pas encore démarré)
+    if (!itvStarted) {
+        itvStarted = true;
+        // Afficher "Suivant : bloc0" pendant le décompte
+        if (itvQueue.length > 0) {
+            var first = itvQueue[0];
+            var firstLabel = { warmup:'Warm-up', travail:'Travail', repos:'Récup', recup:'Retour calme' }[first.type] || first.type;
+            var firstRepInfo = first.repTotal > 1 ? ' (1/' + first.repTotal + ')' : '';
+            document.getElementById('itv-exec-info').textContent = 'Suivant : ' + firstLabel + firstRepInfo;
+        }
+        lancerAvecCompte('itv-exec-label','itv-exec-time','itv-exec-display', function() {
+            itvRender();
+            itvExecStart();
+        });
+        return;
+    }
+    itvRunning = true;
+    document.getElementById('itv-btn-start').disabled = true;
+    document.getElementById('itv-btn-pause').disabled = false;
+    document.getElementById('itv-btn-ok').disabled    = false;
+    setBtnActive('itv-btn-pause', false);
+
+    // Chrono total : démarrer si pas déjà en cours
+    document.getElementById('itv-total-wrap').style.display = 'block';
+    if (!itvIntervalTotal) {
+        var totalStart = Date.now() - itvTotalMs;
+        itvIntervalTotal = setInterval(function() {
+            itvTotalMs = Date.now() - totalStart;
+            var tm = Math.floor(itvTotalMs / 60000);
+            var ts = Math.floor((itvTotalMs % 60000) / 1000);
+            document.getElementById('itv-total-time').textContent = pad(tm) + ':' + pad(ts);
+        }, 500);
+    }
+
+    if (itvMode === 'timer') {
+        var last = Date.now();
+        itvInterval = setInterval(function() {
+            var elapsed = Math.floor((Date.now() - last) / 1000);
+            if (elapsed > 0) { itvTimerSec -= elapsed; last = Date.now(); }
+            if (itvTimerSec <= 0) {
+                itvTimerSec = 0;
+                document.getElementById('itv-exec-time').textContent = '00:00';
+                clearInterval(itvInterval); itvRunning = false;
+                bipCountdown && bipCountdown();
+                // Timer terminé → passage automatique
+                setTimeout(function() { itvExecNext(); }, 600);
+            } else {
+                if (itvTimerSec <= 3) bipCountdown && bipCountdown();
+                document.getElementById('itv-exec-time').textContent = fmtSec(itvTimerSec);
+            }
+        }, 200);
+    } else {
+        // Chrono montant
+        var startTs = Date.now() - itvMs;
+        itvInterval = setInterval(function() {
+            itvMs = Date.now() - startTs;
+            var m  = Math.floor(itvMs / 60000);
+            var s  = Math.floor((itvMs % 60000) / 1000);
+            document.getElementById('itv-exec-time').textContent = pad(m) + ':' + pad(s);
+        }, 200);
+    }
+}
+
+function itvExecPause() {
+    if (!itvRunning) return;
+    clearInterval(itvInterval); itvRunning = false;
+    clearInterval(itvIntervalTotal); itvIntervalTotal = null;
+    setBtnActive('itv-btn-pause', true);
+    document.getElementById('itv-btn-start').disabled = false;
+    document.getElementById('itv-exec-label').textContent = '⏸ EN PAUSE';
+    setPhaseStyle(document.getElementById('itv-exec-display'), '');
+}
+
+function itvExecNext() {
+    clearInterval(itvInterval); itvRunning = false;
+    itvMs = 0; itvTimerSec = 0;
+    itvCurIdx++;
+    if (itvCurIdx >= itvQueue.length) { itvFinish(); return; }
+    setBtnActive('itv-btn-pause', false);
+    itvRender();
+    // Démarrage automatique de l'étape suivante
+    itvExecStart();
+}
+
+function itvFinish() {
+    clearInterval(itvInterval); clearInterval(itvIntervalTotal);
+    itvRunning = false; itvIntervalTotal = null;
+    setPhaseStyle(document.getElementById('itv-exec-display'), '');
+    document.getElementById('itv-exec-label').textContent = '✅ SÉANCE TERMINÉE !';
+    document.getElementById('itv-exec-time').textContent  = '';
+    document.getElementById('itv-exec-info').textContent  = '';
+    document.getElementById('itv-btn-start').disabled = true;
+    document.getElementById('itv-btn-pause').disabled = true;
+    document.getElementById('itv-btn-ok').disabled    = true;
+    document.getElementById('itv-exec-instru').innerHTML = '';
+    document.getElementById('itv-exec-instru').style.display = 'none';
+    document.getElementById('itv-counters').style.display = 'none';
+}
+
+function itvExecReset() {
+    clearInterval(itvInterval); clearInterval(itvIntervalTotal);
+    itvRunning = false; itvIntervalTotal = null;
+    itvCurIdx = 0; itvMs = 0; itvTimerSec = 0; itvStarted = false; itvTotalMs = 0;
+    document.getElementById('itv-total-time').textContent = '00:00';
+    document.getElementById('itv-total-wrap').style.display = 'none';
+    document.getElementById('itv-btn-start').disabled = false;
+    document.getElementById('itv-btn-pause').disabled = true;
+    document.getElementById('itv-btn-ok').disabled    = true;
+    setBtnActive('itv-btn-pause', false);
+    itvRender();
+}
+
+function itvCounterAdj(type, delta) {
+    if (type === 'reps') {
+        itvCntReps = Math.max(0, itvCntReps + delta);
+        document.getElementById('itv-cnt-reps').textContent = itvCntReps;
+    } else {
+        itvCntRounds = Math.max(0, itvCntRounds + delta);
+        document.getElementById('itv-cnt-rounds').textContent = itvCntRounds;
+    }
+}
+
 /* Init */
 function chargerDepuisLocalStorage() {
     // Lire depuis l'URL d'abord, sinon depuis localStorage
@@ -1460,7 +1885,6 @@ function chargerDepuisLocalStorage() {
         var tabSm = document.querySelector('.seance-tab[onclick*="tabata"]');
         if (tabSm) showSeance('tabata', tabSm);
         document.getElementById('tab-name').value = c.nom || '';
-        // Gérer le champ repeat (répétitions de la séquence)
         if (c.repeat) {
             document.getElementById('tab-repeat').value = c.repeat;
         }
@@ -1470,6 +1894,48 @@ function chargerDepuisLocalStorage() {
             var typeMap = { travail:'travail', repos:'repos', warmup:'warmup', recup:'recup' };
             var t = typeMap[ph.type] || 'travail';
             tabAddPhase(t, ph.sec, [{text: ph.text || '', colorIdx: i % gColors.length}]);
+        });
+    }
+    else if (c.type === 'intervalles') {
+        // Naviguer vers l'onglet Intervalles
+        var tabItv = document.querySelector('.seance-tab[onclick*="intervalles"]');
+        if (tabItv) showSeance('intervalles', tabItv);
+        document.getElementById('itv-name').value = c.nom || '';
+        // Vider la liste
+        var itvList = document.getElementById('itv-blocs-list');
+        itvList.innerHTML = '';
+        itvBlocCounter = 0;
+        // Ajouter chaque bloc
+        (c.blocs || []).forEach(function(bloc) {
+            itvAddBloc(bloc.type, bloc.reps, bloc.instr);
+            // Récupérer le dernier bloc ajouté
+            var lastLi = itvList.lastElementChild;
+            if (!lastLi) return;
+            var liId = lastLi.id;
+            // Durée (repos toujours, warmup/recup si hasTimer)
+            if (bloc.dur) {
+                var durInput = document.getElementById('itv-dur-' + liId);
+                if (durInput) durInput.value = bloc.dur;
+            }
+            // Checkbox timer pour warmup/recup/travail
+            if (bloc.hasTimer === true) {
+                var chk = document.getElementById('itv-chk-' + liId);
+                var timerRow = lastLi.querySelector('.itv-timer-row');
+                if (chk) { chk.checked = true; }
+                if (timerRow) timerRow.style.display = 'flex';
+                // Remplir la durée si fournie
+                if (bloc.dur) {
+                    var durInput2 = document.getElementById('itv-dur-' + liId);
+                    if (durInput2) durInput2.value = bloc.dur;
+                }
+            }
+            // Objectifs reps/rounds pour travail
+            if (bloc.type === 'travail') {
+                var repsObjInput = document.getElementById('itv-repsobj-' + liId);
+                var rndsObjInput = document.getElementById('itv-rndsobj-' + liId);
+                if (repsObjInput && bloc.repsObj !== undefined) repsObjInput.value = bloc.repsObj;
+                if (rndsObjInput && bloc.rndsObj !== undefined) rndsObjInput.value = bloc.rndsObj;
+            }
         });
     }
     return true;

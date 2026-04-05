@@ -1297,39 +1297,6 @@ const workouts = [
         }
     },
 
-    // ══════════════════════════════════════════════════════════
-    // SÉANCE RAMEUR TEMPO
-    // ══════════════════════════════════════════════════════════
-    {
-        title: "Séance RAMEUR TEMPO",
-        material: ["rameur"],
-        body: "complet",
-        duration: 40,
-        type: "CARDIO",
-        level: "Moyen",
-        desc: "Séance structurée sur rameur Concept2 — 40 minutes avec 6 phases de travail progressif. 12 niveaux disponibles. Damper 3-5.",
-        details: {
-            format_label: "RAMEUR TEMPO — 40 MINUTES",
-            type_special: "avec_niveaux",
-            conseil: "Séance parfaite sur rameur Concept2 (erg). Le niveau correspond approximativement aux paliers du test Cooper/VO2max. Min 1-10 : échauffement avec 3 accélérations de 30 sec. Min 32-40 : retour au calme. Damper conseillé : 1-3 pour l'échauffement/retour au calme, 3-5 pour les phases de travail.",
-            chargeable: true,
-            niveaux: [
-                { n:  1, attaque: "2:35", transition: "2:50", base: "3:00", remontee: "2:50", soutenu: "2:40", pointe: "2:30" },
-                { n:  2, attaque: "2:30", transition: "2:40", base: "2:50", remontee: "2:40", soutenu: "2:35", pointe: "2:25" },
-                { n:  3, attaque: "2:25", transition: "2:35", base: "2:45", remontee: "2:35", soutenu: "2:30", pointe: "2:20" },
-                { n:  4, attaque: "2:20", transition: "2:30", base: "2:40", remontee: "2:30", soutenu: "2:25", pointe: "2:15" },
-                { n:  5, attaque: "2:15", transition: "2:25", base: "2:35", remontee: "2:25", soutenu: "2:20", pointe: "2:10" },
-                { n:  6, attaque: "2:10", transition: "2:20", base: "2:30", remontee: "2:20", soutenu: "2:15", pointe: "2:05" },
-                { n:  7, attaque: "2:05", transition: "2:15", base: "2:25", remontee: "2:15", soutenu: "2:10", pointe: "2:00" },
-                { n:  8, attaque: "2:00", transition: "2:10", base: "2:20", remontee: "2:10", soutenu: "2:05", pointe: "1:55" },
-                { n:  9, attaque: "1:55", transition: "2:05", base: "2:15", remontee: "2:05", soutenu: "2:00", pointe: "1:50" },
-                { n: 10, attaque: "1:50", transition: "2:00", base: "2:10", remontee: "2:00", soutenu: "1:55", pointe: "1:45" },
-                { n: 11, attaque: "1:45", transition: "1:55", base: "2:05", remontee: "1:55", soutenu: "1:50", pointe: "1:40" },
-                { n: 12, attaque: "1:40", transition: "1:50", base: "2:00", remontee: "1:50", soutenu: "1:45", pointe: "1:35" }
-            ]
-        }
-    },
-
     { title: "Séance RUN TEMPO sur tapis", material: ["tapis-incurve"], body: "bas", duration: 40, type: "CARDIO", level: "Moyen", desc: "séance de fractionné pyramidale. <br>▪️12 niveaux disponibles.  <br>▪️40 minutes",
       details: {
         format_label: "CARDIO PYRAMIDAL — 40 MINUTES",
@@ -1535,80 +1502,33 @@ const workouts = [
     // ══════════════════════════════════════════════════════════
     // SÉANCE TEST — INTERVALLES (décommenter pour activer)
     // ══════════════════════════════════════════════════════════
-    //{
-    //    title: "TEST — Séance Intervalles",
-    //    material: ["poids-corps"],
-    //    body: "complet",
-    //    duration: 35,
-    //    type: "CARDIO",
-    //    level: "Moyen",
-    //    desc: "Séance test : warmup avec timer, 12x travail avec objectifs reps/rounds, repos chronométré, retour au calme sans timer.",
-    //    details: {
-    //        format_label: "INTERVALLES — 35 MINUTES",
-    //        exercises: [
-    //            { text: "Warmup 10 min (avec timer)" },
-    //            { text: "12 × Burpees — objectif 10 reps / 3 rounds" },
-    //            { text: "Repos 90 sec (timer)" },
-    //            { text: "Retour au calme (sans timer)" }
-    //        ],
-    //        conseil: "Séance de test pour valider le chargement de l'onglet Intervalles.",
-    //        chargeable: true,
-    //        chargement: {
-    //            type: "intervalles",
-    //            nom: "TEST — Séance Intervalles",
-    //            blocs: [
-    //                { type: "warmup",  reps: 1,  hasTimer: true,  dur: 600, instr: "Échauffement général — mobilisation + course légère" },
-    //                { type: "travail", reps: 5,  hasTimer: true,  dur: 60, repsObj: 0, rndsObj: 0, instr: "Gainage planche — tenir 1 minute" },
-    //                { type: "travail", reps: 12, repsObj: 10, rndsObj: 3,   instr: "Burpees — effort maximal (sans timer)" },
-    //                { type: "repos",   reps: 1,  dur: 90,                   instr: "Récupération active — marche ou course lente" },
-    //                { type: "recup",   reps: 1,  hasTimer: false,           instr: "Retour au calme — étirements légers" }
-    //            ]
-    //        }
-    //    }
-    //},
     {
-        title: "Séance de Fractionné course à pied (run) Confirmé",
-        material: ["poids-corps", "tapis-incurve"],
+        title: "TEST — Séance Intervalles",
+        material: ["poids-corps"],
         body: "complet",
-        duration: 0,
+        duration: 35,
         type: "CARDIO",
-        level: "Intense",
-        desc: "Séance fractionné : 10X400 mètres / récup:1 minute",
+        level: "Moyen",
+        desc: "Séance test : warmup avec timer, 12x travail avec objectifs reps/rounds, repos chronométré, retour au calme sans timer.",
         details: {
-            format_label: "FRACTIONNE - FOR TIME",
+            format_label: "INTERVALLES — 35 MINUTES",
             exercises: [
-                { text: "Echauffement de 10 min, 3 accélérations " },
-                { text: "10 × 400 mètres actif: allure de course élevée. objectif: allure constante sur les 10 séries" },
-                { text: "Repos 1 minute : course lente" },
-                { text: "Retour au calme : 5 minutes, course lente et/ou étirement léger" }
+                { text: "Warmup 10 min (avec timer)" },
+                { text: "12 × Burpees — objectif 10 reps / 3 rounds" },
+                { text: "Repos 90 sec (timer)" },
+                { text: "Retour au calme (sans timer)" }
             ],
-            conseil: "Allure constante sur les 10 séries. les courses de récupération sont très lente pendant la minute",
+            conseil: "Séance de test pour valider le chargement de l'onglet Intervalles.",
             chargeable: true,
             chargement: {
                 type: "intervalles",
-                nom: "Séance fractionné : 10X400 mètres / récup:1 minute",
+                nom: "TEST — Séance Intervalles",
                 blocs: [
-                    { type: "warmup",  reps: 1,  hasTimer: true,  dur: 600, instr: "Echauffement de 10 min, 3 accélérations" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 1/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 2/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 3/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 4/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 5/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 6/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 7/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 8/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 9/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 10/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
-                    { type: "recup",   reps: 1,  hasTimer: true,  dur: 300 , instr: "Retour au calme — étirements légers" }
+                    { type: "warmup",  reps: 1,  hasTimer: true,  dur: 600, instr: "Échauffement général — mobilisation + course légère" },
+                    { type: "travail", reps: 5,  hasTimer: true,  dur: 60, repsObj: 0, rndsObj: 0, instr: "Gainage planche — tenir 1 minute" },
+                    { type: "travail", reps: 12, repsObj: 10, rndsObj: 3,   instr: "Burpees — effort maximal (sans timer)" },
+                    { type: "repos",   reps: 1,  dur: 90,                   instr: "Récupération active — marche ou course lente" },
+                    { type: "recup",   reps: 1,  hasTimer: false,           instr: "Retour au calme — étirements légers" }
                 ]
             }
         }
@@ -1820,8 +1740,7 @@ function openModal(index) {
         html += '<div class="niveau-buttons">';
         for (i = 1; i <= 12; i++) {
             activeClass = i === 1 ? ' active' : '';
-            var fnSelect = (d.niveaux && d.niveaux[0] && d.niveaux[0].attaque !== undefined) ? 'selectNiveauRameur' : 'selectNiveau';
-            html += '<button class="btn-niveau' + activeClass + '" onclick="' + fnSelect + '(' + i + ')" id="btn-niveau-' + i + '">' + i + '</button>';
+            html += '<button class="btn-niveau' + activeClass + '" onclick="selectNiveau(' + i + ')" id="btn-niveau-' + i + '">' + i + '</button>';
         }
         html += '</div></div>';
         html += '<div id="run-tempo-phases"></div>';
@@ -1831,20 +1750,17 @@ function openModal(index) {
         document.getElementById('modal-body').innerHTML = html;
         window._niveauxActifs = d.niveaux;
         window._niveauActif = 1;
+        selectNiveau(1);
 
-        // Détecter rameur (a un champ 'attaque') ou run tempo
-        var isRameur = (d.niveaux && d.niveaux[0] && d.niveaux[0].attaque !== undefined);
-        if (isRameur) {
-            selectNiveauRameur(1);
-        } else {
-            selectNiveau(1);
-        }
-
+        // Bouton Charger pour Run Tempo
+        var footer = document.getElementById('modal-footer');
+        var existingBtn = document.getElementById('btn-charger');
+        if (existingBtn) existingBtn.remove();
         var rtOverlay = document.getElementById('modal-overlay');
         rtOverlay.classList.add('open');
         document.body.style.overflow = 'hidden';
 
-        // Bouton Charger
+        // Bouton Charger — ajouté après l'ouverture de la modale
         var footer2 = document.getElementById('modal-footer');
         var existingBtn2 = document.getElementById('btn-charger');
         if (existingBtn2) existingBtn2.remove();
@@ -1853,9 +1769,7 @@ function openModal(index) {
             btnCharger2.id = 'btn-charger';
             btnCharger2.className = 'btn-modal-charger';
             btnCharger2.textContent = '🚀 Charger dans Créer sa séance';
-            btnCharger2.onclick = isRameur ?
-                function() { chargerSeanceRameur(); } :
-                function() { chargerSeance({ type: 'avec_niveaux' }); };
+            btnCharger2.onclick = function() { chargerSeance({ type: 'avec_niveaux' }); };
             footer2.insertBefore(btnCharger2, footer2.firstChild);
         }
         return;
@@ -2114,114 +2028,6 @@ function chargerSeanceErgo() {
     var chargement = {
         type: 'surmesure',
         nom: 'Séance 4 Ergomètres — Niveau ' + niveauActif,
-        phases: phases
-    };
-
-    var encoded = encodeURIComponent(JSON.stringify(chargement));
-    window.location.href = 'seances_perso.html?seance=' + encoded;
-}
-
-function selectNiveauRameur(n) {
-    window._niveauActif = n;
-    var niveaux = window._niveauxActifs;
-    if (!niveaux) return;
-    var niveau = niveaux.find(function(nv) { return nv.n === n; });
-    if (!niveau) return;
-
-    // Mettre à jour les boutons
-    for (var i = 1; i <= 12; i++) {
-        var btn = document.getElementById('btn-niveau-' + i);
-        if (btn) btn.className = 'btn-niveau' + (i === n ? ' active' : '');
-    }
-
-    // Tableau des splits par phase
-    var html = '<div class="run-tempo-phases-wrap">';
-    html += '<p class="modal-section-title" style="margin:12px 0 8px;">🚣 Splits /500m — Niveau ' + n + '</p>';
-    html += '<table style="width:100%; border-collapse:collapse; font-size:0.88em; margin-bottom:14px;">';
-    html += '<thead><tr style="background:#f0f0f0;">';
-    html += '<th style="padding:6px 8px; text-align:left;">Phase</th>';
-    html += '<th style="padding:6px 8px; text-align:left;">Durée</th>';
-    html += '<th style="padding:6px 8px; text-align:center;">Split /500m</th>';
-    html += '</tr></thead><tbody>';
-
-    var phases = [
-        { label: "🔥 Attaque",    dur: "1 min",  split: niveau.attaque,    cls: "run-effort" },
-        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
-        { label: "🔼 Transition",  dur: "2 min",  split: niveau.transition,  cls: "run-effort" },
-        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
-        { label: "📍 La Base",     dur: "8 min",  split: niveau.base,        cls: "run-effort" },
-        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
-        { label: "📈 Remontée",   dur: "3 min",  split: niveau.remontee,    cls: "run-effort" },
-        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
-        { label: "💪 Soutenu",    dur: "2 min",  split: niveau.soutenu,     cls: "run-effort" },
-        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
-        { label: "🚀 Pointe",     dur: "1 min",  split: niveau.pointe,      cls: "run-effort" }
-    ];
-
-    phases.forEach(function(p) {
-        var splitDisplay = p.cls === 'run-effort' ? '<strong style="color:#1a237e;">' + p.split + '</strong>' : '<em style="color:#558b2f;">' + p.split + '</em>';
-        html += '<tr class="' + p.cls + '" style="border-bottom:1px solid #eee;">';
-        html += '<td style="padding:6px 8px;">' + p.label + '</td>';
-        html += '<td style="padding:6px 8px; color:#888;">' + p.dur + '</td>';
-        html += '<td style="padding:6px 8px; text-align:center;">' + splitDisplay + '</td>';
-        html += '</tr>';
-    });
-    html += '</tbody></table>';
-
-    // Déroulé complet
-    html += '<ul class="modal-exercises run-tempo-list">';
-    var deroulé = [
-        { min: "0:00-0:10",  label: "🏃 Échauffement — ramer tranquillement avec 3 accélérations de 30sec (damper 1-3)", cls: "run-recup" },
-        { min: "0:10-0:11",  label: "🔥 Attaque — " + niveau.attaque + " /500m",         cls: "run-effort" },
-        { min: "0:11-0:12",  label: "😮‍💨 Récupération",                                   cls: "run-recup"  },
-        { min: "0:12-0:14",  label: "🔼 Transition — " + niveau.transition + " /500m",   cls: "run-effort" },
-        { min: "0:14-0:15",  label: "😮‍💨 Récupération",                                   cls: "run-recup"  },
-        { min: "0:15-0:23",  label: "📍 La Base — " + niveau.base + " /500m",            cls: "run-effort" },
-        { min: "0:23-0:24",  label: "😮‍💨 Récupération",                                   cls: "run-recup"  },
-        { min: "0:24-0:27",  label: "📈 Remontée — " + niveau.remontee + " /500m",      cls: "run-effort" },
-        { min: "0:27-0:28",  label: "😮‍💨 Récupération",                                   cls: "run-recup"  },
-        { min: "0:28-0:30",  label: "💪 Soutenu — " + niveau.soutenu + " /500m",        cls: "run-effort" },
-        { min: "0:30-0:31",  label: "😮‍💨 Récupération",                                   cls: "run-recup"  },
-        { min: "0:31-0:32",  label: "🚀 Pointe — " + niveau.pointe + " /500m",          cls: "run-effort" },
-        { min: "0:32-0:40",  label: "🧘 Retour au calme — ramer tranquillement (damper 1-3)", cls: "run-recup" }
-    ];
-    deroulé.forEach(function(d) {
-        html += '<li class="' + d.cls + '">';
-        html += '<span class="run-min">' + d.min + '</span>';
-        html += '<span class="run-speed">' + d.label + '</span>';
-        html += '</li>';
-    });
-    html += '</ul></div>';
-
-    var container = document.getElementById('run-tempo-phases');
-    if (container) container.innerHTML = html;
-}
-
-function chargerSeanceRameur() {
-    var niveauActif = window._niveauActif || 1;
-    var niveaux = window._niveauxActifs;
-    var niveau = niveaux ? niveaux.find(function(nv) { return nv.n === niveauActif; }) : null;
-    if (!niveau) return;
-
-    var phases = [
-        { type: 'warmup', sec: 600,  text: 'Échauffement — ramer tranquillement avec 3 accélérations de 30sec (damper 1-3)' },
-        { type: 'travail', sec: 60,  text: '🔥 Attaque — ' + niveau.attaque + ' /500m (damper 3-5)' },
-        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
-        { type: 'travail', sec: 120, text: '🔼 Transition — ' + niveau.transition + ' /500m' },
-        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
-        { type: 'travail', sec: 480, text: '📍 La Base — ' + niveau.base + ' /500m' },
-        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
-        { type: 'travail', sec: 180, text: '📈 Remontée — ' + niveau.remontee + ' /500m' },
-        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
-        { type: 'travail', sec: 120, text: '💪 Soutenu — ' + niveau.soutenu + ' /500m' },
-        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
-        { type: 'travail', sec: 60,  text: '🚀 Pointe — ' + niveau.pointe + ' /500m' },
-        { type: 'recup',   sec: 480, text: '🧘 Retour au calme — ramer tranquillement (damper 1-3)' }
-    ];
-
-    var chargement = {
-        type: 'surmesure',
-        nom: 'Rameur Tempo — Niveau ' + niveauActif,
         phases: phases
     };
 

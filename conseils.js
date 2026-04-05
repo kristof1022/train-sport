@@ -90,6 +90,23 @@ const conseils = [
             ]
          }
      },
+    
+    {
+        title: "RAMEUR CONCEPT2 - le levier de réglage : DAMPER",
+        categorie: "Entraînement",
+        tags: ["technique"],
+        desc: "Comment utiliser le DAMPER?",
+        details: {
+             contenu: [
+                { type: "texte", texte: "<strong>Quel niveau de difficulté choisir et quel ressenti?</strong>" },
+                 { type: "separateur" },
+                { type: "texte", texte: "📌<em>DAMPER bas (1 à 3)</em> : Sensation légère et fluide. Idéal pour travailler la vitesse de réaction et le cardio pur. A utiliser pour l'échauffement." },
+                { type: "texte", texte: "📌<em>DAMPER moyen (3 à 5)</em> : Réglage de référence pour les tests de performance (comme le 2000m). C'est le meilleur équilibre entre force et cardio." },
+                 { type: "texte", texte: "📌<em>DAMPER haut (6 à 10)</em> : Sensation lourde. Impression de ramer dans de la mélasse ou avec un bateau très chargé. Contre-indiqué pour les longues séances. Plus exigeant pour les muscles, souvent plus lent pour le cardio car la cadence chute." },
+                
+            ]
+         }
+     },
 
     // ══════════════════════════════════════════════════════
     // LEXIQUE DES MOUVEMENTS
