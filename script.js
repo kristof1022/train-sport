@@ -393,7 +393,7 @@ const workouts = [
 
     { title: "WOD EMOM spécial RENFO NATATION 🏊", material: ["machineguidee", "kettle", "barre"], body: "complet", duration: 20, type: "EMOM", level: "Facile", desc: "<strong>Chaque minute :</strong> Tirage poulie haute(dos), Kettlebell swing, Développé militaire barre(épaules), Fente avec kettlebells.",
       details: { format_label: "EMOM 10 MINUTES", exercises: [
-          { text: "minute 1 : 10 Tirages poulie haute" }, { text: " minute 2 : 12 Kettlebell swings lourd" }, { text: " minute 3 : 10 Dévelloppés militaire barre" }, { text: " minute 3 : 10 Dévelloppé militaire barre" }, { text: " minute 4 : 20 Fentes kettlebell alternée (10/jambe) "}, { text: " minute 5 : repos " }
+          { text: "minute 1 : 10 Tirages poulie haute" }, { text: " minute 2 : 12 Kettlebell swings lourd" }, { text: " minute 3 : 10 Dévelloppés militaire barre" }, { text: " minute 4 : 20 Fentes kettlebell alternée (10/jambe) "}, { text: " minute 5 : repos " }
         ], conseil: "on peut remplacer le tirage poulie haute par des tractions",
         chargeable: true,
                   chargement: {
