@@ -189,6 +189,23 @@ const workouts = [
         }            
         }},
   
+    { title: "WOD AMRAP spécial RENFO NATATION 🏊", material: ["poids-corps"], body: "complet", duration: 20, type: "AMRAP", level: "Facile", desc: "<strong>Pendant 20 min :</strong> Pompes(Push-ups), Superman(Lombaires), Sit-ups(abdos), Fentes sautées alternées (alternating jumping lunge), Burpees sans saut.",
+      details: { format_label: "AMRAP 20 MINUTES", intro: "Enchaîner les exercices suivants pendant 20 minutes :", exercises: [
+          { text: "12 Pompes(Push-ups)" }, { text: "15 Superman(Lombaires)" }, { text: "15 Sit-Ups(abdos)" }, { text: "20 Fentes sautées alternées - 10/jambe (alternating jumping lunge)" }, { text: "10 Burpees sans saut" }
+        ], scaled: { intro: "VERSION SCALED :", exercises: [
+          { text: "12 Pompes sur les genoux(Push-ups)" }, { text: "10 Superman(Lombaires)" }, { text: "10 crunchs(abdos)" }, { text: "20 Fentes  - 10/jambe (lunge)" }, { text: "10 Burpees sans saut" }
+        ]}, conseil: "en échauffement ➔ 3 rounds d'activation : 10 Pompes + 10 Air Squats + 20 sec Hollow Hold (Gainage cuillère).",
+          chargeable: true,
+        chargement: {
+          type: "amrap",
+          nom: "🏊 AMRAP spécial RENFO NATATION 🏊",
+          duree_min: 20,
+          exercices: [
+            { text: "12 Pompes(Push-ups)" }, { text: "15 Superman(Lombaires)" }, { text: "15 Sit-Ups(abdos)" }, { text: "20 Fentes sautées alternées - 10/jambe (alternating jumping lunge)" }, { text: "10 Burpees sans saut" }
+          ]
+        }            
+        }},
+  
   
   { title: "Le WOD Lunges & Co", material: ["poids-corps"], body: "bas", duration: 20, type: "AMRAP", level: "Facile", desc: "<strong>AMRAP 20 min :</strong> 20 Jumping Lunges(fentes), 20 Sit-ups(abdos), 20 Air Squats.",
       details: { format_label: "AMRAP 20 MINUTES", intro: "Réaliser les exercices :", exercises: [
@@ -374,6 +391,40 @@ const workouts = [
         }        
         }},
 
+    { title: "WOD EMOM spécial RENFO NATATION 🏊", material: ["machineguidee", "kettle", "barre"], body: "complet", duration: 20, type: "EMOM", level: "Facile", desc: "<strong>Chaque minute :</strong> Tirage poulie haute(dos), Kettlebell swing, Développé militaire barre(épaules), Fente avec kettlebells.",
+      details: { format_label: "EMOM 10 MINUTES", exercises: [
+          { text: "minute 1 : 10 Tirages poulie haute" }, { text: " minute 2 : 12 Kettlebell swings lourd" }, { text: " minute 3 : 10 Dévelloppés militaire barre" }, { text: " minute 3 : 10 Dévelloppé militaire barre" }, { text: " minute 4 : 20 Fentes kettlebell alternée (10/jambe) "}, { text: " minute 5 : repos " }
+        ], conseil: "on peut remplacer le tirage poulie haute par des tractions",
+        chargeable: true,
+                  chargement: {
+                  type: "surmesure",
+                  nom: "🏊 EMOM RENFO NATATION 🏊",
+                  repeat: 0,
+                  phases: [
+                    { type: "travail", sec: 60, text: "10 tirages poulie haute" },
+                    { type: "travail", sec: 60, text: "12 Kettlebell swings lourd" },
+                    { type: "travail", sec: 60, text: "10 Dévelloppés militaire barre" },
+                    { type: "travail", sec: 60, text: "20 Fentes kettlebell alternée" },
+                    { type: "repos", sec: 60, text: " 1 minute de repos " },
+                    { type: "travail", sec: 60, text: "10 tirages poulie haute" },
+                    { type: "travail", sec: 60, text: "12 Kettlebell swings lourd" },
+                    { type: "travail", sec: 60, text: "10 Dévelloppés militaire barre" },
+                    { type: "travail", sec: 60, text: "20 Fentes kettlebell alternée" },
+                    { type: "repos", sec: 60, text: " 1 minute de repos " },
+                    { type: "travail", sec: 60, text: "10 tirages poulie haute" },
+                    { type: "travail", sec: 60, text: "12 Kettlebell swings lourd" },
+                    { type: "travail", sec: 60, text: "10 Dévelloppés militaire barre" },
+                    { type: "travail", sec: 60, text: "20 Fentes kettlebell alternée" },
+                    { type: "repos", sec: 60, text: " 1 minute de repos " },
+                    { type: "travail", sec: 60, text: "10 tirages poulie haute" },
+                    { type: "travail", sec: 60, text: "12 Kettlebell swings lourd" },
+                    { type: "travail", sec: 60, text: "10 Dévelloppés militaire barre" },
+                    { type: "travail", sec: 60, text: "20 Fentes kettlebell alternée" },
+                    { type: "repos", sec: 60, text: " 1 minute de repos " },
+                  ]
+        }        
+        }},
+  
     { title: "WOD 3 EXOS 10 MIN", material: ["poids-corps"], body: "complet", duration: 10, type: "EMOM", level: "Facile", desc: "<strong>Chaque minute :</strong> 5 Burpees, 10 Squats jump, 5 Pompes(push-ups).",
       details: { format_label: "EMOM 10 MINUTES", exercises: [
           { text: "5 Burpees" }, { text: "10 Squats jump" }, { text: "5 Pompes" }
