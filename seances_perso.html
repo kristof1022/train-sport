@@ -224,6 +224,38 @@
         /* Zone instructions exécution */
         .instru-display { background: #e8e8e8; margin: 0; }
         .instru-display:empty { display: none; }
+
+        /* Bouton image mouvement */
+        .btn-img-mouvement {
+            background: rgba(0,0,0,0.15); border: none; border-radius: 6px;
+            color: #555; font-size: 1em; cursor: pointer; padding: 2px 8px;
+            margin-left: 8px; vertical-align: middle; flex-shrink: 0;
+            transition: background 0.15s;
+        }
+        .btn-img-mouvement:hover { background: rgba(0,0,0,0.3); color: #000; }
+
+        /* Overlay image plein écran */
+        #img-mouvement-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85); z-index: 9999;
+            align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box;
+        }
+        #img-mouvement-overlay.open { display: flex; }
+        #img-mouvement-overlay img {
+            max-width: 95vw; max-height: 90vh;
+            object-fit: contain; border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        #img-mouvement-close {
+            position: fixed; top: 16px; right: 16px;
+            background: #fff; border: none; border-radius: 50%;
+            width: 40px; height: 40px; font-size: 1.2em;
+            cursor: pointer; z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+
         .instru-line {
             padding: 11px 20px; font-size: 1.2em; font-weight: 700;
             line-height: 1.5; text-align: center; border-bottom: 1px solid #ddd;
@@ -738,6 +770,12 @@
 
 <button id="backToTop" title="Retour en haut">↑</button>
 
+<!-- Overlay image mouvement -->
+<div id="img-mouvement-overlay" onclick="fermerImgMouvement()">
+    <button id="img-mouvement-close" onclick="fermerImgMouvement()">✕</button>
+    <img id="img-mouvement-src" src="" alt="Mouvement">
+</div>
+
 <script>
 /* ══════════════════════════════════════
    SON
@@ -817,7 +855,7 @@ var gColors = [
 ];
 var gCounter = 0;
 
-function addGroupe(listId, textVal, colorIdx) {
+function addGroupe(listId, textVal, colorIdx, imageVal) {
     var gl=document.getElementById(listId);
     if (!gl) return;
     var existing=gl.querySelectorAll('.groupe-row').length;
@@ -827,6 +865,7 @@ function addGroupe(listId, textVal, colorIdx) {
     var gid='g'+gCounter;
     var row=document.createElement('div');
     row.className='groupe-row'; row.id=gid; row.dataset.colorIdx=ci;
+    if (imageVal) row.dataset.image=imageVal;
     row.innerHTML=
         '<div class="groupe-dot" style="background:'+color.dot+'" title="'+color.name+'"></div>'+
         '<textarea class="groupe-textarea" rows="2" placeholder="'+color.name+' — instructions...">'+
@@ -843,7 +882,7 @@ function getGroupes(listId) {
     var res=[];
     document.querySelectorAll('#'+listId+' .groupe-row').forEach(function(row) {
         var txt=row.querySelector('textarea').value.trim();
-        if (txt) res.push({text:txt, colorIdx:parseInt(row.dataset.colorIdx)||0});
+        if (txt) res.push({text:txt, colorIdx:parseInt(row.dataset.colorIdx)||0, image:row.dataset.image||null});
     });
     return res;
 }
@@ -851,17 +890,30 @@ function getGroupes(listId) {
 function renderInstru(elId, groupes) {
     var el=document.getElementById(elId);
     if (groupes && groupes.length>0) {
-        // Police adaptative selon le nombre d'instructions
         var n = groupes.length;
         var fontSize = n <= 4 ? '1.2em' : n <= 7 ? '1em' : '0.85em';
         el.innerHTML=groupes.map(function(g) {
             var c=gColors[g.colorIdx]||gColors[0];
-            return '<div class="instru-line" style="color:'+c.text+';font-size:'+fontSize+'">'+g.text.replace(/\n/g,'<br>')+'</div>';
+            var imgBtn = g.image ?
+                ' <button class="btn-img-mouvement" onclick="ouvrirImgMouvement(\'' + g.image.replace(/'/g,"\\'") + '\')" title="Voir le mouvement">📷</button>' : '';
+            return '<div class="instru-line" style="color:'+c.text+';font-size:'+fontSize+';text-align:center;">'+
+                   g.text.replace(/\n/g,'<br>')+imgBtn+
+                   '</div>';
         }).join('');
         el.style.display='block';
     } else {
         el.innerHTML=''; el.style.display='none';
     }
+}
+
+function ouvrirImgMouvement(src) {
+    document.getElementById('img-mouvement-src').src = src;
+    document.getElementById('img-mouvement-overlay').classList.add('open');
+}
+
+function fermerImgMouvement() {
+    document.getElementById('img-mouvement-overlay').classList.remove('open');
+    document.getElementById('img-mouvement-src').src = '';
 }
 
 /* Navigation */
@@ -911,7 +963,7 @@ function tabAddPhase(typeVal, durVal, groupes) {
         '<button class="btn-add-exo" onclick="addGroupe(\'gl-'+id+'\')">+ Ajouter un exo</button>';
     list.appendChild(li);
     var initGroupes = groupes || [{text:'',colorIdx:0}];
-    initGroupes.forEach(function(g){ addGroupe('gl-'+id, g.text, g.colorIdx); });
+    initGroupes.forEach(function(g){ addGroupe('gl-'+id, g.text, g.colorIdx, g.image||null); });
 }
 
 function tabUpdatePhaseStyle(sel) {
@@ -1680,7 +1732,10 @@ function itvRender() {
     // Instruction
     var instrEl = document.getElementById('itv-exec-instru');
     if (bloc.instr) {
-        instrEl.innerHTML = '<div class="instru-line" style="color:#333;">' + bloc.instr.replace(/\n/g,'<br>') + '</div>';
+        var imgBtnItv = bloc.image ?
+            '<button class="btn-img-mouvement" onclick="ouvrirImgMouvement(\'' + bloc.image + '\')" title="Voir le mouvement">📷</button>' : '';
+        instrEl.innerHTML = '<div class="instru-line" style="color:#333;display:flex;align-items:center;justify-content:space-between;">' +
+            '<span>' + bloc.instr.replace(/\n/g,'<br>') + '</span>' + imgBtnItv + '</div>';
         instrEl.style.display = 'block';
     } else {
         instrEl.innerHTML = ''; instrEl.style.display = 'none';
@@ -1874,6 +1929,7 @@ function chargerDepuisLocalStorage() {
         var tabTabata = document.querySelector('.seance-tab[onclick*="tabata"]');
         if (tabTabata) showSeance('tabata', tabTabata);
         document.getElementById('tab-name').value = c.nom || '';
+        if (c.rounds) document.getElementById('tab-repeat').value = c.rounds;
         var tabList = document.getElementById('tab-phases-list');
         tabList.innerHTML = '';
         (c.exercices || []).forEach(function(ex, i) {
@@ -1893,7 +1949,7 @@ function chargerDepuisLocalStorage() {
         (c.phases || []).forEach(function(ph, i) {
             var typeMap = { travail:'travail', repos:'repos', warmup:'warmup', recup:'recup' };
             var t = typeMap[ph.type] || 'travail';
-            tabAddPhase(t, ph.sec, [{text: ph.text || '', colorIdx: i % gColors.length}]);
+            tabAddPhase(t, ph.sec, [{text: ph.text || '', colorIdx: i % gColors.length, image: ph.image || null}]);
         });
     }
     else if (c.type === 'intervalles') {

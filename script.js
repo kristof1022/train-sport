@@ -15,7 +15,7 @@ const workouts = [
           nom: "WOD TABATA 30/10",
           travail: 30,
           repos: 10,
-          rounds: 10,
+          rounds: 2,
           exercices: [
             { text: "SQUATS" },
             { text: "BURPEES" },
@@ -117,6 +117,35 @@ const workouts = [
           ]
         }
       }},
+  
+    { title: "WOD TABATA 20/10 BAS DU CORPS ET CARDIO", material: ["poids-corps"], body: "abdos", duration: 12, type: "TABATA", level: "Facile", 
+     desc: "<strong>20 sec travail / 10 sec - 12 minutes</strong>",
+     details: { format_label: "TABATA ABDOS — 12 min ", intro: "20 sec travail / 10 sec repos — 4 tours :", 
+     exercises: [{ text: "20 sec Air Squats / 10 sec repos" },
+                 { text: "20 sec Jumping Jacks / 10 sec repos" },
+                 { text: "20 sec Relevés de bassin (bridge) / 10 sec repos" },
+                 { text: "20 sec Burpees sans saut, sans pompe / 10 sec repos" },
+                 { text: "20 sec Fentes arrières alternées/ 10 sec repos" },
+                 { text: "20 sec Mountain climbers / 10 sec repos" },
+                ], 
+     conseil: "20 secondes de travail / 10 secondes de repos : s'échauffer avant l'entraînement",
+        chargeable: true,
+        chargement: {
+          type: "tabata",
+          nom: "WOD TABATA 20/10 BAS DU CORPS ET CARDIO",
+          travail: 20,
+          repos: 10,
+          rounds: 4,
+          exercices: [
+            { text: "20 sec Air Squats / 10 sec repos" },
+                 { text: "Jumping Jacks" },
+                 { text: "Relevés de bassin (bridge)" },
+                 { text: "Burpees sans saut, sans pompe" },
+                 { text: "Fentes arrières alternées" },
+                 { text: "Mountain climbers" }
+          ]
+        }
+      }},
 
   
 /* SEANCES AMRAP */
@@ -139,7 +168,7 @@ const workouts = [
                   nom: "WOD AMRAP 6 EXOS",
                   repeat: 4,
                   phases: [
-                      { type: "travail", sec: 60, text: "Burpees" },
+                      { type: "travail", sec: 60, text: "Burpees", image: "images/infosbulles/BURPEES1.png" },
                       { type: "travail", sec: 60, text: "Pompes" },
                       { type: "travail", sec: 60, text: "Squat jump" },
                       { type: "travail", sec: 60, text: "Marche de l'ours" },
@@ -390,7 +419,7 @@ const workouts = [
           ]
         }        
         }},
-
+  
     { title: "WOD EMOM spécial RENFO NATATION 🏊", material: ["machineguidee", "kettle", "barre"], body: "complet", duration: 20, type: "EMOM", level: "Facile", desc: "<strong>Chaque minute :</strong> Tirage poulie haute(dos), Kettlebell swing, Développé militaire barre(épaules), Fente avec kettlebells.",
       details: { format_label: "EMOM 10 MINUTES", exercises: [
           { text: "minute 1 : 10 Tirages poulie haute" }, { text: " minute 2 : 12 Kettlebell swings lourd" }, { text: " minute 3 : 10 Dévelloppés militaire barre" }, { text: " minute 4 : 20 Fentes kettlebell alternée (10/jambe) "}, { text: " minute 5 : repos " }
@@ -424,7 +453,7 @@ const workouts = [
                   ]
         }        
         }},
-  
+
     { title: "WOD 3 EXOS 10 MIN", material: ["poids-corps"], body: "complet", duration: 10, type: "EMOM", level: "Facile", desc: "<strong>Chaque minute :</strong> 5 Burpees, 10 Squats jump, 5 Pompes(push-ups).",
       details: { format_label: "EMOM 10 MINUTES", exercises: [
           { text: "5 Burpees" }, { text: "10 Squats jump" }, { text: "5 Pompes" }
@@ -1640,7 +1669,7 @@ const workouts = [
                 nom: "Séance fractionné : 10X400 mètres / récup:1 minute",
                 blocs: [
                     { type: "warmup",  reps: 1,  hasTimer: true,  dur: 600, instr: "Echauffement de 10 min, 3 accélérations" },
-                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 1/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
+                    { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 1/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>", image: "images/mouvements/burpee.png" },
                     { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
                     { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 2/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
                     { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
@@ -1943,7 +1972,16 @@ function openModal(index) {
     }
 
     html += '<ul class="modal-exercises">';
-    d.exercises.forEach(function(ex) { html += '<li>' + ex.text + '</li>'; });
+    d.exercises.forEach(function(ex) {
+        var hasMedia = ex.youtube || ex.video || ex.image;
+        if (hasMedia) {
+            var mediaType = ex.youtube ? 'youtube' : (ex.video ? 'video' : 'image');
+            var mediaSrc  = ex.youtube ? ex.youtube : (ex.video ? ex.video : ex.image);
+            html += '<li><a href="#" class="modal-ex-img-link" onclick="modalShowMedia(\'' + mediaType + '\',\'' + mediaSrc.replace(/'/g,"\'") + '\');return false;" title="Voir le mouvement">' + ex.text + '</a></li>';
+        } else {
+            html += '<li>' + ex.text + '</li>';
+        }
+    });
     html += '</ul>';
 
     // Exemple concret (ex: séance pompes)
@@ -1980,6 +2018,8 @@ function openModal(index) {
         html += '<div class="modal-conseil"><strong>&#x1F4A1; Conseil</strong>' + d.conseil + '</div>';
     }
 
+    // Section notes accordéon
+    html += buildNotesHtml(w.title);
     document.getElementById('modal-body').innerHTML = html;
 
     // Bouton "Charger dans Créer sa séance" si chargeable
@@ -1998,6 +2038,139 @@ function openModal(index) {
     const modalOverlay = document.getElementById('modal-overlay');
     modalOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+}
+
+// ══════════════════════════════════════════════════════
+// IMAGE POPUP — modale index
+// ══════════════════════════════════════════════════════
+function modalShowMedia(type, src) {
+    // Supprimer un overlay existant pour reconstruire proprement
+    var old = document.getElementById('modal-img-overlay');
+    if (old) old.remove();
+
+    var overlay = document.createElement('div');
+    overlay.id = 'modal-img-overlay';
+    overlay.style.cssText = 'display:flex;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+
+    // Bouton fermer
+    var btnClose = document.createElement('button');
+    btnClose.textContent = '✕';
+    btnClose.style.cssText = 'position:fixed;top:14px;right:14px;background:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:1.2em;cursor:pointer;z-index:10000;box-shadow:0 2px 8px rgba(0,0,0,0.3);';
+    btnClose.onclick = function(e) { e.stopPropagation(); overlay.remove(); };
+    overlay.appendChild(btnClose);
+
+    // Contenu selon le type
+    if (type === 'image') {
+        var img = document.createElement('img');
+        img.src = src;
+        img.style.cssText = 'max-width:95vw;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 4px 30px rgba(0,0,0,0.5);';
+        overlay.appendChild(img);
+        overlay.onclick = function() { overlay.remove(); };
+
+    } else if (type === 'video') {
+        var vid = document.createElement('video');
+        vid.src = src;
+        vid.controls = true;
+        vid.autoplay = true;
+        vid.style.cssText = 'max-width:95vw;max-height:90vh;border-radius:10px;box-shadow:0 4px 30px rgba(0,0,0,0.5);';
+        overlay.appendChild(vid);
+
+    } else if (type === 'youtube') {
+        var wrap = document.createElement('div');
+        wrap.style.cssText = 'width:min(95vw,800px);aspect-ratio:16/9;position:relative;';
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/' + src + '?autoplay=1';
+        iframe.style.cssText = 'width:100%;height:100%;border:none;border-radius:10px;';
+        iframe.allow = 'autoplay;encrypted-media';
+        iframe.allowFullscreen = true;
+        wrap.appendChild(iframe);
+        overlay.appendChild(wrap);
+        // Note hors ligne
+        var note = document.createElement('p');
+        note.textContent = '⚠️ Nécessite une connexion internet';
+        note.style.cssText = 'position:fixed;bottom:16px;color:rgba(255,255,255,0.6);font-size:0.8em;';
+        overlay.appendChild(note);
+    }
+
+    document.body.appendChild(overlay);
+}
+
+// ══════════════════════════════════════════════════════
+// NOTES — localStorage par séance
+// ══════════════════════════════════════════════════════
+function getNoteKey(title) { return 'note_' + title.replace(/ /g,'_'); }
+
+function getNotes(title) {
+    try { return JSON.parse(localStorage.getItem(getNoteKey(title)) || 'null'); }
+    catch(e) { return null; }
+}
+
+function saveNotes(title) {
+    var note = {
+        date:  document.getElementById('note-date').value  || '',
+        temps: document.getElementById('note-temps').value || '',
+        reps:  document.getElementById('note-reps').value  || '',
+        poids: document.getElementById('note-poids').value || '',
+        texte: document.getElementById('note-texte').value || ''
+    };
+    localStorage.setItem(getNoteKey(title), JSON.stringify(note));
+    var saved = document.getElementById('note-saved');
+    if (saved) { saved.style.opacity='1'; setTimeout(function(){saved.style.opacity='0';},1500); }
+}
+
+function deleteNotes(title) {
+    if (!confirm('Supprimer ces notes ?')) return;
+    localStorage.removeItem(getNoteKey(title));
+    // Vider les champs
+    ['note-date','note-temps','note-reps','note-poids','note-texte'].forEach(function(id){
+        var el=document.getElementById(id); if(el) el.value='';
+    });
+    var saved = document.getElementById('note-saved');
+    if (saved) { saved.textContent='🗑 Supprimé'; saved.style.opacity='1'; setTimeout(function(){saved.style.opacity='0'; saved.textContent='✅ Sauvegardé';},1500); }
+}
+
+function toggleNotes() {
+    var body = document.getElementById('notes-body');
+    var arrow = document.getElementById('notes-arrow');
+    if (!body) return;
+    var open = body.style.display !== 'none';
+    body.style.display = open ? 'none' : 'block';
+    if (arrow) arrow.textContent = open ? '▶' : '▼';
+}
+
+function buildNotesHtml(title) {
+    var note = getNotes(title) || {};
+    var hasNote = note.date || note.temps || note.reps || note.poids || note.texte;
+    var indicator = hasNote ? ' 📝' : '';
+    var inputStyle = 'width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:0.9em;box-sizing:border-box;font-family:sans-serif;';
+    var labelStyle = 'font-size:0.78em;color:#888;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;';
+
+    var html = '<div style="margin-top:16px;border:1px solid #eee;border-radius:8px;overflow:hidden;">';
+    // En-tête accordéon
+    html += '<div onclick="toggleNotes()" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f7f7f7;cursor:pointer;user-select:none;">';
+    html += '<span style="font-weight:700;font-size:0.9em;">📋 Mes notes' + indicator + '</span>';
+    html += '<span id="notes-arrow" style="font-size:0.8em;color:#999;">▶</span>';
+    html += '</div>';
+    // Corps accordéon (caché par défaut)
+    html += '<div id="notes-body" style="display:none;padding:16px;background:#fff;">';
+    // Champs structurés
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
+    html += '<div><label style="'+labelStyle+'">📅 Date</label><input type="date" id="note-date" value="'+(note.date||'')+'" style="'+inputStyle+'"></div>';
+    html += '<div><label style="'+labelStyle+'">⏱ Temps (mm:ss)</label><input type="text" id="note-temps" placeholder="ex: 24:30" value="'+(note.temps||'')+'" style="'+inputStyle+'"></div>';
+    html += '<div><label style="'+labelStyle+'">💪 Reps / Rounds</label><input type="text" id="note-reps" placeholder="ex: 15 rounds" value="'+(note.reps||'')+'" style="'+inputStyle+'"></div>';
+    html += '<div><label style="'+labelStyle+'">🏋 Poids (kg)</label><input type="text" id="note-poids" placeholder="ex: 60kg" value="'+(note.poids||'')+'" style="'+inputStyle+'"></div>';
+    html += '</div>';
+    // Zone texte libre
+    html += '<label style="'+labelStyle+'">📝 Commentaire libre</label>';
+    html += '<textarea id="note-texte" rows="3" placeholder="Ressenti, conditions, objectif prochain..." style="'+inputStyle+'resize:vertical;">'+(note.texte||'')+'</textarea>';
+    // Boutons
+    html += '<div style="display:flex;gap:8px;margin-top:10px;align-items:center;">';
+    html += '<button onclick="saveNotes(\'' + title.replace(/'/g,"\'") + '\')" style="background:#000;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.85em;font-weight:700;cursor:pointer;">💾 Sauvegarder</button>';
+    html += '<button onclick="deleteNotes(\'' + title.replace(/'/g,"\'") + '\')" style="background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:8px 12px;font-size:0.82em;cursor:pointer;">🗑</button>';
+    html += '<span id="note-saved" style="font-size:0.82em;color:#27ae60;opacity:0;transition:opacity 0.3s;margin-left:4px;">✅ Sauvegardé</span>';
+    html += '</div>';
+    html += '</div></div>';
+    return html;
 }
 
 function chargerSeance(chargement) {
