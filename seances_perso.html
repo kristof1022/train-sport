@@ -225,15 +225,6 @@
         .instru-display { background: #e8e8e8; margin: 0; }
         .instru-display:empty { display: none; }
 
-        /* Bouton image mouvement */
-        .btn-img-mouvement {
-            background: rgba(0,0,0,0.15); border: none; border-radius: 6px;
-            color: #555; font-size: 1em; cursor: pointer; padding: 2px 8px;
-            margin-left: 8px; vertical-align: middle; flex-shrink: 0;
-            transition: background 0.15s;
-        }
-        .btn-img-mouvement:hover { background: rgba(0,0,0,0.3); color: #000; }
-
         /* Overlay image plein écran */
         #img-mouvement-overlay {
             display: none; position: fixed; inset: 0;
@@ -894,10 +885,15 @@ function renderInstru(elId, groupes) {
         var fontSize = n <= 4 ? '1.2em' : n <= 7 ? '1em' : '0.85em';
         el.innerHTML=groupes.map(function(g) {
             var c=gColors[g.colorIdx]||gColors[0];
-            var imgBtn = g.image ?
-                ' <button class="btn-img-mouvement" onclick="ouvrirImgMouvement(\'' + g.image.replace(/'/g,"\\'") + '\')" title="Voir le mouvement">📷</button>' : '';
+            if (g.image) {
+                var imgSafe = g.image.replace(/'/g,"\\'");
+                return '<div class="instru-line" style="color:'+c.text+';font-size:'+fontSize+';text-align:center;">'+
+                       '<a href="#" onclick="ouvrirImgMouvement(\'' + imgSafe + '\');return false;" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;-webkit-tap-highlight-color:transparent;">'+
+                       g.text.replace(/\n/g,'<br>')+'</a>'+
+                       '</div>';
+            }
             return '<div class="instru-line" style="color:'+c.text+';font-size:'+fontSize+';text-align:center;">'+
-                   g.text.replace(/\n/g,'<br>')+imgBtn+
+                   g.text.replace(/\n/g,'<br>')+
                    '</div>';
         }).join('');
         el.style.display='block';
@@ -1732,10 +1728,14 @@ function itvRender() {
     // Instruction
     var instrEl = document.getElementById('itv-exec-instru');
     if (bloc.instr) {
-        var imgBtnItv = bloc.image ?
-            '<button class="btn-img-mouvement" onclick="ouvrirImgMouvement(\'' + bloc.image + '\')" title="Voir le mouvement">📷</button>' : '';
-        instrEl.innerHTML = '<div class="instru-line" style="color:#333;display:flex;align-items:center;justify-content:space-between;">' +
-            '<span>' + bloc.instr.replace(/\n/g,'<br>') + '</span>' + imgBtnItv + '</div>';
+        if (bloc.image) {
+            instrEl.innerHTML = '<div class="instru-line" style="color:#333;text-align:center;">' +
+                '<a href="#" onclick="ouvrirImgMouvement(\'' + bloc.image + '\');return false;" style="color:inherit;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;-webkit-tap-highlight-color:transparent;">' +
+                bloc.instr.replace(/\n/g,'<br>') + '</a></div>';
+        } else {
+            instrEl.innerHTML = '<div class="instru-line" style="color:#333;text-align:center;">' +
+                bloc.instr.replace(/\n/g,'<br>') + '</div>';
+        }
         instrEl.style.display = 'block';
     } else {
         instrEl.innerHTML = ''; instrEl.style.display = 'none';
