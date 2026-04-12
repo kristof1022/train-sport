@@ -118,7 +118,7 @@ const workouts = [
         }
       }},
   
-    { title: "WOD TABATA 20/10 BAS DU CORPS ET CARDIO", material: ["poids-corps"], body: "abdos", duration: 12, type: "TABATA", level: "Facile", 
+    { title: "WOD TABATA 20/10 BAS DU CORPS ET CARDIO", material: ["poids-corps"], body: "complet", duration: 12, type: "TABATA", level: "Facile", 
      desc: "<strong>20 sec travail / 10 sec - 12 minutes</strong>",
      details: { format_label: "TABATA ABDOS — 12 min ", intro: "20 sec travail / 10 sec repos — 4 tours :", 
      exercises: [{ text: "20 sec Air Squats / 10 sec repos" },
@@ -137,7 +137,7 @@ const workouts = [
           repos: 10,
           rounds: 4,
           exercices: [
-            { text: "20 sec Air Squats / 10 sec repos" },
+                  { text: "Air Squats" },
                  { text: "Jumping Jacks" },
                  { text: "Relevés de bassin (bridge)" },
                  { text: "Burpees sans saut, sans pompe" },
@@ -146,6 +146,34 @@ const workouts = [
           ]
         }
       }},
+  
+      { title: "WOD TABATA 40/20 RENFO Course à pied 🏃‍♀️", material: ["poids-corps"], body: "complet", duration: 12, type: "TABATA", level: "Facile", 
+     desc: "<strong>40 sec travail / 20 sec - 20 minutes</strong>",
+     details: { format_label: "TABATA RENFO Course à pie — 20 min ", intro: "40 sec travail / 20 sec repos — 4 tours :", 
+     exercises: [{ text: "40 sec Fentes arrière alternées / 20 sec repos" },
+                 { text: "40 sec Squat 'stop and go' / 20 sec repos" },
+                 { text: "40 sec Fentes Cosaques / 20 sec repos" },
+                 { text: "40 sec Gainage dynamique (planche puis chien tête en bas) / 20 sec repos" },
+                 { text: "40 sec Extensions mollets / 20 sec repos" },
+                ], 
+     conseil: "▫️S'échauffer 5 min avant l'entraînement : quelques squats/jumping jacks et mobilisation articulaire et/ou course légère. <br>▫️Squat 'stop and go': descendre; rester 2 sec en position basse; remontée tonique.  <br>▫️Pour les extensions mollets, ne pas hésiter à poser les pointes de pied sur un support afin de bien étirer les mollets en position basse. <br>▫️Possibilité de faire du gainage commando (passage appui main/appui coude) à la place du gainage dynamique.",
+        chargeable: true,
+        chargement: {
+          type: "tabata",
+          nom: "🏃‍♀️ TABATA 40/20 BAS DU CORPS ET CARDIO 🏃‍♀️",
+          travail: 40,
+          repos: 10,
+          rounds: 4,
+          exercices: [
+                 { text: "Fentes arrière alternées" },
+                 { text: "Squat 'stop and go' (stop 2sec en bas)" },
+                 { text: "Fentes Cosaques" },
+                 { text: "Gainage dynamique (planche 🔁 chien tête en bas)" },
+                 { text: "Extensions mollets" }
+          ]
+        }
+      }},
+
 
   
 /* SEANCES AMRAP */
