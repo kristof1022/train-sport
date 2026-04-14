@@ -21,18 +21,13 @@ const workouts = [
             { text: "BURPEES" },
             { text: "MOUNTAIN CLIMBERS" },
             { text: "JUMPING JACKS" },
-            { text: "FENTES AVANT" },
-            { text: "SQUATS" },
-            { text: "BURPEES" },
-            { text: "MOUNTAIN CLIMBERS" },
-            { text: "JUMPING JACKS" },
             { text: "FENTES AVANT" }
           ]
         }       
         }},
 
     { title: "WOD TABATA 40/10", material: ["poids-corps"], body: "complet", duration: 10, type: "TABATA", level: "Facile", desc: "<strong>40 sec travail / 10 sec repos :</strong> Squats sautées, Pompes(push-ups), Sit-ups(abdos), Burpees.",
-      details: { format_label: "TABATA — 9 min 30", intro: "3 tours avec 40 sec de travail et 10 sec de repos :", exercises: [
+      details: { format_label: "TABATA — 10 min", intro: "3 tours avec 40 sec de travail et 10 sec de repos :", exercises: [
           { text: "40 sec SQUATS SAUTÉS / 10 sec repos" }, { text: "40 sec POMPES / 10 sec repos", image: "images/infosbulles/POMPES1.png" }, { text: "40 sec SIT-UPS / 10 sec repos" }, { text: "40 sec BURPEES / 10 sec repos", image: "images/infosbulles/BURPEES1.png" }, { text: "→ Répéter 3 tours au total" }
         ], scaled: { intro: "VERSION SCALED :", exercises: [
           { text: "Remplacer les sit-ups par des crunches" }, { text: "Pompes sur les genoux ou inclinées" }, { text: "Burpees sans saut et/ou sans pompe" }
@@ -43,16 +38,8 @@ const workouts = [
           nom: "WOD TABATA 40/10",
           travail: 40,
           repos: 10,
-          rounds: 15,
+          rounds: 3,
           exercices: [
-            { text: "SQUATS SAUTÉS" },
-            { text: "POMPES" },
-            { text: "SIT-UPS" },
-            { text: "BURPEES" },
-            { text: "SQUATS SAUTÉS" },
-            { text: "POMPES" },
-            { text: "SIT-UPS" },
-            { text: "BURPEES" },
             { text: "SQUATS SAUTÉS" },
             { text: "POMPES" },
             { text: "SIT-UPS" },
@@ -63,7 +50,7 @@ const workouts = [
 
     { title: "WOD TABATA 30/10 ABDOS GAINAGE", material: ["poids-corps"], body: "abdos", duration: 5, type: "TABATA", level: "Facile", desc: "<strong>30 sec travail / 10 sec repos pour les abdos :</strong> focus gainage.",
       details: { format_label: "TABATA ABDOS — 5 min 10", intro: "30 sec travail / 10 sec repos — 2 tours :", exercises: [
-          { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }
+          { text: "30 sec GAINAGE SUR LES COUDES / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL GAUCHE / 10 sec repos" }, { text: "30 sec GAINAGE SUR LES MAINS / 10 sec repos" }, { text: "30 sec GAINAGE LATÉRAL DROIT / 10 sec repos" }
         ], conseil: "30 secondes de travail / 10 secondes de repos. Focus gainage, à enchaîner avec le WOD TABATA 30/10 CEINTURE ABDOMINALE DYNAMIQUE.",
         chargeable: true,
         chargement: {
@@ -71,12 +58,8 @@ const workouts = [
           nom: "WOD TABATA 30/10 ABDOS",
           travail: 30,
           repos: 10,
-          rounds: 8,
+          rounds: 2,
           exercices: [
-            { text: "Gainage sur les coudes" },
-            { text: "Gainage latéral gauche" },
-            { text: "Gainage sur les mains" },
-            { text: "Gainage latéral droit" },
             { text: "Gainage sur les coudes" },
             { text: "Gainage latéral gauche" },
             { text: "Gainage sur les mains" },
@@ -91,10 +74,6 @@ const workouts = [
      exercises: [{ text: "30 sec Sit-ups / 10 sec repos" },
                  { text: "30 sec de revelé de bassin, jambe droite tendue / 10 sec repos" },
                  { text: "30 sec enroulement de bassin / 10 sec repos" },
-                 { text: "30 sec de revelé de bassin, jambe gauche tendue / 10 sec repos" },
-                 { text: "30 sec Sit-ups / 10 sec repos" },
-                 { text: "30 sec de revelé de bassin, jambe droite tendue / 10 sec repos" },
-                 { text: "30 sec enroulement de bassin / 10 sec repos" },
                  { text: "30 sec de revelé de bassin, jambe gauche tendue / 10 sec repos" }
         ], 
      conseil: "30 secondes de travail / 10 secondes de repos. abdos en dynamique, à enchaîner avec le WOD TABATA 30/10 ABDOS GAINAGE.",
@@ -104,15 +83,11 @@ const workouts = [
           nom: "WOD TABATA 30/10 CEINTURE ABDOMINALE DYNAMIQUE",
           travail: 30,
           repos: 10,
-          rounds: 8,
+          rounds: 2,
           exercices: [
             { text: "Sit-ups" },
             { text: "revelé de bassin, jambe droite tendue" },
             { text: "enroulement de bassins" },
-            { text: "revelé de bassin, jambe gauche tendue" },
-            { text: "Sit-ups" },
-            { text: "revelé de bassin, jambe droite tendue" },
-            { text: "enroulement de bassin" },
             { text: "revelé de bassin, jambe gauche tendue" }
           ]
         }
@@ -147,7 +122,7 @@ const workouts = [
         }
       }},
   
-      { title: "WOD TABATA 40/20 RENFO Course à pied 🏃‍♀️", material: ["poids-corps"], body: "complet", duration: 12, type: "TABATA", level: "Facile", 
+      { title: "WOD TABATA 40/20 RENFO Course à pied 🏃‍♀️", material: ["poids-corps"], body: "complet", duration: 20, type: "TABATA", level: "Facile", 
      desc: "<strong>40 sec travail / 20 sec - 20 minutes</strong>",
      details: { format_label: "TABATA RENFO Course à pied (run) — 20 min ", intro: "40 sec travail / 20 sec repos — 4 tours :", 
      exercises: [{ text: "40 sec Fentes arrière alternées / 20 sec repos" },

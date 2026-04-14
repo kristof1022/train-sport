@@ -160,6 +160,22 @@
         }
         .groupe-textarea:focus { outline: none; border-color: var(--accent); }
         .groupe-textarea::placeholder { color: #444; font-style: italic; }
+
+        /* Autocomplete suggestions */
+        .autocomplete-list {
+            position: absolute; z-index: 1000;
+            background: #fff; border: 1px solid #ccc; border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-height: 200px; overflow-y: auto;
+            min-width: 220px; width: 100%;
+        }
+        .autocomplete-item {
+            padding: 9px 14px; font-size: 0.88em; cursor: pointer;
+            border-bottom: 1px solid #f0f0f0; color: #222;
+        }
+        .autocomplete-item:last-child { border-bottom: none; }
+        .autocomplete-item:hover, .autocomplete-item.active { background: #f0f4ff; color: #1a237e; }
+        .autocomplete-wrap { position: relative; }
         .btn-del-groupe {
             background: #c0392b; border: none; color: #fff;
             border-radius: 6px; width: 28px; height: 28px; flex-shrink: 0;
@@ -859,10 +875,15 @@ function addGroupe(listId, textVal, colorIdx, imageVal) {
     if (imageVal) row.dataset.image=imageVal;
     row.innerHTML=
         '<div class="groupe-dot" style="background:'+color.dot+'" title="'+color.name+'"></div>'+
+        '<div class="autocomplete-wrap" style="flex:1;">'+
         '<textarea class="groupe-textarea" rows="2" placeholder="'+color.name+' — instructions...">'+
         (textVal||'')+'</textarea>'+
+        '</div>'+
         '<button class="btn-del-groupe" onclick="delGroupe(\''+gid+'\')">✕</button>';
     gl.appendChild(row);
+    // Activer l'autocomplétion si phase travail
+    var ta = row.querySelector('.groupe-textarea');
+    if (ta) activerAutocomplete(ta, row);
 }
 
 function delGroupe(gid) {
@@ -910,6 +931,223 @@ function ouvrirImgMouvement(src) {
 function fermerImgMouvement() {
     document.getElementById('img-mouvement-overlay').classList.remove('open');
     document.getElementById('img-mouvement-src').src = '';
+}
+
+/* ══════════════════════════════════════════════════════
+   AUTOCOMPLÉTION DES INSTRUCTIONS
+══════════════════════════════════════════════════════ */
+
+// Banque construite depuis window.workouts + liste manuelle
+function getBanqueMouvements() {
+    var banque = new Set([
+        // Liste manuelle de mouvements courants
+        "Air Squat","Squat","Squat sauté","Squat jump","Goblet Squat","Overhead Squat",
+        "Fentes","Fentes alternées","Fentes marchées","Fentes sautées","Pistols",
+        "Burpees","Burpees box jump","Burpees sans saut",
+        "Pompes","Pompes diamant","Pompes inclinées","Pompes sur genoux","Pompes archer",
+        "Tractions","Tractions australiennes","Tractions élastique","Muscle-up",
+        "Dips","Dips sur chaise",
+        "Sit-up","Crunch","Hollow Rock","Hollow Hold","V-up","Tuck-up",
+        "Gainage","Gainage latéral","Gainage commando","Planche",
+        "Mountain climber","Marche de l'ours","Inchworm","Bear crawl",
+        "Box jump","Step-up","Saut en longueur","Saut groupé",
+        "Kettlebell swing","Turkish get-up","Snatch KB","Clean KB",
+        "Thruster","Clean","Snatch","Deadlift","Squat barre","Développé couché",
+        "Rowing","Rameur","BikeErg","SkiErg","Tapis","Course à pied",
+        "Sprint","Run","Vélo","Corde à sauter","Double-under",
+        "Wall ball","Slam ball","Médecine ball",
+        "Tirage horizontal","Tirage vertical","Curl biceps","Extension triceps",
+        "Élévations latérales","Développé militaire","Soulevé de terre",
+        "Hip thrust","Pont fessier","Good morning","Romanian deadlift",
+        "Handstand push-up","HSPU","Handstand walk",
+        "Toes to bar","Knees to elbow","Hanging knee raise",
+        "Pull-up","Push-up","Ring dip","Ring row",
+        "200m course","400m course","800m course","1km course","1,6km course",
+        "500m rameur","1000m rameur","2000m rameur",
+        "Cal BikeErg","Cal SkiErg","Cal rameur"
+    ]);
+
+    // Ajouter depuis workouts si disponible
+    if (window.workouts) {
+        window.workouts.forEach(function(w) {
+            var d = w.details;
+            if (!d) return;
+            // exercises
+            (d.exercises || []).forEach(function(ex) {
+                if (ex.text && ex.text.length <= 60 && ex.text.indexOf('<') < 0) banque.add(ex.text.trim());
+            });
+            // phases surmesure
+            if (d.chargement && d.chargement.phases) {
+                d.chargement.phases.forEach(function(ph) {
+                    if (ph.text && ph.text.length <= 60 && ph.text.indexOf('<') < 0) banque.add(ph.text.trim());
+                });
+            }
+            // blocs intervalles
+            if (d.chargement && d.chargement.blocs) {
+                d.chargement.blocs.forEach(function(b) {
+                    if (b.instr && b.instr.length <= 60 && b.instr.indexOf('<') < 0) banque.add(b.instr.trim());
+                });
+            }
+        });
+    }
+    return Array.from(banque).sort(function(a,b){ return a.toLowerCase().localeCompare(b.toLowerCase()); });
+}
+
+var _banqueMouvements = null;
+function getBanque() {
+    if (!_banqueMouvements) _banqueMouvements = getBanqueMouvements();
+    return _banqueMouvements;
+}
+
+function activerAutocomplete(ta, row) {
+    // Vérifier si la phase parente est de type travail
+    function estTravail() {
+        var li = ta.closest('.phase-item');
+        return !li || li.classList.contains('type-travail');
+    }
+
+    var liste = null;
+    var selectedIdx = -1;
+
+    function creerListe() {
+        if (liste) return;
+        liste = document.createElement('div');
+        liste.className = 'autocomplete-list';
+        liste.style.display = 'none';
+        var wrap = ta.closest('.autocomplete-wrap');
+        if (wrap) wrap.appendChild(liste);
+    }
+
+    function afficherSuggestions(q) {
+        if (!estTravail() || !q || q.length < 2) { masquer(); return; }
+        var resultats = getBanque().filter(function(m) {
+            return m.toLowerCase().indexOf(q.toLowerCase()) === 0;
+        }).slice(0, 8);
+        if (resultats.length === 0) { masquer(); return; }
+        creerListe();
+        selectedIdx = -1;
+        liste.innerHTML = '';
+        resultats.forEach(function(m, idx) {
+            var item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.textContent = m;
+            item.onmousedown = function(e) {
+                e.preventDefault();
+                ta.value = m;
+                masquer();
+                ta.focus();
+            };
+            liste.appendChild(item);
+        });
+        liste.style.display = 'block';
+    }
+
+    function masquer() {
+        if (liste) liste.style.display = 'none';
+        selectedIdx = -1;
+    }
+
+    function naviguer(dir) {
+        if (!liste || liste.style.display === 'none') return;
+        var items = liste.querySelectorAll('.autocomplete-item');
+        if (!items.length) return;
+        items[selectedIdx] && items[selectedIdx].classList.remove('active');
+        selectedIdx = Math.max(-1, Math.min(items.length - 1, selectedIdx + dir));
+        if (selectedIdx >= 0) items[selectedIdx].classList.add('active');
+    }
+
+    ta.addEventListener('input', function() {
+        var val = ta.value;
+        // Chercher sur le dernier mot/ligne
+        var lastLine = val.split('\n').pop();
+        afficherSuggestions(lastLine.trim());
+        afficherSuggestions(lastLine.trim());
+    });
+
+    ta.addEventListener('keydown', function(e) {
+        if (!liste || liste.style.display === 'none') return;
+        if (e.key === 'ArrowDown')  { e.preventDefault(); naviguer(1); }
+        else if (e.key === 'ArrowUp')   { e.preventDefault(); naviguer(-1); }
+        else if (e.key === 'Enter' || e.key === 'Tab') {
+            var items = liste.querySelectorAll('.autocomplete-item');
+            if (selectedIdx >= 0 && items[selectedIdx]) {
+                e.preventDefault();
+                ta.value = items[selectedIdx].textContent;
+                masquer();
+            } else { masquer(); }
+        } else if (e.key === 'Escape') { masquer(); }
+    });
+
+    ta.addEventListener('blur', function() {
+        setTimeout(masquer, 150);
+    });
+}
+
+// Version pour intervalles — vérifie le type du bloc parent
+function activerAutocompleteItv(ta, li) {
+    function estTravail() {
+        var sel = li.querySelector('.phase-select');
+        return !sel || sel.value === 'travail';
+    }
+    // Réutiliser activerAutocomplete avec patch estTravail
+    var wrap = ta.closest('.autocomplete-wrap');
+    if (!wrap) return;
+
+    var liste = null;
+    var selectedIdx = -1;
+
+    function creerListe() {
+        if (liste) return;
+        liste = document.createElement('div');
+        liste.className = 'autocomplete-list';
+        liste.style.display = 'none';
+        wrap.appendChild(liste);
+    }
+
+    function afficherSuggestions(q) {
+        if (!estTravail() || !q || q.length < 2) { masquer(); return; }
+        var resultats = getBanque().filter(function(m) {
+            return m.toLowerCase().indexOf(q.toLowerCase()) === 0;
+        }).slice(0, 8);
+        if (resultats.length === 0) { masquer(); return; }
+        creerListe();
+        selectedIdx = -1;
+        liste.innerHTML = '';
+        resultats.forEach(function(m) {
+            var item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.textContent = m;
+            item.onmousedown = function(e) { e.preventDefault(); ta.value = m; masquer(); ta.focus(); };
+            liste.appendChild(item);
+        });
+        liste.style.display = 'block';
+    }
+
+    function masquer() { if (liste) liste.style.display = 'none'; selectedIdx = -1; }
+
+    function naviguer(dir) {
+        if (!liste || liste.style.display === 'none') return;
+        var items = liste.querySelectorAll('.autocomplete-item');
+        if (!items.length) return;
+        items[selectedIdx] && items[selectedIdx].classList.remove('active');
+        selectedIdx = Math.max(-1, Math.min(items.length - 1, selectedIdx + dir));
+        if (selectedIdx >= 0) items[selectedIdx].classList.add('active');
+    }
+
+    ta.addEventListener('input', function() {
+        afficherSuggestions(ta.value.split('\n').pop().trim());
+    });
+    ta.addEventListener('keydown', function(e) {
+        if (!liste || liste.style.display === 'none') return;
+        if (e.key === 'ArrowDown')  { e.preventDefault(); naviguer(1); }
+        else if (e.key === 'ArrowUp')   { e.preventDefault(); naviguer(-1); }
+        else if ((e.key === 'Enter' || e.key === 'Tab')) {
+            var items = liste.querySelectorAll('.autocomplete-item');
+            if (selectedIdx >= 0 && items[selectedIdx]) { e.preventDefault(); ta.value = items[selectedIdx].textContent; masquer(); }
+            else { masquer(); }
+        } else if (e.key === 'Escape') { masquer(); }
+    });
+    ta.addEventListener('blur', function() { setTimeout(masquer, 150); });
 }
 
 /* Navigation */
@@ -1615,9 +1853,13 @@ function itvAddBloc(typeVal, repsVal, instrVal) {
     var ta = document.createElement('textarea'); ta.className='groupe-textarea'; ta.id=instrId; ta.rows=2;
     ta.placeholder='Instruction ex: Courir 400m à haute intensité...';
     if (instrVal) ta.value = instrVal;
-    var divInstr = document.createElement('div'); divInstr.style.marginTop='8px';
+    var divInstr = document.createElement('div');
+    divInstr.className = 'autocomplete-wrap';
+    divInstr.style.marginTop='8px';
     divInstr.appendChild(ta);
     li.appendChild(divInstr);
+    // Activer l'autocomplétion (sera filtrée selon type travail)
+    activerAutocompleteItv(ta, li);
 
     list.appendChild(li);
 }
