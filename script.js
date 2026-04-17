@@ -260,7 +260,7 @@ const workouts = [
         { text: "20 sec Levés de bassin / 10 sec repos" },
         { text: "20 sec Gainage latéral droit / 10 sec repos" },
         { text: "20 sec Gainage latéral gauche / 10 sec repos" },
-        { text: "20 sec Hiptrusts au sol / 10 sec repos" },
+        { text: "20 sec Hiptrusts au sol / 10 sec repos", image: "images/infosbulles/HIPTRUST.png" },
         { text: "20 sec Mountain climbers / 10 sec repos" },
         { text: "20 sec Russian twists / 10 sec repos" },
         { text: "20 sec Gainage latéral droit / 10 sec repos" },
