@@ -150,7 +150,7 @@ const workouts = [
       }},
   
         {
-    title: "🚀WOD TABATA 20/10 HAUT DU CORPS🚀 J1 - J3",
+    title: "🚀WOD TABATA 20/10 HAUT DU CORPS🚀 J1 - J4",
     material: ["poids-corps"],
     body: "haut",
     duration: 10,
@@ -197,7 +197,7 @@ const workouts = [
   },
   
     {
-    title: "🚀WOD TABATA 20/10 BAS DU CORPS🚀 J2 - J4",
+    title: "🚀WOD TABATA 20/10 BAS DU CORPS🚀 J2 - J5",
     material: ["poids-corps"],
     body: "bas",
     duration: 10,
