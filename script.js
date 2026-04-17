@@ -1303,10 +1303,10 @@ const workouts = [
         title: "WOD HYBRID PETE",
         material: ["barre", "tapis-incurve"],
         body: "complet",
-        duration: 0,
+        duration: 53,
         type: "HYBRID",
         level: "Intense",
-        desc: "3 AMRAP à enchaîner : course à pied(run), Squat (Back Squat), Développé Couché (bench press), Soulevé de terre (deadlift)",
+        desc: "3 AMRAP à enchaîner : <br>🔹course à pied(run), <br>🔹Squat (Back Squat), <br>🔹Développé Couché (bench press), <br>🔹Soulevé de terre (deadlift)",
         details: {
             format_label: "AMRAP : 3x12 minutes ",
             exercises: [
@@ -1327,12 +1327,48 @@ const workouts = [
                     { type: "repos",   reps: 1,  dur: 120,                   instr: "Récupération" },
                     { type: "travail", reps: 1, hasTimer: true,  dur: 720, instr: "<strong><u>AMRAP 2/3:</u></strong><br>400m course à pied(run) 🔄 12 reps Développés couchés" },
                     { type: "repos",   reps: 1,  dur: 120,                   instr: "Récupération" },
-                    { type: "travail", reps: 1, hasTimer: true,  dur: 720, instr: "<strong><u>AMRAP 2/3:</u></strong><br>400m course à pied(run) 🔄 12 reps Soulevés de Terre" },
+                    { type: "travail", reps: 1, hasTimer: true,  dur: 720, instr: "<strong><u>AMRAP 3/3:</u></strong><br>400m course à pied(run) 🔄 12 reps Soulevés de Terre" },
                     { type: "recup",   reps: 1,  hasTimer: true,  dur: 300 , instr: "Retour au calme — course lente ou marche et/ou étirements légers" }
                 ]
             }
         }
     }, 
+  
+      {
+        title: "WOD HYBRID TRIADE",
+        material: ["barre", "tapis-incurve", "ski-erg", "rameur", "haltere", "trapbar", "machineguidee"],
+        body: "complet",
+        duration: 53,
+        type: "HYBRID",
+        level: "Intense",
+        desc: "3 AMRAP à enchaîner : <br>🔹course à pied(run)🔄Deadlift ou presse à cuisse, <br>🔹Skierg🔄Développé Couché, <br>🔹Rameur🔄Traction ou Tirage poulie haute",
+        details: {
+            format_label: "AMRAP : 3x12 minutes ",
+            exercises: [
+                { text: "AMRAP 1 : 400m course à pied(run) 🔄 12 reps Trap Bar ou Presse à cuisse" },
+                { text: "2 minutes de pause" },
+                { text: "AMRAP 2 : 500m de Skierg 🔄 12 reps Développés couchés à la barre ou aux haltères" },
+                { text: "2 minutes de pause" },
+                { text: "AMRAP 3 : 500m de Rameur (Row) 🔄 12 reps Tractions (pull-ups) ou tirage à la poulie haute " }
+            ],
+            conseil: "Allure constante sur les runs. Ne pas trop charger pour les exercices de musculation. En cas de doute, demander conseil ou faire des squats à vide, des pompes et des relevés de bassin au sol(hiptrusts)",
+            chargeable: true,
+            chargement: {
+                type: "intervalles",
+                nom: "WOD HYBRID TRIADE",
+                blocs: [
+                    { type: "warmup",  reps: 1,  hasTimer: true,  dur: 300, instr: "Echauffement de 10 min, vélo ou course à pied et exercice de mobilité" },
+                    { type: "travail", reps: 1, hasTimer: true,  dur: 720, instr: "<strong><u>AMRAP 1/3:</u></strong><br>🏃400m course à pied(run) <br>🔄 <br>12 reps Trap Bar ou Presse à cuisse" },
+                    { type: "repos",   reps: 1,  dur: 120,                   instr: "Récupération" },
+                    { type: "travail", reps: 1, hasTimer: true,  dur: 720, instr: "<strong><u>AMRAP 2/3:</u></strong><br>⛷️500m de Skierg <br>🔄 <br>12 reps Développés couchés à la barre ou aux haltères" },
+                    { type: "repos",   reps: 1,  dur: 120,                   instr: "Récupération" },
+                    { type: "travail", reps: 1, hasTimer: true,  dur: 720, instr: "<strong><u>AMRAP 3/3:</u></strong><br>🚣500m de Rameur <br>🔄 <br>12 reps Tractions (pull-ups) ou tirage à la poulie haute" },
+                    { type: "recup",   reps: 1,  hasTimer: true,  dur: 300 , instr: "Retour au calme — course lente ou marche et/ou étirements légers" }
+                ]
+            }
+        }
+    }, 
+  
   
     { title: "WOD P'F''T", material: ["poids-corps", "tapis-incurve", "rameur", "ballon-leste"], body: "complet", duration: 0, type: "HYBRID", level: "Intense", desc: "<strong>FOR TIME:</strong> 1000m de course à pied, 50 Burpees Broad Jumps, 100 fentes stationnaires, 1000m de rameur, 30 pompes relâchement des mains (push-ups hand release), 100 Wallballs (6 kg pour les hommes / 4 kg pour les femmes).",
       details: { format_label: "WOD P'F''T", intro: "FOR TIME :", exercises: [
