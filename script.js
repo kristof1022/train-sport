@@ -148,8 +148,151 @@ const workouts = [
           ]
         }
       }},
+  
+        {
+    title: "🚀WOD TABATA 20/10 HAUT DU CORPS🚀 J1 - J3",
+    material: ["poids-corps"],
+    body: "haut",
+    duration: 10,
+    type: "TABATA",
+    level: "Facile",
+    desc: "<strong>20 sec travail / 10 sec - 20 minutes</strong> <br>'Programme débutant 10min/jour'",
+    details: {
+      format_label: "TABATA HAUT DU CORPS — 20 min",
+      intro: "20 sec travail / 10 sec repos — 2 tours :",
+      exercises: [
+        { text: "20 sec Superman / 10 sec repos" },
+        { text: "20 sec Pompes / 10 sec repos" },
+        { text: "20 sec \"Y-W\" / 10 sec repos" },
+        { text: "20 sec Dips / 10 sec repos" },
+        { text: "20 sec Shadow boxing / 10 sec repos" },
+        { text: "20 sec Gainage commando/ 10 sec repos" },
+        { text: "20 sec Dips / 10 sec repos" },
+        { text: "20 sec \"Y-W\" / 10 sec repos" },
+        { text: "20 sec Pompes / 10 sec repos" },
+        { text: "20 sec Superman / 10 sec repos" }
+      ],
+      conseil: "Séances lundi - jeudi du programme débutant '10 minutes par jour'",
+      chargeable: true,
+      chargement: {
+        type: "tabata",
+        nom: "🚀TABATA 20/10 HAUT DU CORPS🚀",
+        travail: 20,
+        repos: 10,
+        rounds: 2,
+        exercices: [
+          { text: "Superman" },
+          { text: "Pompes" },
+          { text: "Y-W" },
+          { text: "Dips" },
+          { text: "Shadow Boxing 🥊" },
+          { text: "Gainage commando" },
+          { text: "Dips" },
+          { text: "Y-W" },
+          { text: "Pompes" },
+          { text: "Superman" }
+        ]
+      }
+    }
+  },
+  
+    {
+    title: "🚀WOD TABATA 20/10 BAS DU CORPS🚀 J2 - J4",
+    material: ["poids-corps"],
+    body: "bas",
+    duration: 10,
+    type: "TABATA",
+    level: "Facile",
+    desc: "<strong>20 sec travail / 10 sec - 20 minutes</strong> <br>'Programme débutant 10min/jour'",
+    details: {
+      format_label: "TABATA BAS DU CORPS — 10 min",
+      intro: "20 sec travail / 10 sec repos — 2 tours :",
+      exercises: [
+        { text: "20 sec Squats / 10 sec repos" },
+        { text: "20 sec Jumping jacks / 10 sec repos" },
+        { text: "20 sec Fentes arrière alternées / 10 sec repos" },
+        { text: "20 sec Chaise contre le mur / 10 sec repos" },
+        { text: "20 sec Fentes avant alternées/ 10 sec repos" },
+        { text: "20 sec Fentes avant alternées/ 10 sec repos" },
+        { text: "20 sec Chaise contre le mur / 10 sec repos" },
+        { text: "20 sec Fentes arrière alternées / 10 sec repos" },
+        { text: "20 sec Jumping jacks / 10 sec repos" },
+        { text: "20 sec Squats / 10 sec repos" },
+      ],
+      conseil: "Séances mardi - vendredi du programme débutant '10 minutes par jour'",
+      chargeable: true,
+      chargement: {
+        type: "tabata",
+        nom: "🚀TABATA 20/10 BAS DU CORPS🚀",
+        travail: 20,
+        repos: 10,
+        rounds: 2,
+        exercices: [
+          { text: "Squats" },
+          { text: "Jumping Jacks" },
+          { text: "Fentes arrière alternées" },
+          { text: "Chaise" },
+          { text: "Fentes avant alternées" },
+          { text: "Fentes avant alternées" },
+          { text: "Chaise" },
+          { text: "Fentes arrière alternées" },
+          { text: "Jumping Jacks" },
+          { text: "Squats" },
+        ]
+      }
+    }
+  },
+  
+    {
+    title: "🚀WOD TABATA 20/10 Abdos🚀 J3",
+    material: ["poids-corps"],
+    body: "bas",
+    duration: 10,
+    type: "TABATA",
+    level: "Facile",
+    desc: "<strong>20 sec travail / 10 sec - 20 minutes</strong> <br>'Programme débutant 10min/jour'",
+    details: {
+      format_label: "TABATA BAS DU CORPS — 10 min",
+      intro: "20 sec travail / 10 sec repos — 2 tours :",
+      exercises: [
+        { text: "20 sec Crunchs (mains posées sur les épaules) / 10 sec repos" },
+        { text: "20 sec Gainage sur les coudes / 10 sec repos" },
+        { text: "20 sec Levés de bassin / 10 sec repos" },
+        { text: "20 sec Gainage latéral droit / 10 sec repos" },
+        { text: "20 sec Gainage latéral gauche / 10 sec repos" },
+        { text: "20 sec Hiptrusts au sol / 10 sec repos" },
+        { text: "20 sec Mountain climbers / 10 sec repos" },
+        { text: "20 sec Russian twists / 10 sec repos" },
+        { text: "20 sec Gainage latéral droit / 10 sec repos" },
+        { text: "20 sec Gainage latéral gauche / 10 sec repos" },
+      ],
+      conseil: "Séance mercredi du programme débutant '10 minutes par jour'",
+      chargeable: true,
+      chargement: {
+        type: "tabata",
+        nom: "🚀TABATA 20/10 ABDOS🚀",
+        travail: 20,
+        repos: 10,
+        rounds: 2,
+        exercices: [
+          { text: "Crunchs (mains posées sur les épaules)" },
+          { text: "Gainage sur les coudes" },
+          { text: "Levés de bassin" },
+          { text: "Gainage latéral droit" },
+          { text: "Gainage latéral gauche" },
+          { text: "Hiptrusts au sol" },
+          { text: "Mountain climbers" },
+          { text: "Russian twists" },
+          { text: "Gainage latéral droit" },
+          { text: "Gainage latéral gauche" },
+        ]
+      }
+    }
+  },
 
 
+  
+    
   
 /* SEANCES AMRAP */
   
@@ -171,7 +314,7 @@ const workouts = [
                   nom: "WOD AMRAP 6 EXOS",
                   repeat: 4,
                   phases: [
-                      { type: "travail", sec: 60, text: "Burpees", image: "images/infosbulles/BURPEES1.png" },
+                      { type: "travail", sec: 60, text: "Burpees" },
                       { type: "travail", sec: 60, text: "Pompes" },
                       { type: "travail", sec: 60, text: "Squat jump" },
                       { type: "travail", sec: 60, text: "Marche de l'ours" },
