@@ -1478,6 +1478,88 @@ const workouts = [
         ]
         }        
         }},
+  
+  // ══════════════════════════════════════════════════════════
+    // SÉANCE MUSCU EXEMPLE
+    // ══════════════════════════════════════════════════════════
+    {
+        title: "Push Day — Pectoraux / Triceps",
+        material: ["barre", "station-dips"],
+        body: "haut",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "Séance poussée : Développé couché, Biset Dips/Écarté, Pompes. 3-4 séries par exercice.",
+        details: {
+            format_label: "MUSCU — 60 MINUTES",
+            exercises: [
+                { text: "Développé couché — 4×10 reps" },
+                { text: "Biset : Dips / Écarté poulie basse — 3×10/15 reps" },
+                { text: "Pompes — 4×15 reps" }
+            ],
+            conseil: "Récup 90s entre chaque série, 2min entre les exercices. Adapter les charges à votre niveau.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "Push Day — Pectoraux / Triceps",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Développé couché",
+                                series: [
+                                    { reps: 10, poids: 80 },
+                                    { reps: 10, poids: 80 },
+                                    { reps: 10, poids: 80 },
+                                    { reps: 8,  poids: 85 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Dips",
+                                series: [
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Écarté poulie basse",
+                                series: [
+                                    { reps: 15, poids: 15 },
+                                    { reps: 15, poids: 15 },
+                                    { reps: 15, poids: 15 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Pompes",
+                                series: [
+                                    { reps: 15, poids: 0 },
+                                    { reps: 15, poids: 0 },
+                                    { reps: 15, poids: 0 },
+                                    { reps: 15, poids: 0 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+  
+  
 
     {
         title: "Séances Fractionné course",
@@ -1828,6 +1910,8 @@ const workouts = [
           ]}
         ]
       }},
+
+    
 
     // ══════════════════════════════════════════════════════════
     // SÉANCE TEST — INTERVALLES (décommenter pour activer)
@@ -2391,6 +2475,12 @@ function buildNotesHtml(title) {
 }
 
 function chargerSeance(chargement) {
+    // Cas muscu : passage direct avec données structurées
+    if (chargement && chargement.type === 'muscu') {
+        const encoded = encodeURIComponent(JSON.stringify(chargement));
+        window.location.href = 'seances_perso.html?seance=' + encoded;
+        return;
+    }
     // Cas spécial Run Tempo : construire les phases depuis le niveau actif
     if (chargement && chargement.type === 'avec_niveaux') {
         var niveauActif = window._niveauActif || 1;
@@ -2418,7 +2508,7 @@ function chargerSeance(chargement) {
             };
         }
     }
-    var encoded = encodeURIComponent(JSON.stringify(chargement));
+    const encoded = encodeURIComponent(JSON.stringify(chargement));
     window.location.href = 'seances_perso.html?seance=' + encoded;
 }
 
@@ -2558,7 +2648,7 @@ function chargerSeanceErgo() {
         phases: phases
     };
 
-    var encoded = encodeURIComponent(JSON.stringify(chargement));
+    const encoded = encodeURIComponent(JSON.stringify(chargement));
     window.location.href = 'seances_perso.html?seance=' + encoded;
 }
 
@@ -2666,7 +2756,7 @@ function chargerSeanceRameur() {
         phases: phases
     };
 
-    var encoded = encodeURIComponent(JSON.stringify(chargement));
+    const encoded = encodeURIComponent(JSON.stringify(chargement));
     window.location.href = 'seances_perso.html?seance=' + encoded;
 }
 

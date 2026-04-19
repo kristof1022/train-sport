@@ -396,7 +396,55 @@
             transition: background 0.15s;
         }
         .btn-raz:hover { background: #96281b; }
-        </style>
+    
+        /* ══ MUSCU ══════════════════════════════════════════ */
+        .muscu-bloc { background:#1a1a2e; border-radius:10px; margin-bottom:14px; border:1px solid #2a2a4a; }
+        .muscu-bloc-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#12122a; border-radius:10px 10px 0 0; border-bottom:1px solid #2a2a4a; }
+        .muscu-serie-row { display:grid; grid-template-columns:30px 1fr 1fr 30px; gap:8px; align-items:center; padding:6px 14px; border-bottom:1px solid #232340; }
+        .muscu-serie-row:last-child { border-bottom:none; }
+        .muscu-input { background:#0f0f1a; border:1px solid #333; border-radius:6px; color:#fff; text-align:center; padding:6px 2px; font-size:0.9em; width:100%; box-sizing:border-box; }
+        .muscu-input:focus { outline:none; border-color:#cddc39; }
+        /* ── CARNET ── */
+        .carnet-section { margin-bottom:18px; }
+        .carnet-seance-item { background:#0f1b35; border:1px solid #1e3050; border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+        .carnet-seance-date { font-size:0.72em; color:var(--text-dim); margin-bottom:3px; }
+        .carnet-seance-name { font-size:0.92em; font-weight:700; color:#cddc39; }
+        .carnet-seance-info { font-size:0.75em; color:var(--text-dim); margin-top:2px; }
+        .carnet-empty { text-align:center; color:var(--text-dim); font-size:0.85em; padding:20px; }
+        .prev-result { font-size:0.7em; color:#555; margin-left:4px; font-style:italic; }
+        .btn-carnet-export { background:none; border:1px solid #2a3a5a; border-radius:8px; color:var(--text-dim); padding:8px 14px; font-size:0.8em; cursor:pointer; width:100%; margin-bottom:6px; }
+        .btn-carnet-export:hover { border-color:#cddc39; color:#cddc39; }
+        .carnet-import-zone textarea { width:100%; min-height:80px; background:#0f1b35; border:1px solid #2a3a5a; border-radius:8px; color:#ccc; font-size:0.8em; padding:8px; box-sizing:border-box; resize:vertical; }
+        .muscu-exo-name { width:100%; background:#0f0f1a; border:1px solid #333; border-radius:6px; color:#fff; padding:8px 10px; font-size:0.9em; box-sizing:border-box; }
+        .muscu-exo-name:focus { outline:none; border-color:#cddc39; }
+        .muscu-timer-big { font-size:3em; font-weight:900; letter-spacing:3px; color:#fff; text-align:center; padding:8px 0; }
+        .muscu-current-serie { background:#1a2a0a; border-radius:8px; padding:14px; margin:10px 14px; }
+        .muscu-next-info { font-size:0.82em; color:var(--text-dim); padding:8px 14px; border-top:1px solid #2a2a4a; text-align:center; }
+        .btn-muscu { border:none; border-radius:8px; font-weight:700; cursor:pointer; padding:12px; font-size:0.95em; width:100%; transition:background 0.15s; }
+        .btn-muscu-valider { background:#cddc39; color:#000; }
+        .btn-muscu-valider:hover { background:#b5c400; }
+        .btn-muscu-recup { background:#1a237e; color:#fff; }
+        .btn-muscu-skip { background:#444; color:#fff; }
+        .muscu-chrono-bar { text-align:center; font-size:0.8em; color:var(--text-dim); padding:6px; letter-spacing:0.08em; }
+        .muscu-serie-exec { display:grid; grid-template-columns:28px 1fr 1fr 1fr auto; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid #232340; transition:opacity 0.2s; }
+        .muscu-serie-exec.done { opacity:0.4; }
+        .muscu-serie-exec.active { background:#1a2a0a; }
+        .muscu-val-btn { background:#cddc39; color:#000; border:none; border-radius:6px; padding:6px 10px; font-weight:700; cursor:pointer; font-size:0.85em; white-space:nowrap; }
+        .muscu-val-btn:disabled { background:#555; color:#888; cursor:not-allowed; }
+        .muscu-exo-panel { display:none; }
+        .muscu-exo-panel.active { display:block; }
+        .muscu-exo-header { background:#12122a; padding:10px 14px; font-weight:700; font-size:0.95em; color:#cddc39; border-radius:8px 8px 0 0; }
+        .muscu-recup-bloc-row { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0f0f1a; border-top:2px solid #cddc39; }
+        .muscu-set-block { border:1px solid #2a2a4a; border-radius:8px; margin:10px 14px; overflow:hidden; }
+        .muscu-set-block-header { background:#12122a; padding:6px 12px; font-size:0.78em; color:#cddc39; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; }
+        .muscu-set-exo-row { display:grid; grid-template-columns:28px 1fr 1fr 1fr; gap:8px; align-items:center; padding:8px 12px; border-bottom:1px solid #1a1a2e; }
+        .muscu-set-exo-row:last-of-type { border-bottom:none; }
+        .muscu-timer-inline { display:none; background:#0a0a1a; padding:10px 12px; border-top:1px solid #2a2a4a; }
+        .muscu-timer-inline.visible { display:block; }
+        .muscu-timer-val { font-size:2em; font-weight:900; color:#fff; text-align:center; letter-spacing:3px; margin:4px 0; }
+        .muscu-timer-running { color:#cddc39; }
+
+    </style>
 </head>
 <body>
 
@@ -425,6 +473,7 @@
     <button class="seance-tab" onclick="showSeance('amrap', this)">🔄 AMRAP</button>
     <button class="seance-tab" onclick="showSeance('emom', this)">🔁 EMOM</button>
     <button class="seance-tab" onclick="showSeance('intervalles', this)">🏃 TOTAL INTERVALLES</button>
+    <button class="seance-tab" onclick="showSeance('muscu', this)">🏋 MUSCU</button>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -774,6 +823,77 @@
         </div>
     </div>
 </div>
+
+
+<div class="seance-panel" id="sp-muscu">
+    <div class="mode-tabs" id="mt-muscu">
+        <button class="mode-tab active" id="mtm-config" onclick="showMode('muscu','config')">⚙️ Préparer</button>
+        <button class="mode-tab"        id="mtm-exec"   onclick="showMode('muscu','exec')">▶ En séance</button>
+    </div>
+
+    <!-- CONFIG -->
+    <div id="cfg-muscu" class="panel-inner">
+        <div class="seance-name-wrap">
+            <p class="config-title">📋 Nom de la séance</p>
+            <input type="text" class="seance-name-input" id="muscu-name" placeholder="Ex : Push Day — Pectoraux..." maxlength="60">
+        </div>
+        <p class="config-title">⏱ Récupération par défaut</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div>
+                <label style="font-size:0.8em;color:var(--text-dim);display:block;margin-bottom:4px;">Entre séries (sec)</label>
+                <div class="stepper">
+                    <button class="btn-step" onclick="stepVal('muscu-rs',-10)">−</button>
+                    <input type="number" id="muscu-rs" class="config-val" value="90" min="10" max="600">
+                    <button class="btn-step" onclick="stepVal('muscu-rs',10)">+</button>
+                </div>
+            </div>
+            <div>
+                <label style="font-size:0.8em;color:var(--text-dim);display:block;margin-bottom:4px;">Entre exercices (sec)</label>
+                <div class="stepper">
+                    <button class="btn-step" onclick="stepVal('muscu-rb',-10)">−</button>
+                    <input type="number" id="muscu-rb" class="config-val" value="120" min="10" max="600">
+                    <button class="btn-step" onclick="stepVal('muscu-rb',10)">+</button>
+                </div>
+            </div>
+        </div>
+        <p class="config-title">💪 Exercices</p>
+        <div id="muscu-blocs-list"></div>
+        <button class="btn-add-phase" id="muscu-btn-add">+ Ajouter un exercice</button>
+        <button class="btn-lancer"    id="muscu-btn-lancer">▶ Lancer la séance</button>
+        <button class="btn-reset-config" id="muscu-btn-reset">🗑 Tout effacer</button>
+
+        <!-- CARNET -->
+        <div style="margin-top:20px;">
+            <p class="config-title">📓 Carnet d'entraînement</p>
+            <div id="carnet-liste"></div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+                <button class="btn-carnet-export" onclick="carnetExport()" style="flex:1;">⬇ Exporter (JSON)</button>
+                <button class="btn-carnet-export" onclick="carnetShowImport()" style="flex:1;">⬆ Importer</button>
+            </div>
+            <div id="carnet-import-zone" style="display:none;margin-top:6px;">
+                <textarea id="carnet-import-txt" placeholder="Colle ici le contenu du fichier JSON exporté..."></textarea>
+                <button class="btn-carnet-export" onclick="carnetImport()" style="margin-top:4px;border-color:#27ae60;color:#27ae60;">✓ Importer</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EXEC -->
+    <div id="exe-muscu" style="display:none;">
+        <div class="exec-header"><h3 id="muscu-exec-title">Séance</h3></div>
+        <div class="muscu-chrono-bar">⏱ Durée : <span id="muscu-chrono">00:00</span></div>
+        <!-- Onglets dynamiques par exercice -->
+        <div class="mode-tabs" id="muscu-exo-tabs" style="flex-wrap:wrap;"></div>
+        <!-- Contenu de chaque onglet exo -->
+        <div id="muscu-exo-panels"></div>
+        <div class="exec-controls">
+            <button class="btn-ctrl btn-edit"  onclick="showMode('muscu','config')">✏️ Éditer</button>
+            <button class="btn-ctrl btn-reset" id="muscu-btn-exec-reset">↺ Reset</button>
+        </div>
+    </div>
+</div>
+
+
 
 <button id="backToTop" title="Retour en haut">↑</button>
 
@@ -2194,6 +2314,58 @@ function chargerDepuisLocalStorage() {
             tabAddPhase(t, ph.sec, [{text: ph.text || '', colorIdx: i % gColors.length, image: ph.image || null}]);
         });
     }
+    else if (c.type === 'muscu') {
+        var tabMuscu = document.querySelector('.seance-tab[onclick*="muscu"]');
+        if (tabMuscu) showSeance('muscu', tabMuscu);
+        document.getElementById('muscu-name').value = c.nom || '';
+        if (c.recupSerie) document.getElementById('muscu-rs').value = c.recupSerie;
+        if (c.recupBloc)  document.getElementById('muscu-rb').value = c.recupBloc;
+        document.getElementById('muscu-blocs-list').innerHTML = '';
+        // Déclencher l'ajout via l'IIFE muscu
+        // On reconstruit les blocs manuellement
+        (c.blocs || []).forEach(function(bloc) {
+            document.getElementById('muscu-btn-add').click();
+            var lastBloc = document.getElementById('muscu-blocs-list').lastElementChild;
+            if (!lastBloc) return;
+            var bid = lastBloc.id;
+            // Sélectionner le type
+            var sel = lastBloc.querySelector('select');
+            if (sel && bloc.type) {
+                sel.value = bloc.type;
+                sel.dispatchEvent(new Event('change'));
+            }
+            // Remplir les noms et séries
+            setTimeout(function() {
+                (bloc.exos || []).forEach(function(exo, ei) {
+                    var inp = document.getElementById(bid + '-exo' + ei);
+                    if (inp) inp.value = exo.nom || '';
+                    // Vider et reconstruire les séries
+                    var seriesDiv = document.getElementById(bid + '-series-' + ei);
+                    if (seriesDiv) {
+                        seriesDiv.innerHTML = '';
+                        (exo.series || []).forEach(function(s, si) {
+                            // Recréer la ligne via le stepper
+                            var row = document.createElement('div');
+                            row.className = 'muscu-serie-row'; row.id = bid + '-e' + ei + '-s' + si;
+                            row.innerHTML =
+                                '<span class="muscu-serie-num" style="font-size:0.78em;color:var(--text-dim);font-weight:700;">S'+(si+1)+'</span>'+
+                                '<div><label style="font-size:0.7em;color:var(--text-dim);display:block;margin-bottom:2px;">Reps</label>'+
+                                '<input type="number" class="muscu-input" value="'+s.reps+'" min="0" max="99"></div>'+
+                                '<div><label style="font-size:0.7em;color:var(--text-dim);display:block;margin-bottom:2px;">kg</label>'+
+                                '<input type="number" class="muscu-input" value="'+s.poids+'" min="0" max="500" step="0.5"></div>'+
+                                '<button style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;">✕</button>';
+                            var delBtn = row.querySelector('button');
+                            delBtn.addEventListener('click', function() {
+                                row.remove();
+                                if (seriesDiv) seriesDiv.querySelectorAll('.muscu-serie-row').forEach(function(r,i){ var n=r.querySelector('.muscu-serie-num'); if(n) n.textContent='S'+(i+1); });
+                            });
+                            seriesDiv.appendChild(row);
+                        });
+                    }
+                });
+            }, 100);
+        });
+    }
     else if (c.type === 'intervalles') {
         // Naviguer vers l'onglet Intervalles
         var tabItv = document.querySelector('.seance-tab[onclick*="intervalles"]');
@@ -2259,6 +2431,635 @@ window.addEventListener('DOMContentLoaded', function() {
         backButton.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
     }
 });
+
+/* ══════════════════════════════════════════════════════
+   MUSCU
+══════════════════════════════════════════════════════ */
+(function() {
+
+var TYPES = {
+    solo:     { label:'Solo',     color:'#cddc39' },
+    biset:    { label:'Biset',    color:'#29b6f6' },
+    triset:   { label:'Triset',   color:'#ab47bc' },
+    superset: { label:'Superset', color:'#ff7043' }
+};
+
+var blocCount = 0;
+var seanceData = [];
+var chronoTimer = null, chronoSec = 0;
+var activeTimers = {};
+
+/* ══ CONFIG ══════════════════════════════════════════ */
+
+function getNbExos(type) {
+    return type === 'triset' ? 3 : (type === 'biset' || type === 'superset') ? 2 : 1;
+}
+
+function addBloc() {
+    blocCount++;
+    var bid = 'mb' + blocCount;
+    var bloc = document.createElement('div');
+    bloc.className = 'muscu-bloc'; bloc.id = bid;
+    var hd = document.createElement('div'); hd.className = 'muscu-bloc-header';
+    var leftDiv = document.createElement('div'); leftDiv.style.cssText = 'display:flex;align-items:center;gap:8px;';
+    var typeLabel = document.createElement('span'); typeLabel.style.cssText = 'font-weight:700;color:#cddc39;font-size:0.9em;'; typeLabel.textContent = 'Solo';
+    var typeSel = document.createElement('select'); typeSel.style.cssText = 'background:#0f0f1a;color:#aaa;border:1px solid #333;border-radius:4px;padding:3px 6px;font-size:0.82em;cursor:pointer;';
+    Object.keys(TYPES).forEach(function(k) { var o = document.createElement('option'); o.value = k; o.textContent = TYPES[k].label; typeSel.appendChild(o); });
+    var delBtn = document.createElement('button'); delBtn.textContent = '\u2715'; delBtn.style.cssText = 'background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1.1em;margin-left:auto;';
+    delBtn.addEventListener('click', function() { bloc.remove(); });
+    leftDiv.appendChild(typeLabel); leftDiv.appendChild(typeSel); hd.appendChild(leftDiv); hd.appendChild(delBtn); bloc.appendChild(hd);
+    var exosDiv = document.createElement('div'); exosDiv.id = bid + '-exos'; exosDiv.style.cssText = 'padding:10px 14px 4px;'; bloc.appendChild(exosDiv);
+    var seriesWrap = document.createElement('div'); seriesWrap.id = bid + '-series-wrap'; bloc.appendChild(seriesWrap);
+    var ft = document.createElement('div'); ft.style.cssText = 'padding:6px 14px 12px;display:flex;gap:8px;';
+    var addSerieBtn = document.createElement('button'); addSerieBtn.textContent = '+ S\u00e9rie'; addSerieBtn.style.cssText = 'background:none;border:1px solid #cddc39;color:#cddc39;border-radius:6px;padding:5px 14px;cursor:pointer;font-size:0.82em;';
+    addSerieBtn.addEventListener('click', function() { addSerieToBloc(bid); });
+    ft.appendChild(addSerieBtn); bloc.appendChild(ft);
+    document.getElementById('muscu-blocs-list').appendChild(bloc);
+    buildExosAndSeries(bloc, bid, 'solo');
+    typeSel.addEventListener('change', function() {
+        typeLabel.textContent = TYPES[typeSel.value].label;
+        typeLabel.style.color = TYPES[typeSel.value].color;
+        buildExosAndSeries(bloc, bid, typeSel.value);
+    });
+}
+
+function buildExosAndSeries(bloc, bid, type) {
+    var nb = getNbExos(type);
+    var exosDiv = document.getElementById(bid + '-exos');
+    var seriesWrap = document.getElementById(bid + '-series-wrap');
+    exosDiv.innerHTML = ''; seriesWrap.innerHTML = '';
+    for (var e = 0; e < nb; e++) {
+        var ph = type === 'superset' ? (e === 0 ? 'Agoniste (ex: Curl biceps)' : 'Antagoniste (ex: Extension triceps)') : (nb > 1 ? 'Exercice ' + (e+1) : "Nom de l'exercice");
+        var inp = document.createElement('input'); inp.type = 'text'; inp.className = 'muscu-exo-name'; inp.placeholder = ph; inp.id = bid + '-exo' + e; inp.style.marginBottom = '6px'; exosDiv.appendChild(inp);
+        var lbl = document.createElement('div'); lbl.style.cssText = 'font-size:0.72em;color:var(--text-dim);padding:4px 14px 2px;text-transform:uppercase;letter-spacing:0.06em;'; lbl.textContent = nb > 1 ? 'S\u00e9ries — Exo ' + (e+1) : 'S\u00e9ries'; seriesWrap.appendChild(lbl);
+        var seriesDiv = document.createElement('div'); seriesDiv.id = bid + '-series-' + e; seriesDiv.style.cssText = 'padding:2px 0;' + (e < nb-1 ? 'border-bottom:1px solid #2a2a4a;margin-bottom:6px;' : '');
+        appendSerie(seriesDiv, bid + '-e' + e, 0, 12, 0); appendSerie(seriesDiv, bid + '-e' + e, 1, 12, 0); appendSerie(seriesDiv, bid + '-e' + e, 2, 10, 0);
+        seriesWrap.appendChild(seriesDiv);
+    }
+}
+
+function addSerieToBloc(bid) {
+    var bloc = document.getElementById(bid);
+    var typeSel = bloc.querySelector('select');
+    var type = typeSel ? typeSel.value : 'solo';
+    var nb = getNbExos(type);
+    for (var e = 0; e < nb; e++) {
+        var container = document.getElementById(bid + '-series-' + e);
+        if (container) { var idx = container.querySelectorAll('.muscu-serie-row').length; appendSerie(container, bid + '-e' + e, idx, 10, 0); }
+    }
+}
+
+function appendSerie(container, sid, idx, reps, poids) {
+    var row = document.createElement('div'); row.className = 'muscu-serie-row'; row.id = sid + '-s' + idx;
+    var num = document.createElement('span'); num.className = 'muscu-serie-num'; num.textContent = 'S' + (idx+1); num.style.cssText = 'font-size:0.78em;color:var(--text-dim);font-weight:700;';
+    var rd = document.createElement('div'); var rl = document.createElement('label'); rl.textContent = 'Reps'; rl.style.cssText = 'font-size:0.7em;color:var(--text-dim);display:block;margin-bottom:2px;';
+    var ri = document.createElement('input'); ri.type = 'number'; ri.className = 'muscu-input'; ri.value = reps; ri.min = 0; ri.max = 99; rd.appendChild(rl); rd.appendChild(ri);
+    var pd = document.createElement('div'); var pl = document.createElement('label'); pl.textContent = 'kg'; pl.style.cssText = 'font-size:0.7em;color:var(--text-dim);display:block;margin-bottom:2px;';
+    var pi = document.createElement('input'); pi.type = 'number'; pi.className = 'muscu-input'; pi.value = poids; pi.min = 0; pi.max = 500; pi.step = 0.5; pd.appendChild(pl); pd.appendChild(pi);
+    var del = document.createElement('button'); del.textContent = '\u2715'; del.style.cssText = 'background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1em;';
+    del.addEventListener('click', function() { row.remove(); container.querySelectorAll('.muscu-serie-row').forEach(function(r,i){ var s=r.querySelector('.muscu-serie-num'); if(s) s.textContent='S'+(i+1); }); });
+    row.appendChild(num); row.appendChild(rd); row.appendChild(pd); row.appendChild(del); container.appendChild(row);
+}
+
+function resetConfig() {
+    if (!confirm('Effacer la s\u00e9ance ?')) return;
+    document.getElementById('muscu-blocs-list').innerHTML = '';
+    document.getElementById('muscu-name').value = '';
+    blocCount = 0;
+}
+
+/* ══ LANCER ══════════════════════════════════════════ */
+
+function lancer() {
+    var blocs = document.querySelectorAll('#muscu-blocs-list .muscu-bloc');
+    if (!blocs.length) { alert('Ajoutez au moins un exercice !'); return; }
+    var rs = parseInt(document.getElementById('muscu-rs').value) || 90;
+    var rb = parseInt(document.getElementById('muscu-rb').value) || 120;
+    seanceData = [];
+    blocs.forEach(function(bloc) {
+        var bid = bloc.id;
+        var typeSel = bloc.querySelector('select');
+        var type = typeSel ? typeSel.value : 'solo';
+        var nb = getNbExos(type);
+        var exos = [];
+        for (var e = 0; e < nb; e++) {
+            var inp = document.getElementById(bid + '-exo' + e);
+            exos.push({ nom: inp && inp.value.trim() ? inp.value.trim() : 'Exercice ' + (e+1), series: [] });
+            var seriesDiv = document.getElementById(bid + '-series-' + e);
+            if (seriesDiv) {
+                seriesDiv.querySelectorAll('.muscu-serie-row').forEach(function(row) {
+                    var inputs = row.querySelectorAll('input[type=number]');
+                    exos[e].series.push({ reps: parseInt(inputs[0]?inputs[0].value:10)||10, poids: parseFloat(inputs[1]?inputs[1].value:0)||0, repsReel:null, poidsReel:null, done:false });
+                });
+            }
+        }
+        if (exos[0].series.length) seanceData.push({ type:type, exos:exos, rs:rs, rb:rb });
+    });
+    if (!seanceData.length) { alert('Aucun exercice valide !'); return; }
+    document.getElementById('muscu-exec-title').textContent = document.getElementById('muscu-name').value.trim() || 'S\u00e9ance Muscu';
+    showMode('muscu', 'exec');
+    buildExecPanels();
+    startChrono();
+}
+
+/* ══ EXÉCUTION ═══════════════════════════════════════ */
+
+function buildExecPanels() {
+    var tabsEl   = document.getElementById('muscu-exo-tabs');
+    var panelsEl = document.getElementById('muscu-exo-panels');
+    tabsEl.innerHTML = ''; panelsEl.innerHTML = '';
+    activeTimers = {};
+
+    seanceData.forEach(function(bloc, bi) {
+        var tab = document.createElement('button');
+        tab.className = 'mode-tab' + (bi === 0 ? ' active' : '');
+        var tabName = bloc.exos.map(function(e){ return e.nom; }).join(' / ');
+        tab.textContent = (bi+1) + '. ' + (tabName.length > 18 ? tabName.substring(0,16)+'\u2026' : tabName);
+        tab.style.cssText = 'flex:1;min-width:70px;font-size:0.75em;';
+        (function(bi2) {
+            tab.addEventListener('click', function() {
+                tabsEl.querySelectorAll('.mode-tab').forEach(function(t){ t.classList.remove('active'); });
+                panelsEl.querySelectorAll('.muscu-exo-panel').forEach(function(p){ p.classList.remove('active'); });
+                tab.classList.add('active');
+                document.getElementById('muscu-panel-' + bi2).classList.add('active');
+            });
+        })(bi);
+        tabsEl.appendChild(tab);
+
+        var panel = document.createElement('div');
+        panel.className = 'muscu-exo-panel' + (bi === 0 ? ' active' : '');
+        panel.id = 'muscu-panel-' + bi;
+
+        var blocTitle = document.createElement('div');
+        blocTitle.style.cssText = 'padding:8px 14px 4px;font-size:0.82em;color:' + (TYPES[bloc.type]?TYPES[bloc.type].color:'#cddc39') + ';font-weight:700;text-transform:uppercase;letter-spacing:0.06em;';
+        blocTitle.textContent = (TYPES[bloc.type]?TYPES[bloc.type].label:'Solo') + ' \u2014 ' + bloc.exos.map(function(e){return e.nom;}).join(' / ');
+        panel.appendChild(blocTitle);
+
+        // nb series = longueur de la serie du premier exo
+        var nbSeries = bloc.exos[0].series.length;
+        for (var si = 0; si < nbSeries; si++) {
+            panel.appendChild(buildSetBlock(bi, si, bloc));
+        }
+
+        // Bouton + Série en live
+        var addSerieBtn = document.createElement('button');
+        addSerieBtn.textContent = '+ Ajouter une série';
+        addSerieBtn.style.cssText = 'margin:6px 14px;width:calc(100% - 28px);background:none;border:1px dashed #3a3a5a;border-radius:8px;color:#cddc39;font-size:0.85em;font-weight:700;padding:10px;cursor:pointer;transition:background 0.15s;';
+        addSerieBtn.addEventListener('mouseenter', function(){ this.style.background='#1a1a3a'; });
+        addSerieBtn.addEventListener('mouseleave', function(){ this.style.background='none'; });
+        (function(blocRef, biRef, panelRef, btnRef) {
+            btnRef.addEventListener('click', function() {
+                // Calculer le nouvel index de série
+                var existingBlocks = panelRef.querySelectorAll('.muscu-set-block');
+                var newSi = existingBlocks.length;
+                // Ajouter une série vide à chaque exo du bloc
+                blocRef.exos.forEach(function(exo) {
+                    var lastSerie = exo.series[exo.series.length - 1] || { reps:10, poids:0 };
+                    exo.series.push({ reps: lastSerie.reps, poids: lastSerie.poids, repsReel:null, poidsReel:null, done:false });
+                });
+                // Construire et insérer le nouveau bloc avant ce bouton
+                var newBlock = buildSetBlock(biRef, newSi, blocRef);
+                panelRef.insertBefore(newBlock, btnRef);
+                // Mettre à jour le highlight
+                highlightCurrentSet(panelRef);
+            });
+        })(bloc, bi, panel, addSerieBtn);
+        panel.appendChild(addSerieBtn);
+
+        // Récup inter-exercice avec +/-10s
+        var rbKey = 'rb-' + bi;
+        var rbRow = document.createElement('div');
+        rbRow.className = 'muscu-recup-bloc-row';
+        rbRow.style.cssText = 'flex-direction:column;align-items:stretch;gap:6px;';
+        var rbSec = bloc.rb;
+        rbRow.innerHTML =
+            '<div style="font-size:0.75em;color:#aaa;text-align:center;">\u23f1 Récup inter-exercice</div>' +
+            '<div class="muscu-timer-val" id="' + rbKey + '-tv">' + fmtSec(rbSec) + '</div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">' +
+            '<button id="' + rbKey + '-m" style="background:#333;color:#fff;border:none;border-radius:6px;padding:8px;cursor:pointer;font-size:0.85em;">\u221210s</button>' +
+            '<button id="' + rbKey + '-go" style="background:#1a237e;color:#fff;border:none;border-radius:6px;padding:8px;cursor:pointer;font-size:0.9em;font-weight:700;">\u25b6 Go</button>' +
+            '<button id="' + rbKey + '-p" style="background:#333;color:#fff;border:none;border-radius:6px;padding:8px;cursor:pointer;font-size:0.85em;">+10s</button>' +
+            '</div>';
+        setTimeout((function(key, initSec) { return function() {
+            var tvEl  = document.getElementById(key + '-tv');
+            var mBtn  = document.getElementById(key + '-m');
+            var pBtn  = document.getElementById(key + '-p');
+            var goBtn = document.getElementById(key + '-go');
+            if (!tvEl) return;
+            var sec = initSec;
+            mBtn.addEventListener('click', function() {
+                sec = Math.max(5, sec - 10); tvEl.textContent = fmtSec(sec);
+                if (activeTimers[key]) { clearInterval(activeTimers[key]); delete activeTimers[key]; goBtn.disabled=false; goBtn.textContent='\u25b6 Go'; tvEl.classList.remove('muscu-timer-running'); }
+            });
+            pBtn.addEventListener('click', function() {
+                sec += 10; tvEl.textContent = fmtSec(sec);
+                if (activeTimers[key]) { clearInterval(activeTimers[key]); delete activeTimers[key]; goBtn.disabled=false; goBtn.textContent='\u25b6 Go'; tvEl.classList.remove('muscu-timer-running'); }
+            });
+            goBtn.addEventListener('click', function() {
+                if (activeTimers[key]) return;
+                goBtn.disabled=true; goBtn.textContent='...';
+                tvEl.classList.add('muscu-timer-running');
+                activeTimers[key] = setInterval(function() {
+                    sec--; tvEl.textContent = fmtSec(sec);
+                    if (sec <= 3 && sec > 0) bipCountdown && bipCountdown();
+                    if (sec <= 0) {
+                        clearInterval(activeTimers[key]); delete activeTimers[key];
+                        tvEl.classList.remove('muscu-timer-running');
+                        goBtn.disabled=false; goBtn.textContent='\u25b6 Go';
+                        bipTravail && bipTravail();
+                    }
+                }, 1000);
+            });
+        }; })(rbKey, rbSec), 50);
+        panel.appendChild(rbRow);
+        panelsEl.appendChild(panel);
+    });
+
+    // Ajouter bouton FIN DE SÉANCE sur le dernier panel
+    var lastPanel = document.getElementById('muscu-panel-' + (seanceData.length-1));
+    if (lastPanel) {
+        var finBtn = document.createElement('button');
+        finBtn.textContent = '🏁 Terminer la séance';
+        finBtn.style.cssText = 'margin:14px;width:calc(100% - 28px);background:#c62828;color:#fff;border:none;border-radius:8px;padding:14px;font-size:1em;font-weight:700;cursor:pointer;';
+        finBtn.addEventListener('click', function() {
+            clearInterval(chronoTimer);
+            Object.keys(activeTimers).forEach(function(k){ clearInterval(activeTimers[k]); });
+            var duree = document.getElementById('muscu-chrono').textContent;
+            finBtn.textContent = '✅ Séance terminée ! Durée : ' + duree;
+            finBtn.style.background = '#1a6b3c';
+            finBtn.disabled = true;
+            bipFin && bipFin();
+            // Sauvegarder dans le carnet
+            carnetSauvegarder(duree);
+        });
+        lastPanel.appendChild(finBtn);
+    }
+}
+
+function buildSetBlock(bi, si, bloc) {
+    var key = 'set-' + bi + '-' + si;
+    var wrap = document.createElement('div');
+    wrap.className = 'muscu-set-block'; wrap.id = key;
+
+    var hd = document.createElement('div'); hd.className = 'muscu-set-block-header';
+    hd.textContent = (bloc.exos.length > 1 ? TYPES[bloc.type].label + ' ' : 'S\u00e9rie ') + (si+1);
+    wrap.appendChild(hd);
+
+    var colHd = document.createElement('div');
+    colHd.style.cssText = 'display:grid;grid-template-columns:1fr 70px 70px;gap:8px;padding:3px 12px;font-size:0.68em;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid #1a1a2e;';
+    colHd.innerHTML = '<span>Exercice</span><span style="text-align:center">Reps</span><span style="text-align:center">kg</span>';
+    wrap.appendChild(colHd);
+
+    bloc.exos.forEach(function(exo, ei) {
+        var serie = exo.series[si] || { reps:10, poids:0 };
+        var row = document.createElement('div');
+        row.className = 'muscu-set-exo-row';
+        row.style.gridTemplateColumns = '1fr 70px 70px';
+
+        var nomEl = document.createElement('div');
+        nomEl.style.cssText = 'font-size:0.82em;color:#ccc;';
+        var nomName = document.createElement('div'); nomName.style.cssText = 'font-weight:700;'; nomName.textContent = exo.nom;
+        var prevRes = carnetGetPrevResult(exo.nom, si);
+        var objText = 'obj: ' + serie.reps + 'r' + (serie.poids > 0 ? ' × ' + serie.poids + 'kg' : '');
+        var prevText = prevRes ? ' | préc: ' + prevRes.reps + 'r' + (prevRes.poids > 0 ? ' × ' + prevRes.poids + 'kg' : '') : '';
+        var objEl = document.createElement('div'); objEl.style.cssText = 'font-size:0.72em;color:#666;';
+        objEl.innerHTML = objText + (prevText ? '<span class="prev-result">' + prevText + '</span>' : '');
+        nomEl.appendChild(nomName); nomEl.appendChild(objEl);
+        var prevRes = carnetGetPrevResult(exo.nom, si);
+        var repsInp = document.createElement('input'); repsInp.type = 'number'; repsInp.className = 'muscu-input'; repsInp.value = serie.reps; repsInp.min = 0; repsInp.max = 99;
+        repsInp.addEventListener('change', function() { serie.repsReel = parseInt(repsInp.value)||0; });
+
+        var poidsInp = document.createElement('input'); poidsInp.type = 'number'; poidsInp.className = 'muscu-input'; poidsInp.value = serie.poids; poidsInp.min = 0; poidsInp.max = 500; poidsInp.step = 0.5;
+        poidsInp.addEventListener('change', function() { serie.poidsReel = parseFloat(poidsInp.value)||0; });
+
+        row.appendChild(nomEl); row.appendChild(repsInp); row.appendChild(poidsInp);
+        wrap.appendChild(row);
+    });
+
+    // Zone validation + timer inline
+    var valZone = document.createElement('div');
+    valZone.style.cssText = 'padding:8px 12px;border-top:1px solid #2a2a4a;background:#0f0f1a;';
+    var valBtn = document.createElement('button'); valBtn.className = 'muscu-val-btn';
+    valBtn.style.cssText = 'background:#1a2a0a;color:#cddc39;border:2px solid #cddc39;border-radius:6px;padding:8px 16px;font-weight:700;cursor:pointer;font-size:0.88em;width:100%;';
+    valBtn.textContent = '\u2713 Valider';
+    valZone.appendChild(valBtn); wrap.appendChild(valZone);
+
+    // Timer inline
+    var timerZone = document.createElement('div');
+    timerZone.className = 'muscu-timer-inline'; timerZone.id = key + '-timer';
+    var timerSec = bloc.rs;
+    timerZone.innerHTML =
+        '<div style="font-size:0.75em;color:#aaa;text-align:center;margin-bottom:4px;">\u23f1 R\u00e9cup</div>' +
+        '<div class="muscu-timer-val" id="' + key + '-tv">' + fmtSec(timerSec) + '</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;">' +
+        '<button id="' + key + '-m" style="background:#333;color:#fff;border:none;border-radius:6px;padding:8px;cursor:pointer;font-size:0.85em;">\u22120s</button>' +
+        '<button id="' + key + '-go" style="background:#1a237e;color:#fff;border:none;border-radius:6px;padding:8px;cursor:pointer;font-size:0.9em;font-weight:700;">\u25b6 Go</button>' +
+        '<button id="' + key + '-p" style="background:#333;color:#fff;border:none;border-radius:6px;padding:8px;cursor:pointer;font-size:0.85em;">+10s</button>' +
+        '</div>';
+    wrap.appendChild(timerZone);
+
+    valBtn.addEventListener('click', function() {
+        if (valBtn.disabled) return;
+        valBtn.disabled = true; valBtn.textContent = '\u2713 Fait'; valBtn.style.background = '#555';
+        wrap.querySelector('.muscu-set-block-header').style.background = '#1a3a0a';
+        timerZone.classList.add('visible');
+        var tvEl = document.getElementById(key + '-tv');
+        timerSec = bloc.rs;
+        tvEl.textContent = fmtSec(timerSec); tvEl.classList.remove('muscu-timer-running');
+    });
+
+    setTimeout(function() {
+        var mBtn = document.getElementById(key + '-m');
+        var pBtn = document.getElementById(key + '-p');
+        var goBtn = document.getElementById(key + '-go');
+        var tvEl = document.getElementById(key + '-tv');
+        if (!mBtn) return;
+        mBtn.textContent = '\u221210s';
+        mBtn.addEventListener('click', function() {
+            timerSec = Math.max(5, timerSec - 10); tvEl.textContent = fmtSec(timerSec);
+            if (activeTimers[key]) { clearInterval(activeTimers[key]); delete activeTimers[key]; goBtn.disabled = false; goBtn.textContent = '\u25b6 Go'; tvEl.classList.remove('muscu-timer-running'); }
+        });
+        pBtn.addEventListener('click', function() {
+            timerSec += 10; tvEl.textContent = fmtSec(timerSec);
+            if (activeTimers[key]) { clearInterval(activeTimers[key]); delete activeTimers[key]; goBtn.disabled = false; goBtn.textContent = '\u25b6 Go'; tvEl.classList.remove('muscu-timer-running'); }
+        });
+        goBtn.addEventListener('click', function() {
+            if (activeTimers[key]) return;
+            var sec = timerSec;
+            goBtn.disabled = true; goBtn.textContent = '\u2026';
+            tvEl.classList.add('muscu-timer-running');
+            activeTimers[key] = setInterval(function() {
+                sec--; tvEl.textContent = fmtSec(sec);
+                if (sec <= 3 && sec > 0) bipCountdown && bipCountdown();
+                if (sec <= 0) {
+                    clearInterval(activeTimers[key]); delete activeTimers[key];
+                    tvEl.classList.remove('muscu-timer-running');
+                    timerZone.classList.remove('visible');
+                    goBtn.disabled = false; goBtn.textContent = '\u25b6 Go';
+                    bipTravail && bipTravail();
+                }
+            }, 1000);
+        });
+    }, 50);
+
+    return wrap;
+}
+
+function lancerTimerBtn(btn, sec, label) {
+    var rem = sec;
+    btn.disabled = true; btn.textContent = fmtSec(rem);
+    var t = setInterval(function() {
+        rem--; btn.textContent = fmtSec(rem);
+        if (rem <= 3 && rem > 0) bipCountdown && bipCountdown();
+        if (rem <= 0) { clearInterval(t); btn.disabled = false; btn.textContent = '\u25b6 Relancer'; bipTravail && bipTravail(); }
+    }, 1000);
+}
+
+/* ══ CHRONO ══════════════════════════════════════════ */
+
+/* ══ CARNET D'ENTRAÎNEMENT ══════════════════════════ */
+
+var CARNET_KEY = 'muscu_carnet';
+var CARNET_MAX = 999;
+
+function carnetLoad() {
+    try { return JSON.parse(localStorage.getItem(CARNET_KEY)) || {}; } catch(e) { return {}; }
+}
+function carnetSave(data) {
+    try { localStorage.setItem(CARNET_KEY, JSON.stringify(data)); } catch(e) {}
+}
+function carnetGetPrevResult(nomExo, serieIdx) {
+    var nom = document.getElementById('muscu-name').value.trim() || 'Séance Muscu';
+    var data = carnetLoad();
+    var seances = data[nom];
+    if (!seances || !seances.length) return null;
+    for (var i = 0; i < seances[0].resultats.length; i++) {
+        if (seances[0].resultats[i].nom === nomExo) {
+            return seances[0].resultats[i].series[serieIdx] || null;
+        }
+    }
+    return null;
+}
+function carnetSauvegarder(duree) {
+    var nom = document.getElementById('muscu-name').value.trim() || 'Séance Muscu';
+    var date = new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    var resultats = [];
+    seanceData.forEach(function(bloc) {
+        bloc.exos.forEach(function(exo) {
+            var exoRes = { nom: exo.nom, series: [] };
+            exo.series.forEach(function(s) {
+                exoRes.series.push({ reps:(s.repsReel!=null)?s.repsReel:s.reps, poids:(s.poidsReel!=null)?s.poidsReel:s.poids });
+            });
+            resultats.push(exoRes);
+        });
+    });
+    var entry = { date:date, nom:nom, duree:duree, rs:seanceData[0]?seanceData[0].rs:90, rb:seanceData[0]?seanceData[0].rb:120, resultats:resultats };
+    var data = carnetLoad();
+    if (!data[nom]) data[nom] = [];
+    data[nom].unshift(entry);
+    data[nom] = data[nom].slice(0, CARNET_MAX);
+    carnetSave(data);
+    carnetRenderListe();
+}
+function carnetRenderListe() {
+    var el = document.getElementById('carnet-liste');
+    if (!el) return;
+    var data = carnetLoad();
+    var keys = Object.keys(data);
+    if (!keys.length) { el.innerHTML = '<div class="carnet-empty">Aucune séance enregistrée.</div>'; return; }
+    el.innerHTML = '';
+    keys.forEach(function(nom) {
+        var seances = data[nom];
+        var section = document.createElement('div'); section.className = 'carnet-section';
+        var titre = document.createElement('div');
+        titre.style.cssText = 'font-size:0.75em;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;';
+        titre.textContent = nom + ' (' + seances.length + ' séance' + (seances.length>1?'s':'') + ')';
+        section.appendChild(titre);
+
+        // Afficher toujours les 3 premières, le reste dans un bloc dépliable
+        var VISIBLE = 3;
+        seances.forEach(function(s, idx) {
+            var item = document.createElement('div'); item.className = 'carnet-seance-item';
+            if (idx >= VISIBLE) item.style.display = 'none'; // masqué par défaut
+            item.innerHTML =
+                '<div class="carnet-seance-date">' + s.date + ' — ' + s.duree + '</div>' +
+                '<div class="carnet-seance-name">' + (idx===0?'★ Dernière':'#'+(idx+1)) + ' — ' + s.resultats.length + ' exo(s)</div>' +
+                '<div class="carnet-seance-info">' + s.resultats.map(function(r){return r.nom;}).join(', ') + '</div>';
+            if (idx === 0) {
+                var loadBtn = document.createElement('button');
+                loadBtn.textContent = '↳ Recharger cette séance';
+                loadBtn.style.cssText = 'margin-top:8px;background:#1a237e;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:0.78em;font-weight:700;cursor:pointer;width:100%;';
+                (function(seance){ loadBtn.addEventListener('click', function(){ carnetCharger(seance); }); })(s);
+                item.appendChild(loadBtn);
+            }
+            section.appendChild(item);
+        });
+
+        // Bouton "Voir tout" si plus de 3 séances
+        if (seances.length > VISIBLE) {
+            var toggleBtn = document.createElement('button');
+            toggleBtn.className = 'btn-carnet-export';
+            toggleBtn.textContent = "▼ Voir tout l'historique (" + (seances.length - VISIBLE) + " de plus)";
+            var expanded = false;
+            toggleBtn.addEventListener('click', function() {
+                expanded = !expanded;
+                section.querySelectorAll('.carnet-seance-item').forEach(function(item, idx) {
+                    if (idx >= VISIBLE) item.style.display = expanded ? 'block' : 'none';
+                });
+                toggleBtn.textContent = expanded
+                    ? '▲ Réduire'
+                    : "▼ Voir tout l'historique (" + (seances.length - VISIBLE) + " de plus)";
+            });
+            section.appendChild(toggleBtn);
+        }
+        el.appendChild(section);
+    });
+}
+function carnetCharger(seance) {
+    document.getElementById('muscu-name').value = seance.nom;
+    document.getElementById('muscu-rs').value = seance.rs || 90;
+    document.getElementById('muscu-rb').value = seance.rb || 120;
+    document.getElementById('muscu-blocs-list').innerHTML = '';
+    seance.resultats.forEach(function(exoRes) {
+        document.getElementById('muscu-btn-add').click();
+        var blocs = document.querySelectorAll('#muscu-blocs-list .muscu-bloc');
+        var lastBloc = blocs[blocs.length-1];
+        if (!lastBloc) return;
+        var bid = lastBloc.id;
+        var inp = document.getElementById(bid+'-exo0');
+        if (inp) inp.value = exoRes.nom;
+        var seriesDiv = document.getElementById(bid+'-series-0');
+        if (!seriesDiv) return;
+        seriesDiv.innerHTML = '';
+        exoRes.series.forEach(function(s, idx){ appendSerie(seriesDiv, bid+'-e0', idx, s.reps, s.poids); });
+    });
+    document.getElementById('cfg-muscu').scrollIntoView({ behavior:'smooth' });
+}
+function carnetExport() {
+    var data = carnetLoad();
+    if (!Object.keys(data).length) { alert('Aucune donnée à exporter.'); return; }
+    var json = JSON.stringify(data, null, 2);
+    var a = document.createElement('a');
+    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+    a.download = 'carnet_muscu_' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+function carnetShowImport() {
+    var z = document.getElementById('carnet-import-zone');
+    if (z) z.style.display = z.style.display==='none' ? 'block' : 'none';
+}
+function carnetImport() {
+    var txt = document.getElementById('carnet-import-txt').value.trim();
+    if (!txt) { alert("Colle d'abord le contenu JSON."); return; }
+    try {
+        var imp = JSON.parse(txt);
+        var ex = carnetLoad();
+        Object.keys(imp).forEach(function(nom){
+            if (!ex[nom]) ex[nom]=[];
+            ex[nom] = imp[nom].concat(ex[nom]).slice(0,CARNET_MAX);
+        });
+        carnetSave(ex); carnetRenderListe();
+        document.getElementById('carnet-import-zone').style.display='none';
+        document.getElementById('carnet-import-txt').value='';
+        alert('Importation réussie !');
+    } catch(e) { alert('Fichier JSON invalide : '+e.message); }
+}
+
+function activerAutocompleteNomSeance(inp) {
+    if (!inp) return;
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;';
+    inp.parentNode.insertBefore(wrap, inp);
+    wrap.appendChild(inp);
+    var liste = null;
+    var selectedIdx = -1;
+
+    function getNoms() {
+        var data = carnetLoad();
+        return Object.keys(data).sort(function(a,b){ return a.toLowerCase().localeCompare(b.toLowerCase()); });
+    }
+    function creerListe() {
+        if (liste) return;
+        liste = document.createElement('div');
+        liste.className = 'autocomplete-list';
+        liste.style.display = 'none';
+        wrap.appendChild(liste);
+    }
+    function afficher(q) {
+        var noms = getNoms();
+        var resultats = q.length === 0
+            ? noms
+            : noms.filter(function(n){ return n.toLowerCase().indexOf(q.toLowerCase()) === 0; });
+        if (!resultats.length) { masquer(); return; }
+        creerListe(); selectedIdx = -1; liste.innerHTML = '';
+        resultats.forEach(function(n) {
+            var item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.textContent = n;
+            item.onmousedown = function(e){ e.preventDefault(); inp.value = n; masquer(); inp.focus(); };
+            liste.appendChild(item);
+        });
+        liste.style.display = 'block';
+    }
+    function masquer() { if (liste) liste.style.display = 'none'; selectedIdx = -1; }
+    function naviguer(dir) {
+        if (!liste || liste.style.display === 'none') return;
+        var items = liste.querySelectorAll('.autocomplete-item');
+        if (!items.length) return;
+        items[selectedIdx] && items[selectedIdx].classList.remove('active');
+        selectedIdx = Math.max(-1, Math.min(items.length-1, selectedIdx+dir));
+        if (selectedIdx >= 0) items[selectedIdx].classList.add('active');
+    }
+    inp.addEventListener('focus', function(){ afficher(inp.value.trim()); });
+    inp.addEventListener('input', function(){ afficher(inp.value.trim()); });
+    inp.addEventListener('keydown', function(e) {
+        if (!liste || liste.style.display === 'none') return;
+        if (e.key === 'ArrowDown') { e.preventDefault(); naviguer(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); naviguer(-1); }
+        else if (e.key === 'Enter' || e.key === 'Tab') {
+            var items = liste.querySelectorAll('.autocomplete-item');
+            if (selectedIdx >= 0 && items[selectedIdx]) { e.preventDefault(); inp.value = items[selectedIdx].textContent; masquer(); }
+            else { masquer(); }
+        } else if (e.key === 'Escape') { masquer(); }
+    });
+    inp.addEventListener('blur', function(){ setTimeout(masquer, 150); });
+}
+
+function startChrono() {
+    clearInterval(chronoTimer); chronoSec = 0;
+    chronoTimer = setInterval(function() {
+        chronoSec++;
+        document.getElementById('muscu-chrono').textContent = pad(Math.floor(chronoSec/60)) + ':' + pad(chronoSec%60);
+    }, 1000);
+}
+
+function execReset() {
+    clearInterval(chronoTimer);
+    Object.keys(activeTimers).forEach(function(k){ clearInterval(activeTimers[k]); });
+    activeTimers = {};
+    document.getElementById('muscu-chrono').textContent = '00:00';
+    document.getElementById('muscu-exo-tabs').innerHTML   = '';
+    document.getElementById('muscu-exo-panels').innerHTML = '';
+    seanceData = [];
+}
+
+/* ══ INIT ════════════════════════════════════════════ */
+
+window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('muscu-btn-add').addEventListener('click', addBloc);
+    carnetRenderListe();
+    // Autocomplétion nom de séance depuis le carnet
+    activerAutocompleteNomSeance(document.getElementById('muscu-name'));
+    document.getElementById('muscu-btn-lancer').addEventListener('click', lancer);
+    document.getElementById('muscu-btn-reset').addEventListener('click', resetConfig);
+    document.getElementById('muscu-btn-exec-reset').addEventListener('click', execReset);
+});
+
+})(); // fin IIFE muscu
+
+
 </script>
 </body>
 </html>

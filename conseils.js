@@ -305,6 +305,22 @@ function displayConseils() {
             '<div class="card-buttons">' + btnHtml + '</div>' +
             '</div>';
     });
+
+    // Carte carnet d'entraînement muscu (toujours affichée en dernier)
+    var hasData = false;
+    try { hasData = Object.keys(JSON.parse(localStorage.getItem('muscu_carnet') || '{}')).length > 0; } catch(e) {}
+    grid.innerHTML +=
+        '<div class="card card-muscu">' +
+        '<div>' +
+        '<span class="tag tag-body">Musculation</span>' +
+        '<span class="tag tag-material">CARNET</span>' +
+        '<h3>📓 Mon carnet muscu</h3>' +
+        '<div class="card-desc">' + (hasData ? "Consulter l'historique de vos séances : reps, poids, progression." : "Aucune séance enregistrée pour l'instant. Lancez une séance depuis \"Créer sa séance\".") + '</div>' +
+        '</div>' +
+        '<div class="card-buttons">' +
+        '<button onclick="openCarnetMuscu()" class="btn-full">' + (hasData ? '📊 Voir mon carnet' : '📋 Carnet vide') + '</button>' +
+        '</div>' +
+        '</div>';
 }
 
 function openModalConseil(index) {
@@ -499,10 +515,122 @@ function scrollToMouvement(targetId) {
     }
 }
 
+function openCarnetMuscu() {
+    var CARNET_KEY = 'muscu_carnet';
+    var data = {};
+    try { data = JSON.parse(localStorage.getItem(CARNET_KEY)) || {}; } catch(e) {}
+    var keys = Object.keys(data);
+
+    // Titre et badges
+    document.getElementById('modal-title').textContent = 'Mon Carnet Muscu';
+    document.getElementById('modal-box').className = 'type-muscu';
+    document.getElementById('modal-badges').innerHTML =
+        '<span class="modal-badge modal-badge-type">Musculation</span>' +
+        '<span class="modal-badge modal-badge-mat">CARNET</span>';
+
+    if (!keys.length) {
+        document.getElementById('modal-body').innerHTML =
+            '<div style="text-align:center;padding:30px;color:#999;">' +
+            '<div style="font-size:2em;margin-bottom:12px;">📋</div>' +
+            '<p>Aucune séance enregistrée.<br>Lance une séance muscu depuis <strong>Créer sa séance</strong> pour alimenter ton carnet.</p>' +
+            '</div>';
+        document.getElementById('modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+
+    // Sélecteur de type de séance
+    var html = '<div style="margin-bottom:16px;">';
+    html += '<label style="font-size:0.8em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#888;display:block;margin-bottom:6px;">Type de séance</label>';
+    html += '<select id="carnet-type-select" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:0.95em;background:#fff;" onchange="renderCarnetDetail()">';
+    keys.forEach(function(nom) {
+        html += '<option value="' + nom.replace(/"/g, '&quot;') + '">' + nom + ' (' + data[nom].length + ' séance' + (data[nom].length > 1 ? 's' : '') + ')</option>';
+    });
+    html += '</select></div>';
+    html += '<div id="carnet-detail-content"></div>';
+
+    document.getElementById('modal-body').innerHTML = html;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Stocker data pour renderCarnetDetail
+    window._carnetData = data;
+    setTimeout(renderCarnetDetail, 50);
+}
+
+function renderCarnetDetail() {
+    var sel = document.getElementById('carnet-type-select');
+    if (!sel || !window._carnetData) return;
+    var nom = sel.value;
+    var seances = window._carnetData[nom] || [];
+    var container = document.getElementById('carnet-detail-content');
+    if (!container) return;
+
+    var html = '';
+    seances.forEach(function(seance, si) {
+        var prev = seances[si + 1] || null; // séance précédente
+        html += '<div style="background:#f8f8f8;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #eee;">';
+        // En-tête séance
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;">';
+        html += '<div>';
+        html += '<div style="font-weight:800;font-size:0.95em;color:#000;">' + (si === 0 ? '⭐ Dernière séance' : 'Séance #' + (si + 1)) + '</div>';
+        html += '<div style="font-size:0.78em;color:#888;margin-top:2px;">📅 ' + seance.date + ' &nbsp;⏱ ' + seance.duree + '</div>';
+        html += '</div>';
+        if (si === 0 && seances.length > 1) {
+            html += '<div style="font-size:0.72em;background:#e8f5e9;color:#2e7d32;padding:3px 8px;border-radius:10px;font-weight:700;">vs précédente ▼</div>';
+        }
+        html += '</div>';
+
+        // Exercices
+        seance.resultats.forEach(function(exo) {
+            // Trouver cet exo dans la séance précédente
+            var prevExo = null;
+            if (prev) {
+                for (var pi = 0; pi < prev.resultats.length; pi++) {
+                    if (prev.resultats[pi].nom === exo.nom) { prevExo = prev.resultats[pi]; break; }
+                }
+            }
+
+            html += '<div style="margin-bottom:10px;">';
+            html += '<div style="font-size:0.85em;font-weight:700;color:#1a237e;margin-bottom:4px;">💪 ' + exo.nom + '</div>';
+
+            // Tableau des séries
+            html += '<table style="width:100%;border-collapse:collapse;font-size:0.8em;">';
+            html += '<tr style="background:#e8eaf6;"><th style="padding:4px 8px;text-align:left;">Série</th><th style="padding:4px 8px;text-align:center;">Reps</th><th style="padding:4px 8px;text-align:center;">Poids</th>' + (prevExo ? '<th style="padding:4px 8px;text-align:center;">Progression</th>' : '') + '</tr>';
+
+            exo.series.forEach(function(serie, idx) {
+                var prevSerie = prevExo ? (prevExo.series[idx] || null) : null;
+                var progHtml = '';
+                if (prevSerie) {
+                    var diffReps  = serie.reps  - prevSerie.reps;
+                    var diffPoids = serie.poids - prevSerie.poids;
+                    var parts = [];
+                    if (diffReps  > 0) parts.push('<span style="color:#2e7d32;">+' + diffReps  + ' reps</span>');
+                    if (diffReps  < 0) parts.push('<span style="color:#c62828;">'  + diffReps  + ' reps</span>');
+                    if (diffPoids > 0) parts.push('<span style="color:#2e7d32;">+' + diffPoids + 'kg</span>');
+                    if (diffPoids < 0) parts.push('<span style="color:#c62828;">'  + diffPoids + 'kg</span>');
+                    progHtml = parts.length ? parts.join(' ') : '<span style="color:#999;">＝</span>';
+                }
+                var bg = idx % 2 === 0 ? '#fff' : '#f9f9f9';
+                html += '<tr style="background:' + bg + ';">';
+                html += '<td style="padding:4px 8px;color:#666;">S' + (idx+1) + '</td>';
+                html += '<td style="padding:4px 8px;text-align:center;font-weight:700;">' + serie.reps + '<span style="font-size:0.85em;color:#888;"> r</span></td>';
+                html += '<td style="padding:4px 8px;text-align:center;font-weight:700;">' + (serie.poids > 0 ? serie.poids + '<span style="font-size:0.85em;color:#888;"> kg</span>' : '<span style="color:#bbb;">—</span>') + '</td>';
+                if (prevExo) html += '<td style="padding:4px 8px;text-align:center;">' + progHtml + '</td>';
+                html += '</tr>';
+            });
+            html += '</table></div>';
+        });
+        html += '</div>';
+    });
+
+    container.innerHTML = html;
+}
+
 function closeModal() {
     document.getElementById('modal-overlay').classList.remove('open');
     document.body.style.overflow = '';
-
+    window._carnetData = null;
 }
 
 window.addEventListener('DOMContentLoaded', function() {
