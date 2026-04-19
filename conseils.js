@@ -543,8 +543,22 @@ function openCarnetMuscu() {
     var html = '<div style="margin-bottom:16px;">';
     html += '<label style="font-size:0.8em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#888;display:block;margin-bottom:6px;">Type de séance</label>';
     html += '<select id="carnet-type-select" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:0.95em;background:#fff;" onchange="renderCarnetDetail()">';
+    // Trier les clés par date de la dernière séance (la plus récente en premier)
+    function parseCarnetDate(d) {
+        if (!d) return 0;
+        var parts = d.split(' ');
+        var dp = parts[0].split('/');
+        var tp = parts[1] ? parts[1].split(':') : ['0','0'];
+        return new Date(dp[2], dp[1]-1, dp[0], tp[0], tp[1]).getTime();
+    }
+    keys.sort(function(a, b) {
+        var dateA = data[a].length ? parseCarnetDate(data[a][0].date) : 0;
+        var dateB = data[b].length ? parseCarnetDate(data[b][0].date) : 0;
+        return dateB - dateA;
+    });
     keys.forEach(function(nom) {
-        html += '<option value="' + nom.replace(/"/g, '&quot;') + '">' + nom + ' (' + data[nom].length + ' séance' + (data[nom].length > 1 ? 's' : '') + ')</option>';
+        var lastDate = data[nom].length ? data[nom][0].date.split(' ')[0] : '';
+        html += '<option value="' + nom.replace(/"/g, '&quot;') + '">' + nom + ' — ' + lastDate + ' (' + data[nom].length + ' séance' + (data[nom].length > 1 ? 's' : '') + ')</option>';
     });
     html += '</select></div>';
     html += '<div id="carnet-detail-content"></div>';
@@ -566,6 +580,10 @@ function renderCarnetDetail() {
     var container = document.getElementById('carnet-detail-content');
     if (!container) return;
 
+    // Trier par date décroissante
+    seances = seances.slice().sort(function(a, b) {
+        return parseCarnetDate(b.date) - parseCarnetDate(a.date);
+    });
     var html = '';
     seances.forEach(function(seance, si) {
         var prev = seances[si + 1] || null; // séance précédente
@@ -619,6 +637,19 @@ function renderCarnetDetail() {
                 if (prevExo) html += '<td style="padding:4px 8px;text-align:center;">' + progHtml + '</td>';
                 html += '</tr>';
             });
+            // Totaux
+            var totalReps = 0, totalVol = 0;
+            exo.series.forEach(function(s) {
+                totalReps += s.reps;
+                totalVol  += s.reps * s.poids;
+            });
+            html += '<div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">';
+            html += '<span style="background:#e8eaf6;border-radius:6px;padding:3px 10px;font-size:0.78em;font-weight:700;color:#1a237e;">∑ ' + totalReps + ' reps</span>';
+            if (totalVol > 0) {
+                html += '<span style="background:#fce4ec;border-radius:6px;padding:3px 10px;font-size:0.78em;font-weight:700;color:#c62828;">∑ ' + totalVol + ' kg·reps</span>';
+            }
+            html += '</div>';
+
             html += '</table></div>';
         });
         html += '</div>';

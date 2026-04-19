@@ -2939,12 +2939,15 @@ function carnetExport() {
     var data = carnetLoad();
     if (!Object.keys(data).length) { alert('Aucune donnée à exporter.'); return; }
     var json = JSON.stringify(data, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var url  = URL.createObjectURL(blob);
     var a = document.createElement('a');
-    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+    a.href = url;
     a.download = 'carnet_muscu_' + new Date().toISOString().slice(0,10) + '.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
 }
 function carnetShowImport() {
     var z = document.getElementById('carnet-import-zone');
@@ -2955,16 +2958,20 @@ function carnetImport() {
     if (!txt) { alert("Colle d'abord le contenu JSON."); return; }
     try {
         var imp = JSON.parse(txt);
+        if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('Format invalide');
         var ex = carnetLoad();
+        var nb = 0;
         Object.keys(imp).forEach(function(nom){
-            if (!ex[nom]) ex[nom]=[];
-            ex[nom] = imp[nom].concat(ex[nom]).slice(0,CARNET_MAX);
+            if (!Array.isArray(imp[nom])) return;
+            if (!ex[nom]) ex[nom] = [];
+            ex[nom] = imp[nom].concat(ex[nom]).slice(0, CARNET_MAX);
+            nb += imp[nom].length;
         });
         carnetSave(ex); carnetRenderListe();
-        document.getElementById('carnet-import-zone').style.display='none';
-        document.getElementById('carnet-import-txt').value='';
-        alert('Importation réussie !');
-    } catch(e) { alert('Fichier JSON invalide : '+e.message); }
+        document.getElementById('carnet-import-zone').style.display = 'none';
+        document.getElementById('carnet-import-txt').value = '';
+        alert('Importation réussie ! ' + nb + ' séance(s) importée(s).');
+    } catch(e) { alert('Fichier JSON invalide : ' + e.message); }
 }
 
 function activerAutocompleteNomSeance(inp) {
