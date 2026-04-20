@@ -306,10 +306,19 @@ function displayConseils() {
             '</div>';
     });
 
-    // Carte carnet d'entraînement muscu (toujours affichée en dernier)
+    // Carte carnet d'entraînement muscu — dans sa propre section filtrable
     var hasData = false;
     try { hasData = Object.keys(JSON.parse(localStorage.getItem('muscu_carnet') || '{}')).length > 0; } catch(e) {}
-    grid.innerHTML +=
+    var carnetSection = document.getElementById('section-carnet');
+    if (!carnetSection) {
+        carnetSection = document.createElement('div');
+        carnetSection.id = 'section-carnet';
+        carnetSection.style.marginTop = '24px';
+        var sectionConseils = document.getElementById('section-conseils');
+        sectionConseils.parentNode.insertBefore(carnetSection, sectionConseils.nextSibling);
+    }
+    carnetSection.innerHTML =
+        '<div class="card-grid">' +
         '<div class="card card-muscu">' +
         '<div>' +
         '<span class="tag tag-body">Musculation</span>' +
@@ -319,6 +328,7 @@ function displayConseils() {
         '</div>' +
         '<div class="card-buttons">' +
         '<button onclick="openCarnetMuscu()" class="btn-full">' + (hasData ? '📊 Voir mon carnet' : '📋 Carnet vide') + '</button>' +
+        '</div>' +
         '</div>' +
         '</div>';
 }

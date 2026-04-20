@@ -35,6 +35,7 @@
             <option value="all">🔼 Tout afficher 🔼</option>
             <option value="conseils">Conseils</option>
             <option value="modeemploi">Modes d'emploi</option>
+            <option value="carnet">📓 Carnet muscu</option>
         </select>
     </div>
 
@@ -99,15 +100,23 @@
 function filterInfos(val) {
     var conseils   = document.getElementById('section-conseils');
     var modeemploi = document.getElementById('section-modeemploi');
+    var carnet     = document.getElementById('section-carnet');
     if (val === 'conseils') {
         conseils.style.display   = 'block';
         modeemploi.style.display = 'none';
+        if (carnet) carnet.style.display = 'none';
     } else if (val === 'modeemploi') {
         conseils.style.display   = 'none';
         modeemploi.style.display = 'block';
+        if (carnet) carnet.style.display = 'none';
+    } else if (val === 'carnet') {
+        conseils.style.display   = 'none';
+        modeemploi.style.display = 'none';
+        if (carnet) carnet.style.display = 'block';
     } else {
         conseils.style.display   = 'block';
         modeemploi.style.display = 'block';
+        if (carnet) carnet.style.display = 'block';
     }
 }
 </script>

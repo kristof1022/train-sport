@@ -127,7 +127,7 @@
         .config-val {
             background: #0f1b35; border: none;
             border-left: 1px solid #2a3a5a; border-right: 1px solid #2a3a5a;
-            color: #fff; width: 60px; height: 42px;
+            color: #fff; width: 50px; min-width: 40px; flex: 1; height: 42px;
             text-align: center; font-size: 1.1em; font-weight: 700;
             -moz-appearance: textfield;
         }
@@ -1080,7 +1080,64 @@ function getBanqueMouvements() {
         "Pull-up","Push-up","Ring dip","Ring row",
         "200m course","400m course","800m course","1km course","1,6km course",
         "500m rameur","1000m rameur","2000m rameur",
-        "Cal BikeErg","Cal SkiErg","Cal rameur"
+        "BikeErg","SkiErg","Rameur",
+        // --- HALTÈRES (DUMBBELL - DB) ---
+        "Développé couché haltères (Dumbbell Bench Press - DB BP)",
+        "Développé incliné haltères (Incline DB Bench Press)",
+        "Développé militaire haltères (Dumbbell Overhead Press - DB OHP)",
+        "Écartés haltères (Dumbbell Flyes)",
+        "Tirage unilatéral haltère (Dumbbell Row)",
+        "Squat gobelet haltère (DB Goblet Squat)",
+        "Fentes haltères (Dumbbell Lunges)",
+        "Soulevé de terre roumain haltères (Dumbbell RDL)",
+        "Épaulé haltère (Dumbbell Clean)",
+        "Arraché haltère (Dumbbell Snatch)",
+        "Propulseur haltères (Dumbbell Thruster)",
+        "Curl biceps haltères (Dumbbell Curl)",
+        "Extension triceps haltères (DB Triceps Extension)",
+        "Marche du fermier haltères (DB Farmer Walk)",
+        "Soulevé de terre avec haltères (Suitcase Deadlift)",
+        // --- KETTLEBELL (KB) ---
+        "Swing de kettlebell (Kettlebell Swing - KBS)",
+        "Balancement américain (American KB Swing)",
+        "Squat gobelet KB (Kettlebell Goblet Squat)",
+        "Arraché KB (Kettlebell Snatch)",
+        "Épaulé KB (Kettlebell Clean)",
+        "Propulseur KB (Kettlebell Thruster)",
+        "Redressement turc (Turkish Get-up - TGU)",
+        "Fente KB en rack (KB Rack Lunge)",
+        "Marche du fermier KB (KB Farmer Walk)",
+        "Moulin KB (Kettlebell Windmill)",
+        "Halo KB (Kettlebell Halo)",
+        // --- BARRE OLYMPIQUE (BARBELL - BB) ---
+        "Soulevé de terre (Deadlift - DL)",
+        "Soulevé de terre roumain (Romanian Deadlift - RDL)",
+        "Développé couché (Bench Press - BP - DC)",
+        "Développé militaire (Strict Press - SP)",
+        "Développé avec poussée (Push Press - PP)",
+        "Squat arrière (Back Squat - BS)",
+        "Squat avant (Front Squat - FS)",
+        "Squat au-dessus de la tête (Overhead Squat - OHS)",
+        "Épaulé-jeté (Clean & Jerk - C&J)",
+        "Épaulé puissance (Power Clean - PC)",
+        "Arraché (Snatch)",
+        "Thruster à la barre (Barbell Thruster)",
+        // --- MACHINES GUIDÉES & ACCESSOIRES ---
+        "Presse à cuisses (Leg Press)",
+        "Leg Extension (Leg Extension)",
+        "Leg Curl (Leg Curl)",
+        "Tirage vertical machine (Lat Pulldown)",
+        "Tirage horizontal machine (Seated Row)",
+        "Pec Deck (Machine Fly)",
+        // --- LANDMINE & JAMMER ARMS ---
+        "Presse landmine (Landmine Press)",
+        "Rowing barre en T (T-Bar Row)",
+        "Rotation landmine (Landmine Rotation)",
+        "Développé Jammer Arms (Jammer Press)",
+        "Épaulé Jammer Arms (Jammer Clean)",
+        "Shrug Jammer Arms",
+        "Rowing Jammer Arms",
+        
     ]);
 
     // Ajouter depuis workouts si disponible
@@ -2486,7 +2543,8 @@ function buildExosAndSeries(bloc, bid, type) {
     exosDiv.innerHTML = ''; seriesWrap.innerHTML = '';
     for (var e = 0; e < nb; e++) {
         var ph = type === 'superset' ? (e === 0 ? 'Agoniste (ex: Curl biceps)' : 'Antagoniste (ex: Extension triceps)') : (nb > 1 ? 'Exercice ' + (e+1) : "Nom de l'exercice");
-        var inp = document.createElement('input'); inp.type = 'text'; inp.className = 'muscu-exo-name'; inp.placeholder = ph; inp.id = bid + '-exo' + e; inp.style.marginBottom = '6px'; exosDiv.appendChild(inp);
+        var inp = document.createElement('input'); inp.type = 'text'; inp.className = 'muscu-exo-name'; inp.placeholder = ph; inp.id = bid + '-exo' + e; exosDiv.appendChild(inp);
+        activerAutocompleteMuscuNom(inp);
         var lbl = document.createElement('div'); lbl.style.cssText = 'font-size:0.72em;color:var(--text-dim);padding:4px 14px 2px;text-transform:uppercase;letter-spacing:0.06em;'; lbl.textContent = nb > 1 ? 'S\u00e9ries — Exo ' + (e+1) : 'S\u00e9ries'; seriesWrap.appendChild(lbl);
         var seriesDiv = document.createElement('div'); seriesDiv.id = bid + '-series-' + e; seriesDiv.style.cssText = 'padding:2px 0;' + (e < nb-1 ? 'border-bottom:1px solid #2a2a4a;margin-bottom:6px;' : '');
         appendSerie(seriesDiv, bid + '-e' + e, 0, 12, 0); appendSerie(seriesDiv, bid + '-e' + e, 1, 12, 0); appendSerie(seriesDiv, bid + '-e' + e, 2, 10, 0);
@@ -3020,6 +3078,62 @@ function carnetImportFichier() {
         reader.readAsText(file);
     };
     input.click();
+}
+
+function activerAutocompleteMuscuNom(inp) {
+    if (!inp) return;
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;width:100%;margin-bottom:6px;';
+    inp.style.marginBottom = '0';
+    inp.parentNode.insertBefore(wrap, inp);
+    wrap.appendChild(inp);
+    var liste = null;
+    var selectedIdx = -1;
+
+    function creerListe() {
+        if (liste) return;
+        liste = document.createElement('div');
+        liste.className = 'autocomplete-list';
+        liste.style.display = 'none';
+        wrap.appendChild(liste);
+    }
+    function afficherSuggestions(q) {
+        if (!q || q.length < 2) { masquer(); return; }
+        var resultats = getBanque().filter(function(m) {
+            return m.toLowerCase().indexOf(q.toLowerCase()) === 0;
+        }).slice(0, 8);
+        if (!resultats.length) { masquer(); return; }
+        creerListe(); selectedIdx = -1; liste.innerHTML = '';
+        resultats.forEach(function(m) {
+            var item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.textContent = m;
+            item.onmousedown = function(e) { e.preventDefault(); inp.value = m; masquer(); inp.focus(); };
+            liste.appendChild(item);
+        });
+        liste.style.display = 'block';
+    }
+    function masquer() { if (liste) liste.style.display = 'none'; selectedIdx = -1; }
+    function naviguer(dir) {
+        if (!liste || liste.style.display === 'none') return;
+        var items = liste.querySelectorAll('.autocomplete-item');
+        if (!items.length) return;
+        items[selectedIdx] && items[selectedIdx].classList.remove('active');
+        selectedIdx = Math.max(-1, Math.min(items.length-1, selectedIdx+dir));
+        if (selectedIdx >= 0) items[selectedIdx].classList.add('active');
+    }
+    inp.addEventListener('input', function() { afficherSuggestions(inp.value.trim()); });
+    inp.addEventListener('keydown', function(e) {
+        if (!liste || liste.style.display === 'none') return;
+        if (e.key === 'ArrowDown') { e.preventDefault(); naviguer(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); naviguer(-1); }
+        else if (e.key === 'Enter' || e.key === 'Tab') {
+            var items = liste.querySelectorAll('.autocomplete-item');
+            if (selectedIdx >= 0 && items[selectedIdx]) { e.preventDefault(); inp.value = items[selectedIdx].textContent; masquer(); }
+            else { masquer(); }
+        } else if (e.key === 'Escape') { masquer(); }
+    });
+    inp.addEventListener('blur', function() { setTimeout(masquer, 150); });
 }
 
 function activerAutocompleteNomSeance(inp) {
