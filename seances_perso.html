@@ -1191,10 +1191,14 @@ function activerAutocomplete(ta, row) {
         if (wrap) wrap.appendChild(liste);
     }
 
+    function normaliser(str) {
+        return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
     function afficherSuggestions(q) {
         if (!estTravail() || !q || q.length < 2) { masquer(); return; }
+        var qN = normaliser(q);
         var resultats = getBanque().filter(function(m) {
-            return m.toLowerCase().indexOf(q.toLowerCase()) === 0;
+            return normaliser(m).indexOf(qN) !== -1;
         }).slice(0, 8);
         if (resultats.length === 0) { masquer(); return; }
         creerListe();
@@ -1277,10 +1281,14 @@ function activerAutocompleteItv(ta, li) {
         wrap.appendChild(liste);
     }
 
+    function normaliser(str) {
+        return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
     function afficherSuggestions(q) {
         if (!estTravail() || !q || q.length < 2) { masquer(); return; }
+        var qN = normaliser(q);
         var resultats = getBanque().filter(function(m) {
-            return m.toLowerCase().indexOf(q.toLowerCase()) === 0;
+            return normaliser(m).indexOf(qN) !== -1;
         }).slice(0, 8);
         if (resultats.length === 0) { masquer(); return; }
         creerListe();
@@ -3097,10 +3105,14 @@ function activerAutocompleteMuscuNom(inp) {
         liste.style.display = 'none';
         wrap.appendChild(liste);
     }
+    function normaliser(str) {
+        return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
     function afficherSuggestions(q) {
         if (!q || q.length < 2) { masquer(); return; }
+        var qN = normaliser(q);
         var resultats = getBanque().filter(function(m) {
-            return m.toLowerCase().indexOf(q.toLowerCase()) === 0;
+            return normaliser(m).indexOf(qN) !== -1;
         }).slice(0, 8);
         if (!resultats.length) { masquer(); return; }
         creerListe(); selectedIdx = -1; liste.innerHTML = '';
