@@ -414,7 +414,6 @@
         .prev-result { font-size:0.7em; color:#555; margin-left:4px; font-style:italic; }
         .btn-carnet-export { background:none; border:1px solid #2a3a5a; border-radius:8px; color:var(--text-dim); padding:8px 14px; font-size:0.8em; cursor:pointer; width:100%; margin-bottom:6px; }
         .btn-carnet-export:hover { border-color:#cddc39; color:#cddc39; }
-        .carnet-import-zone textarea { width:100%; min-height:80px; background:#0f1b35; border:1px solid #2a3a5a; border-radius:8px; color:#ccc; font-size:0.8em; padding:8px; box-sizing:border-box; resize:vertical; }
         .muscu-exo-name { width:100%; background:#0f0f1a; border:1px solid #333; border-radius:6px; color:#fff; padding:8px 10px; font-size:0.9em; box-sizing:border-box; }
         .muscu-exo-name:focus { outline:none; border-color:#cddc39; }
         .muscu-timer-big { font-size:3em; font-weight:900; letter-spacing:3px; color:#fff; text-align:center; padding:8px 0; }
@@ -868,12 +867,9 @@
             <div id="carnet-liste"></div>
             <div style="display:flex;gap:8px;margin-top:8px;">
                 <button class="btn-carnet-export" onclick="carnetExport()" style="flex:1;">⬇ Exporter (JSON)</button>
-                <button class="btn-carnet-export" onclick="carnetShowImport()" style="flex:1;">⬆ Importer</button>
+                <button class="btn-carnet-export" onclick="carnetImportFichier()" style="flex:1;">⬆ Importer</button>
             </div>
-            <div id="carnet-import-zone" style="display:none;margin-top:6px;">
-                <textarea id="carnet-import-txt" placeholder="Colle ici le contenu du fichier JSON exporté..."></textarea>
-                <button class="btn-carnet-export" onclick="carnetImport()" style="margin-top:4px;border-color:#27ae60;color:#27ae60;">✓ Importer</button>
-            </div>
+            <input type="file" id="carnet-file-input" accept=".json" style="display:none;">
         </div>
 
     </div>
@@ -2871,27 +2867,71 @@ function carnetRenderListe() {
     keys.forEach(function(nom) {
         var seances = data[nom];
         var section = document.createElement('div'); section.className = 'carnet-section';
+        var titreRow = document.createElement('div');
+        titreRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;';
         var titre = document.createElement('div');
-        titre.style.cssText = 'font-size:0.75em;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;';
+        titre.style.cssText = 'font-size:0.75em;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);';
         titre.textContent = nom + ' (' + seances.length + ' séance' + (seances.length>1?'s':'') + ')';
-        section.appendChild(titre);
+        var delAllBtn = document.createElement('button');
+        delAllBtn.textContent = '🗑 Tout supprimer';
+        delAllBtn.style.cssText = 'background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:0.72em;';
+        (function(nomSeance) {
+            delAllBtn.addEventListener('click', function() {
+                if (!confirm('Supprimer toutes les séances "' + nomSeance + '" du carnet ?')) return;
+                var d = carnetLoad();
+                delete d[nomSeance];
+                carnetSave(d);
+                carnetRenderListe();
+            });
+        })(nom);
+        titreRow.appendChild(titre);
+        titreRow.appendChild(delAllBtn);
+        section.appendChild(titreRow);
 
         // Afficher toujours les 3 premières, le reste dans un bloc dépliable
         var VISIBLE = 3;
         seances.forEach(function(s, idx) {
             var item = document.createElement('div'); item.className = 'carnet-seance-item';
-            if (idx >= VISIBLE) item.style.display = 'none'; // masqué par défaut
-            item.innerHTML =
+            if (idx >= VISIBLE) item.style.display = 'none';
+
+            // En-tête avec bouton supprimer
+            var headerRow = document.createElement('div');
+            headerRow.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;gap:8px;';
+            var infoDiv = document.createElement('div'); infoDiv.style.flex = '1';
+            infoDiv.innerHTML =
                 '<div class="carnet-seance-date">' + s.date + ' — ' + s.duree + '</div>' +
                 '<div class="carnet-seance-name">' + (idx===0?'★ Dernière':'#'+(idx+1)) + ' — ' + s.resultats.length + ' exo(s)</div>' +
                 '<div class="carnet-seance-info">' + s.resultats.map(function(r){return r.nom;}).join(', ') + '</div>';
-            if (idx === 0) {
-                var loadBtn = document.createElement('button');
-                loadBtn.textContent = '↳ Recharger cette séance';
-                loadBtn.style.cssText = 'margin-top:8px;background:#1a237e;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:0.78em;font-weight:700;cursor:pointer;width:100%;';
-                (function(seance){ loadBtn.addEventListener('click', function(){ carnetCharger(seance); }); })(s);
-                item.appendChild(loadBtn);
-            }
+
+            // Bouton supprimer
+            var delBtn = document.createElement('button');
+            delBtn.textContent = '🗑';
+            delBtn.title = 'Supprimer cette séance';
+            delBtn.style.cssText = 'background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:0.85em;flex-shrink:0;';
+            (function(nomSeance, idxSeance) {
+                delBtn.addEventListener('click', function() {
+                    if (!confirm('Supprimer cette séance du carnet ?')) return;
+                    var d = carnetLoad();
+                    if (d[nomSeance]) {
+                        d[nomSeance].splice(idxSeance, 1);
+                        if (!d[nomSeance].length) delete d[nomSeance];
+                    }
+                    carnetSave(d);
+                    carnetRenderListe();
+                });
+            })(nom, idx);
+
+            headerRow.appendChild(infoDiv);
+            headerRow.appendChild(delBtn);
+            item.appendChild(headerRow);
+
+            // Bouton recharger
+            var loadBtn = document.createElement('button');
+            loadBtn.textContent = '↳ Recharger cette séance';
+            loadBtn.style.cssText = 'margin-top:8px;background:#1a237e;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:0.78em;font-weight:700;cursor:pointer;width:100%;';
+            (function(seance){ loadBtn.addEventListener('click', function(){ carnetCharger(seance); }); })(s);
+            item.appendChild(loadBtn);
+
             section.appendChild(item);
         });
 
@@ -2949,29 +2989,37 @@ function carnetExport() {
     document.body.removeChild(a);
     setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
 }
-function carnetShowImport() {
-    var z = document.getElementById('carnet-import-zone');
-    if (z) z.style.display = z.style.display==='none' ? 'block' : 'none';
-}
-function carnetImport() {
-    var txt = document.getElementById('carnet-import-txt').value.trim();
-    if (!txt) { alert("Colle d'abord le contenu JSON."); return; }
-    try {
-        var imp = JSON.parse(txt);
-        if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('Format invalide');
-        var ex = carnetLoad();
-        var nb = 0;
-        Object.keys(imp).forEach(function(nom){
-            if (!Array.isArray(imp[nom])) return;
-            if (!ex[nom]) ex[nom] = [];
-            ex[nom] = imp[nom].concat(ex[nom]).slice(0, CARNET_MAX);
-            nb += imp[nom].length;
-        });
-        carnetSave(ex); carnetRenderListe();
-        document.getElementById('carnet-import-zone').style.display = 'none';
-        document.getElementById('carnet-import-txt').value = '';
-        alert('Importation réussie ! ' + nb + ' séance(s) importée(s).');
-    } catch(e) { alert('Fichier JSON invalide : ' + e.message); }
+function carnetImportFichier() {
+    var input = document.getElementById('carnet-file-input');
+    if (!input) return;
+    // Réinitialiser pour permettre de sélectionner le même fichier deux fois
+    input.value = '';
+    input.onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                var imp = JSON.parse(ev.target.result);
+                if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('Format invalide');
+                var ex = carnetLoad();
+                var nb = 0;
+                Object.keys(imp).forEach(function(nom) {
+                    if (!Array.isArray(imp[nom])) return;
+                    if (!ex[nom]) ex[nom] = [];
+                    ex[nom] = imp[nom].concat(ex[nom]).slice(0, CARNET_MAX);
+                    nb += imp[nom].length;
+                });
+                carnetSave(ex);
+                carnetRenderListe();
+                alert('Importation réussie ! ' + nb + ' séance(s) importée(s).');
+            } catch(err) {
+                alert('Fichier JSON invalide : ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
 }
 
 function activerAutocompleteNomSeance(inp) {
@@ -3063,6 +3111,11 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('muscu-btn-reset').addEventListener('click', resetConfig);
     document.getElementById('muscu-btn-exec-reset').addEventListener('click', execReset);
 });
+
+// Exposer les fonctions carnet globalement (appelées depuis le HTML)
+window.carnetExport        = carnetExport;
+window.carnetImportFichier = carnetImportFichier;
+window.carnetRenderListe   = carnetRenderListe;
 
 })(); // fin IIFE muscu
 
