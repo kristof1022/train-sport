@@ -331,6 +331,31 @@ function displayConseils() {
         '</div>' +
         '</div>' +
         '</div>';
+
+    // Carte carnet de notes (notes des séances de index.html)
+    var notesData = getAllNotes();
+    var hasNotes  = notesData.length > 0;
+    var notesSection = document.getElementById('section-carnet-notes');
+    if (!notesSection) {
+        notesSection = document.createElement('div');
+        notesSection.id = 'section-carnet-notes';
+        notesSection.style.marginTop = '24px';
+        carnetSection.parentNode.insertBefore(notesSection, carnetSection.nextSibling);
+    }
+    notesSection.innerHTML =
+        '<div class="card-grid">' +
+        '<div class="card card-for-time">' +
+        '<div>' +
+        '<span class="tag tag-body">Entraînement</span>' +
+        '<span class="tag tag-material">NOTES</span>' +
+        '<h3>📝 Mon carnet de notes</h3>' +
+        '<div class="card-desc">' + (hasNotes ? 'Retrouvez toutes vos notes de séances : résultats, temps, reps, commentaires.' : 'Aucune note enregistrée. Ouvrez une fiche depuis "Entraînements" et remplissez l\'onglet 📋 Mes notes.') + '</div>' +
+        '</div>' +
+        '<div class="card-buttons">' +
+        '<button onclick="openCarnetNotes()" class="btn-full">' + (hasNotes ? '📖 Voir mes notes (' + notesData.length + ')' : '📋 Carnet vide') + '</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
 }
 
 function openModalConseil(index) {
@@ -687,3 +712,99 @@ window.addEventListener('DOMContentLoaded', function() {
         backButton.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
     }
 });
+
+// ─── Lecture de toutes les notes localStorage (clés note_*) ───────────────
+function getAllNotes() {
+    var notes = [];
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        if (!key || key.indexOf('note_') !== 0) continue;
+        try {
+            var val = JSON.parse(localStorage.getItem(key));
+            if (!val) continue;
+            var titre = key.replace(/^note_/, '').replace(/_/g, ' ');
+            if (val.date || val.temps || val.reps || val.poids || val.texte) {
+                notes.push({ titre: titre, key: key, date: val.date || '', temps: val.temps || '', reps: val.reps || '', poids: val.poids || '', texte: val.texte || '' });
+            }
+        } catch(e) {}
+    }
+    notes.sort(function(a, b) {
+        if (!a.date && !b.date) return 0;
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+        return b.date.localeCompare(a.date);
+    });
+    return notes;
+}
+
+function openCarnetNotes() {
+    var notes = getAllNotes();
+    document.getElementById('modal-title').textContent = 'Mon Carnet de Notes';
+    document.getElementById('modal-box').className = 'type-for-time';
+    document.getElementById('modal-badges').innerHTML =
+        '<span class="modal-badge modal-badge-type">Entraînement</span>' +
+        '<span class="modal-badge modal-badge-mat">NOTES</span>';
+
+    if (!notes.length) {
+        document.getElementById('modal-body').innerHTML =
+            '<div style="text-align:center;padding:30px;color:#999;">' +
+            '<div style="font-size:2em;margin-bottom:12px;">📋</div>' +
+            '<p>Aucune note enregistrée.<br>Ouvrez une fiche séance depuis <strong>Entraînements</strong> et remplissez l\'onglet 📋 Mes notes.</p>' +
+            '</div>';
+        document.getElementById('modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+
+    var optionsHtml = '<option value="all">📋 Toutes les séances (' + notes.length + ')</option>';
+    notes.forEach(function(n) {
+        var label = n.titre + (n.date ? '  —  ' + formatNoteDate(n.date) : '');
+        optionsHtml += '<option value="' + n.key.replace(/"/g,'&quot;') + '">' + label + '</option>';
+    });
+
+    var html = '<div style="margin-bottom:16px;">';
+    html += '<label style="font-size:0.8em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#888;display:block;margin-bottom:6px;">Filtrer par séance</label>';
+    html += '<select id="notes-filter-select" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:0.95em;background:#fff;" onchange="renderCarnetNotes()">';
+    html += optionsHtml + '</select></div>';
+    html += '<div id="notes-detail-content"></div>';
+
+    document.getElementById('modal-body').innerHTML = html;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    window._notesData = notes;
+    setTimeout(renderCarnetNotes, 50);
+}
+
+function formatNoteDate(dateStr) {
+    if (!dateStr) return '';
+    var parts = dateStr.split('-');
+    if (parts.length === 3) return parts[2] + '/' + parts[1] + '/' + parts[0];
+    return dateStr;
+}
+
+function renderCarnetNotes() {
+    var sel = document.getElementById('notes-filter-select');
+    var container = document.getElementById('notes-detail-content');
+    if (!sel || !container || !window._notesData) return;
+    var filterKey = sel.value;
+    var notes = filterKey === 'all' ? window._notesData : window._notesData.filter(function(n){ return n.key === filterKey; });
+
+    var html = '';
+    notes.forEach(function(n) {
+        html += '<div style="background:#f8f8f8;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #eee;">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;flex-wrap:wrap;gap:6px;">';
+        html += '<div style="font-weight:800;font-size:0.95em;color:#000;">' + n.titre + '</div>';
+        if (n.date) html += '<div style="font-size:0.78em;background:#e8f5e9;color:#2e7d32;padding:3px 8px;border-radius:10px;font-weight:700;">📅 ' + formatNoteDate(n.date) + '</div>';
+        html += '</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">';
+        if (n.temps) html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + n.temps + '</span>';
+        if (n.reps)  html += '<span style="background:#fce4ec;color:#c62828;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">💪 ' + n.reps + '</span>';
+        if (n.poids) html += '<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🏋 ' + n.poids + '</span>';
+        html += '</div>';
+        if (n.texte) {
+            html += '<div style="font-size:0.85em;color:#444;background:#fff;border-radius:6px;padding:10px 12px;border:1px solid #eee;white-space:pre-wrap;">' + n.texte.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+        }
+        html += '</div>';
+    });
+    container.innerHTML = html;
+}

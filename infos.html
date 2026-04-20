@@ -36,6 +36,7 @@
             <option value="conseils">Conseils</option>
             <option value="modeemploi">Modes d'emploi</option>
             <option value="carnet">📓 Carnet muscu</option>
+            <option value="carnetnotes">📝 Carnet de notes</option>
         </select>
     </div>
 
@@ -98,25 +99,22 @@
 <script src="conseils.js"></script>
 <script>
 function filterInfos(val) {
-    var conseils   = document.getElementById('section-conseils');
-    var modeemploi = document.getElementById('section-modeemploi');
-    var carnet     = document.getElementById('section-carnet');
+    var conseils      = document.getElementById('section-conseils');
+    var modeemploi    = document.getElementById('section-modeemploi');
+    var carnet        = document.getElementById('section-carnet');
+    var carnetnotes   = document.getElementById('section-carnet-notes');
+    function show(el) { if (el) el.style.display = 'block'; }
+    function hide(el) { if (el) el.style.display = 'none'; }
     if (val === 'conseils') {
-        conseils.style.display   = 'block';
-        modeemploi.style.display = 'none';
-        if (carnet) carnet.style.display = 'none';
+        show(conseils); hide(modeemploi); hide(carnet); hide(carnetnotes);
     } else if (val === 'modeemploi') {
-        conseils.style.display   = 'none';
-        modeemploi.style.display = 'block';
-        if (carnet) carnet.style.display = 'none';
+        hide(conseils); show(modeemploi); hide(carnet); hide(carnetnotes);
     } else if (val === 'carnet') {
-        conseils.style.display   = 'none';
-        modeemploi.style.display = 'none';
-        if (carnet) carnet.style.display = 'block';
+        hide(conseils); hide(modeemploi); show(carnet); hide(carnetnotes);
+    } else if (val === 'carnetnotes') {
+        hide(conseils); hide(modeemploi); hide(carnet); show(carnetnotes);
     } else {
-        conseils.style.display   = 'block';
-        modeemploi.style.display = 'block';
-        if (carnet) carnet.style.display = 'block';
+        show(conseils); show(modeemploi); show(carnet); show(carnetnotes);
     }
 }
 </script>
