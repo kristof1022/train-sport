@@ -2319,8 +2319,6 @@ function openModal(index) {
         html += '<div class="modal-conseil"><strong>&#x1F4A1; Conseil</strong>' + d.conseil + '</div>';
     }
 
-    // Section notes accordéon
-    html += buildNotesHtml(w.title);
     document.getElementById('modal-body').innerHTML = html;
 
     // Bouton "Charger dans Créer sa séance" si chargeable
@@ -2396,83 +2394,6 @@ function modalShowMedia(type, src) {
     document.body.appendChild(overlay);
 }
 
-// ══════════════════════════════════════════════════════
-// NOTES — localStorage par séance
-// ══════════════════════════════════════════════════════
-function getNoteKey(title) { return 'note_' + title.replace(/ /g,'_'); }
-
-function getNotes(title) {
-    try { return JSON.parse(localStorage.getItem(getNoteKey(title)) || 'null'); }
-    catch(e) { return null; }
-}
-
-function saveNotes(title) {
-    var note = {
-        date:  document.getElementById('note-date').value  || '',
-        temps: document.getElementById('note-temps').value || '',
-        reps:  document.getElementById('note-reps').value  || '',
-        poids: document.getElementById('note-poids').value || '',
-        texte: document.getElementById('note-texte').value || ''
-    };
-    localStorage.setItem(getNoteKey(title), JSON.stringify(note));
-    var saved = document.getElementById('note-saved');
-    if (saved) { saved.style.opacity='1'; setTimeout(function(){saved.style.opacity='0';},1500); }
-}
-
-function deleteNotes(title) {
-    if (!confirm('Supprimer ces notes ?')) return;
-    localStorage.removeItem(getNoteKey(title));
-    // Vider les champs
-    ['note-date','note-temps','note-reps','note-poids','note-texte'].forEach(function(id){
-        var el=document.getElementById(id); if(el) el.value='';
-    });
-    var saved = document.getElementById('note-saved');
-    if (saved) { saved.textContent='🗑 Supprimé'; saved.style.opacity='1'; setTimeout(function(){saved.style.opacity='0'; saved.textContent='✅ Sauvegardé';},1500); }
-}
-
-function toggleNotes() {
-    var body = document.getElementById('notes-body');
-    var arrow = document.getElementById('notes-arrow');
-    if (!body) return;
-    var open = body.style.display !== 'none';
-    body.style.display = open ? 'none' : 'block';
-    if (arrow) arrow.textContent = open ? '▶' : '▼';
-}
-
-function buildNotesHtml(title) {
-    var note = getNotes(title) || {};
-    var hasNote = note.date || note.temps || note.reps || note.poids || note.texte;
-    var indicator = hasNote ? ' 📝' : '';
-    var inputStyle = 'width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:0.9em;box-sizing:border-box;font-family:sans-serif;';
-    var labelStyle = 'font-size:0.78em;color:#888;text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:4px;';
-
-    var html = '<div style="margin-top:16px;border:1px solid #eee;border-radius:8px;overflow:hidden;">';
-    // En-tête accordéon
-    html += '<div onclick="toggleNotes()" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f7f7f7;cursor:pointer;user-select:none;">';
-    html += '<span style="font-weight:700;font-size:0.9em;">📋 Mes notes' + indicator + '</span>';
-    html += '<span id="notes-arrow" style="font-size:0.8em;color:#999;">▶</span>';
-    html += '</div>';
-    // Corps accordéon (caché par défaut)
-    html += '<div id="notes-body" style="display:none;padding:16px;background:#fff;">';
-    // Champs structurés
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
-    html += '<div><label style="'+labelStyle+'">📅 Date</label><input type="date" id="note-date" value="'+(note.date||'')+'" style="'+inputStyle+'"></div>';
-    html += '<div><label style="'+labelStyle+'">⏱ Temps (mm:ss)</label><input type="text" id="note-temps" placeholder="ex: 24:30" value="'+(note.temps||'')+'" style="'+inputStyle+'"></div>';
-    html += '<div><label style="'+labelStyle+'">💪 Reps / Rounds</label><input type="text" id="note-reps" placeholder="ex: 15 rounds" value="'+(note.reps||'')+'" style="'+inputStyle+'"></div>';
-    html += '<div><label style="'+labelStyle+'">🏋 Poids (kg)</label><input type="text" id="note-poids" placeholder="ex: 60kg" value="'+(note.poids||'')+'" style="'+inputStyle+'"></div>';
-    html += '</div>';
-    // Zone texte libre
-    html += '<label style="'+labelStyle+'">📝 Commentaire libre</label>';
-    html += '<textarea id="note-texte" rows="3" placeholder="Ressenti, conditions, objectif prochain..." style="'+inputStyle+'resize:vertical;">'+(note.texte||'')+'</textarea>';
-    // Boutons
-    html += '<div style="display:flex;gap:8px;margin-top:10px;align-items:center;">';
-    html += '<button onclick="saveNotes(\'' + title.replace(/'/g,"\'") + '\')" style="background:#000;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:0.85em;font-weight:700;cursor:pointer;">💾 Sauvegarder</button>';
-    html += '<button onclick="deleteNotes(\'' + title.replace(/'/g,"\'") + '\')" style="background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:8px 12px;font-size:0.82em;cursor:pointer;">🗑</button>';
-    html += '<span id="note-saved" style="font-size:0.82em;color:#27ae60;opacity:0;transition:opacity 0.3s;margin-left:4px;">✅ Sauvegardé</span>';
-    html += '</div>';
-    html += '</div></div>';
-    return html;
-}
 
 function chargerSeance(chargement) {
     // Cas muscu : passage direct avec données structurées

@@ -332,27 +332,27 @@ function displayConseils() {
         '</div>' +
         '</div>';
 
-    // Carte carnet de notes (notes des séances de index.html)
-    var notesData = getAllNotes();
-    var hasNotes  = notesData.length > 0;
-    var notesSection = document.getElementById('section-carnet-notes');
-    if (!notesSection) {
-        notesSection = document.createElement('div');
-        notesSection.id = 'section-carnet-notes';
-        notesSection.style.marginTop = '24px';
-        carnetSection.parentNode.insertBefore(notesSection, carnetSection.nextSibling);
+    // Carte carnet WOD & Cardio (TABATA, AMRAP, EMOM, FOR TIME, INTERVALLES)
+    var wodData = getAllWodEntries();
+    var hasWod  = wodData.length > 0;
+    var wodSection = document.getElementById('section-carnet-wod');
+    if (!wodSection) {
+        wodSection = document.createElement('div');
+        wodSection.id = 'section-carnet-wod';
+        wodSection.style.marginTop = '24px';
+        carnetSection.parentNode.insertBefore(wodSection, carnetSection.nextSibling);
     }
-    notesSection.innerHTML =
+    wodSection.innerHTML =
         '<div class="card-grid">' +
-        '<div class="card card-for-time">' +
+        '<div class="card card-amrap">' +
         '<div>' +
-        '<span class="tag tag-body">Entraînement</span>' +
-        '<span class="tag tag-material">NOTES</span>' +
-        '<h3>📝 Mon carnet de notes</h3>' +
-        '<div class="card-desc">' + (hasNotes ? 'Retrouvez toutes vos notes de séances : résultats, temps, reps, commentaires.' : 'Aucune note enregistrée. Ouvrez une fiche depuis "Entraînements" et remplissez l\'onglet 📋 Mes notes.') + '</div>' +
+        '<span class="tag tag-body">WOD</span>' +
+        '<span class="tag tag-material">CARDIO</span>' +
+        '<h3>\uD83C\uDFC5 Mon carnet WOD & Cardio</h3>' +
+        '<div class="card-desc">' + (hasWod ? 'Historique de vos séances TABATA, AMRAP, EMOM, FOR TIME et Intervalles.' : 'Aucune séance enregistrée. Lancez une séance depuis "Créer sa séance" et cliquez sur \uD83D\uDCBE Sauvegarder.') + '</div>' +
         '</div>' +
         '<div class="card-buttons">' +
-        '<button onclick="openCarnetNotes()" class="btn-full">' + (hasNotes ? '📖 Voir mes notes (' + notesData.length + ')' : '📋 Carnet vide') + '</button>' +
+        '<button onclick="openCarnetWod()" class="btn-full">' + (hasWod ? '\uD83C\uDFC6 Voir mon carnet WOD (' + wodData.length + ')' : '\uD83D\uDCCB Carnet vide') + '</button>' +
         '</div>' +
         '</div>' +
         '</div>';
@@ -713,98 +713,403 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ─── Lecture de toutes les notes localStorage (clés note_*) ───────────────
-function getAllNotes() {
-    var notes = [];
-    for (var i = 0; i < localStorage.length; i++) {
-        var key = localStorage.key(i);
-        if (!key || key.indexOf('note_') !== 0) continue;
-        try {
-            var val = JSON.parse(localStorage.getItem(key));
-            if (!val) continue;
-            var titre = key.replace(/^note_/, '').replace(/_/g, ' ');
-            if (val.date || val.temps || val.reps || val.poids || val.texte) {
-                notes.push({ titre: titre, key: key, date: val.date || '', temps: val.temps || '', reps: val.reps || '', poids: val.poids || '', texte: val.texte || '' });
-            }
-        } catch(e) {}
-    }
-    notes.sort(function(a, b) {
-        if (!a.date && !b.date) return 0;
-        if (!a.date) return 1;
-        if (!b.date) return -1;
-        return b.date.localeCompare(a.date);
-    });
-    return notes;
+// ─── WOD CARNET — helpers localStorage (dupliqués ici pour autonomie sur infos.html) ──
+function wodCarnetLoad() {
+    try { return JSON.parse(localStorage.getItem('wod_carnet') || '{}'); } catch(e) { return {}; }
+}
+function wodCarnetSave(data) {
+    try { localStorage.setItem('wod_carnet', JSON.stringify(data)); } catch(e) {}
 }
 
-function openCarnetNotes() {
-    var notes = getAllNotes();
-    document.getElementById('modal-title').textContent = 'Mon Carnet de Notes';
-    document.getElementById('modal-box').className = 'type-for-time';
+// ─── WOD CARNET — lecture depuis localStorage wod_carnet ─────────────────
+function getAllWodEntries() {
+    var entries = [];
+    try {
+        var data = JSON.parse(localStorage.getItem('wod_carnet') || '{}');
+        Object.keys(data).forEach(function(nom) {
+            (data[nom] || []).forEach(function(entry) {
+                entries.push(Object.assign({ nomCle: nom }, entry));
+            });
+        });
+    } catch(e) {}
+    // Trier par date décroissante (format dd/mm/yyyy hh:mm)
+    entries.sort(function(a, b) {
+        return parseWodDate(b.date) - parseWodDate(a.date);
+    });
+    return entries;
+}
+
+function parseWodDate(d) {
+    if (!d) return 0;
+    var parts = d.split(' ');
+    var dp = parts[0].split('/');
+    var tp = parts[1] ? parts[1].split(':') : ['0','0'];
+    return new Date(dp[2], dp[1]-1, dp[0], tp[0], tp[1]).getTime();
+}
+
+function openCarnetWod() {
+    _wodOuvrirModal();
+}
+
+function _wodOuvrirModal() {
+    var entries = getAllWodEntries();
+
+    document.getElementById('modal-title').textContent = 'Mon Carnet WOD & Cardio';
+    document.getElementById('modal-box').className = 'type-amrap';
     document.getElementById('modal-badges').innerHTML =
-        '<span class="modal-badge modal-badge-type">Entraînement</span>' +
-        '<span class="modal-badge modal-badge-mat">NOTES</span>';
+        '<span class="modal-badge modal-badge-type">WOD</span>' +
+        '<span class="modal-badge modal-badge-mat">CARDIO</span>';
 
-    if (!notes.length) {
-        document.getElementById('modal-body').innerHTML =
-            '<div style="text-align:center;padding:30px;color:#999;">' +
-            '<div style="font-size:2em;margin-bottom:12px;">📋</div>' +
-            '<p>Aucune note enregistrée.<br>Ouvrez une fiche séance depuis <strong>Entraînements</strong> et remplissez l\'onglet 📋 Mes notes.</p>' +
-            '</div>';
-        document.getElementById('modal-overlay').classList.add('open');
-        document.body.style.overflow = 'hidden';
-        return;
-    }
+    var typeBadge = { 'TABATA/HIIT':'🎯','AMRAP':'🔄','EMOM':'🔁','FOR TIME':'🏁','INTERVALLES':'🏃','CARDIO EXTERNE':'🏅' };
 
-    var optionsHtml = '<option value="all">📋 Toutes les séances (' + notes.length + ')</option>';
-    notes.forEach(function(n) {
-        var label = n.titre + (n.date ? '  —  ' + formatNoteDate(n.date) : '');
-        optionsHtml += '<option value="' + n.key.replace(/"/g,'&quot;') + '">' + label + '</option>';
+    // ── Filtre ──────────────────────────────────────────────────────────────
+    var nomsUniques = [];
+    entries.forEach(function(e) { if (nomsUniques.indexOf(e.nomCle) === -1) nomsUniques.push(e.nomCle); });
+
+    var optionsHtml = '<option value="all">🏆 Toutes les séances (' + entries.length + ')</option>';
+    var types = ['TABATA/HIIT','AMRAP','EMOM','FOR TIME','INTERVALLES','CARDIO EXTERNE'];
+    types.forEach(function(t) {
+        var count = entries.filter(function(e){ return e.type === t; }).length;
+        if (count > 0) optionsHtml += '<option value="type:' + t + '">' + (typeBadge[t]||'') + ' ' + t + ' (' + count + ')</option>';
+    });
+    nomsUniques.forEach(function(n) {
+        var count = entries.filter(function(e){ return e.nomCle === n; }).length;
+        optionsHtml += '<option value="nom:' + n.replace(/"/g,'&quot;') + '">📋 ' + n + ' (' + count + ')</option>';
     });
 
-    var html = '<div style="margin-bottom:16px;">';
-    html += '<label style="font-size:0.8em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#888;display:block;margin-bottom:6px;">Filtrer par séance</label>';
-    html += '<select id="notes-filter-select" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:0.95em;background:#fff;" onchange="renderCarnetNotes()">';
-    html += optionsHtml + '</select></div>';
-    html += '<div id="notes-detail-content"></div>';
+    // ── HTML de la modale ───────────────────────────────────────────────────
+    var s = 'font-size:0.8em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#888;display:block;margin-bottom:6px;';
+    var html = '';
+
+    // Bouton "+ Séance externe"
+    html += '<div style="margin-bottom:14px;text-align:right;">';
+    html += '<button onclick="_wodToggleForm()" id="wod-btn-add" style="background:#1a6b3c;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:0.85em;font-weight:700;cursor:pointer;">＋ Séance externe</button>';
+    html += '</div>';
+
+    // Formulaire de saisie (masqué par défaut)
+    html += '<div id="wod-form-ext" style="display:none;background:#f0f7f2;border:1px solid #b2dfdb;border-radius:10px;padding:16px;margin-bottom:18px;">';
+    html += '<div style="font-weight:800;font-size:0.9em;color:#1a6b3c;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.06em;">📝 Saisir une séance externe</div>';
+
+    var inp = 'width:100%;padding:9px 12px;border-radius:8px;border:1px solid #ccc;font-size:0.92em;box-sizing:border-box;background:#fff;';
+    var row = 'margin-bottom:10px;';
+
+    // 1. Activité (obligatoire)
+    html += '<div style="' + row + '"><label style="' + s + '">Activité <span style="color:#c0392b;">*</span></label>';
+    html += '<select id="wf-activite" style="' + inp + '">';
+    html += '<option value="">-- Choisir --</option>';
+    ['Course à pied','Crosstraining','Cyclisme sur route','VTT','Randonnée','Natation','Yoga','Fitness','Sport Collectif'].forEach(function(a) {
+        html += '<option value="' + a + '">' + a + '</option>';
+    });
+    html += '</select></div>';
+
+    // 2. Nom de la séance
+    html += '<div style="' + row + '"><label style="' + s + '">Nom de la séance</label>';
+    html += '<input type="text" id="wf-nom" placeholder="Ex: Sortie longue dimanche, Trail 10km..." style="' + inp + '" maxlength="80"></div>';
+
+    // 3. Date (obligatoire)
+    html += '<div style="' + row + '"><label style="' + s + '">Date <span style="color:#c0392b;">*</span></label>';
+    html += '<input type="date" id="wf-date" style="' + inp + '"></div>';
+
+    // 4. Durée HH:MM:SS (obligatoire)
+    html += '<div style="' + row + '"><label style="' + s + '">Durée HH:MM:SS <span style="color:#c0392b;">*</span></label>';
+    html += '<div style="display:flex;gap:6px;align-items:center;">';
+    html += '<input type="number" id="wf-dur-h" placeholder="HH" min="0" max="23" style="' + inp + 'width:70px;">';
+    html += '<span style="color:#888;font-weight:700;">:</span>';
+    html += '<input type="number" id="wf-dur-m" placeholder="MM" min="0" max="59" style="' + inp + 'width:70px;">';
+    html += '<span style="color:#888;font-weight:700;">:</span>';
+    html += '<input type="number" id="wf-dur-s" placeholder="SS" min="0" max="59" style="' + inp + 'width:70px;">';
+    html += '</div></div>';
+
+    // 5. Distance (km)
+    html += '<div style="' + row + '"><label style="' + s + '">Distance (km) — facultatif</label>';
+    html += '<input type="number" id="wf-distance" placeholder="Ex: 10.5" min="0" step="0.01" style="' + inp + '"></div>';
+
+    // 6. Allure moyenne (min/km)
+    html += '<div style="' + row + '"><label style="' + s + '">Allure moyenne (min/km) — facultatif</label>';
+    html += '<div style="display:flex;gap:6px;align-items:center;">';
+    html += '<input type="number" id="wf-allure-min" placeholder="min" min="0" max="99" style="' + inp + 'width:80px;">';
+    html += '<span style="color:#888;font-weight:700;">\'</span>';
+    html += '<input type="number" id="wf-allure-sec" placeholder="sec" min="0" max="59" style="' + inp + 'width:80px;">';
+    html += '<span style="color:#888;font-size:0.82em;">/km</span>';
+    html += '</div></div>';
+
+    // 7. Nombre de pas
+    html += '<div style="' + row + '"><label style="' + s + '">Nombre de pas — facultatif</label>';
+    html += '<input type="number" id="wf-pas" placeholder="Ex: 8500" min="0" style="' + inp + '"></div>';
+
+    // 8. Énergie dépensée (kcal)
+    html += '<div style="' + row + '"><label style="' + s + '">Énergie dépensée (kcal) — facultatif</label>';
+    html += '<input type="number" id="wf-kcal" placeholder="Ex: 450" min="0" style="' + inp + '"></div>';
+
+    // 9. Reps / Rounds
+    html += '<div style="' + row + '"><label style="' + s + '">Reps / Rounds — facultatif</label>';
+    html += '<input type="text" id="wf-reps" placeholder="Ex: 5 rounds, 120 reps..." style="' + inp + '" maxlength="60"></div>';
+
+    // 10. Vitesse moyenne (km/h)
+    html += '<div style="' + row + '"><label style="' + s + '">Vitesse moyenne (km/h) — facultatif</label>';
+    html += '<input type="number" id="wf-vitesse" placeholder="Ex: 28.5" min="0" step="0.1" style="' + inp + '"></div>';
+
+    // 11. Commentaire libre
+    html += '<div style="' + row + '"><label style="' + s + '">Commentaire libre — facultatif</label>';
+    html += '<textarea id="wf-commentaire" rows="3" placeholder="Ressenti, conditions météo, objectif prochain..." style="' + inp + 'resize:vertical;font-family:sans-serif;"></textarea></div>';
+
+    // Boutons valider / annuler
+    html += '<div style="display:flex;gap:10px;margin-top:14px;">';
+    html += '<button onclick="_wodSauvegarderExterne()" style="flex:1;background:#1a6b3c;color:#fff;border:none;border-radius:8px;padding:10px;font-size:0.88em;font-weight:700;cursor:pointer;">💾 Sauvegarder</button>';
+    html += '<button onclick="_wodToggleForm()" style="flex:1;background:none;border:1px solid #ccc;border-radius:8px;padding:10px;font-size:0.88em;cursor:pointer;">Annuler</button>';
+    html += '</div>';
+    html += '<div id="wod-form-feedback" style="margin-top:8px;font-size:0.82em;color:#c0392b;min-height:18px;"></div>';
+    html += '</div>'; // fin form
+
+    // Filtre + liste
+    if (entries.length) {
+        html += '<div style="margin-bottom:16px;"><label style="' + s + '">Filtrer</label>';
+        html += '<select id="wod-filter-select" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:0.95em;background:#fff;" onchange="renderCarnetWod()">';
+        html += optionsHtml + '</select></div>';
+    }
+    html += '<div id="wod-detail-content"></div>';
 
     document.getElementById('modal-body').innerHTML = html;
+    // Pré-remplir la date du jour
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2,'0');
+    var mm = String(today.getMonth()+1).padStart(2,'0');
+    var yyyy = today.getFullYear();
+    var el = document.getElementById('wf-date');
+    if (el) el.value = yyyy + '-' + mm + '-' + dd;
+
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
-    window._notesData = notes;
-    setTimeout(renderCarnetNotes, 50);
+    window._wodData = entries;
+    if (entries.length) setTimeout(renderCarnetWod, 50);
 }
 
-function formatNoteDate(dateStr) {
-    if (!dateStr) return '';
-    var parts = dateStr.split('-');
-    if (parts.length === 3) return parts[2] + '/' + parts[1] + '/' + parts[0];
-    return dateStr;
+function _wodToggleForm() {
+    var f = document.getElementById('wod-form-ext');
+    if (!f) return;
+    f.style.display = (f.style.display === 'none') ? 'block' : 'none';
 }
 
-function renderCarnetNotes() {
-    var sel = document.getElementById('notes-filter-select');
-    var container = document.getElementById('notes-detail-content');
-    if (!sel || !container || !window._notesData) return;
-    var filterKey = sel.value;
-    var notes = filterKey === 'all' ? window._notesData : window._notesData.filter(function(n){ return n.key === filterKey; });
+function _wodSauvegarderExterne() {
+    var activite = (document.getElementById('wf-activite') || {}).value || '';
+    var nom      = (document.getElementById('wf-nom')      || {}).value || '';
+    var dateVal  = (document.getElementById('wf-date')     || {}).value || '';
+    var durH     = parseInt((document.getElementById('wf-dur-h') || {}).value) || 0;
+    var durM     = parseInt((document.getElementById('wf-dur-m') || {}).value) || 0;
+    var durS     = parseInt((document.getElementById('wf-dur-s') || {}).value) || 0;
+    var dist     = parseFloat((document.getElementById('wf-distance')  || {}).value) || null;
+    var allMin   = parseInt((document.getElementById('wf-allure-min') || {}).value);
+    var allSec   = parseInt((document.getElementById('wf-allure-sec') || {}).value);
+    var pas      = parseInt((document.getElementById('wf-pas')  || {}).value) || null;
+    var kcal     = parseInt((document.getElementById('wf-kcal') || {}).value) || null;
+    var reps       = (document.getElementById('wf-reps')         || {}).value || '';
+    var vitesse    = parseFloat((document.getElementById('wf-vitesse') || {}).value) || null;
+    var commentaire = (document.getElementById('wf-commentaire') || {}).value || '';
+
+    var fb = document.getElementById('wod-form-feedback');
+
+    // Validations obligatoires
+    if (!activite) { if(fb) fb.textContent = '⚠️ Veuillez choisir une activité.'; return; }
+    if (!dateVal)  { if(fb) fb.textContent = '⚠️ La date est obligatoire.'; return; }
+    var dureeSecTotale = durH * 3600 + durM * 60 + durS;
+    if (dureeSecTotale <= 0) { if(fb) fb.textContent = '⚠️ La durée est obligatoire.'; return; }
+    if(fb) fb.textContent = '';
+
+    // Formatage date en dd/mm/yyyy pour cohérence avec le reste du carnet
+    var parts = dateVal.split('-');
+    var dateFr = parts[2] + '/' + parts[1] + '/' + parts[0];
+
+    // Allure : stocker en décimal min/km (ex: 5'15" → 5.25)
+    var allureDec = null;
+    if (!isNaN(allMin) && !isNaN(allSec) && (allMin > 0 || allSec > 0)) {
+        allureDec = allMin + Math.round(allSec / 0.6) / 100;
+    }
+
+    // Durée formatée HH:MM:SS pour l'affichage
+    var dureeAff = _pad2(durH) + ':' + _pad2(durM) + ':' + _pad2(durS);
+
+    var nomCle = nom.trim() || activite;
+    var entry = {
+        date:      dateFr,
+        type:      'CARDIO EXTERNE',
+        activite:  activite,
+        nom:       nomCle,
+        // Durée normalisée
+        duree_sec: dureeSecTotale,   // stockage calcul
+        duree:     dureeAff,          // affichage
+        // Optionnels normalisés
+        distance_km:  dist !== null ? dist : undefined,
+        allure_min_km: allureDec !== null ? allureDec : undefined,
+        pas:          pas  !== null ? pas  : undefined,
+        kcal:         kcal !== null ? kcal : undefined,
+        reps:         reps.trim() || undefined,
+        vitesse_kmh:  vitesse !== null ? vitesse : undefined,
+        commentaire:  commentaire.trim() || undefined
+    };
+    // Nettoyer les undefined
+    Object.keys(entry).forEach(function(k){ if (entry[k] === undefined) delete entry[k]; });
+
+    // Sauvegarder
+    var data = wodCarnetLoad();
+    if (!data[nomCle]) data[nomCle] = [];
+    data[nomCle].unshift(entry);
+    data[nomCle] = data[nomCle].slice(0, 999);
+    wodCarnetSave(data);
+
+    // Feedback + refresh
+    _wodToggleForm();
+    _wodOuvrirModal();
+}
+
+function _pad2(n) { return String(n).padStart(2,'0'); }
+
+function renderCarnetWod() {
+    var sel = document.getElementById('wod-filter-select');
+    var container = document.getElementById('wod-detail-content');
+    if (!container || !window._wodData) return;
+    var filterVal = sel ? sel.value : 'all';
+
+    var typeBadge = { 'TABATA/HIIT':'🎯','AMRAP':'🔄','EMOM':'🔁','FOR TIME':'🏁','INTERVALLES':'🏃','CARDIO EXTERNE':'🏅' };
+    var typeColor = { 'TABATA/HIIT':'#c0392b','AMRAP':'#8e44ad','EMOM':'#2980b9','FOR TIME':'#e67e22','INTERVALLES':'#27ae60','CARDIO EXTERNE':'#00897b' };
+
+    var entries;
+    if (filterVal === 'all') {
+        entries = window._wodData;
+    } else if (filterVal.indexOf('type:') === 0) {
+        var t = filterVal.slice(5);
+        entries = window._wodData.filter(function(e){ return e.type === t; });
+    } else if (filterVal.indexOf('nom:') === 0) {
+        var n = filterVal.slice(4);
+        entries = window._wodData.filter(function(e){ return e.nomCle === n; });
+    } else {
+        entries = window._wodData;
+    }
 
     var html = '';
-    notes.forEach(function(n) {
-        html += '<div style="background:#f8f8f8;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #eee;">';
-        html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;flex-wrap:wrap;gap:6px;">';
-        html += '<div style="font-weight:800;font-size:0.95em;color:#000;">' + n.titre + '</div>';
-        if (n.date) html += '<div style="font-size:0.78em;background:#e8f5e9;color:#2e7d32;padding:3px 8px;border-radius:10px;font-weight:700;">📅 ' + formatNoteDate(n.date) + '</div>';
+    entries.forEach(function(e, idx) {
+        var couleur = typeColor[e.type] || '#555';
+        html += '<div style="background:#f8f8f8;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #eee;border-left:4px solid ' + couleur + ';">';
+
+        // En-tête
+        html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;margin-bottom:10px;">';
+        html += '<div>';
+        var label = e.activite ? (typeBadge[e.type]||'') + ' ' + e.activite : (typeBadge[e.type]||'') + ' ' + (e.type||'');
+        html += '<div style="font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:' + couleur + ';margin-bottom:3px;">' + label + '</div>';
+        html += '<div style="font-weight:800;font-size:0.95em;color:#000;">' + (e.nom || e.nomCle) + '</div>';
         html += '</div>';
-        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">';
-        if (n.temps) html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + n.temps + '</span>';
-        if (n.reps)  html += '<span style="background:#fce4ec;color:#c62828;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">💪 ' + n.reps + '</span>';
-        if (n.poids) html += '<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🏋 ' + n.poids + '</span>';
+        if (e.date) html += '<div style="font-size:0.75em;background:#f0f0f0;color:#555;padding:3px 8px;border-radius:8px;white-space:nowrap;">📅 ' + e.date + '</div>';
         html += '</div>';
-        if (n.texte) {
-            html += '<div style="font-size:0.85em;color:#444;background:#fff;border-radius:6px;padding:10px 12px;border:1px solid #eee;white-space:pre-wrap;">' + n.texte.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+
+        // Badges résultats
+        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">';
+        if (e.duree)        html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.duree + '</span>';
+        if (e.temps)        html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.temps + '</span>';
+        if (e.tempsTotal)   html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.tempsTotal + '</span>';
+        if (e.distance_km)  html += '<span style="background:#e0f2f1;color:#00695c;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">📍 ' + e.distance_km + ' km</span>';
+        if (e.allure_min_km) {
+            var am = Math.floor(e.allure_min_km);
+            var as = Math.round((e.allure_min_km - am) * 0.6 * 100);
+            html += '<span style="background:#f3e5f5;color:#6a1b9a;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🏃 ' + am + '\'' + _pad2(as) + '"/km</span>';
         }
+        if (e.kcal)         html += '<span style="background:#fff8e1;color:#f57f17;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🔥 ' + e.kcal + ' kcal</span>';
+        if (e.pas)          html += '<span style="background:#fce4ec;color:#880e4f;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">👟 ' + e.pas.toLocaleString('fr-FR') + ' pas</span>';
+        if (e.rounds && e.rounds !== '0') html += '<span style="background:#fce4ec;color:#c62828;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🔁 ' + e.rounds + ' rounds</span>';
+        if (e.reps)         html += '<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">💪 ' + e.reps + '</span>';
+        if (e.vitesse_kmh)  html += '<span style="background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🚴 ' + e.vitesse_kmh + ' km/h</span>';
+        html += '</div>';
+
+        if (e.commentaire) {
+            html += '<div style="font-size:0.83em;color:#555;background:#fffde7;border-radius:6px;padding:8px 10px;border:1px solid #f9a825;margin-bottom:8px;white-space:pre-wrap;">💬 ' + e.commentaire.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+        }
+        if (e.exos) {
+            html += '<div style="font-size:0.82em;color:#666;background:#fff;border-radius:6px;padding:8px 10px;border:1px solid #eee;">' +
+                    e.exos.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+        }
+        // Bouton supprimer
+        html += '<div style="text-align:right;margin-top:8px;">';
+        html += '<button onclick="_wodSupprimerEntree(' + idx + ')" style="background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:4px 10px;font-size:0.78em;cursor:pointer;">🗑 Supprimer</button>';
+        html += '</div>';
         html += '</div>';
     });
-    container.innerHTML = html;
+
+    container.innerHTML = html || '<div style="text-align:center;color:#999;padding:20px;">Aucune séance pour ce filtre.</div>';
+
+    // Boutons export/import JSON en bas
+    var footer = document.getElementById('wod-json-footer');
+    if (!footer) {
+        footer = document.createElement('div');
+        footer.id = 'wod-json-footer';
+        footer.style.cssText = 'text-align:center;padding:16px 0 4px;border-top:1px solid #eee;margin-top:8px;';
+        footer.innerHTML =
+            '<p style="font-size:0.78em;color:#999;margin:0 0 10px;">💾 Sauvegarder ou restaurer votre carnet WOD & Cardio</p>' +
+            '<div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">' +
+            '<button onclick="_wodExportJSON()" style="background:#1a237e;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:0.82em;font-weight:700;cursor:pointer;">⬇ Exporter (JSON)</button>' +
+            '<button onclick="_wodImportJSON()" style="background:none;border:2px solid #1a237e;color:#1a237e;border-radius:8px;padding:9px 16px;font-size:0.82em;font-weight:700;cursor:pointer;">⬆ Importer (JSON)</button>' +
+            '</div>' +
+            '<input type="file" id="wod-import-input" accept=".json" style="display:none;">';
+        container.parentNode.appendChild(footer);
+    }
+}
+
+function _wodSupprimerEntree(idx) {
+    if (!window._wodData) return;
+    var entry = window._wodData[idx];
+    if (!entry) return;
+    if (!confirm('Supprimer cette séance (' + (entry.nom || entry.nomCle) + ') ?')) return;
+    // Supprimer du localStorage
+    var data = wodCarnetLoad();
+    var nomCle = entry.nomCle;
+    if (data[nomCle]) {
+        // Trouver et supprimer l'entrée exacte par date
+        data[nomCle] = data[nomCle].filter(function(e) {
+            return !(e.date === entry.date && e.type === entry.type && e.nom === entry.nom);
+        });
+        if (data[nomCle].length === 0) delete data[nomCle];
+        wodCarnetSave(data);
+    }
+    _wodOuvrirModal();
+}
+
+function _wodExportJSON() {
+    var data = wodCarnetLoad();
+    if (!Object.keys(data).length) { alert('Aucune séance à exporter.'); return; }
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    var d = new Date();
+    a.download = 'THT_carnet_WOD_' + d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+function _wodImportJSON() {
+    var input = document.getElementById('wod-import-input');
+    if (!input) return;
+    input.value = '';
+    input.onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                var imp = JSON.parse(ev.target.result);
+                if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('Format invalide');
+                var existing = wodCarnetLoad();
+                var nb = 0;
+                Object.keys(imp).forEach(function(nom) {
+                    if (!Array.isArray(imp[nom])) return;
+                    if (!existing[nom]) existing[nom] = [];
+                    existing[nom] = imp[nom].concat(existing[nom]).slice(0, 999);
+                    nb += imp[nom].length;
+                });
+                wodCarnetSave(existing);
+                alert('✅ Importation réussie ! ' + nb + ' séance(s) importée(s).');
+                _wodOuvrirModal();
+            } catch(err) {
+                alert('❌ Fichier JSON invalide : ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
 }

@@ -530,6 +530,7 @@
             <button class="btn-ctrl btn-reset" onclick="tabExecReset()">↺ Reset</button>
             <button class="btn-ctrl btn-edit"  onclick="showMode('tabata','config')">✏️ Éditer</button>
             <button class="btn-ctrl btn-mute"  id="tab-btn-mute" onclick="toggleMute('tab')">🔔 Son</button>
+            <button class="btn-ctrl" id="tab-btn-save" onclick="wodSauvegarderTabata()" style="background:#1a6b3c;color:#fff;font-size:0.82em;">💾 carnet WOD-Cardio</button>
         </div>
     </div>
 </div>
@@ -619,6 +620,7 @@
             <button class="btn-ctrl btn-reset" onclick="amrapExecReset()">↺ Reset</button>
             <button class="btn-ctrl btn-edit"  onclick="showMode('amrap','config')">✏️ Éditer</button>
             <button class="btn-ctrl btn-mute"  id="amrap-btn-mute" onclick="toggleMute('amrap')">🔔 Son</button>
+            <button class="btn-ctrl" id="amrap-btn-save" onclick="wodSauvegarderAmrap()" style="background:#1a6b3c;color:#fff;font-size:0.82em;">💾 carnet WOD-Cardio</button>
         </div>
     </div>
 </div>
@@ -677,6 +679,7 @@
             <button class="btn-ctrl btn-reset" onclick="emomExecReset()">↺ Reset</button>
             <button class="btn-ctrl btn-edit"  onclick="showMode('emom','config')">✏️ Éditer</button>
             <button class="btn-ctrl btn-mute"  id="emom-btn-mute" onclick="toggleMute('emom')">🔔 Son</button>
+            <button class="btn-ctrl" id="emom-btn-save" onclick="wodSauvegarderEmom()" style="background:#1a6b3c;color:#fff;font-size:0.82em;">💾 carnet WOD-Cardio</button>
         </div>
     </div>
 </div>
@@ -749,6 +752,7 @@
             <button class="btn-ctrl btn-reset" onclick="ftExecReset()">↺ Reset</button>
             <button class="btn-ctrl btn-edit"  onclick="showMode('fortime','config')">✏️ Éditer</button>
             <button class="btn-ctrl btn-mute"  id="ft-btn-mute" onclick="toggleMute('ft')">🔔 Son</button>
+            <button class="btn-ctrl" id="ft-btn-save" onclick="wodSauvegarderForTime()" style="background:#1a6b3c;color:#fff;font-size:0.82em;">💾 carnet WOD-Cardio</button>
         </div>
     </div>
 </div>
@@ -819,6 +823,7 @@
                 style="background:#27ae60; color:#fff; font-size:1em;" disabled>✓ Étape suivante</button>
             <button class="btn-ctrl btn-reset"  onclick="itvExecReset()">↺ Reset</button>
             <button class="btn-ctrl btn-edit"   onclick="showMode('intervalles','config')">✏️ Éditer</button>
+            <button class="btn-ctrl" id="itv-btn-save" onclick="wodSauvegarderIntervalles()" style="background:#1a6b3c;color:#fff;font-size:0.82em;">💾 carnet WOD-Cardio</button>
         </div>
     </div>
 </div>
@@ -863,7 +868,7 @@
 
         <!-- CARNET -->
         <div style="margin-top:20px;">
-            <p class="config-title">📓 Carnet d'entraînement</p>
+            <p class="config-title">📓 Carnet d'entraînement MUSCU</p>
             <div id="carnet-liste"></div>
             <div style="display:flex;gap:8px;margin-top:8px;">
                 <button class="btn-carnet-export" onclick="carnetExport()" style="flex:1;">⬇ Exporter (JSON)</button>
@@ -3249,3 +3254,116 @@ window.carnetRenderListe   = carnetRenderListe;
 </script>
 </body>
 </html>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   WOD CARNET — Sauvegarde et lecture des chronomètres intelligents
+   Clé localStorage : wod_carnet
+   Structure : { "Nom séance": [ {date, type, nom, ...}, ... ] }
+══════════════════════════════════════════════════════════════ */
+
+var WOD_CARNET_KEY = 'wod_carnet';
+var WOD_CARNET_MAX = 999;
+
+function wodCarnetLoad() {
+    try { return JSON.parse(localStorage.getItem(WOD_CARNET_KEY)) || {}; } catch(e) { return {}; }
+}
+function wodCarnetSave(data) {
+    try { localStorage.setItem(WOD_CARNET_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function wodCarnetSauvegarder(type, nom, extra) {
+    var date = new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    var entry = Object.assign({ date: date, type: type, nom: nom }, extra || {});
+    var data = wodCarnetLoad();
+    if (!data[nom]) data[nom] = [];
+    data[nom].unshift(entry);
+    data[nom] = data[nom].slice(0, WOD_CARNET_MAX);
+    wodCarnetSave(data);
+
+    // Feedback visuel sur le bouton
+    var btnIds = { 'TABATA/HIIT': 'tab-btn-save', 'AMRAP': 'amrap-btn-save', 'EMOM': 'emom-btn-save', 'FOR TIME': 'ft-btn-save', 'INTERVALLES': 'itv-btn-save' };
+    var btnId = btnIds[type];
+    if (btnId) {
+        var btn = document.getElementById(btnId);
+        if (btn) {
+            var orig = btn.textContent;
+            btn.textContent = '✅ Sauvegardé !';
+            btn.disabled = true;
+            setTimeout(function() { btn.textContent = orig; btn.disabled = false; }, 2000);
+        }
+    }
+}
+
+// Récupère les exercices lisibles depuis une zone d'instructions
+function wodGetExosTexte(groupeListId) {
+    var list = document.getElementById(groupeListId);
+    if (!list) return '';
+    var lines = [];
+    list.querySelectorAll('textarea').forEach(function(ta) {
+        if (ta.value.trim()) lines.push(ta.value.trim());
+    });
+    return lines.join(' / ');
+}
+
+function wodSauvegarderTabata() {
+    var nom = (document.getElementById('tab-name') && document.getElementById('tab-name').value.trim()) || 'Séance TABATA/HIIT';
+    // Calcul durée totale depuis les phases configurées
+    var items = document.querySelectorAll('#tab-phases-list .phase-item');
+    var totalSec = 0;
+    var repeat = parseInt(document.getElementById('tab-repeat') && document.getElementById('tab-repeat').value) || 1;
+    items.forEach(function(li) { totalSec += (parseInt(li.querySelector('.phase-dur-input') && li.querySelector('.phase-dur-input').value) || 0); });
+    totalSec *= repeat;
+    var min = Math.floor(totalSec / 60), sec = totalSec % 60;
+    var dureeStr = pad(min) + ':' + pad(sec);
+    // Exercices
+    var exosTexte = wodGetExosTexte('tab-phases-list') || 'phases configurées';
+    wodCarnetSauvegarder('TABATA/HIIT', nom, { duree: dureeStr, exos: exosTexte });
+}
+
+function wodSauvegarderAmrap() {
+    var nom = (document.getElementById('amrap-name') && document.getElementById('amrap-name').value.trim()) || 'Séance AMRAP';
+    var m = parseInt(document.getElementById('amrap-dur-min') && document.getElementById('amrap-dur-min').value) || 0;
+    var s = parseInt(document.getElementById('amrap-dur-sec') && document.getElementById('amrap-dur-sec').value) || 0;
+    var dureeStr = pad(m) + ':' + pad(s);
+    var rounds = document.getElementById('amrap-rounds') ? document.getElementById('amrap-rounds').value : '—';
+    var reps   = document.getElementById('amrap-reps')   ? document.getElementById('amrap-reps').value   : '—';
+    var exosTexte = wodGetExosTexte('amrap-groupe-list');
+    wodCarnetSauvegarder('AMRAP', nom, { duree: dureeStr, rounds: rounds, reps: reps, exos: exosTexte });
+}
+
+function wodSauvegarderEmom() {
+    var nom = (document.getElementById('emom-name') && document.getElementById('emom-name').value.trim()) || 'Séance EMOM';
+    var dur = parseInt(document.getElementById('emom-dur') && document.getElementById('emom-dur').value) || 0;
+    var dureeStr = pad(dur) + ':00';
+    var exosTexte = wodGetExosTexte('emom-groupe-list');
+    wodCarnetSauvegarder('EMOM', nom, { duree: dureeStr, exos: exosTexte });
+}
+
+function wodSauvegarderForTime() {
+    var nom = (document.getElementById('ft-name') && document.getElementById('ft-name').value.trim()) || 'Séance FOR TIME';
+    var tempsAffiche = document.getElementById('ft-exec-time') ? document.getElementById('ft-exec-time').textContent : '—';
+    var rounds = document.getElementById('ft-rounds') ? document.getElementById('ft-rounds').value : '—';
+    var reps   = document.getElementById('ft-reps')   ? document.getElementById('ft-reps').value   : '—';
+    var exosTexte = wodGetExosTexte('ft-groupe-list');
+    wodCarnetSauvegarder('FOR TIME', nom, { temps: tempsAffiche, rounds: rounds, reps: reps, exos: exosTexte });
+}
+
+function wodSauvegarderIntervalles() {
+    var nom = (document.getElementById('itv-name') && document.getElementById('itv-name').value.trim()) || 'Séance INTERVALLES';
+    var tempsTotal = document.getElementById('itv-total-time') ? document.getElementById('itv-total-time').textContent : '—';
+    var rounds = document.getElementById('itv-cnt-rounds') ? document.getElementById('itv-cnt-rounds').textContent : '—';
+    var reps   = document.getElementById('itv-cnt-reps')   ? document.getElementById('itv-cnt-reps').textContent   : '—';
+    // Blocs configurés
+    var blocs = [];
+    document.querySelectorAll('#itv-blocs-list .phase-item').forEach(function(li) {
+        var type  = li.querySelector('select') ? li.querySelector('select').value : '';
+        var instr = li.querySelector('input[type="text"]') ? li.querySelector('input[type="text"]').value.trim() : '';
+        if (instr) blocs.push(type + ': ' + instr);
+        else if (type) blocs.push(type);
+    });
+    var exosTexte = blocs.join(' / ');
+    wodCarnetSauvegarder('INTERVALLES', nom, { tempsTotal: tempsTotal, rounds: rounds, reps: reps, exos: exosTexte });
+}
+
+function pad(n) { return String(n).padStart(2,'0'); }
+</script>
