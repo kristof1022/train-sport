@@ -1498,7 +1498,7 @@ const workouts = [
                 { text: "SUPERSET Curl à la barre EZ/Press Jammer Arm — 3×10/15 reps" },
                 { text: "SUPERSET Curl incliné/Chest fly avec élastique — 3×10/15 reps" }
             ],
-            conseil: "10 minutes d'échauffement avec montée en gamme sur le développé couché. La séance avec échauffement dure environ 1 heure.",
+            conseil: "10 minutes d'échauffement avec montée en gamme sur le développé couché. La séance avec échauffement dure environ 1 heure. Adapter les poids à son niveau.",
             chargeable: true,
             chargement: {
                 type: "muscu",
