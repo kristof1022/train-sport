@@ -150,7 +150,7 @@ const workouts = [
       }},
   
         {
-    title: "🚀WOD TABATA 20/10 HAUT DU CORPS🚀 J1 - J4",
+    title: "🚀WOD TABATA 20/10 HAUT DU CORPS J1 - J4",
     material: ["poids-corps"],
     body: "haut",
     duration: 10,
@@ -197,7 +197,7 @@ const workouts = [
   },
   
     {
-    title: "🚀WOD TABATA 20/10 BAS DU CORPS🚀 J2 - J5",
+    title: "🚀WOD TABATA 20/10 BAS DU CORPS J2 - J5",
     material: ["poids-corps"],
     body: "bas",
     duration: 10,
@@ -244,7 +244,7 @@ const workouts = [
   },
   
     {
-    title: "🚀WOD TABATA 20/10 Abdos🚀 J3",
+    title: "🚀WOD TABATA 20/10 Abdos J3",
     material: ["poids-corps"],
     body: "bas",
     duration: 10,
@@ -1480,8 +1480,94 @@ const workouts = [
         }},
   
   // ══════════════════════════════════════════════════════════
-    // SÉANCE MUSCU EXEMPLE
+    // SÉANCES MUSCU 
     // ══════════════════════════════════════════════════════════
+  
+     {
+        title: "Pectoraux / Biceps",
+        material: ["barre","haltere","elastique","machineguidee"],
+        body: "haut",
+        duration: 0,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "Séance pectoraux biceps : Développé couché, SUPERSET Curl à la barre/Press Jammer Arm, SUPERSET Curl incliné/Chest fly avec élastique (point d'accroche bas).",
+        details: {
+            format_label: "MUSCU",
+            exercises: [
+                { text: "Développé couché — 5 ×10 à 12 reps" },
+                { text: "SUPERSET Curl à la barre EZ/Press Jammer Arm — 3×10/15 reps" },
+                { text: "SUPERSET Curl incliné/Chest fly avec élastique — 3×10/15 reps" }
+            ],
+            conseil: "10 minutes d'échauffement avec montée en gamme sur le développé couché. La séance avec échauffement dure environ 1 heure.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "SÉANCE Pectoraux / Biceps",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Développé couché",
+                                series: [
+                                    { reps: 8, poids: 70 },
+                                    { reps: 10, poids: 60 },
+                                    { reps: 10, poids: 60 },
+                                    { reps: 10, poids: 60 },
+                                    { reps: 10,  poids: 60 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "superset",
+                        exos: [
+                            {
+                                nom: "Curl à la barre EZ",
+                                series: [
+                                    { reps: 15, poids: 30 },
+                                    { reps: 15, poids: 30 },
+                                    { reps: 15, poids: 30 }
+                                ]
+                            },
+                            {
+                                nom: "Press Jammer Arm",
+                                series: [
+                                    { reps: 15, poids: 40 },
+                                    { reps: 15, poids: 40 },
+                                    { reps: 15, poids: 40 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "superset",
+                        exos: [
+                            {
+                                nom: "Curl incliné",
+                                series: [
+                                    { reps: 12, poids: 10 },
+                                    { reps: 12, poids: 10 },
+                                    { reps: 12, poids: 10 }
+                                ]
+                            },
+                            {
+                                nom: "Chest fly avec élastique",
+                                series: [
+                                    { reps: 12, poids: 0 },
+                                    { reps: 12, poids: 0 },
+                                    { reps: 12, poids: 0 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+  
     {
         title: "Push Day — Pectoraux / Triceps",
         material: ["barre", "station-dips"],
