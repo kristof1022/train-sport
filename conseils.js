@@ -356,6 +356,30 @@ function displayConseils() {
         '</div>' +
         '</div>' +
         '</div>';
+
+    // Carte Mon Activité (tableau de bord global)
+    var activSection = document.getElementById('section-mon-activite');
+    if (!activSection) {
+        activSection = document.createElement('div');
+        activSection.id = 'section-mon-activite';
+        activSection.style.marginTop = '24px';
+        wodSection.parentNode.insertBefore(activSection, wodSection.nextSibling);
+    }
+    var totalSeances = getAllActiviteEntries().length;
+    activSection.innerHTML =
+        '<div class="card-grid">' +
+        '<div class="card card-hybrid">' +
+        '<div>' +
+        '<span class="tag tag-body">Suivi</span>' +
+        '<span class="tag tag-material">GLOBAL</span>' +
+        '<h3>📊 Mon activité</h3>' +
+        '<div class="card-desc">' + (totalSeances > 0 ? 'Vue d\'ensemble de toutes vos séances : calendrier, histogramme, stats hebdo.' : 'Aucune séance enregistrée pour l\'instant.') + '</div>' +
+        '</div>' +
+        '<div class="card-buttons">' +
+        '<button onclick="openMonActivite()" class="btn-full">' + (totalSeances > 0 ? '📈 Voir mon activité (' + totalSeances + ' séances)' : '📊 Tableau de bord') + '</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
 }
 
 function openModalConseil(index) {
@@ -845,14 +869,6 @@ function _wodOuvrirModal() {
     html += '<div style="' + row + '"><label style="' + s + '">Reps / Rounds — facultatif</label>';
     html += '<input type="text" id="wf-reps" placeholder="Ex: 5 rounds, 120 reps..." style="' + inp + '" maxlength="60"></div>';
 
-    // 10. Vitesse moyenne (km/h)
-    html += '<div style="' + row + '"><label style="' + s + '">Vitesse moyenne (km/h) — facultatif</label>';
-    html += '<input type="number" id="wf-vitesse" placeholder="Ex: 28.5" min="0" step="0.1" style="' + inp + '"></div>';
-
-    // 11. Commentaire libre
-    html += '<div style="' + row + '"><label style="' + s + '">Commentaire libre — facultatif</label>';
-    html += '<textarea id="wf-commentaire" rows="3" placeholder="Ressenti, conditions météo, objectif prochain..." style="' + inp + 'resize:vertical;font-family:sans-serif;"></textarea></div>';
-
     // Boutons valider / annuler
     html += '<div style="display:flex;gap:10px;margin-top:14px;">';
     html += '<button onclick="_wodSauvegarderExterne()" style="flex:1;background:#1a6b3c;color:#fff;border:none;border-radius:8px;padding:10px;font-size:0.88em;font-weight:700;cursor:pointer;">💾 Sauvegarder</button>';
@@ -902,9 +918,7 @@ function _wodSauvegarderExterne() {
     var allSec   = parseInt((document.getElementById('wf-allure-sec') || {}).value);
     var pas      = parseInt((document.getElementById('wf-pas')  || {}).value) || null;
     var kcal     = parseInt((document.getElementById('wf-kcal') || {}).value) || null;
-    var reps       = (document.getElementById('wf-reps')         || {}).value || '';
-    var vitesse    = parseFloat((document.getElementById('wf-vitesse') || {}).value) || null;
-    var commentaire = (document.getElementById('wf-commentaire') || {}).value || '';
+    var reps     = (document.getElementById('wf-reps') || {}).value || '';
 
     var fb = document.getElementById('wod-form-feedback');
 
@@ -942,9 +956,7 @@ function _wodSauvegarderExterne() {
         allure_min_km: allureDec !== null ? allureDec : undefined,
         pas:          pas  !== null ? pas  : undefined,
         kcal:         kcal !== null ? kcal : undefined,
-        reps:         reps.trim() || undefined,
-        vitesse_kmh:  vitesse !== null ? vitesse : undefined,
-        commentaire:  commentaire.trim() || undefined
+        reps:         reps.trim() || undefined
     };
     // Nettoyer les undefined
     Object.keys(entry).forEach(function(k){ if (entry[k] === undefined) delete entry[k]; });
@@ -986,7 +998,7 @@ function renderCarnetWod() {
     }
 
     var html = '';
-    entries.forEach(function(e, idx) {
+    entries.forEach(function(e) {
         var couleur = typeColor[e.type] || '#555';
         html += '<div style="background:#f8f8f8;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #eee;border-left:4px solid ' + couleur + ';">';
 
@@ -1015,101 +1027,320 @@ function renderCarnetWod() {
         if (e.pas)          html += '<span style="background:#fce4ec;color:#880e4f;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">👟 ' + e.pas.toLocaleString('fr-FR') + ' pas</span>';
         if (e.rounds && e.rounds !== '0') html += '<span style="background:#fce4ec;color:#c62828;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🔁 ' + e.rounds + ' rounds</span>';
         if (e.reps)         html += '<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">💪 ' + e.reps + '</span>';
-        if (e.vitesse_kmh)  html += '<span style="background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🚴 ' + e.vitesse_kmh + ' km/h</span>';
         html += '</div>';
 
-        if (e.commentaire) {
-            html += '<div style="font-size:0.83em;color:#555;background:#fffde7;border-radius:6px;padding:8px 10px;border:1px solid #f9a825;margin-bottom:8px;white-space:pre-wrap;">💬 ' + e.commentaire.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
-        }
         if (e.exos) {
             html += '<div style="font-size:0.82em;color:#666;background:#fff;border-radius:6px;padding:8px 10px;border:1px solid #eee;">' +
                     e.exos.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
         }
-        // Bouton supprimer
-        html += '<div style="text-align:right;margin-top:8px;">';
-        html += '<button onclick="_wodSupprimerEntree(' + idx + ')" style="background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:4px 10px;font-size:0.78em;cursor:pointer;">🗑 Supprimer</button>';
-        html += '</div>';
         html += '</div>';
     });
 
     container.innerHTML = html || '<div style="text-align:center;color:#999;padding:20px;">Aucune séance pour ce filtre.</div>';
-
-    // Boutons export/import JSON en bas
-    var footer = document.getElementById('wod-json-footer');
-    if (!footer) {
-        footer = document.createElement('div');
-        footer.id = 'wod-json-footer';
-        footer.style.cssText = 'text-align:center;padding:16px 0 4px;border-top:1px solid #eee;margin-top:8px;';
-        footer.innerHTML =
-            '<p style="font-size:0.78em;color:#999;margin:0 0 10px;">💾 Sauvegarder ou restaurer votre carnet WOD & Cardio</p>' +
-            '<div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">' +
-            '<button onclick="_wodExportJSON()" style="background:#1a237e;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:0.82em;font-weight:700;cursor:pointer;">⬇ Exporter (JSON)</button>' +
-            '<button onclick="_wodImportJSON()" style="background:none;border:2px solid #1a237e;color:#1a237e;border-radius:8px;padding:9px 16px;font-size:0.82em;font-weight:700;cursor:pointer;">⬆ Importer (JSON)</button>' +
-            '</div>' +
-            '<input type="file" id="wod-import-input" accept=".json" style="display:none;">';
-        container.parentNode.appendChild(footer);
-    }
 }
 
-function _wodSupprimerEntree(idx) {
-    if (!window._wodData) return;
-    var entry = window._wodData[idx];
-    if (!entry) return;
-    if (!confirm('Supprimer cette séance (' + (entry.nom || entry.nomCle) + ') ?')) return;
-    // Supprimer du localStorage
-    var data = wodCarnetLoad();
-    var nomCle = entry.nomCle;
-    if (data[nomCle]) {
-        // Trouver et supprimer l'entrée exacte par date
-        data[nomCle] = data[nomCle].filter(function(e) {
-            return !(e.date === entry.date && e.type === entry.type && e.nom === entry.nom);
-        });
-        if (data[nomCle].length === 0) delete data[nomCle];
-        wodCarnetSave(data);
-    }
-    _wodOuvrirModal();
-}
+// ══════════════════════════════════════════════════════════════════════════════
+// MON ACTIVITÉ — Tableau de bord global (toutes sources)
+// ══════════════════════════════════════════════════════════════════════════════
 
-function _wodExportJSON() {
-    var data = wodCarnetLoad();
-    if (!Object.keys(data).length) { alert('Aucune séance à exporter.'); return; }
-    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    var d = new Date();
-    a.download = 'THT_carnet_WOD_' + d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2) + '.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-}
+// Couleurs et labels par type
+var ACTIVITE_COLORS = {
+    'MUSCU':          '#1a237e',
+    'TABATA/HIIT':    '#c0392b',
+    'AMRAP':          '#8e44ad',
+    'EMOM':           '#2980b9',
+    'FOR TIME':       '#e67e22',
+    'INTERVALLES':    '#27ae60',
+    'CARDIO EXTERNE': '#00897b'
+};
+var ACTIVITE_LABELS = {
+    'MUSCU':'MUSCU','TABATA/HIIT':'TABATA','AMRAP':'AMRAP',
+    'EMOM':'EMOM','FOR TIME':'FOR TIME','INTERVALLES':'INTERV.','CARDIO EXTERNE':'CARDIO'
+};
 
-function _wodImportJSON() {
-    var input = document.getElementById('wod-import-input');
-    if (!input) return;
-    input.value = '';
-    input.onchange = function(e) {
-        var file = e.target.files[0];
-        if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function(ev) {
-            try {
-                var imp = JSON.parse(ev.target.result);
-                if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('Format invalide');
-                var existing = wodCarnetLoad();
-                var nb = 0;
-                Object.keys(imp).forEach(function(nom) {
-                    if (!Array.isArray(imp[nom])) return;
-                    if (!existing[nom]) existing[nom] = [];
-                    existing[nom] = imp[nom].concat(existing[nom]).slice(0, 999);
-                    nb += imp[nom].length;
+// ── Collecte toutes les entrées de toutes les sources ────────────────────────
+function getAllActiviteEntries() {
+    var all = [];
+
+    // 1. muscu_carnet  { date:"dd/mm/yyyy hh:mm", nom, duree:"MM:SS", resultats:[{nom,series:[{reps,poids}]}] }
+    try {
+        var muscu = JSON.parse(localStorage.getItem('muscu_carnet') || '{}');
+        Object.keys(muscu).forEach(function(nom) {
+            (muscu[nom] || []).forEach(function(e) {
+                var sec = _parseDureeToSec(e.duree);
+                // Calcul poids total soulevé
+                var poidsTotal = 0;
+                (e.resultats || []).forEach(function(exo) {
+                    (exo.series || []).forEach(function(s) { poidsTotal += (s.reps || 0) * (s.poids || 0); });
                 });
-                wodCarnetSave(existing);
-                alert('✅ Importation réussie ! ' + nb + ' séance(s) importée(s).');
-                _wodOuvrirModal();
-            } catch(err) {
-                alert('❌ Fichier JSON invalide : ' + err.message);
-            }
-        };
-        reader.readAsText(file);
-    };
-    input.click();
+                all.push({
+                    dateStr: e.date,
+                    dateObj: _parseDateFr(e.date),
+                    type: 'MUSCU',
+                    nom: e.nom || nom,
+                    duree_sec: sec,
+                    poids_kg: poidsTotal,
+                    distance_km: 0
+                });
+            });
+        });
+    } catch(err) {}
+
+    // 2. wod_carnet  { date:"dd/mm/yyyy hh:mm", type, nom, duree/"duree_sec", distance_km }
+    try {
+        var wod = JSON.parse(localStorage.getItem('wod_carnet') || '{}');
+        Object.keys(wod).forEach(function(nom) {
+            (wod[nom] || []).forEach(function(e) {
+                var sec = e.duree_sec || _parseDureeToSec(e.duree || e.temps || '');
+                all.push({
+                    dateStr: e.date,
+                    dateObj: _parseDateFr(e.date),
+                    type: e.type || 'CARDIO EXTERNE',
+                    nom: e.nom || nom,
+                    duree_sec: sec,
+                    poids_kg: 0,
+                    distance_km: e.distance_km || 0
+                });
+            });
+        });
+    } catch(err) {}
+
+    // Trier par date décroissante
+    all.sort(function(a, b) { return b.dateObj - a.dateObj; });
+    return all;
+}
+
+function _parseDateFr(str) {
+    if (!str) return new Date(0);
+    var parts = str.split(' ');
+    var dp = parts[0].split('/');
+    var tp = parts[1] ? parts[1].split(':') : ['0','0'];
+    if (dp.length < 3) return new Date(0);
+    return new Date(parseInt(dp[2]), parseInt(dp[1])-1, parseInt(dp[0]), parseInt(tp[0])||0, parseInt(tp[1])||0);
+}
+
+function _parseDureeToSec(str) {
+    if (!str) return 0;
+    var parts = str.split(':').map(Number);
+    if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+    if (parts.length === 2) return parts[0]*60 + parts[1];
+    return 0;
+}
+
+function _secToHMS(sec) {
+    sec = Math.round(sec);
+    var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+    if (h > 0) return h + 'h' + (m>0 ? _pad2(m) + 'min' : '');
+    if (m > 0) return m + 'min' + (s>0 ? _pad2(s) + 's' : '');
+    return s + 's';
+}
+
+// ── Ouvrir la modale Mon Activité ────────────────────────────────────────────
+var _activiteMoisOffset = 0; // 0 = mois courant
+
+function openMonActivite() {
+    _activiteMoisOffset = 0;
+    _renderMonActivite();
+}
+
+function _renderMonActivite() {
+    var entries = getAllActiviteEntries();
+    var now = new Date();
+    var year  = now.getFullYear();
+    var month = now.getMonth() + _activiteMoisOffset;
+    // Normaliser si débordement
+    var d = new Date(year, month, 1);
+    year = d.getFullYear(); month = d.getMonth();
+
+    document.getElementById('modal-title').textContent = 'Mon Activité';
+    document.getElementById('modal-box').className = 'type-hybrid';
+    document.getElementById('modal-badges').innerHTML =
+        '<span class="modal-badge modal-badge-type">Suivi</span>' +
+        '<span class="modal-badge modal-badge-mat">GLOBAL</span>';
+
+    // ── Construire l'index par date (yyyy-mm-dd → [entries]) ─────────────────
+    var byDate = {};
+    entries.forEach(function(e) {
+        if (!e.dateObj || e.dateObj.getTime() === 0) return;
+        var key = e.dateObj.getFullYear() + '-' + _pad2(e.dateObj.getMonth()+1) + '-' + _pad2(e.dateObj.getDate());
+        if (!byDate[key]) byDate[key] = [];
+        byDate[key].push(e);
+    });
+
+    // ── Stats 7 derniers jours ───────────────────────────────────────────────
+    var stats7 = _calcStats7(entries);
+
+    // ── HTML ─────────────────────────────────────────────────────────────────
+    var html = '';
+
+    // Navigation mois
+    var moisNoms = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">';
+    html += '<button onclick="_activiteMoisOffset--;_renderMonActivite()" style="background:#f0f0f0;border:none;border-radius:8px;padding:6px 14px;font-size:1em;cursor:pointer;">‹</button>';
+    html += '<span style="font-weight:800;font-size:1em;color:#1a237e;">' + moisNoms[month] + ' ' + year + '</span>';
+    var isCurrentMonth = (year === now.getFullYear() && month === now.getMonth());
+    html += '<button onclick="_activiteMoisOffset++;_renderMonActivite()" style="background:#f0f0f0;border:none;border-radius:8px;padding:6px 14px;font-size:1em;cursor:pointer;' + (isCurrentMonth ? 'opacity:0.3;pointer-events:none;' : '') + '">›</button>';
+    html += '</div>';
+
+    // Légende types
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">';
+    Object.keys(ACTIVITE_COLORS).forEach(function(t) {
+        html += '<span style="background:' + ACTIVITE_COLORS[t] + ';color:#fff;border-radius:4px;padding:2px 7px;font-size:0.68em;font-weight:700;">' + (ACTIVITE_LABELS[t]||t) + '</span>';
+    });
+    html += '</div>';
+
+    // Calendrier
+    html += _buildCalendrier(year, month, byDate, now);
+
+    // Séparateur
+    html += '<hr style="border:none;border-top:1px solid #eee;margin:18px 0;">';
+
+    // Titre synthèse
+    html += '<div style="font-weight:800;font-size:0.88em;text-transform:uppercase;letter-spacing:0.08em;color:#888;margin-bottom:12px;">📅 Synthèse — 7 derniers jours</div>';
+
+    // Histogramme
+    html += _buildHistogramme(stats7);
+
+    // Stats badges
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">';
+    html += _statBox('⏱', 'Temps total', _secToHMS(stats7.totalSec), '#e8eaf6', '#1a237e');
+    html += _statBox('🏋', 'Séances', stats7.nbSeances + ' séance' + (stats7.nbSeances > 1 ? 's' : ''), '#fce4ec', '#c62828');
+    html += _statBox('🏋', 'Poids soulevé', stats7.poidsTotal > 0 ? stats7.poidsTotal.toLocaleString('fr-FR') + ' kg' : '—', '#fff3e0', '#e65100');
+    html += _statBox('📍', 'Distance', stats7.distanceTotal > 0 ? stats7.distanceTotal.toFixed(1) + ' km' : '—', '#e0f2f1', '#00695c');
+    html += '</div>';
+
+    document.getElementById('modal-body').innerHTML = html;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function _statBox(icon, label, val, bg, color) {
+    return '<div style="background:' + bg + ';border-radius:10px;padding:12px 14px;">' +
+           '<div style="font-size:0.72em;color:' + color + ';font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">' + label + '</div>' +
+           '<div style="font-size:1.15em;font-weight:900;color:' + color + ';">' + val + '</div>' +
+           '</div>';
+}
+
+
+// Helper : rendu des puces d'activité pour un jour du calendrier
+function _renderPuces(entries) {
+    var html = '';
+    entries.forEach(function(e) {
+        var col = ACTIVITE_COLORS[e.type] || '#888';
+        var lbl = ACTIVITE_LABELS[e.type] || e.type;
+        var nomCourt = e.nom.length > 12 ? e.nom.slice(0, 11) + '…' : e.nom;
+        html += '<div style="background:' + col + ';color:#fff;border-radius:3px;padding:1px 3px;font-size:0.58em;font-weight:700;margin-bottom:1px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="' + lbl + ' — ' + e.nom + '">' + nomCourt + '</div>';
+    });
+    return html;
+}
+
+// Helper : filtrer les entrées par clé de date yyyy-mm-dd
+function _entriesForKey(entries, key) {
+    return entries.filter(function(e) {
+        var dk = e.dateObj.getFullYear() + '-' + _pad2(e.dateObj.getMonth()+1) + '-' + _pad2(e.dateObj.getDate());
+        return dk === key;
+    });
+}
+
+function _buildCalendrier(year, month, byDate, now) {
+    var firstDay = new Date(year, month, 1).getDay(); // 0=dim
+    firstDay = (firstDay + 6) % 7; // convertir en lundi=0
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var todayKey = now.getFullYear() + '-' + _pad2(now.getMonth()+1) + '-' + _pad2(now.getDate());
+
+    var jours = ['L','M','M','J','V','S','D'];
+    var html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">';
+
+    // En-têtes jours
+    jours.forEach(function(j) {
+        html += '<div style="text-align:center;font-size:0.7em;font-weight:700;color:#aaa;padding:4px 0;">' + j + '</div>';
+    });
+
+    // Cases vides début
+    for (var i = 0; i < firstDay; i++) {
+        html += '<div></div>';
+    }
+
+    // Jours du mois
+    for (var day = 1; day <= daysInMonth; day++) {
+        var key = year + '-' + _pad2(month+1) + '-' + _pad2(day);
+        var dayEntries = byDate[key] || [];
+        var isToday = (key === todayKey);
+        var hasActivity = dayEntries.length > 0;
+
+        var bgDay = isToday ? '#e8f5e9' : (hasActivity ? '#f5f5f5' : 'transparent');
+        var borderDay = isToday ? '2px solid #27ae60' : (hasActivity ? '1px solid #e0e0e0' : '1px solid transparent');
+
+        html += '<div style="border-radius:6px;padding:3px 2px;min-height:52px;background:' + bgDay + ';border:' + borderDay + ';position:relative;">';
+        html += '<div style="text-align:center;font-size:0.72em;font-weight:' + (isToday ? '900' : '600') + ';color:' + (isToday ? '#27ae60' : '#555') + ';margin-bottom:2px;">' + day + '</div>';
+
+        // Puces activités (max 3 visibles + compteur)
+        var max = 3;
+        html += _renderPuces(dayEntries.slice(0, max));
+        if (dayEntries.length > max) {
+            html += '<div style="font-size:0.6em;color:#888;text-align:center;">+' + (dayEntries.length - max) + '</div>';
+        }
+        html += '</div>';
+    }
+
+    html += '</div>';
+    return html;
+}
+
+function _calcStats7(entries) {
+    var cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 6);
+    cutoff.setHours(0, 0, 0, 0);
+
+    var recent = entries.filter(function(e) { return e.dateObj >= cutoff; });
+
+    var totalSec = 0, poidsTotal = 0, distanceTotal = 0;
+    recent.forEach(function(e) {
+        totalSec     += e.duree_sec || 0;
+        poidsTotal   += e.poids_kg  || 0;
+        distanceTotal += e.distance_km || 0;
+    });
+
+    // Par jour (7 derniers jours, du plus ancien au plus récent)
+    var days = [];
+    for (var i = 6; i >= 0; i--) {
+        var d = new Date();
+        d.setDate(d.getDate() - i);
+        d.setHours(0, 0, 0, 0);
+        var key = d.getFullYear() + '-' + _pad2(d.getMonth()+1) + '-' + _pad2(d.getDate());
+        var dayEntries = _entriesForKey(entries, key);
+        var secDay = dayEntries.reduce(function(acc, e) { return acc + (e.duree_sec || 0); }, 0);
+        var jNoms = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+        days.push({ label: jNoms[d.getDay()], sec: secDay, nb: dayEntries.length, date: d });
+    }
+
+    return { totalSec: totalSec, nbSeances: recent.length, poidsTotal: Math.round(poidsTotal), distanceTotal: distanceTotal, days: days };
+}
+
+function _buildHistogramme(stats) {
+    var days = stats.days;
+    var maxSec = Math.max.apply(null, days.map(function(d){ return d.sec; }));
+    if (maxSec === 0) {
+        return '<div style="text-align:center;color:#bbb;font-size:0.85em;padding:16px 0;">Aucune activité cette semaine.</div>';
+    }
+    var barMaxH = 60;
+
+    var html = '<div style="display:flex;align-items:flex-end;justify-content:space-around;height:' + (barMaxH+32) + 'px;gap:4px;padding:0 4px;">';
+    days.forEach(function(d) {
+        var pct = maxSec > 0 ? d.sec / maxSec : 0;
+        var h = Math.max(pct * barMaxH, d.sec > 0 ? 4 : 0);
+        var isToday = (d.date.toDateString() === new Date().toDateString());
+        var col = d.sec > 0 ? (isToday ? '#27ae60' : '#1a237e') : '#e0e0e0';
+        var label = d.sec > 0 ? _secToHMS(d.sec) : '';
+
+        html += '<div style="display:flex;flex-direction:column;align-items:center;flex:1;">';
+        if (label) html += '<div style="font-size:0.58em;color:#666;margin-bottom:2px;white-space:nowrap;">' + label + '</div>';
+        else html += '<div style="font-size:0.58em;margin-bottom:2px;">&nbsp;</div>';
+        html += '<div style="width:100%;height:' + h + 'px;background:' + col + ';border-radius:4px 4px 0 0;min-height:' + (d.sec>0?4:0) + 'px;"></div>';
+        html += '<div style="font-size:0.68em;font-weight:' + (isToday?'900':'600') + ';color:' + (isToday?'#27ae60':'#888') + ';margin-top:3px;">' + d.label + '</div>';
+        if (d.nb > 0) html += '<div style="font-size:0.6em;color:#aaa;">' + d.nb + 'x</div>';
+        html += '</div>';
+    });
+    html += '</div>';
+    return html;
 }

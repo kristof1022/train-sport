@@ -37,6 +37,7 @@
             <option value="modeemploi">Modes d'emploi</option>
             <option value="carnet">📓 Carnet muscu</option>
             <option value="carnetwod">🏅 Carnet WOD & Cardio</option>
+            <option value="monactivite">📊 Mon activité</option>
         </select>
     </div>
 
@@ -99,22 +100,25 @@
 <script src="conseils.js"></script>
 <script>
 function filterInfos(val) {
-    var conseils   = document.getElementById('section-conseils');
-    var modeemploi = document.getElementById('section-modeemploi');
-    var carnet     = document.getElementById('section-carnet');
-    var carnetwod  = document.getElementById('section-carnet-wod');
+    var conseils    = document.getElementById('section-conseils');
+    var modeemploi  = document.getElementById('section-modeemploi');
+    var carnet      = document.getElementById('section-carnet');
+    var carnetwod   = document.getElementById('section-carnet-wod');
+    var monactivite = document.getElementById('section-mon-activite');
     function show(el) { if (el) el.style.display = 'block'; }
     function hide(el) { if (el) el.style.display = 'none'; }
     if (val === 'conseils') {
-        show(conseils); hide(modeemploi); hide(carnet); hide(carnetwod);
+        show(conseils); hide(modeemploi); hide(carnet); hide(carnetwod); hide(monactivite);
     } else if (val === 'modeemploi') {
-        hide(conseils); show(modeemploi); hide(carnet); hide(carnetwod);
+        hide(conseils); show(modeemploi); hide(carnet); hide(carnetwod); hide(monactivite);
     } else if (val === 'carnet') {
-        hide(conseils); hide(modeemploi); show(carnet); hide(carnetwod);
+        hide(conseils); hide(modeemploi); show(carnet); hide(carnetwod); hide(monactivite);
     } else if (val === 'carnetwod') {
-        hide(conseils); hide(modeemploi); hide(carnet); show(carnetwod);
+        hide(conseils); hide(modeemploi); hide(carnet); show(carnetwod); hide(monactivite);
+    } else if (val === 'monactivite') {
+        hide(conseils); hide(modeemploi); hide(carnet); hide(carnetwod); show(monactivite);
     } else {
-        show(conseils); show(modeemploi); show(carnet); show(carnetwod);
+        show(conseils); show(modeemploi); show(carnet); show(carnetwod); show(monactivite);
     }
 }
 </script>
