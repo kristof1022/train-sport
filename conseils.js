@@ -380,6 +380,31 @@ function displayConseils() {
         '</div>' +
         '</div>' +
         '</div>';
+
+    // Carte Sauvegarde globale (Export/Import JSON)
+    var saveSection = document.getElementById('section-sauvegarde');
+    if (!saveSection) {
+        saveSection = document.createElement('div');
+        saveSection.id = 'section-sauvegarde';
+        saveSection.style.marginTop = '24px';
+        activSection.parentNode.insertBefore(saveSection, activSection.nextSibling);
+    }
+    saveSection.innerHTML =
+        '<div class="card-grid">' +
+        '<div class="card card-cardio">' +
+        '<div>' +
+        '<span class="tag tag-body">Données</span>' +
+        '<span class="tag tag-material">SAUVEGARDE</span>' +
+        '<h3>💾 Mes sauvegardes</h3>' +
+        '<div class="card-desc">Exportez ou restaurez l\'ensemble de vos données : carnet muscu et carnet WOD & Cardio en un seul fichier.</div>' +
+        '</div>' +
+        '<div class="card-buttons">' +
+        '<button onclick="exportToutJSON()" class="btn-full" style="margin-bottom:8px;">⬇ Exporter tout (JSON)</button>' +
+        '<button onclick="importToutJSON()" class="btn-full" style="background:#555;">⬆ Importer tout (JSON)</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '<input type="file" id="tout-import-input" accept=".json" style="display:none;">';
 }
 
 function openModalConseil(index) {
@@ -998,7 +1023,7 @@ function renderCarnetWod() {
     }
 
     var html = '';
-    entries.forEach(function(e) {
+    entries.forEach(function(e, idx) {
         var couleur = typeColor[e.type] || '#555';
         html += '<div style="background:#f8f8f8;border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #eee;border-left:4px solid ' + couleur + ';">';
 
@@ -1027,17 +1052,45 @@ function renderCarnetWod() {
         if (e.pas)          html += '<span style="background:#fce4ec;color:#880e4f;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">👟 ' + e.pas.toLocaleString('fr-FR') + ' pas</span>';
         if (e.rounds && e.rounds !== '0') html += '<span style="background:#fce4ec;color:#c62828;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🔁 ' + e.rounds + ' rounds</span>';
         if (e.reps)         html += '<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">💪 ' + e.reps + '</span>';
+        if (e.vitesse_kmh)  html += '<span style="background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🚴 ' + e.vitesse_kmh + ' km/h</span>';
         html += '</div>';
 
+        if (e.commentaire) {
+            html += '<div style="font-size:0.83em;color:#555;background:#fffde7;border-radius:6px;padding:8px 10px;border:1px solid #f9a825;margin-bottom:8px;white-space:pre-wrap;">💬 ' + e.commentaire.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+        }
         if (e.exos) {
             html += '<div style="font-size:0.82em;color:#666;background:#fff;border-radius:6px;padding:8px 10px;border:1px solid #eee;">' +
                     e.exos.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
         }
+        // Bouton supprimer
+        html += '<div style="text-align:right;margin-top:8px;">';
+        html += '<button onclick="_wodSupprimerEntree(' + idx + ')" style="background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:4px 10px;font-size:0.78em;cursor:pointer;">🗑 Supprimer</button>';
+        html += '</div>';
         html += '</div>';
     });
 
     container.innerHTML = html || '<div style="text-align:center;color:#999;padding:20px;">Aucune séance pour ce filtre.</div>';
+
 }
+
+function _wodSupprimerEntree(idx) {
+    if (!window._wodData) return;
+    var entry = window._wodData[idx];
+    if (!entry) return;
+    if (!confirm('Supprimer cette séance (' + (entry.nom || entry.nomCle) + ') ?')) return;
+    var data = wodCarnetLoad();
+    var nomCle = entry.nomCle;
+    if (data[nomCle]) {
+        data[nomCle] = data[nomCle].filter(function(e) {
+            return !(e.date === entry.date && e.type === entry.type && e.nom === entry.nom);
+        });
+        if (data[nomCle].length === 0) delete data[nomCle];
+        wodCarnetSave(data);
+    }
+    _wodOuvrirModal();
+}
+
+
 
 // ══════════════════════════════════════════════════════════════════════════════
 // MON ACTIVITÉ — Tableau de bord global (toutes sources)
@@ -1210,6 +1263,12 @@ function _renderMonActivite() {
     html += '</div>';
 
     document.getElementById('modal-body').innerHTML = html;
+    // Attacher les listeners sur les cellules cliquables du calendrier
+    document.querySelectorAll('[data-cal]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            _calOverlay(el.getAttribute('data-cal'));
+        });
+    });
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
@@ -1223,17 +1282,6 @@ function _statBox(icon, label, val, bg, color) {
 
 
 // Helper : rendu des puces d'activité pour un jour du calendrier
-function _renderPuces(entries) {
-    var html = '';
-    entries.forEach(function(e) {
-        var col = ACTIVITE_COLORS[e.type] || '#888';
-        var lbl = ACTIVITE_LABELS[e.type] || e.type;
-        var nomCourt = e.nom.length > 12 ? e.nom.slice(0, 11) + '…' : e.nom;
-        html += '<div style="background:' + col + ';color:#fff;border-radius:3px;padding:1px 3px;font-size:0.58em;font-weight:700;margin-bottom:1px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="' + lbl + ' — ' + e.nom + '">' + nomCourt + '</div>';
-    });
-    return html;
-}
-
 // Helper : filtrer les entrées par clé de date yyyy-mm-dd
 function _entriesForKey(entries, key) {
     return entries.filter(function(e) {
@@ -1242,44 +1290,116 @@ function _entriesForKey(entries, key) {
     });
 }
 
+// Helper : encoder les données d'un jour pour l'overlay (évite les problèmes de quotes)
+function _encodeDayData(entries) {
+    return encodeURIComponent(JSON.stringify(entries.map(function(e) {
+        return { type: e.type, nom: e.nom, duree_sec: e.duree_sec || 0, duree: e.duree || e.temps || '', date: e.dateStr || '' };
+    })));
+}
+
+// Overlay au clic sur une cellule du calendrier
+function _calOverlay(encoded) {
+    var entries;
+    try { entries = JSON.parse(decodeURIComponent(encoded)); } catch(er) { return; }
+    if (!entries || !entries.length) return;
+
+    // Supprimer un éventuel overlay précédent
+    var old = document.getElementById('cal-overlay');
+    if (old) old.parentNode.removeChild(old);
+
+    var ov = document.createElement('div');
+    ov.id = 'cal-overlay';
+    ov.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:center;justify-content:center;';
+    ov.onclick = function(ev) { if (ev.target === ov) _calClose(); };
+
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:14px;padding:20px;max-width:320px;width:90%;max-height:70vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.25);';
+
+    var html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">';
+    html += '<div style="font-weight:800;font-size:0.95em;color:#1a237e;">📅 ' + (entries[0].date ? entries[0].date.split(' ')[0] : '') + '</div>';
+    html += '<button onclick="_calClose()" style="background:none;border:none;font-size:1.2em;cursor:pointer;color:#888;">✕</button>';
+    html += '</div>';
+
+    entries.forEach(function(e) {
+        var col = ACTIVITE_COLORS[e.type] || '#888';
+        var lbl = ACTIVITE_LABELS[e.type] || e.type;
+        var dureeAff = e.duree || (e.duree_sec > 0 ? _secToHMS(e.duree_sec) : '');
+        html += '<div style="border-left:4px solid ' + col + ';border-radius:6px;background:#f8f8f8;padding:10px 12px;margin-bottom:10px;">';
+        html += '<div style="font-size:0.7em;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:' + col + ';margin-bottom:3px;">' + lbl + '</div>';
+        html += '<div style="font-weight:700;font-size:0.9em;color:#111;margin-bottom:4px;">' + e.nom + '</div>';
+        if (dureeAff) html += '<div style="font-size:0.78em;color:#555;">⏱ ' + dureeAff + '</div>';
+        html += '</div>';
+    });
+
+    box.innerHTML = html;
+    ov.appendChild(box);
+    document.body.appendChild(ov);
+}
+
+function _calClose() {
+    var o = document.getElementById('cal-overlay');
+    if (o) o.parentNode.removeChild(o);
+}
+
 function _buildCalendrier(year, month, byDate, now) {
-    var firstDay = new Date(year, month, 1).getDay(); // 0=dim
-    firstDay = (firstDay + 6) % 7; // convertir en lundi=0
+    var firstDay = new Date(year, month, 1).getDay();
+    firstDay = (firstDay + 6) % 7; // lundi = 0
     var daysInMonth = new Date(year, month + 1, 0).getDate();
     var todayKey = now.getFullYear() + '-' + _pad2(now.getMonth()+1) + '-' + _pad2(now.getDate());
 
     var jours = ['L','M','M','J','V','S','D'];
-    var html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">';
 
-    // En-têtes jours
+    // Grille : gap fixe, hauteur de cellule via aspect-ratio
+    var html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;">';
+
+    // En-têtes
     jours.forEach(function(j) {
-        html += '<div style="text-align:center;font-size:0.7em;font-weight:700;color:#aaa;padding:4px 0;">' + j + '</div>';
+        html += '<div style="text-align:center;font-size:0.68em;font-weight:700;color:#aaa;padding:3px 0;">' + j + '</div>';
     });
 
-    // Cases vides début
+    // Cases vides
     for (var i = 0; i < firstDay; i++) {
-        html += '<div></div>';
+        html += '<div style="aspect-ratio:1/1;"></div>';
     }
 
     // Jours du mois
     for (var day = 1; day <= daysInMonth; day++) {
         var key = year + '-' + _pad2(month+1) + '-' + _pad2(day);
         var dayEntries = byDate[key] || [];
-        var isToday = (key === todayKey);
+        var isToday    = (key === todayKey);
         var hasActivity = dayEntries.length > 0;
 
-        var bgDay = isToday ? '#e8f5e9' : (hasActivity ? '#f5f5f5' : 'transparent');
-        var borderDay = isToday ? '2px solid #27ae60' : (hasActivity ? '1px solid #e0e0e0' : '1px solid transparent');
+        var bgDay     = isToday ? '#e8f5e9' : (hasActivity ? '#f0f4ff' : '#fafafa');
+        var borderDay = isToday ? '2px solid #27ae60' : (hasActivity ? '1px solid #c5cae9' : '1px solid #eee');
+        var cursor    = hasActivity ? 'pointer' : 'default';
 
-        html += '<div style="border-radius:6px;padding:3px 2px;min-height:52px;background:' + bgDay + ';border:' + borderDay + ';position:relative;">';
-        html += '<div style="text-align:center;font-size:0.72em;font-weight:' + (isToday ? '900' : '600') + ';color:' + (isToday ? '#27ae60' : '#555') + ';margin-bottom:2px;">' + day + '</div>';
+        // Cellule à taille fixe via aspect-ratio 1:1
+        var cellStyle = 'aspect-ratio:1/1;border-radius:6px;background:' + bgDay + ';border:' + borderDay + ';' +
+                        'cursor:' + cursor + ';overflow:hidden;display:flex;flex-direction:column;' +
+                        'align-items:stretch;padding:2px;box-sizing:border-box;';
 
-        // Puces activités (max 3 visibles + compteur)
-        var max = 3;
-        html += _renderPuces(dayEntries.slice(0, max));
-        if (dayEntries.length > max) {
-            html += '<div style="font-size:0.6em;color:#888;text-align:center;">+' + (dayEntries.length - max) + '</div>';
+        if (hasActivity) {
+            var encoded = _encodeDayData(dayEntries);
+            html += '<div style="' + cellStyle + '" data-cal="' + encoded.replace(/"/g, '&quot;') + '">';
+        } else {
+            html += '<div style="' + cellStyle + '">';
         }
+
+        // Numéro du jour
+        html += '<div style="text-align:center;font-size:0.65em;font-weight:' + (isToday ? '900' : '600') + ';' +
+                'color:' + (isToday ? '#27ae60' : '#666') + ';line-height:1.4;flex-shrink:0;">' + day + '</div>';
+
+        // Puces : une ligne par séance, nom tronqué, hauteur fixe
+        dayEntries.forEach(function(e) {
+            var col = ACTIVITE_COLORS[e.type] || '#888';
+            var lbl = ACTIVITE_LABELS[e.type] || e.type;
+            // Juste le label du type sur la puce, nom au survol/clic
+            html += '<div style="background:' + col + ';color:#fff;border-radius:2px;padding:1px 2px;' +
+                    'font-size:0.52em;font-weight:700;line-height:1.3;overflow:hidden;white-space:nowrap;' +
+                    'text-overflow:ellipsis;margin-bottom:1px;flex-shrink:0;" title="' + lbl + ' — ' + e.nom.replace(/"/g,'&quot;') + '">' +
+                    lbl + '</div>';
+        });
+
         html += '</div>';
     }
 
@@ -1343,4 +1463,114 @@ function _buildHistogramme(stats) {
     });
     html += '</div>';
     return html;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SAUVEGARDE GLOBALE — Export/Import JSON (muscu_carnet + wod_carnet)
+// ══════════════════════════════════════════════════════════════════════════════
+
+function exportToutJSON() {
+    var muscu = {};
+    var wod   = {};
+    try { muscu = JSON.parse(localStorage.getItem('muscu_carnet') || '{}'); } catch(e) {}
+    try { wod   = JSON.parse(localStorage.getItem('wod_carnet')   || '{}'); } catch(e) {}
+
+    var totalMuscu = Object.keys(muscu).reduce(function(acc, k) { return acc + muscu[k].length; }, 0);
+    var totalWod   = Object.keys(wod).reduce(function(acc, k)   { return acc + wod[k].length;   }, 0);
+
+    if (!totalMuscu && !totalWod) {
+        alert('Aucune donnée à exporter.');
+        return;
+    }
+
+    var export_data = {
+        _info: {
+            version: 1,
+            date_export: new Date().toLocaleDateString('fr-FR'),
+            total_muscu: totalMuscu,
+            total_wod: totalWod
+        },
+        muscu_carnet: muscu,
+        wod_carnet:   wod
+    };
+
+    var blob = new Blob([JSON.stringify(export_data, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    var d = new Date();
+    a.download = 'THT_sauvegarde_' + d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+function importToutJSON() {
+    var input = document.getElementById('tout-import-input');
+    if (!input) return;
+    input.value = '';
+    input.onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                var imp = JSON.parse(ev.target.result);
+                if (typeof imp !== 'object' || Array.isArray(imp)) throw new Error('Format invalide');
+
+                var nbMuscu = 0, nbWod = 0;
+
+                // Importer muscu_carnet
+                if (imp.muscu_carnet && typeof imp.muscu_carnet === 'object') {
+                    var existMuscu = {};
+                    try { existMuscu = JSON.parse(localStorage.getItem('muscu_carnet') || '{}'); } catch(er) {}
+                    Object.keys(imp.muscu_carnet).forEach(function(nom) {
+                        if (!Array.isArray(imp.muscu_carnet[nom])) return;
+                        if (!existMuscu[nom]) existMuscu[nom] = [];
+                        existMuscu[nom] = imp.muscu_carnet[nom].concat(existMuscu[nom]).slice(0, 999);
+                        nbMuscu += imp.muscu_carnet[nom].length;
+                    });
+                    localStorage.setItem('muscu_carnet', JSON.stringify(existMuscu));
+                }
+
+                // Importer wod_carnet
+                if (imp.wod_carnet && typeof imp.wod_carnet === 'object') {
+                    var existWod = {};
+                    try { existWod = JSON.parse(localStorage.getItem('wod_carnet') || '{}'); } catch(er) {}
+                    Object.keys(imp.wod_carnet).forEach(function(nom) {
+                        if (!Array.isArray(imp.wod_carnet[nom])) return;
+                        if (!existWod[nom]) existWod[nom] = [];
+                        existWod[nom] = imp.wod_carnet[nom].concat(existWod[nom]).slice(0, 999);
+                        nbWod += imp.wod_carnet[nom].length;
+                    });
+                    localStorage.setItem('wod_carnet', JSON.stringify(existWod));
+                }
+
+                // Rétrocompat : ancien format sans envelope (juste muscu_carnet à plat)
+                if (!imp.muscu_carnet && !imp.wod_carnet) {
+                    var existMuscu2 = {};
+                    try { existMuscu2 = JSON.parse(localStorage.getItem('muscu_carnet') || '{}'); } catch(er) {}
+                    Object.keys(imp).forEach(function(nom) {
+                        if (nom === '_info' || !Array.isArray(imp[nom])) return;
+                        if (!existMuscu2[nom]) existMuscu2[nom] = [];
+                        existMuscu2[nom] = imp[nom].concat(existMuscu2[nom]).slice(0, 999);
+                        nbMuscu++;
+                    });
+                    localStorage.setItem('muscu_carnet', JSON.stringify(existMuscu2));
+                }
+
+                var msg = '✅ Importation réussie !\n';
+                if (nbMuscu) msg += '• ' + nbMuscu + ' séance(s) muscu\n';
+                if (nbWod)   msg += '• ' + nbWod   + ' séance(s) WOD/Cardio\n';
+                if (!nbMuscu && !nbWod) msg = '⚠️ Aucune donnée reconnue dans ce fichier.';
+                alert(msg);
+
+                // Rafraîchir la carte si on est sur infos.html
+                if (typeof displayConseils === 'function') displayConseils();
+
+            } catch(err) {
+                alert('❌ Fichier JSON invalide : ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
 }
