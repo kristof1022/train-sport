@@ -1484,8 +1484,8 @@ const workouts = [
     // ══════════════════════════════════════════════════════════
   
      {
-        title: "Pectoraux / Biceps",
-        material: ["barre","haltere","elastique","machineguidee"],
+        title: "💥Pectoraux / Biceps",
+        material: ["barre","haltere","elastique","machineguidee","jammer"],
         body: "haut",
         duration: 0,
         type: "MUSCU",
@@ -1502,7 +1502,7 @@ const workouts = [
             chargeable: true,
             chargement: {
                 type: "muscu",
-                nom: "SÉANCE Pectoraux / Biceps",
+                nom: "💥SÉANCE Pectoraux / Biceps",
                 recupSerie: 90,
                 recupBloc: 120,
                 blocs: [
@@ -1559,6 +1559,99 @@ const workouts = [
                                     { reps: 12, poids: 0 },
                                     { reps: 12, poids: 0 },
                                     { reps: 12, poids: 0 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+  
+    {
+        title: "💥Dos / Triceps",
+        material: ["traction","barre","haltere","elastique","machineguidee"],
+        body: "haut",
+        duration: 0,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "Séance dos triceps : Traction, TRISET Barre au front/Rowing buste penché jammer arms/Shrug jammer arms, SUPERSET Rowing poulie basse/Dips",
+        details: {
+            format_label: "MUSCU",
+            exercises: [
+                { text: "Tractions (lestées) — 5 ×10 à 12 reps" },
+                { text: "TRISET Barre au front/Rowing buste penché jammer arms/Shrug jammer arms — 3×10/15 reps" },
+                { text: "SUPERSET Rowing horizontal poulie basse/Dips — 3×15/20 reps" }
+            ],
+            conseil: "10 minutes d'échauffement avec montée en gamme sur les tractions (tractions élastiques, échauffement rotateurs épaules. La séance avec échauffement dure environ 1 heure. Adapter les poids à son niveau.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "💥SÉANCE Dos / Triceps",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Traction - Traction lestée",
+                                series: [
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "triset",
+                        exos: [
+                            {
+                                nom: "Barre au front",
+                                series: [
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 }
+                                ]
+                            },
+                            {
+                                nom: "Rowing buste penché jammer arms",
+                                series: [
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 }
+                                ]
+                            },
+                            {
+                                nom: "Shrug jammer arms",
+                                series: [
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 }
+                                ]
+                            },
+                        ]
+                    },
+                    {
+                        type: "superset",
+                        exos: [
+                            {
+                                nom: "Rowing horizontal poulie basse",
+                                series: [
+                                    { reps: 15, poids: 50 },
+                                    { reps: 15, poids: 50 },
+                                    { reps: 15, poids: 50 }
+                                ]
+                            },
+                            {
+                                nom: "Dips",
+                                series: [
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 }
                                 ]
                             }
                         ]
