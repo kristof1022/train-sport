@@ -34,6 +34,7 @@
             <li><a href="seances_perso.html">CRÉER SA SÉANCE</a></li>
         </ul>
         <div class="nav-spacer"></div>
+        <button id="btn-darkmode" onclick="toggleDarkMode()" title="Mode sombre / clair" style="background:none;border:1px solid #555;border-radius:6px;font-size:0.8em;font-weight:700;cursor:pointer;padding:4px 10px;color:#fff;width:70px;letter-spacing:0.05em;">DARK</button>
     </div>
 </nav>
     
@@ -109,8 +110,11 @@
             <option value="favoris">❤️ Mes favoris</option>
         </select>
 
-        <button onclick="tirageAleatoire()" class="btn-fun" style="background: #636361; color: #000; font-weight: bold; border: none; padding: 10px 15px; border-radius: 30px; cursor: pointer; margin-left: 10px;">
+        <button onclick="tirageAleatoire()" class="btn-fun" id="btn-tirage" title="Séance au hasard (selon filtres actifs)" style="background:#555;color:#fff;font-weight:bold;border:none;padding:10px 15px;border-radius:30px;cursor:pointer;margin-left:10px;">
             🎲
+        </button>
+        <button onclick="resetFiltres()" title="Remettre tous les filtres à zéro" style="background: #444; color: #fff; font-weight: bold; border: none; padding: 10px 15px; border-radius: 30px; cursor: pointer; margin-left: 4px;">
+            🔄
         </button>
     </div>
 
@@ -141,6 +145,21 @@
 
 <button id="backToTop" title="Retour en haut">↑</button>
 
+<script>
+function toggleDarkMode() {
+    var isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('tht_darkmode', isDark ? '1' : '0');
+    document.getElementById('btn-darkmode').textContent = isDark ? 'LIGHT' : 'DARK';
+}
+// Restaurer la préférence au chargement
+(function() {
+    if (localStorage.getItem('tht_darkmode') === '1') {
+        document.body.classList.add('dark-mode');
+        var btn = document.getElementById('btn-darkmode');
+        if (btn) btn.textContent = 'LIGHT';
+    }
+})();
+</script>
 <script src="script.js"></script>
 </body>
 </html>

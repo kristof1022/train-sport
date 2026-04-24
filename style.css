@@ -761,3 +761,110 @@ main h1, main h2 {
     transition: transform 0.15s;
 }
 .btn-favori:hover { transform: scale(1.3); }
+
+/* ══════════════════════════════════════════════════════════════
+   DARK MODE — body.dark-mode
+   Activé via le bouton 🌙 dans la nav (index.html & infos.html)
+══════════════════════════════════════════════════════════════ */
+
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+/* Fond principal et main */
+body.dark-mode main {
+    background-color: #1a1a1a;
+}
+
+/* Barre de filtre */
+body.dark-mode .filter-bar {
+    background-color: #242424;
+}
+
+body.dark-mode .filter-bar select,
+body.dark-mode #search-input {
+    background-color: #2e2e2e;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+/* Cartes */
+body.dark-mode .card {
+    background: #2a2a2a !important;
+    border-color: #3a3a3a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .card h3 { color: #f0f0f0 !important; }
+body.dark-mode .card-desc { color: #bbb; }
+
+/* Couleurs de bordure des types conservées, fond neutralisé */
+body.dark-mode .card-emom    { background: #2a2820 !important; }
+body.dark-mode .card-tabata  { background: #2a2218 !important; }
+body.dark-mode .card-amrap   { background: #2a1f1f !important; }
+body.dark-mode .card-for-time { background: #1e2030 !important; }
+body.dark-mode .card-hybrid  { background: #1e2a28 !important; }
+body.dark-mode .card-muscu   { background: #26201e !important; }
+body.dark-mode .card-cardio  { background: #1e2624 !important; }
+
+/* Tags */
+body.dark-mode .tag {
+    background-color: #3a3a3a;
+    color: #ccc;
+}
+
+/* Titres de section */
+body.dark-mode h3 { color: #e0e0e0; }
+
+/* Modale */
+body.dark-mode #modal-overlay {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+body.dark-mode #modal-box {
+    background: #242424;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
+}
+
+body.dark-mode #modal-header { border-bottom-color: #3a3a3a; }
+body.dark-mode #modal-title  { color: #f0f0f0; }
+body.dark-mode #modal-footer { border-top-color: #3a3a3a; }
+body.dark-mode #modal-close  { color: #aaa; }
+body.dark-mode #modal-close:hover { color: #fff; }
+
+/* Contenu modale */
+body.dark-mode #modal-body { color: #ddd; }
+body.dark-mode #modal-body h4,
+body.dark-mode #modal-body strong { color: #f0f0f0; }
+body.dark-mode #modal-body ul li { color: #ccc; }
+body.dark-mode #modal-body .modal-section-title { color: #bbb; }
+
+/* Bouton retour en haut */
+body.dark-mode #backToTop {
+    background: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+/* Compteur séances */
+body.dark-mode #workout-counter { color: #aaa; }
+
+/* Select du filtre infos.html */
+body.dark-mode #filter-infos {
+    background-color: #2e2e2e;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+/* Liens */
+body.dark-mode a { color: #90caf9; }
+body.dark-mode a:hover { color: #fff; }
+
+/* Bouton dé et reset */
+body.dark-mode .btn-fun {
+    background: #444 !important;
+    color: #fff !important;
+}
+

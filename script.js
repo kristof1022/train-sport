@@ -2809,14 +2809,56 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function tirageAleatoire() {
-    const indexHasard = Math.floor(Math.random() * workouts.length);
-    const wodChoisi = workouts[indexHasard];
+    // Récupérer les filtres actifs
+    const matFilter   = document.getElementById('filter-material').value;
+    const bodyFilter  = document.getElementById('filter-body').value;
+    const timeFilter  = document.getElementById('filter-time').value;
+    const typeFilter  = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
+    const levelFilter = document.getElementById('levelFilter') ? document.getElementById('levelFilter').value : 'all';
+    const favoris     = getFavoris();
+    const favorisFilter = document.getElementById('filter-favoris') ? document.getElementById('filter-favoris').value : 'all';
+    const searchTerm  = document.getElementById('search-input') ? document.getElementById('search-input').value.toLowerCase() : '';
+
+    // Filtrer comme displayWorkouts
+    const pool = workouts.filter(w => {
+        const matchSearch = !searchTerm || w.title.toLowerCase().includes(searchTerm) || w.desc.toLowerCase().includes(searchTerm);
+        const matchMat    = matFilter   === 'all' || (Array.isArray(w.material) ? w.material.includes(matFilter) : w.material === matFilter);
+        const matchBody   = bodyFilter  === 'all' || w.body  === bodyFilter;
+        const matchType   = typeFilter  === 'all' || w.type  === typeFilter;
+        const matchLevel  = levelFilter === 'all' || w.level === levelFilter;
+        const matchFavoris = favorisFilter === 'all' || (favorisFilter === 'favoris' && favoris.includes(w.title));
+        let matchTime = true;
+        if      (timeFilter === 'court') matchTime = w.duration > 0 && w.duration < 15;
+        else if (timeFilter === 'moyen') matchTime = w.duration >= 15 && w.duration <= 30;
+        else if (timeFilter === 'long')  matchTime = w.duration > 30;
+        else if (timeFilter === 'libre') matchTime = w.duration === 0;
+        return matchSearch && matchMat && matchBody && matchType && matchLevel && matchTime && matchFavoris;
+    });
+
+    if (!pool.length) {
+        alert('Aucune séance ne correspond aux filtres actifs. Élargis ta sélection !');
+        return;
+    }
+
+    const wodChoisi = pool[Math.floor(Math.random() * pool.length)];
+    const realIndex = workouts.indexOf(wodChoisi);
     if (wodChoisi.details) {
-        openModal(indexHasard);
+        openModal(realIndex);
     } else {
-        alert("Le destin a choisi pour toi : " + wodChoisi.title);
+        alert('Le destin a choisi pour toi : ' + wodChoisi.title);
         if (wodChoisi.pdf) window.open(wodChoisi.pdf, '_blank');
     }
+}
+
+function resetFiltres() {
+    document.getElementById('filter-type').value     = 'all';
+    document.getElementById('levelFilter').value     = 'all';
+    document.getElementById('filter-material').value = 'all';
+    document.getElementById('filter-body').value     = 'all';
+    document.getElementById('filter-time').value     = 'all';
+    document.getElementById('filter-favoris').value  = 'all';
+    document.getElementById('search-input').value    = '';
+    displayWorkouts();
 }
 
 // ══════════════════════════════════════════════════════════════
