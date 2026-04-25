@@ -739,6 +739,18 @@ main h1, main h2 {
     font-weight: 400;
 }
 
+/* Classes tableau rameur tempo */
+.rameur-thead { background: #f0f0f0; }
+.rameur-dur   { padding: 6px 8px; color: #888; }
+.rameur-split-effort { color: #1a237e; }
+.rameur-split-recup  { color: #558b2f; }
+
+/* Dark mode : classes tableau rameur */
+body.dark-mode .rameur-thead { background: #383838 !important; }
+body.dark-mode .rameur-dur   { color: #aaa !important; }
+body.dark-mode .rameur-split-effort { color: #90caf9 !important; }
+body.dark-mode .rameur-split-recup  { color: #81c784 !important; }
+
 /* =============================================
    CONSEILS — BLOCS DE CONTENU MODALE
    ============================================= */
@@ -878,4 +890,62 @@ body.dark-mode .btn-fun {
     background: #444 !important;
     color: #fff !important;
 }
+
+/* ── Dark mode : corrections de contraste ──────────────────────── */
+
+/* Tags type/catégorie dans les cartes */
+body.dark-mode .tag-type   { background: #333 !important; color: #e0e0e0 !important; }
+body.dark-mode .tag-material { background: #1a3a4a !important; color: #80deea !important; }
+body.dark-mode .tag-body   { background: #1a3a25 !important; color: #80cfa0 !important; }
+body.dark-mode .tag-time   { background: #3a2a10 !important; color: #ffcc80 !important; }
+body.dark-mode .tag-facile { background: transparent !important; color: #81c784 !important; }
+body.dark-mode .tag-moyen  { background: transparent !important; color: #ffb74d !important; }
+body.dark-mode .tag-intense{ background: transparent !important; color: #e57373 !important; }
+
+/* Tableau rameur tempo */
+body.dark-mode table { background: #2a2a2a; color: #e0e0e0; }
+body.dark-mode thead tr { background: #383838 !important; }
+body.dark-mode th { color: #e0e0e0 !important; border-bottom: 1px solid #555; }
+body.dark-mode td { color: #ddd !important; border-bottom-color: #444 !important; }
+body.dark-mode td[style*="color:#888"] { color: #aaa !important; }
+body.dark-mode .run-tempo-phases-wrap strong[style*="color:#1a237e"] { color: #90caf9 !important; }
+
+/* Séance rameur : couleurs des lignes */
+body.dark-mode .run-effort { background: #2a2010 !important; border-bottom-color: #5a4020 !important; }
+body.dark-mode .run-effort .run-speed { color: #ffb74d !important; }
+body.dark-mode .run-recup  { background: #162010 !important; border-bottom-color: #2a4020 !important; }
+body.dark-mode .run-recup .run-speed  { color: #81c784 !important; }
+body.dark-mode .run-min    { color: #aaa !important; }
+
+/* Modal scaled (VERSION SCALED) */
+body.dark-mode .modal-scaled { background: #2e2e2e !important; }
+body.dark-mode .modal-scaled .modal-section-title { color: #e0e0e0 !important; }
+body.dark-mode .modal-scaled .modal-intro { color: #ccc !important; }
+body.dark-mode .modal-scaled .modal-exercises li { color: #ddd !important; border-bottom-color: #444 !important; }
+
+/* Conseil (bloc jaune) */
+body.dark-mode .modal-conseil { background: #2a2510 !important; border-left-color: #c9a227 !important; }
+body.dark-mode .modal-conseil strong { color: #f0d060 !important; }
+body.dark-mode .modal-conseil { color: #d0c090 !important; }
+
+/* Modal-intro et modal-exercises généraux */
+body.dark-mode .modal-intro { color: #ccc !important; }
+body.dark-mode .modal-exercises li { color: #ddd !important; border-bottom-color: #444 !important; }
+body.dark-mode .modal-exercises li::before { color: #888 !important; }
+body.dark-mode .modal-section-title { color: #ccc !important; }
+
+/* Format label en haut de modale */
+body.dark-mode .modal-format-label { color: #bbb !important; }
+
+/* Infos.html : texte dans les cartes conseils */
+body.dark-mode .conseil-body { color: #ccc !important; background: #2a2a2a !important; }
+body.dark-mode .conseil-body p,
+body.dark-mode .conseil-body li { color: #ccc !important; }
+body.dark-mode .conseil-body h4,
+body.dark-mode .conseil-body h3 { color: #f0f0f0 !important; }
+body.dark-mode .conseil-body a  { color: #90caf9 !important; }
+
+/* Styles inline dans le tableau rameur (split/500m) */
+body.dark-mode #run-tempo-phases strong { color: #90caf9 !important; }
+body.dark-mode #run-tempo-phases em     { color: #81c784 !important; }
 

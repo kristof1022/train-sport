@@ -2601,7 +2601,7 @@ function selectNiveauErgo(n) {
 
     // Tableau des rythmes
     html += '<table style="width:100%; border-collapse:collapse; font-size:0.88em; margin-bottom:14px;">';
-    html += '<thead><tr style="background:#f0f0f0;">';
+    html += '<thead><tr class="rameur-thead">';
     html += '<th style="padding:6px 8px; text-align:left;">Atelier</th>';
     html += '<th style="padding:6px 8px; text-align:center;">Objectif</th>';
     html += '</tr></thead><tbody>';
@@ -2708,7 +2708,7 @@ function selectNiveauRameur(n) {
     var html = '<div class="run-tempo-phases-wrap">';
     html += '<p class="modal-section-title" style="margin:12px 0 8px;">🚣 Splits /500m — Niveau ' + n + '</p>';
     html += '<table style="width:100%; border-collapse:collapse; font-size:0.88em; margin-bottom:14px;">';
-    html += '<thead><tr style="background:#f0f0f0;">';
+    html += '<thead><tr class="rameur-thead">';
     html += '<th style="padding:6px 8px; text-align:left;">Phase</th>';
     html += '<th style="padding:6px 8px; text-align:left;">Durée</th>';
     html += '<th style="padding:6px 8px; text-align:center;">Split /500m</th>';
@@ -2729,10 +2729,10 @@ function selectNiveauRameur(n) {
     ];
 
     phases.forEach(function(p) {
-        var splitDisplay = p.cls === 'run-effort' ? '<strong style="color:#1a237e;">' + p.split + '</strong>' : '<em style="color:#558b2f;">' + p.split + '</em>';
+        var splitDisplay = p.cls === 'run-effort' ? '<strong class="rameur-split-effort">' + p.split + '</strong>' : '<em class="rameur-split-recup">' + p.split + '</em>';
         html += '<tr class="' + p.cls + '" style="border-bottom:1px solid #eee;">';
         html += '<td style="padding:6px 8px;">' + p.label + '</td>';
-        html += '<td style="padding:6px 8px; color:#888;">' + p.dur + '</td>';
+        html += '<td class="rameur-dur">' + p.dur + '</td>';
         html += '<td style="padding:6px 8px; text-align:center;">' + splitDisplay + '</td>';
         html += '</tr>';
     });
