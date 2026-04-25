@@ -785,6 +785,27 @@ body.dark-mode .rameur-split-recup  { color: #81c784 !important; }
 }
 .btn-favori:hover { transform: scale(1.3); }
 
+/* =============================================
+   CLASSES CONSEILS — blocs modales infos.html
+   ============================================= */
+
+/* Email contact */
+.conseil-email-box   { background:#f0f0f0; border-radius:8px; padding:10px 16px; display:inline-block; margin-bottom:14px; }
+.conseil-email-label { font-size:0.82em; color:#666; display:block; margin-bottom:4px; }
+.conseil-email-adresse { font-weight:700; color:#222; font-size:1em; user-select:all; }
+
+/* Note média (youtube, image) */
+.conseil-media-note  { font-size:0.78em; color:#999; text-align:center; margin-bottom:12px; }
+
+/* Séparateur */
+.conseil-sep { border:none; border-top:1px solid #eee; margin:14px 0; }
+
+/* Lexique mouvements */
+.lex-titre       { margin:0 0 8px; font-size:1em; color:#000; }
+.lex-explication { font-size:0.9em; color:#444; margin:0 0 8px; }
+.lex-img-link    { color:#1a237e; font-weight:700; text-decoration:none; }
+.lex-muscles-sec { margin-top:6px; font-size:0.82em; color:#666; }
+
 /* ══════════════════════════════════════════════════════════════
    DARK MODE — body.dark-mode
    Activé via le bouton 🌙 dans la nav (index.html & infos.html)
@@ -948,4 +969,27 @@ body.dark-mode .conseil-body a  { color: #90caf9 !important; }
 /* Styles inline dans le tableau rameur (split/500m) */
 body.dark-mode #run-tempo-phases strong { color: #90caf9 !important; }
 body.dark-mode #run-tempo-phases em     { color: #81c784 !important; }
+
+/* ── Texte des blocs conseils dans modales (infos.html) ────────────────── */
+
+/* Bloc texte général */
+body.dark-mode .conseil-texte p { color: #ddd !important; }
+body.dark-mode .conseil-texte strong { color: #f0f0f0 !important; }
+
+/* Email contact */
+body.dark-mode .conseil-email-box     { background: #333 !important; }
+body.dark-mode .conseil-email-label   { color: #bbb !important; }
+body.dark-mode .conseil-email-adresse { color: #eee !important; }
+
+/* Note média */
+body.dark-mode .conseil-media-note { color: #888 !important; }
+
+/* Séparateur */
+body.dark-mode .conseil-sep { border-top-color: #444 !important; }
+
+/* Lexique mouvements */
+body.dark-mode .lex-titre       { color: #f0f0f0 !important; }
+body.dark-mode .lex-explication { color: #ccc !important; }
+body.dark-mode .lex-img-link    { color: #90caf9 !important; }
+body.dark-mode .lex-muscles-sec { color: #bbb !important; }
 

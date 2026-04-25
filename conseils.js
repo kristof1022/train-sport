@@ -443,7 +443,7 @@ function openModalConseil(index) {
             htmlLex += '<div class="lexique-item"' + (mvId ? ' id="' + mvId + '"' : '') +
                        ' data-search="' + (mv.titre + ' ' + princ + ' ' + secon).toLowerCase() + '" ';
             htmlLex += 'style="border-bottom:1px solid #f0f0f0; padding:14px 0;">';
-            htmlLex += '<h4 style="margin:0 0 8px; font-size:1em; color:#000;">' + mv.titre + '</h4>';
+            htmlLex += '<h4 class="lex-titre">' + mv.titre + '</h4>';
             if (mv.image) {
                 htmlLex += '<img src="' + mv.image + '" alt="' + mv.titre + '" ';
                 htmlLex += 'style="max-width:100%; max-height:350px; width:auto; height:auto; display:block; margin:0 auto 10px; border-radius:8px;" onerror="this.style.display=String.fromCharCode(110,111,110,101)">';
@@ -458,7 +458,7 @@ function openModalConseil(index) {
                 htmlLex += '<video src="' + mv.video + '" controls ' +
                            'style="max-width:100%; max-height:350px; width:auto; display:block; margin:0 auto 10px; border-radius:8px;"></video>';
             }
-            htmlLex += '<p style="font-size:0.9em; color:#444; margin:0 0 8px;">' + mv.explication + '</p>';
+            htmlLex += '<p class="lex-explication">' + mv.explication + '</p>';
             // Badges muscles
             htmlLex += '<div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">';
             (mv.muscles.principaux || []).forEach(function(m) {
@@ -470,13 +470,13 @@ function openModalConseil(index) {
             htmlLex += '</div>';
             // Liens vers mouvements associés
             if (mv.liens && mv.liens.length > 0) {
-                htmlLex += '<div style="margin-top:6px; font-size:0.82em; color:#666;">';
+                htmlLex += '<div class="lex-muscles-sec">';
                 mv.liens.forEach(function(lien) {
                     var targetId = 'lexique-mv-' + lien.id;
                     var label = lien.id.replace(/-/g, ' ');
                     htmlLex += '<span style="margin-right:10px;">🔗 <em>' + lien.type + ' :</em> ' +
                                '<a href="#" onclick="scrollToMouvement(&quot;' + targetId + '&quot;); return false;" ' +
-                               'style="color:#1a237e; font-weight:700; text-decoration:none;">' +
+                               'class="lex-img-link">' +
                                label + '</a></span>';
                 });
                 htmlLex += '</div>';
@@ -529,7 +529,7 @@ function openModalConseil(index) {
                     '<iframe src="https://www.youtube.com/embed/' + bloc.id + '" ' +
                     'style="width:100%; aspect-ratio:16/9; border-radius:8px; border:none; margin-bottom:4px;" ' +
                     'allowfullscreen></iframe>' +
-                    '<p style="font-size:0.78em; color:#999; text-align:center; margin-bottom:12px;">' +
+                    '<p class="conseil-media-note">' +
                     '⚠️ Nécessite une connexion — ' +
                     '<a href="https://www.youtube.com/watch?v=' + bloc.id + '" target="_blank">ouvrir sur YouTube</a>' +
                     '</p></div>';
@@ -549,7 +549,7 @@ function openModalConseil(index) {
         }
 
         else if (bloc.type === 'separateur') {
-            html += '<hr style="border:none; border-top:1px solid #eee; margin:14px 0;">';
+            html += '<hr class="conseil-sep">';
         }
 
         else if (bloc.type === 'lien') {
@@ -563,9 +563,9 @@ function openModalConseil(index) {
             var sujetEncode = encodeURIComponent(bloc.sujet || '');
             var gmailUrl = 'https://mail.google.com/mail/?view=cm&to=' + bloc.adresse + '&su=' + sujetEncode;
             html += '<div style="text-align:center; margin:16px 0;">' +
-                    '<div style="background:#f0f0f0; border-radius:8px; padding:10px 16px; display:inline-block; margin-bottom:14px;">' +
-                    '<span style="font-size:0.82em; color:#666; display:block; margin-bottom:4px;">Adresse email</span>' +
-                    '<span style="font-weight:700; color:#222; font-size:1em; user-select:all;">' + bloc.adresse + '</span>' +
+                    '<div class="conseil-email-box">' +
+                    '<span class="conseil-email-label">Adresse email</span>' +
+                    '<span class="conseil-email-adresse">' + bloc.adresse + '</span>' +
                     '</div>' +
                     '<br>' +
                     '<a href="' + gmailUrl + '" target="_blank" class="btn-full" style="display:inline-block;">' +
