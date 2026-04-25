@@ -894,6 +894,22 @@ function _wodOuvrirModal() {
     html += '<div style="' + row + '"><label style="' + s + '">Reps / Rounds — facultatif</label>';
     html += '<input type="text" id="wf-reps" placeholder="Ex: 5 rounds, 120 reps..." style="' + inp + '" maxlength="60"></div>';
 
+    // 10. Vitesse moyenne (km/h)
+    html += '<div style="' + row + '"><label style="' + s + '">Vitesse moyenne (km/h) — facultatif</label>';
+    html += '<input type="number" id="wf-vitesse" placeholder="Ex: 28.5" min="0" step="0.1" style="' + inp + '"></div>';
+
+    // 11. Dénivelé positif (m)
+    html += '<div style="' + row + '"><label style="' + s + '">Dénivelé + (mètres) — facultatif</label>';
+    html += '<input type="number" id="wf-denivele-pos" placeholder="Ex: 450" min="0" style="' + inp + '"></div>';
+
+    // 12. Dénivelé négatif (m)
+    html += '<div style="' + row + '"><label style="' + s + '">Dénivelé - (mètres) — facultatif</label>';
+    html += '<input type="number" id="wf-denivele-neg" placeholder="Ex: 420" min="0" style="' + inp + '"></div>';
+
+    // 13. Commentaire libre
+    html += '<div style="' + row + '"><label style="' + s + '">Commentaire libre — facultatif</label>';
+    html += '<textarea id="wf-commentaire" rows="3" placeholder="Ressenti, conditions météo, objectif prochain..." style="' + inp + 'resize:vertical;font-family:sans-serif;"></textarea></div>';
+
     // Boutons valider / annuler
     html += '<div style="display:flex;gap:10px;margin-top:14px;">';
     html += '<button onclick="_wodSauvegarderExterne()" style="flex:1;background:#1a6b3c;color:#fff;border:none;border-radius:8px;padding:10px;font-size:0.88em;font-weight:700;cursor:pointer;">💾 Sauvegarder</button>';
@@ -943,7 +959,11 @@ function _wodSauvegarderExterne() {
     var allSec   = parseInt((document.getElementById('wf-allure-sec') || {}).value);
     var pas      = parseInt((document.getElementById('wf-pas')  || {}).value) || null;
     var kcal     = parseInt((document.getElementById('wf-kcal') || {}).value) || null;
-    var reps     = (document.getElementById('wf-reps') || {}).value || '';
+    var reps        = (document.getElementById('wf-reps')         || {}).value || '';
+    var vitesse     = parseFloat((document.getElementById('wf-vitesse')      || {}).value) || null;
+    var denivPos    = parseInt((document.getElementById('wf-denivele-pos')   || {}).value) || null;
+    var denivNeg    = parseInt((document.getElementById('wf-denivele-neg')   || {}).value) || null;
+    var commentaire = (document.getElementById('wf-commentaire') || {}).value || '';
 
     var fb = document.getElementById('wod-form-feedback');
 
@@ -981,7 +1001,11 @@ function _wodSauvegarderExterne() {
         allure_min_km: allureDec !== null ? allureDec : undefined,
         pas:          pas  !== null ? pas  : undefined,
         kcal:         kcal !== null ? kcal : undefined,
-        reps:         reps.trim() || undefined
+        reps:            reps.trim() || undefined,
+        vitesse_kmh:     vitesse  !== null ? vitesse  : undefined,
+        denivele_pos_m:  denivPos !== null ? denivPos : undefined,
+        denivele_neg_m:  denivNeg !== null ? denivNeg : undefined,
+        commentaire:     commentaire.trim() || undefined
     };
     // Nettoyer les undefined
     Object.keys(entry).forEach(function(k){ if (entry[k] === undefined) delete entry[k]; });
@@ -1052,7 +1076,9 @@ function renderCarnetWod() {
         if (e.pas)          html += '<span style="background:#fce4ec;color:#880e4f;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">👟 ' + e.pas.toLocaleString('fr-FR') + ' pas</span>';
         if (e.rounds && e.rounds !== '0') html += '<span style="background:#fce4ec;color:#c62828;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🔁 ' + e.rounds + ' rounds</span>';
         if (e.reps)         html += '<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">💪 ' + e.reps + '</span>';
-        if (e.vitesse_kmh)  html += '<span style="background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🚴 ' + e.vitesse_kmh + ' km/h</span>';
+        if (e.vitesse_kmh)     html += '<span style="background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">🚴 ' + e.vitesse_kmh + ' km/h</span>';
+        if (e.denivele_pos_m)  html += '<span style="background:#e8f0fe;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⬆ +' + e.denivele_pos_m + ' m</span>';
+        if (e.denivele_neg_m)  html += '<span style="background:#fbe9e7;color:#bf360c;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⬇ -' + e.denivele_neg_m + ' m</span>';
         html += '</div>';
 
         if (e.commentaire) {

@@ -1484,8 +1484,8 @@ const workouts = [
     // ══════════════════════════════════════════════════════════
   
      {
-        title: "💥Pectoraux / Biceps",
-        material: ["barre","haltere","elastique","machineguidee","jammer"],
+        title: "Pectoraux / Biceps",
+        material: ["barre","haltere","elastique","machineguidee"],
         body: "haut",
         duration: 0,
         type: "MUSCU",
@@ -1502,7 +1502,7 @@ const workouts = [
             chargeable: true,
             chargement: {
                 type: "muscu",
-                nom: "💥SÉANCE Pectoraux / Biceps",
+                nom: "SÉANCE Pectoraux / Biceps",
                 recupSerie: 90,
                 recupBloc: 120,
                 blocs: [
@@ -1559,99 +1559,6 @@ const workouts = [
                                     { reps: 12, poids: 0 },
                                     { reps: 12, poids: 0 },
                                     { reps: 12, poids: 0 }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-    },
-  
-    {
-        title: "💥Dos / Triceps",
-        material: ["traction","barre","haltere","elastique","machineguidee"],
-        body: "haut",
-        duration: 0,
-        type: "MUSCU",
-        level: "Moyen",
-        desc: "Séance dos triceps : Traction, TRISET Barre au front/Rowing buste penché jammer arms/Shrug jammer arms, SUPERSET Rowing poulie basse/Dips",
-        details: {
-            format_label: "MUSCU",
-            exercises: [
-                { text: "Tractions (lestées) — 5 ×10 à 12 reps" },
-                { text: "TRISET Barre au front/Rowing buste penché jammer arms/Shrug jammer arms — 3×10/15 reps" },
-                { text: "SUPERSET Rowing horizontal poulie basse/Dips — 3×15/20 reps" }
-            ],
-            conseil: "10 minutes d'échauffement avec montée en gamme sur les tractions (tractions élastiques, échauffement rotateurs épaules. La séance avec échauffement dure environ 1 heure. Adapter les poids à son niveau.",
-            chargeable: true,
-            chargement: {
-                type: "muscu",
-                nom: "💥SÉANCE Dos / Triceps",
-                recupSerie: 90,
-                recupBloc: 120,
-                blocs: [
-                    {
-                        type: "solo",
-                        exos: [
-                            {
-                                nom: "Traction - Traction lestée",
-                                series: [
-                                    { reps: 10, poids: 0 },
-                                    { reps: 10, poids: 0 },
-                                    { reps: 10, poids: 0 },
-                                    { reps: 10, poids: 0 },
-                                    { reps: 10, poids: 0 }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        type: "triset",
-                        exos: [
-                            {
-                                nom: "Barre au front",
-                                series: [
-                                    { reps: 10, poids: 30 },
-                                    { reps: 10, poids: 30 },
-                                    { reps: 10, poids: 30 }
-                                ]
-                            },
-                            {
-                                nom: "Rowing buste penché jammer arms",
-                                series: [
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 }
-                                ]
-                            },
-                            {
-                                nom: "Shrug jammer arms",
-                                series: [
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 }
-                                ]
-                            },
-                        ]
-                    },
-                    {
-                        type: "superset",
-                        exos: [
-                            {
-                                nom: "Rowing horizontal poulie basse",
-                                series: [
-                                    { reps: 15, poids: 50 },
-                                    { reps: 15, poids: 50 },
-                                    { reps: 15, poids: 50 }
-                                ]
-                            },
-                            {
-                                nom: "Dips",
-                                series: [
-                                    { reps: 20, poids: 0 },
-                                    { reps: 20, poids: 0 },
-                                    { reps: 20, poids: 0 }
                                 ]
                             }
                         ]
@@ -1755,41 +1662,17 @@ const workouts = [
         }
     },
 
-    { title: "Séance BikeERG orientée FORCE", material: ["bike-erg"], body: "bas", duration: 40, type: "CARDIO", level: "Intense", desc: "séance de fractionné pendant 40 minutes.",
-      details: { format_label: "SÉANCE CARDIO — 40 MINUTES", exercises: [
-          { text: "Échauffement : 10 minutes (damper 2-3)" }, { text: "Fractionné : 20 minutes — 10 fois :" }, { text: "→ 1 minute d'effort (damper et RPM selon niveau, min. 70-75 RPM)" }, { text: "→ 1 minute de récupération" }, { text: "Récupération : 10 minutes (damper 2-3)" }
-        ], conseil: "40 minutes avec 20 de fractionné. Adapter le damper (minimum 4) et le RPM. Le RPM doit rester constant pendant les minutes d'effort.",
+    { title: "Séance BikeERG orientée FORCE", material: ["bike-erg"], body: "bas", duration: 40, type: "CARDIO", level: "Intense",
+      desc: "Séance de fractionné 40 min sur BikeERG. ▪️ 10 min échauffement. ▪️ 20 min fractionné (10×1min effort / 1min récup). ▪️ 10 min retour au calme. Choisir son damper et son plage RPM cible.",
+      details: {
+        format_label: "BIKEERG FORCE — 40 MINUTES",
+        type_special: "bikeerg_force",
+        conseil: "Le damper contrôle la résistance de l'air : plus il est élevé, plus chaque coup de pédale est lourd. Maintenez un RPM constant pendant toute la minute d'effort — c'est la clé de la séance. Échauffement et retour au calme : damper 2-3.",
         chargeable: true,
-                  chargement: {
-                  type: "surmesure",
-                  nom: "BikeERG orientée FORCE 40 minutes",
-                  repeat: 0,
-                  phases: [
-                    { type: "warmup", sec: 600, text: "échauffement : mettre le damper(levier de résistance) sur 2-3" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "travail", sec: 60, text: "🚴 1 minute d'effort : damper 4 mini | RPM constant mini 70-75 RPM" },
-                    { type: "repos", sec: 60, text: "💤 1 minute de récupération" },
-                    { type: "recup", sec: 600, text: "retour au calme : damper 2-3" },
-                  ]
-                  }       
-        }},
+        dampers: [3, 4, 5, 6],
+        rpms: ["70↔75", "75↔80", "80↔85", "85↔90", "90↔95"]
+      }
+    },
 
     { title: "Séance intervalle BikeERG", material: ["bike-erg"], body: "bas", duration: 30, type: "CARDIO", level: "Moyen", desc: "séance de fractionné pendant 30 minutes.",
       details: { format_label: "SÉANCE CARDIO — 30 MINUTES", exercises: [
@@ -2368,6 +2251,62 @@ function openModal(index) {
             btnCharger3.className = 'btn-modal-charger';
             btnCharger3.textContent = '🚀 Charger dans Créer sa séance';
             btnCharger3.onclick = function() { chargerSeanceErgo(); };
+            footer3.insertBefore(btnCharger3, footer3.firstChild);
+        }
+        return;
+    }
+
+    // ── BikeERG FORCE : double sélecteur damper + RPM ──────────────────────────
+    if (d.type_special === 'bikeerg_force') {
+        html += '<p class="modal-format-label">' + d.format_label + '</p>';
+
+        // Sélecteur Damper
+        html += '<div class="run-tempo-selector">';
+        html += '<p class="modal-section-title">🎛 Choisir le Damper (résistance)</p>';
+        html += '<div class="niveau-buttons">';
+        d.dampers.forEach(function(v, i) {
+            var activeClass = i === 0 ? ' active' : '';
+            html += '<button class="btn-niveau' + activeClass + '" id="btn-damper-' + v + '" onclick="selectBikeERGDamper(' + v + ')">' + v + '</button>';
+        });
+        html += '</div></div>';
+
+        // Sélecteur RPM
+        html += '<div class="run-tempo-selector" style="margin-top:12px;">';
+        html += '<p class="modal-section-title">⚡ Choisir la plage RPM cible</p>';
+        html += '<div class="niveau-buttons">';
+        d.rpms.forEach(function(v, i) {
+            var activeClass = i === 0 ? ' active' : '';
+            html += '<button class="btn-niveau btn-niveau-wide' + activeClass + '" id="btn-rpm-' + i + '" onclick="selectBikeERGRpm(' + i + ')">' + v + '</button>';
+        });
+        html += '</div></div>';
+
+        // Zone de synthèse
+        html += '<div id="bikeerg-synthese"></div>';
+
+        if (d.conseil) {
+            html += '<div class="modal-conseil"><strong>&#x1F4A1; Conseil</strong> ' + d.conseil + '</div>';
+        }
+
+        document.getElementById('modal-body').innerHTML = html;
+        window._bikeergDampers = d.dampers;
+        window._bikeergRpms   = d.rpms;
+        window._bikeergDamper = d.dampers[0];
+        window._bikeergRpmIdx = 0;
+        _updateBikeERGSynthese();
+
+        document.getElementById('modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // Bouton Charger
+        var footer3 = document.getElementById('modal-footer');
+        var existingBtn3 = document.getElementById('btn-charger');
+        if (existingBtn3) existingBtn3.remove();
+        if (d.chargeable && footer3) {
+            var btnCharger3 = document.createElement('button');
+            btnCharger3.id = 'btn-charger';
+            btnCharger3.className = 'btn-modal-charger';
+            btnCharger3.textContent = '🚀 Charger dans Créer sa séance';
+            btnCharger3.onclick = function() { chargerSeanceBikeERGForce(); };
             footer3.insertBefore(btnCharger3, footer3.firstChild);
         }
         return;
@@ -2998,3 +2937,76 @@ function resetFiltres() {
 //        }
 //    },
 
+
+// ══════════════════════════════════════════════════════════════
+// BIKEERG FORCE — sélecteurs damper + RPM + chargement
+// ══════════════════════════════════════════════════════════════
+
+function selectBikeERGDamper(val) {
+    window._bikeergDamper = val;
+    (window._bikeergDampers || []).forEach(function(v) {
+        var btn = document.getElementById('btn-damper-' + v);
+        if (btn) btn.className = 'btn-niveau' + (v === val ? ' active' : '');
+    });
+    _updateBikeERGSynthese();
+}
+
+function selectBikeERGRpm(idx) {
+    window._bikeergRpmIdx = idx;
+    (window._bikeergRpms || []).forEach(function(v, i) {
+        var btn = document.getElementById('btn-rpm-' + i);
+        if (btn) btn.className = 'btn-niveau btn-niveau-wide' + (i === idx ? ' active' : '');
+    });
+    _updateBikeERGSynthese();
+}
+
+function _updateBikeERGSynthese() {
+    var container = document.getElementById('bikeerg-synthese');
+    if (!container) return;
+    var damper = window._bikeergDamper || 3;
+    var rpmIdx = window._bikeergRpmIdx || 0;
+    var rpm    = (window._bikeergRpms || [])[rpmIdx] || '70↔75';
+
+    var html = '<div style="background:#f0f4ff;border-radius:10px;padding:14px;margin:14px 0;border-left:4px solid #1a237e;">';
+    html += '<div style="font-weight:800;font-size:0.85em;text-transform:uppercase;letter-spacing:0.06em;color:#1a237e;margin-bottom:10px;">📋 Votre séance personnalisée</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">';
+    html += '<span style="background:#1a237e;color:#fff;border-radius:8px;padding:5px 12px;font-size:0.85em;font-weight:700;">🎛 Damper ' + damper + '</span>';
+    html += '<span style="background:#c0392b;color:#fff;border-radius:8px;padding:5px 12px;font-size:0.85em;font-weight:700;">⚡ ' + rpm + ' RPM</span>';
+    html += '</div>';
+    html += '<ul style="margin:0;padding-left:18px;font-size:0.83em;color:#333;line-height:1.8;">';
+    html += '<li>Échauffement 10 min — damper 2-3, pédalage libre</li>';
+    html += '<li>Fractionné 20 min — 10 fois :</li>';
+    html += '<ul style="padding-left:16px;">';
+    html += '<li>🚴 1 min effort — <strong>Damper ' + damper + ' | ' + rpm + ' RPM constant</strong></li>';
+    html += '<li>💤 1 min récupération — relâcher</li>';
+    html += '</ul>';
+    html += '<li>Retour au calme 10 min — damper 2-3, pédalage libre</li>';
+    html += '</ul></div>';
+
+    container.innerHTML = html;
+}
+
+function chargerSeanceBikeERGForce() {
+    var damper = window._bikeergDamper || 3;
+    var rpmIdx = window._bikeergRpmIdx || 0;
+    var rpm    = (window._bikeergRpms || [])[rpmIdx] || '70↔75';
+
+    var effortText = '🚴 1 min d\'effort — Damper ' + damper + ' | ' + rpm + ' RPM constant';
+    var reposText  = '💤 1 min récupération — relâcher, damper inchangé';
+
+    var phases = [];
+    phases.push({ type: 'warmup', sec: 600, text: 'Échauffement — damper 2-3, pédalage libre et progressif' });
+    for (var i = 0; i < 10; i++) {
+        phases.push({ type: 'travail', sec: 60, text: effortText });
+        phases.push({ type: 'repos',   sec: 60, text: reposText });
+    }
+    phases.push({ type: 'recup', sec: 600, text: 'Retour au calme — damper 2-3, pédalage libre' });
+
+    var chargement = {
+        type: 'surmesure',
+        nom: 'BikeERG FORCE — Damper ' + damper + ' | ' + rpm + ' RPM',
+        phases: phases
+    };
+    var encoded = encodeURIComponent(JSON.stringify(chargement));
+    window.location.href = 'seances_perso.html?seance=' + encoded;
+}

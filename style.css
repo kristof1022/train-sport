@@ -673,6 +673,17 @@ main h1, main h2 {
     transform: scale(1.1);
 }
 
+/* Variante large pour les boutons RPM (texte type 70↔75) */
+.btn-niveau-wide {
+    width: auto;
+    min-width: 62px;
+    height: 38px;
+    border-radius: 20px;
+    padding: 0 10px;
+    font-size: 0.78em;
+    white-space: nowrap;
+}
+
 .type-cardio .btn-niveau.active {
     background: #000;
     border-color: #000;
