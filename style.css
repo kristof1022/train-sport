@@ -54,7 +54,7 @@ nav ul li {
 
 nav ul li a {
     display: block;
-    color: white;
+    color: #90caf9;
     text-decoration: none;
     padding: 20px 15px; /* On réduit de 25px à 15px pour gagner de la place */
     font-weight: bold;
@@ -64,6 +64,7 @@ nav ul li a {
 
 nav ul li a:hover {
     background-color: #333;
+    color: white;
 }
 
 .submenu {
