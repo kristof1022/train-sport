@@ -1484,8 +1484,8 @@ const workouts = [
     // ══════════════════════════════════════════════════════════
   
      {
-        title: "Pectoraux / Biceps",
-        material: ["barre","haltere","elastique","machineguidee"],
+        title: "💥Pectoraux / Biceps",
+        material: ["barre","haltere","elastique","machineguidee","jammer"],
         body: "haut",
         duration: 0,
         type: "MUSCU",
@@ -1502,7 +1502,7 @@ const workouts = [
             chargeable: true,
             chargement: {
                 type: "muscu",
-                nom: "SÉANCE Pectoraux / Biceps",
+                nom: "💥SÉANCE Pectoraux / Biceps",
                 recupSerie: 90,
                 recupBloc: 120,
                 blocs: [
@@ -1560,6 +1560,197 @@ const workouts = [
                                     { reps: 12, poids: 0 },
                                     { reps: 12, poids: 0 }
                                 ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+  
+    {
+        title: "💥Dos / Triceps",
+        material: ["traction","barre","haltere","elastique","machineguidee", "jammer"],
+        body: "haut",
+        duration: 0,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "Séance dos triceps : Traction, TRISET Barre au front/Rowing buste penché jammer arms/Shrug jammer arms, SUPERSET Rowing poulie basse/Dips",
+        details: {
+            format_label: "MUSCU",
+            exercises: [
+                { text: "Tractions (lestées) — 5 ×10 à 12 reps" },
+                { text: "TRISET Barre au front/Rowing buste penché jammer arms/Shrug jammer arms — 3×10/15 reps" },
+                { text: "SUPERSET Rowing horizontal poulie basse/Dips — 3×15/20 reps" }
+            ],
+            conseil: "10 minutes d'échauffement avec montée en gamme sur les tractions (tractions élastiques, échauffement rotateurs épaules. La séance avec échauffement dure environ 1 heure. Adapter les poids à son niveau.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "💥SÉANCE Dos / Triceps",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Traction - Traction lestée",
+                                series: [
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "triset",
+                        exos: [
+                            {
+                                nom: "Barre au front",
+                                series: [
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 }
+                                ]
+                            },
+                            {
+                                nom: "Rowing buste penché jammer arms",
+                                series: [
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 }
+                                ]
+                            },
+                            {
+                                nom: "Shrug jammer arms",
+                                series: [
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 40 }
+                                ]
+                            },
+                        ]
+                    },
+                    {
+                        type: "superset",
+                        exos: [
+                            {
+                                nom: "Rowing horizontal poulie basse",
+                                series: [
+                                    { reps: 15, poids: 50 },
+                                    { reps: 15, poids: 50 },
+                                    { reps: 15, poids: 50 }
+                                ]
+                            },
+                            {
+                                nom: "Dips",
+                                series: [
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+  
+    {
+        title: "💥Jambes",
+        material: ["jammer","barre","haltere","elastique","machineguidee","landmine"],
+        body: "bas",
+        duration: 0,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "Séance Jambes : Fentes, Landmine squat, Soulevé de terre jambes tendues, Goblet squat haltère talons surélevés, Extension Mollets debout ",
+        details: {
+            format_label: "MUSCU",
+            exercises: [
+                { text: "Fentes jammer arms — 4 × 08 à 12 reps" },
+                { text: "Landmine squat — 3×10/15 reps" },
+                { text: "Soulevé de terre à la barre jambes tendues — 3×10/15 reps" },
+                { text: "Goblet squat haltère talons surélevés — 3×15/20 reps" },
+                { text: "Extension Mollets debout avec Landmine — 4×15/20 reps" }
+            ],
+            conseil: "10 minutes d'échauffement Squats et fentes au poids de corps. Mobilité : maintien squat position basse, rotation du torse, enroulement de colonne...",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "💥SÉANCE Jambes",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Fentes jammer arms (poids sur les 2 jammers arms)",
+                                series: [
+                                    { reps: 08, poids: 64 },
+                                    { reps: 10, poids: 60 },
+                                    { reps: 10, poids: 60 },
+                                    { reps: 10, poids: 60 },
+                                    { reps: 10, poids: 60 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Landmine squat",
+                                series: [
+                                    { reps: 15, poids: 25 },
+                                    { reps: 15, poids: 30 },
+                                    { reps: 15, poids: 33 },
+                                 ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Soulevé de terre à la barre jambes tendues",
+                                series: [
+                                    { reps: 16, poids: 45 },
+                                    { reps: 16, poids: 45 },
+                                    { reps: 16, poids: 45 },
+                                 ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Goblet squat haltère talons surélevés",
+                                series: [
+                                    { reps: 16, poids: 27.5 },
+                                    { reps: 16, poids: 27.5 },
+                                    { reps: 16, poids: 27.5 },
+                                 ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Extension Mollets debout avec Landmine",
+                                series: [
+                                    { reps: 16, poids: 25 },
+                                    { reps: 16, poids: 25 },
+                                    { reps: 16, poids: 25 },
+                                    { reps: 16, poids: 25 },
+                                 ]
                             }
                         ]
                     }
@@ -1667,7 +1858,7 @@ const workouts = [
       details: {
         format_label: "BIKEERG FORCE — 40 MINUTES",
         type_special: "bikeerg_force",
-        conseil: "Le damper contrôle la résistance de l'air : plus il est élevé, plus chaque coup de pédale est lourd. Maintenez un RPM constant pendant toute la minute d'effort — c'est la clé de la séance. Échauffement et retour au calme : damper 2-3.",
+        conseil: "Le damper contrôle la résistance de l'air : plus il est élevé, plus chaque coup de pédale est lourd. Maintenez le RPM sélectionné pendant toute la minute d'effort — c'est la clé de la séance, si c'est trop ➔ dur descendre de niveaux. Échauffement et retour au calme : damper 2ou3.<br>LES NIVEAUX :<br>🐣Rookie - DAMPER 3<br>🥊Challenger - DAMPER 4<br>⚔️ Warrior - DAMPER 5<br>👑 Légende - DAMPER 6",
         chargeable: true,
         dampers: [3, 4, 5, 6],
         rpms: ["70↔75", "75↔80", "80↔85", "85↔90", "90↔95"]
@@ -2249,7 +2440,7 @@ function openModal(index) {
             var btnCharger3 = document.createElement('button');
             btnCharger3.id = 'btn-charger';
             btnCharger3.className = 'btn-modal-charger';
-            btnCharger3.textContent = '🚀 Charger dans Créer sa séance';
+            btnCharger3.textContent = '🚀 Charger dans Ma Séance';
             btnCharger3.onclick = function() { chargerSeanceErgo(); };
             footer3.insertBefore(btnCharger3, footer3.firstChild);
         }
@@ -2298,16 +2489,16 @@ function openModal(index) {
         document.body.style.overflow = 'hidden';
 
         // Bouton Charger
-        var footer3 = document.getElementById('modal-footer');
-        var existingBtn3 = document.getElementById('btn-charger');
-        if (existingBtn3) existingBtn3.remove();
-        if (d.chargeable && footer3) {
-            var btnCharger3 = document.createElement('button');
-            btnCharger3.id = 'btn-charger';
-            btnCharger3.className = 'btn-modal-charger';
-            btnCharger3.textContent = '🚀 Charger dans Créer sa séance';
-            btnCharger3.onclick = function() { chargerSeanceBikeERGForce(); };
-            footer3.insertBefore(btnCharger3, footer3.firstChild);
+        var footerBike = document.getElementById('modal-footer');
+        var existingBtnBike = document.getElementById('btn-charger');
+        if (existingBtnBike) existingBtnBike.remove();
+        if (d.chargeable && footerBike) {
+            var btnChargerBike = document.createElement('button');
+            btnChargerBike.id = 'btn-charger';
+            btnChargerBike.className = 'btn-modal-charger';
+            btnChargerBike.textContent = '🚀 Charger dans Ma Séance';
+            btnChargerBike.onclick = function() { chargerSeanceBikeERGForce(); };
+            footerBike.insertBefore(btnChargerBike, footerBike.firstChild);
         }
         return;
     }
@@ -2351,7 +2542,7 @@ function openModal(index) {
             var btnCharger2 = document.createElement('button');
             btnCharger2.id = 'btn-charger';
             btnCharger2.className = 'btn-modal-charger';
-            btnCharger2.textContent = '🚀 Charger dans Créer sa séance';
+            btnCharger2.textContent = '🚀 Charger dans Ma Séance';
             btnCharger2.onclick = isRameur ?
                 function() { chargerSeanceRameur(); } :
                 function() { chargerSeance({ type: 'avec_niveaux' }); };
@@ -2439,7 +2630,7 @@ function openModal(index) {
 
     document.getElementById('modal-body').innerHTML = html;
 
-    // Bouton "Charger dans Créer sa séance" si chargeable
+    // Bouton "Charger dans Ma Séance" si chargeable
     var footerMain = document.getElementById('modal-footer');
     var existingBtnMain = document.getElementById('btn-charger');
     if (existingBtnMain) existingBtnMain.remove();
@@ -2447,7 +2638,7 @@ function openModal(index) {
         var btnCharger = document.createElement('button');
         btnCharger.id = 'btn-charger';
         btnCharger.className = 'btn-modal-charger';
-        btnCharger.textContent = '🚀 Charger dans Créer sa séance';
+        btnCharger.textContent = '🚀 Charger dans Ma Séance';
         btnCharger.onclick = function() { chargerSeance(d.chargement); };
         footerMain.insertBefore(btnCharger, footerMain.firstChild);
     }
