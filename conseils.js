@@ -91,6 +91,8 @@ const conseils = [
          }
      },
     
+    
+    
     {
         title: "RAMEUR CONCEPT2 - le levier de réglage : DAMPER",
         categorie: "Entraînement",
@@ -240,6 +242,21 @@ const conseils = [
             ]
         }
     },
+    
+    {
+        title: "DATA ANALYTICS",
+        categorie: "suivi et analyse",
+        tags: ["DATA"],
+        desc: "Analyse de performance -en test-",
+        details: {
+             contenu: [
+                { type: "texte", texte: "<strong>clique sur le lien ci-dessous</strong>" },
+                { type: "texte", texte: "(c'est en phase de test)" },
+                { type: "separateur" },
+                 { type: "lien", texte: "📊 Ouvrir THT Analytics", url: "THT_Analytics_Dashboard.html" },
+                 ]
+         }
+     },
 
     // --- EXEMPLE AVEC LIEN PDF ---
     // {
@@ -1411,20 +1428,21 @@ function _buildCalendrier(year, month, byDate, now) {
             html += '<div style="' + cellStyle + '">';
         }
 
+function renderDayEntry(e) {
+    var col = ACTIVITE_COLORS[e.type] || '#888';
+    var lbl = ACTIVITE_LABELS[e.type] || e.type;
+    return '<div style="background:' + col + ';color:#fff;border-radius:2px;padding:1px 2px;' +
+           'font-size:0.52em;font-weight:700;line-height:1.3;overflow:hidden;white-space:nowrap;' +
+           'text-overflow:ellipsis;margin-bottom:1px;flex-shrink:0;" title="' + lbl + ' — ' + e.nom.replace(/"/g,'&quot;') + '">' +
+           lbl + '</div>';
+}
+
         // Numéro du jour
         html += '<div style="text-align:center;font-size:0.65em;font-weight:' + (isToday ? '900' : '600') + ';' +
                 'color:' + (isToday ? '#27ae60' : '#666') + ';line-height:1.4;flex-shrink:0;">' + day + '</div>';
 
         // Puces : une ligne par séance, nom tronqué, hauteur fixe
-        dayEntries.forEach(function(e) {
-            var col = ACTIVITE_COLORS[e.type] || '#888';
-            var lbl = ACTIVITE_LABELS[e.type] || e.type;
-            // Juste le label du type sur la puce, nom au survol/clic
-            html += '<div style="background:' + col + ';color:#fff;border-radius:2px;padding:1px 2px;' +
-                    'font-size:0.52em;font-weight:700;line-height:1.3;overflow:hidden;white-space:nowrap;' +
-                    'text-overflow:ellipsis;margin-bottom:1px;flex-shrink:0;" title="' + lbl + ' — ' + e.nom.replace(/"/g,'&quot;') + '">' +
-                    lbl + '</div>';
-        });
+        html += dayEntries.map(renderDayEntry).join('');
 
         html += '</div>';
     }
