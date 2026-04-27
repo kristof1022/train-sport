@@ -1962,6 +1962,70 @@ const workouts = [
         }
     },
 
+    // SÉANCE SKIERG TEMPO
+    // ══════════════════════════════════════════════════════════
+    {
+        title: "Séance SKIERG TEMPO",
+        material: ["ski-erg"],
+        body: "complet",
+        duration: 40,
+        type: "CARDIO",
+        level: "Moyen",
+        desc: "Séance structurée sur SkiErg Concept2 — 40 minutes avec 6 phases de travail progressif. 12 niveaux disponibles. Haut du corps dominant.",
+        details: {
+            format_label: "SKIERG TEMPO — 40 MINUTES",
+            type_special: "avec_niveaux",
+            conseil: "Séance sur SkiErg Concept2. Le split /500m est l'indicateur clé — il sera naturellement plus lent qu'au rameur (haut du corps uniquement). Les 12 niveaux couvrent du débutant au confirmé. Concentrez-vous sur la technique : traction des bras, gainage, flexion de hanches. Min 0-10 : échauffement avec 3 accélérations. Min 32-40 : retour au calme.",
+            chargeable: true,
+            niveaux: [
+                { n:  1, attaque: "3:00", transition: "3:15", base: "3:25", remontee: "3:15", soutenu: "3:05", pointe: "2:55" },
+                { n:  2, attaque: "2:55", transition: "3:05", base: "3:15", remontee: "3:05", soutenu: "3:00", pointe: "2:50" },
+                { n:  3, attaque: "2:50", transition: "3:00", base: "3:10", remontee: "3:00", soutenu: "2:55", pointe: "2:45" },
+                { n:  4, attaque: "2:45", transition: "2:55", base: "3:05", remontee: "2:55", soutenu: "2:50", pointe: "2:40" },
+                { n:  5, attaque: "2:40", transition: "2:50", base: "3:00", remontee: "2:50", soutenu: "2:45", pointe: "2:35" },
+                { n:  6, attaque: "2:35", transition: "2:45", base: "2:55", remontee: "2:45", soutenu: "2:40", pointe: "2:30" },
+                { n:  7, attaque: "2:30", transition: "2:40", base: "2:50", remontee: "2:40", soutenu: "2:35", pointe: "2:25" },
+                { n:  8, attaque: "2:25", transition: "2:35", base: "2:45", remontee: "2:35", soutenu: "2:30", pointe: "2:20" },
+                { n:  9, attaque: "2:20", transition: "2:30", base: "2:40", remontee: "2:30", soutenu: "2:25", pointe: "2:15" },
+                { n: 10, attaque: "2:15", transition: "2:25", base: "2:35", remontee: "2:25", soutenu: "2:20", pointe: "2:10" },
+                { n: 11, attaque: "2:10", transition: "2:20", base: "2:30", remontee: "2:20", soutenu: "2:15", pointe: "2:05" },
+                { n: 12, attaque: "2:05", transition: "2:15", base: "2:25", remontee: "2:15", soutenu: "2:10", pointe: "2:00" }
+            ]
+        }
+    },
+
+    // SÉANCE ASSAULT BIKE TEMPO
+    // ══════════════════════════════════════════════════════════
+    {
+        title: "Séance ASSAULT BIKE TEMPO",
+        material: ["assault-bike"],
+        body: "complet",
+        duration: 20,
+        type: "CARDIO",
+        level: "Intense",
+        desc: "Séance structurée sur Assault Bike — 20 minutes intenses corps entier. 12 niveaux en RPM. 5 min échauffement + séquence TEMPO + 3 min retour au calme.",
+        details: {
+            format_label: "ASSAULT BIKE TEMPO — 20 MINUTES",
+            type_special: "avec_niveaux",
+            conseil: "L'Assault Bike est l'un des appareils les plus exigeants : la résistance augmente exponentiellement avec la vitesse. Les RPM sont votre boussole — maintenez-les constants pendant les phases d'effort. Récupération active (pédalage très léger) entre chaque phase, ne vous arrêtez pas. Ne sous-estimez jamais cet appareil : commencez au niveau 1 si vous le découvrez.",
+            chargeable: true,
+            niveaux: [
+                { n:  1, attaque: "45-50",  transition: "40-45", base: "35-40", remontee: "42-47", soutenu: "45-50", pointe: "55-60"  },
+                { n:  2, attaque: "50-55",  transition: "45-50", base: "38-43", remontee: "47-52", soutenu: "50-55", pointe: "60-65"  },
+                { n:  3, attaque: "55-60",  transition: "50-55", base: "42-47", remontee: "52-57", soutenu: "55-60", pointe: "65-70"  },
+                { n:  4, attaque: "58-63",  transition: "53-58", base: "45-50", remontee: "55-60", soutenu: "58-63", pointe: "68-73"  },
+                { n:  5, attaque: "62-67",  transition: "57-62", base: "48-53", remontee: "58-63", soutenu: "62-67", pointe: "72-77"  },
+                { n:  6, attaque: "65-70",  transition: "60-65", base: "52-57", remontee: "62-67", soutenu: "65-70", pointe: "75-80"  },
+                { n:  7, attaque: "68-73",  transition: "63-68", base: "55-60", remontee: "65-70", soutenu: "68-73", pointe: "78-83"  },
+                { n:  8, attaque: "72-77",  transition: "67-72", base: "58-63", remontee: "68-73", soutenu: "72-77", pointe: "82-87"  },
+                { n:  9, attaque: "75-80",  transition: "70-75", base: "62-67", remontee: "72-77", soutenu: "75-80", pointe: "85-90"  },
+                { n: 10, attaque: "78-83",  transition: "73-78", base: "65-70", remontee: "75-80", soutenu: "78-83", pointe: "88-93"  },
+                { n: 11, attaque: "82-87",  transition: "77-82", base: "68-73", remontee: "78-83", soutenu: "82-87", pointe: "92-97"  },
+                { n: 12, attaque: "85-90",  transition: "80-85", base: "72-77", remontee: "82-87", soutenu: "85-90", pointe: "95-100" }
+            ]
+        }
+    },
+
     { title: "Séance RUN TEMPO sur tapis", material: ["tapis-incurve"], body: "bas", duration: 40, type: "CARDIO", level: "Moyen", desc: "séance de fractionné pyramidale. <br>▪️12 niveaux disponibles.  <br>▪️40 minutes",
       details: {
         format_label: "CARDIO PYRAMIDAL — 40 MINUTES",
@@ -2510,7 +2574,12 @@ function openModal(index) {
         html += '<div class="niveau-buttons">';
         for (i = 1; i <= 12; i++) {
             activeClass = i === 1 ? ' active' : '';
-            var fnSelect = (d.niveaux && d.niveaux[0] && d.niveaux[0].attaque !== undefined) ? 'selectNiveauRameur' : 'selectNiveau';
+            var isRameurType2 = d.niveaux && d.niveaux[0] && d.niveaux[0].attaque !== undefined;
+            var isSkiErgBtn = isRameurType2 && w.material && (Array.isArray(w.material) ? w.material.includes('ski-erg') : w.material === 'ski-erg');
+            var isAssaultBtn = isRameurType2 && w.material && (Array.isArray(w.material) ? w.material.includes('assault-bike') : w.material === 'assault-bike');
+            var fnSelect = isRameurType2
+                ? (isAssaultBtn ? 'selectNiveauAssaultBike' : isSkiErgBtn ? 'selectNiveauSkiErg' : 'selectNiveauRameur')
+                : 'selectNiveau';
             html += '<button class="btn-niveau' + activeClass + '" onclick="' + fnSelect + '(' + i + ')" id="btn-niveau-' + i + '">' + i + '</button>';
         }
         html += '</div></div>';
@@ -2522,9 +2591,16 @@ function openModal(index) {
         window._niveauxActifs = d.niveaux;
         window._niveauActif = 1;
 
-        // Détecter rameur (a un champ 'attaque') ou run tempo
-        var isRameur = (d.niveaux && d.niveaux[0] && d.niveaux[0].attaque !== undefined);
-        if (isRameur) {
+        // Détecter rameur, skierg, assault bike ou run tempo
+        var isAvecAttaque = (d.niveaux && d.niveaux[0] && d.niveaux[0].attaque !== undefined);
+        var isSkiErg     = isAvecAttaque && w.material && (Array.isArray(w.material) ? w.material.includes('ski-erg')      : w.material === 'ski-erg');
+        var isAssaultBike = isAvecAttaque && w.material && (Array.isArray(w.material) ? w.material.includes('assault-bike') : w.material === 'assault-bike');
+        var isRameur2    = isAvecAttaque && !isSkiErg && !isAssaultBike;
+        if (isAssaultBike) {
+            selectNiveauAssaultBike(1);
+        } else if (isSkiErg) {
+            selectNiveauSkiErg(1);
+        } else if (isRameur2) {
             selectNiveauRameur(1);
         } else {
             selectNiveau(1);
@@ -2543,9 +2619,15 @@ function openModal(index) {
             btnCharger2.id = 'btn-charger';
             btnCharger2.className = 'btn-modal-charger';
             btnCharger2.textContent = '🚀 Charger dans Ma Séance';
-            btnCharger2.onclick = isRameur ?
-                function() { chargerSeanceRameur(); } :
-                function() { chargerSeance({ type: 'avec_niveaux' }); };
+            if (isAssaultBike) {
+                btnCharger2.onclick = function() { chargerSeanceAssaultBike(); };
+            } else if (isSkiErg) {
+                btnCharger2.onclick = function() { chargerSeanceSkiErg(); };
+            } else if (isRameur2) {
+                btnCharger2.onclick = function() { chargerSeanceRameur(); };
+            } else {
+                btnCharger2.onclick = function() { chargerSeance({ type: 'avec_niveaux' }); };
+            }
             footer2.insertBefore(btnCharger2, footer2.firstChild);
         }
         return;
@@ -3196,6 +3278,231 @@ function chargerSeanceBikeERGForce() {
     var chargement = {
         type: 'surmesure',
         nom: 'BikeERG FORCE — Damper ' + damper + ' | ' + rpm + ' RPM',
+        phases: phases
+    };
+    var encoded = encodeURIComponent(JSON.stringify(chargement));
+    window.location.href = 'seances_perso.html?seance=' + encoded;
+}
+
+// ══════════════════════════════════════════════════════════════
+// SKIERG TEMPO — affichage niveaux + chargement chrono
+// ══════════════════════════════════════════════════════════════
+
+function selectNiveauSkiErg(n) {
+    window._niveauActif = n;
+    var niveaux = window._niveauxActifs;
+    if (!niveaux) return;
+    var niveau = niveaux.find(function(nv) { return nv.n === n; });
+    if (!niveau) return;
+
+    // Mettre à jour les boutons
+    for (var i = 1; i <= 12; i++) {
+        var btn = document.getElementById('btn-niveau-' + i);
+        if (btn) btn.className = 'btn-niveau' + (i === n ? ' active' : '');
+    }
+
+    // Tableau des splits par phase
+    var html = '<div class="run-tempo-phases-wrap">';
+    html += '<p class="modal-section-title" style="margin:12px 0 8px;">🎿 Splits /500m — Niveau ' + n + '</p>';
+    html += '<table style="width:100%; border-collapse:collapse; font-size:0.88em; margin-bottom:14px;">';
+    html += '<thead><tr class="rameur-thead">';
+    html += '<th style="padding:6px 8px; text-align:left;">Phase</th>';
+    html += '<th style="padding:6px 8px; text-align:left;">Durée</th>';
+    html += '<th style="padding:6px 8px; text-align:center;">Split /500m</th>';
+    html += '</tr></thead><tbody>';
+
+    var phases = [
+        { label: "🔥 Attaque",    dur: "1 min",  split: niveau.attaque,    cls: "run-effort" },
+        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
+        { label: "🔼 Transition",  dur: "2 min",  split: niveau.transition,  cls: "run-effort" },
+        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
+        { label: "📍 La Base",     dur: "8 min",  split: niveau.base,        cls: "run-effort" },
+        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
+        { label: "📈 Remontée",   dur: "3 min",  split: niveau.remontee,    cls: "run-effort" },
+        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
+        { label: "💪 Soutenu",    dur: "2 min",  split: niveau.soutenu,     cls: "run-effort" },
+        { label: "😮‍💨 Récup",       dur: "1 min",  split: "Récupération",    cls: "run-recup"  },
+        { label: "🚀 Pointe",     dur: "1 min",  split: niveau.pointe,      cls: "run-effort" }
+    ];
+
+    phases.forEach(function(p) {
+        var splitDisplay = p.cls === 'run-effort'
+            ? '<strong class="rameur-split-effort">' + p.split + '</strong>'
+            : '<em class="rameur-split-recup">' + p.split + '</em>';
+        html += '<tr class="' + p.cls + '" style="border-bottom:1px solid #eee;">';
+        html += '<td style="padding:6px 8px;">' + p.label + '</td>';
+        html += '<td class="rameur-dur">' + p.dur + '</td>';
+        html += '<td style="padding:6px 8px; text-align:center;">' + splitDisplay + '</td>';
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+
+    // Déroulé complet
+    html += '<ul class="modal-exercises run-tempo-list">';
+    var deroule = [
+        { min: "0:00-0:10", label: "🎿 Échauffement — skier tranquillement, 3 accélérations de 30sec progressives", cls: "run-recup" },
+        { min: "0:10-0:11", label: "🔥 Attaque — " + niveau.attaque + " /500m", cls: "run-effort" },
+        { min: "0:11-0:12", label: "😮‍💨 Récupération — relâcher, respirer", cls: "run-recup" },
+        { min: "0:12-0:14", label: "🔼 Transition — " + niveau.transition + " /500m", cls: "run-effort" },
+        { min: "0:14-0:15", label: "😮‍💨 Récupération", cls: "run-recup" },
+        { min: "0:15-0:23", label: "📍 La Base — " + niveau.base + " /500m (effort soutenu constant)", cls: "run-effort" },
+        { min: "0:23-0:24", label: "😮‍💨 Récupération", cls: "run-recup" },
+        { min: "0:24-0:27", label: "📈 Remontée — " + niveau.remontee + " /500m", cls: "run-effort" },
+        { min: "0:27-0:28", label: "😮‍💨 Récupération", cls: "run-recup" },
+        { min: "0:28-0:30", label: "💪 Soutenu — " + niveau.soutenu + " /500m", cls: "run-effort" },
+        { min: "0:30-0:31", label: "😮‍💨 Récupération", cls: "run-recup" },
+        { min: "0:31-0:32", label: "🚀 Pointe — " + niveau.pointe + " /500m (tout donner)", cls: "run-effort" },
+        { min: "0:32-0:40", label: "🧘 Retour au calme — skier très lentement, récupération active", cls: "run-recup" }
+    ];
+    deroule.forEach(function(item) {
+        html += '<li class="' + item.cls + '">';
+        html += '<span class="run-min">' + item.min + '</span>';
+        html += '<span class="run-speed">' + item.label + '</span>';
+        html += '</li>';
+    });
+    html += '</ul></div>';
+
+    var container = document.getElementById('run-tempo-phases');
+    if (container) container.innerHTML = html;
+}
+
+function chargerSeanceSkiErg() {
+    var niveauActif = window._niveauActif || 1;
+    var niveaux = window._niveauxActifs;
+    var niveau = niveaux ? niveaux.find(function(nv) { return nv.n === niveauActif; }) : null;
+    if (!niveau) return;
+
+    var phases = [
+        { type: 'warmup', sec: 600,  text: '🎿 Échauffement — skier tranquillement, 3 accélérations de 30sec' },
+        { type: 'travail', sec: 60,  text: '🔥 Attaque — ' + niveau.attaque + ' /500m' },
+        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération — relâcher, respirer' },
+        { type: 'travail', sec: 120, text: '🔼 Transition — ' + niveau.transition + ' /500m' },
+        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
+        { type: 'travail', sec: 480, text: '📍 La Base — ' + niveau.base + ' /500m' },
+        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
+        { type: 'travail', sec: 180, text: '📈 Remontée — ' + niveau.remontee + ' /500m' },
+        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
+        { type: 'travail', sec: 120, text: '💪 Soutenu — ' + niveau.soutenu + ' /500m' },
+        { type: 'repos',   sec: 60,  text: '😮‍💨 Récupération' },
+        { type: 'travail', sec: 60,  text: '🚀 Pointe — ' + niveau.pointe + ' /500m' },
+        { type: 'recup',   sec: 480, text: '🧘 Retour au calme — skier très lentement' }
+    ];
+
+    var chargement = {
+        type: 'surmesure',
+        nom: 'SkiErg TEMPO — Niveau ' + niveauActif,
+        phases: phases
+    };
+    var encoded = encodeURIComponent(JSON.stringify(chargement));
+    window.location.href = 'seances_perso.html?seance=' + encoded;
+}
+
+// ══════════════════════════════════════════════════════════════
+// ASSAULT BIKE TEMPO — affichage niveaux + chargement chrono
+// ══════════════════════════════════════════════════════════════
+
+function selectNiveauAssaultBike(n) {
+    window._niveauActif = n;
+    var niveaux = window._niveauxActifs;
+    if (!niveaux) return;
+    var niveau = niveaux.find(function(nv) { return nv.n === n; });
+    if (!niveau) return;
+
+    for (var i = 1; i <= 12; i++) {
+        var btn = document.getElementById('btn-niveau-' + i);
+        if (btn) btn.className = 'btn-niveau' + (i === n ? ' active' : '');
+    }
+
+    var html = '<div class="run-tempo-phases-wrap">';
+    html += '<p class="modal-section-title" style="margin:12px 0 8px;">🚴 Cibles RPM — Niveau ' + n + '</p>';
+    html += '<table style="width:100%; border-collapse:collapse; font-size:0.88em; margin-bottom:14px;">';
+    html += '<thead><tr class="rameur-thead">';
+    html += '<th style="padding:6px 8px; text-align:left;">Phase</th>';
+    html += '<th style="padding:6px 8px; text-align:left;">Durée</th>';
+    html += '<th style="padding:6px 8px; text-align:center;">RPM cible</th>';
+    html += '</tr></thead><tbody>';
+
+    var phases = [
+        { label: "🔥 Attaque",   dur: "30 sec", split: niveau.attaque,    cls: "run-effort" },
+        { label: "😮‍💨 Récup",      dur: "30 sec", split: "RPM très bas",    cls: "run-recup"  },
+        { label: "🔼 Transition", dur: "1 min",  split: niveau.transition,  cls: "run-effort" },
+        { label: "😮‍💨 Récup",      dur: "1 min",  split: "RPM très bas",    cls: "run-recup"  },
+        { label: "📍 La Base",    dur: "3 min",  split: niveau.base,        cls: "run-effort" },
+        { label: "😮‍💨 Récup",      dur: "1 min",  split: "RPM très bas",    cls: "run-recup"  },
+        { label: "📈 Remontée",  dur: "1 min",  split: niveau.remontee,    cls: "run-effort" },
+        { label: "😮‍💨 Récup",      dur: "30 sec", split: "RPM très bas",    cls: "run-recup"  },
+        { label: "💪 Soutenu",   dur: "1 min",  split: niveau.soutenu,     cls: "run-effort" },
+        { label: "😮‍💨 Récup",      dur: "30 sec", split: "RPM très bas",    cls: "run-recup"  },
+        { label: "🚀 Pointe",    dur: "20 sec", split: niveau.pointe,      cls: "run-effort" }
+    ];
+
+    phases.forEach(function(p) {
+        var splitDisplay = p.cls === 'run-effort'
+            ? '<strong class="rameur-split-effort">' + p.split + ' RPM</strong>'
+            : '<em class="rameur-split-recup">' + p.split + '</em>';
+        html += '<tr class="' + p.cls + '" style="border-bottom:1px solid #eee;">';
+        html += '<td style="padding:6px 8px;">' + p.label + '</td>';
+        html += '<td class="rameur-dur">' + p.dur + '</td>';
+        html += '<td style="padding:6px 8px; text-align:center;">' + splitDisplay + '</td>';
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+
+    html += '<ul class="modal-exercises run-tempo-list">';
+    var deroule = [
+        { min: "0:00-0:05", label: "🚴 Échauffement — pédalage modéré, montée en température progressive", cls: "run-recup" },
+        { min: "0:05-0:05:30", label: "🔥 Attaque — " + niveau.attaque + " RPM", cls: "run-effort" },
+        { min: "0:05:30-0:06", label: "😮‍💨 Récup active — pédalage très léger", cls: "run-recup" },
+        { min: "0:06-0:07", label: "🔼 Transition — " + niveau.transition + " RPM", cls: "run-effort" },
+        { min: "0:07-0:08", label: "😮‍💨 Récup active", cls: "run-recup" },
+        { min: "0:08-0:11", label: "📍 La Base — " + niveau.base + " RPM (effort constant soutenu)", cls: "run-effort" },
+        { min: "0:11-0:12", label: "😮‍💨 Récup active — ne pas s'arrêter", cls: "run-recup" },
+        { min: "0:12-0:13", label: "📈 Remontée — " + niveau.remontee + " RPM", cls: "run-effort" },
+        { min: "0:13-0:13:30", label: "😮‍💨 Récup active", cls: "run-recup" },
+        { min: "0:13:30-0:14:30", label: "💪 Soutenu — " + niveau.soutenu + " RPM", cls: "run-effort" },
+        { min: "0:14:30-0:15", label: "😮‍💨 Récup active", cls: "run-recup" },
+        { min: "0:15-0:15:20", label: "🚀 Pointe — " + niveau.pointe + " RPM (TOUT DONNER — 20 sec)", cls: "run-effort" },
+        { min: "0:15:20-0:18", label: "🧘 Récupération longue", cls: "run-recup" },
+        { min: "0:18-0:20", label: "🧘 Retour au calme — pédalage très léger, étirements doux", cls: "run-recup" }
+    ];
+    deroule.forEach(function(item) {
+        html += '<li class="' + item.cls + '">';
+        html += '<span class="run-min">' + item.min + '</span>';
+        html += '<span class="run-speed">' + item.label + '</span>';
+        html += '</li>';
+    });
+    html += '</ul></div>';
+
+    var container = document.getElementById('run-tempo-phases');
+    if (container) container.innerHTML = html;
+}
+
+function chargerSeanceAssaultBike() {
+    var niveauActif = window._niveauActif || 1;
+    var niveaux = window._niveauxActifs;
+    var niveau = niveaux ? niveaux.find(function(nv) { return nv.n === niveauActif; }) : null;
+    if (!niveau) return;
+
+    var phases = [
+        { type: 'warmup',  sec: 300, text: '🚴 Échauffement — pédalage modéré, montée en température progressive' },
+        { type: 'travail', sec: 30,  text: '🔥 Attaque — ' + niveau.attaque + ' RPM' },
+        { type: 'repos',   sec: 30,  text: '😮‍💨 Récup active — pédalage très léger' },
+        { type: 'travail', sec: 60,  text: '🔼 Transition — ' + niveau.transition + ' RPM' },
+        { type: 'repos',   sec: 60,  text: '😮‍💨 Récup active' },
+        { type: 'travail', sec: 180, text: '📍 La Base — ' + niveau.base + ' RPM' },
+        { type: 'repos',   sec: 60,  text: '😮‍💨 Récup active — ne pas s\'arrêter' },
+        { type: 'travail', sec: 60,  text: '📈 Remontée — ' + niveau.remontee + ' RPM' },
+        { type: 'repos',   sec: 30,  text: '😮‍💨 Récup active' },
+        { type: 'travail', sec: 60,  text: '💪 Soutenu — ' + niveau.soutenu + ' RPM' },
+        { type: 'repos',   sec: 30,  text: '😮‍💨 Récup active' },
+        { type: 'travail', sec: 20,  text: '🚀 Pointe — ' + niveau.pointe + ' RPM (TOUT DONNER)' },
+        { type: 'recup',   sec: 160, text: '🧘 Récupération longue' },
+        { type: 'recup',   sec: 120, text: '🧘 Retour au calme — pédalage très léger' }
+    ];
+
+    var chargement = {
+        type: 'surmesure',
+        nom: 'Assault Bike TEMPO — Niveau ' + niveauActif,
         phases: phases
     };
     var encoded = encodeURIComponent(JSON.stringify(chargement));
