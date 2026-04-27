@@ -1612,25 +1612,25 @@ const workouts = [
                             {
                                 nom: "Barre au front",
                                 series: [
-                                    { reps: 10, poids: 30 },
-                                    { reps: 10, poids: 30 },
-                                    { reps: 10, poids: 30 }
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 }
                                 ]
                             },
                             {
                                 nom: "Rowing buste penché jammer arms",
                                 series: [
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 }
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 }
                                 ]
                             },
                             {
                                 nom: "Shrug jammer arms",
                                 series: [
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 },
-                                    { reps: 10, poids: 40 }
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 }
                                 ]
                             },
                         ]
@@ -1641,9 +1641,9 @@ const workouts = [
                             {
                                 nom: "Rowing horizontal poulie basse",
                                 series: [
-                                    { reps: 15, poids: 50 },
-                                    { reps: 15, poids: 50 },
-                                    { reps: 15, poids: 50 }
+                                    { reps: 15, poids: 10 },
+                                    { reps: 15, poids: 10 },
+                                    { reps: 15, poids: 10 }
                                 ]
                             },
                             {
@@ -1663,7 +1663,7 @@ const workouts = [
   
     {
         title: "💥Jambes",
-        material: ["jammer","barre","haltere","elastique","machineguidee","landmine"],
+        material: ["jammer","barre","haltere","machineguidee","landmine"],
         body: "bas",
         duration: 0,
         type: "MUSCU",
@@ -1678,7 +1678,7 @@ const workouts = [
                 { text: "Goblet squat haltère talons surélevés — 3×15/20 reps" },
                 { text: "Extension Mollets debout avec Landmine — 4×15/20 reps" }
             ],
-            conseil: "10 minutes d'échauffement Squats et fentes au poids de corps. Mobilité : maintien squat position basse, rotation du torse, enroulement de colonne...",
+            conseil: "10 minutes d'échauffement Squats et fentes au poids de corps. Mobilité : maintien squat position basse, rotation du torse, enroulement de colonne... Adapter les poids à son niveau.",
             chargeable: true,
             chargement: {
                 type: "muscu",
@@ -1692,11 +1692,11 @@ const workouts = [
                             {
                                 nom: "Fentes jammer arms (poids sur les 2 jammers arms)",
                                 series: [
-                                    { reps: 08, poids: 64 },
-                                    { reps: 10, poids: 60 },
-                                    { reps: 10, poids: 60 },
-                                    { reps: 10, poids: 60 },
-                                    { reps: 10, poids: 60 }
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 }
                                 ]
                             }
                         ]
@@ -1707,9 +1707,9 @@ const workouts = [
                             {
                                 nom: "Landmine squat",
                                 series: [
-                                    { reps: 15, poids: 25 },
-                                    { reps: 15, poids: 30 },
-                                    { reps: 15, poids: 33 },
+                                    { reps: 15, poids: 10 },
+                                    { reps: 15, poids: 10 },
+                                    { reps: 15, poids: 10 },
                                  ]
                             }
                         ]
@@ -1720,9 +1720,9 @@ const workouts = [
                             {
                                 nom: "Soulevé de terre à la barre jambes tendues",
                                 series: [
-                                    { reps: 16, poids: 45 },
-                                    { reps: 16, poids: 45 },
-                                    { reps: 16, poids: 45 },
+                                    { reps: 16, poids: 10 },
+                                    { reps: 16, poids: 10 },
+                                    { reps: 16, poids: 10 },
                                  ]
                             }
                         ]
@@ -1733,9 +1733,9 @@ const workouts = [
                             {
                                 nom: "Goblet squat haltère talons surélevés",
                                 series: [
-                                    { reps: 16, poids: 27.5 },
-                                    { reps: 16, poids: 27.5 },
-                                    { reps: 16, poids: 27.5 },
+                                    { reps: 16, poids: 10 },
+                                    { reps: 16, poids: 10 },
+                                    { reps: 16, poids: 10 },
                                  ]
                             }
                         ]
@@ -1746,11 +1746,94 @@ const workouts = [
                             {
                                 nom: "Extension Mollets debout avec Landmine",
                                 series: [
-                                    { reps: 16, poids: 25 },
-                                    { reps: 16, poids: 25 },
-                                    { reps: 16, poids: 25 },
-                                    { reps: 16, poids: 25 },
+                                    { reps: 16, poids: 10 },
+                                    { reps: 16, poids: 10 },
+                                    { reps: 16, poids: 10 },
+                                    { reps: 16, poids: 10 },
                                  ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+  
+    {
+        title: "💥Épaules / Abdominaux",
+        material: ["traction","barre","haltere","elastique","machineguidee", "jammer"],
+        body: "haut",
+        duration: 0,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "Séance dos triceps : TRISET Landmine press à un bras/Situp/Obliques suspendu à la barre, BISET Oiseau avec haltères/Élévation latérale avec haltères",
+        details: {
+            format_label: "MUSCU",
+            exercises: [
+                { text: "TRISET Landmine press à un bras/Situp/Obliques suspendu à la barre" },
+                { text: "BISET Oiseau avec haltères/Élévation latérale avec haltères — 3×10/15 reps" }                
+            ],
+            conseil: "10 minutes d'échauffement avec échauffement des rotateurs d'épaules. Adapter les poids à son niveau.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "💥SÉANCE Épaules / Abdominaux",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "triset",
+                        exos: [
+                            {
+                                nom: "Landmine press à un bras",
+                                series: [
+                                    { reps: 12, poids: 15 },
+                                    { reps: 10, poids: 20 },
+                                    { reps: 12, poids: 20 },
+                                    { reps: 16, poids: 20 },
+                                    { reps: 10, poids: 25 }
+                                ]
+                            },
+                            {
+                                nom: "Situp",
+                                series: [
+                                    { reps: 15, poids: 5 },
+                                    { reps: 20, poids: 5 },
+                                    { reps: 20, poids: 5 },
+                                    { reps: 20, poids: 5 },
+                                    { reps: 20, poids: 5 }
+                                ]
+                            },
+                            {
+                                nom: "Obliques suspendu à la barre",
+                                series: [
+                                    { reps: 20, poids: 0 },
+                                    { reps: 26, poids: 0 },
+                                    { reps: 26, poids: 0 },
+                                    { reps: 26, poids: 0 },
+                                    { reps: 26, poids: 0 }
+                                ]
+                            },
+                        ]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Oiseau avec haltères",
+                                series: [
+                                    { reps: 12, poids: 8 },
+                                    { reps: 12, poids: 8 },
+                                    { reps: 12, poids: 8 }
+                                ]
+                            },
+                            {
+                                nom: "Élévation latérale avec haltères",
+                                series: [
+                                    { reps: 12, poids: 8 },
+                                    { reps: 12, poids: 8 },
+                                    { reps: 12, poids: 8 }
+                                ]
                             }
                         ]
                     }
@@ -1788,10 +1871,10 @@ const workouts = [
                             {
                                 nom: "Développé couché",
                                 series: [
-                                    { reps: 10, poids: 80 },
-                                    { reps: 10, poids: 80 },
-                                    { reps: 10, poids: 80 },
-                                    { reps: 8,  poids: 85 }
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 },
+                                    { reps: 10, poids: 10 }
                                 ]
                             }
                         ]
@@ -1810,9 +1893,9 @@ const workouts = [
                             {
                                 nom: "Écarté poulie basse",
                                 series: [
-                                    { reps: 15, poids: 15 },
-                                    { reps: 15, poids: 15 },
-                                    { reps: 15, poids: 15 }
+                                    { reps: 15, poids: 10 },
+                                    { reps: 15, poids: 10 },
+                                    { reps: 15, poids: 10 }
                                 ]
                             }
                         ]
