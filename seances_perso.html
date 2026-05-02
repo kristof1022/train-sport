@@ -870,7 +870,24 @@
         <!-- CARNET -->
         <div style="margin-top:20px;">
             <p class="config-title">📓 Carnet d'entraînement MUSCU</p>
-            <div id="carnet-liste"></div>
+            <div id="carnet-cal-wrap">
+                <!-- Navigation mois -->
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                    <button onclick="calNavMois(-1)" style="background:none;border:1px solid #2a3a5a;border-radius:8px;color:#8899bb;padding:5px 14px;cursor:pointer;font-size:1.1em;">&#8249;</button>
+                    <span id="cal-mois-label" style="font-size:0.85em;font-weight:700;color:#cddc39;letter-spacing:0.06em;"></span>
+                    <button onclick="calNavMois(+1)" style="background:none;border:1px solid #2a3a5a;border-radius:8px;color:#8899bb;padding:5px 14px;cursor:pointer;font-size:1.1em;">&#8250;</button>
+                </div>
+                <!-- Jours semaine -->
+                <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;text-align:center;font-size:0.65em;color:#556;font-weight:700;letter-spacing:0.04em;">
+                    <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
+                </div>
+                <!-- Grille jours -->
+                <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:10px;"></div>
+                <!-- Stats mois -->
+                <div id="cal-stats" style="font-size:0.72em;color:#556;text-align:center;margin-bottom:10px;"></div>
+                <!-- Fiche séance au clic -->
+                <div id="cal-fiche" style="display:none;background:#0f1b35;border:1px solid #1e3050;border-radius:10px;padding:14px;margin-top:6px;"></div>
+            </div>
             <input type="file" id="carnet-file-input" accept=".json" style="display:none;">
         </div>
 
@@ -2927,104 +2944,7 @@ function carnetSauvegarder(duree) {
     carnetSave(data);
     carnetRenderListe();
 }
-function carnetRenderListe() {
-    var el = document.getElementById('carnet-liste');
-    if (!el) return;
-    var data = carnetLoad();
-    var keys = Object.keys(data);
-    if (!keys.length) { el.innerHTML = '<div class="carnet-empty">Aucune séance enregistrée.</div>'; return; }
-    el.innerHTML = '';
-    keys.forEach(function(nom) {
-        var seances = data[nom];
-        var section = document.createElement('div'); section.className = 'carnet-section';
-        var titreRow = document.createElement('div');
-        titreRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;';
-        var titre = document.createElement('div');
-        titre.style.cssText = 'font-size:0.75em;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);';
-        titre.textContent = nom + ' (' + seances.length + ' séance' + (seances.length>1?'s':'') + ')';
-        var delAllBtn = document.createElement('button');
-        delAllBtn.textContent = '🗑 Tout supprimer';
-        delAllBtn.style.cssText = 'background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:0.72em;';
-        (function(nomSeance) {
-            delAllBtn.addEventListener('click', function() {
-                if (!confirm('Supprimer toutes les séances "' + nomSeance + '" du carnet ?')) return;
-                var d = carnetLoad();
-                delete d[nomSeance];
-                carnetSave(d);
-                carnetRenderListe();
-            });
-        })(nom);
-        titreRow.appendChild(titre);
-        titreRow.appendChild(delAllBtn);
-        section.appendChild(titreRow);
 
-        // Afficher toujours les 3 premières, le reste dans un bloc dépliable
-        var VISIBLE = 3;
-        seances.forEach(function(s, idx) {
-            var item = document.createElement('div'); item.className = 'carnet-seance-item';
-            if (idx >= VISIBLE) item.style.display = 'none';
-
-            // En-tête avec bouton supprimer
-            var headerRow = document.createElement('div');
-            headerRow.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;gap:8px;';
-            var infoDiv = document.createElement('div'); infoDiv.style.flex = '1';
-            infoDiv.innerHTML =
-                '<div class="carnet-seance-date">' + s.date + ' — ' + s.duree + '</div>' +
-                '<div class="carnet-seance-name">' + (idx===0?'★ Dernière':'#'+(idx+1)) + ' — ' + s.resultats.length + ' exo(s)</div>' +
-                '<div class="carnet-seance-info">' + s.resultats.map(function(r){return r.nom;}).join(', ') + '</div>';
-
-            // Bouton supprimer
-            var delBtn = document.createElement('button');
-            delBtn.textContent = '🗑';
-            delBtn.title = 'Supprimer cette séance';
-            delBtn.style.cssText = 'background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:0.85em;flex-shrink:0;';
-            (function(nomSeance, idxSeance) {
-                delBtn.addEventListener('click', function() {
-                    if (!confirm('Supprimer cette séance du carnet ?')) return;
-                    var d = carnetLoad();
-                    if (d[nomSeance]) {
-                        d[nomSeance].splice(idxSeance, 1);
-                        if (!d[nomSeance].length) delete d[nomSeance];
-                    }
-                    carnetSave(d);
-                    carnetRenderListe();
-                });
-            })(nom, idx);
-
-            headerRow.appendChild(infoDiv);
-            headerRow.appendChild(delBtn);
-            item.appendChild(headerRow);
-
-            // Bouton recharger
-            var loadBtn = document.createElement('button');
-            loadBtn.textContent = '↳ Recharger cette séance';
-            loadBtn.style.cssText = 'margin-top:8px;background:#1a237e;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:0.78em;font-weight:700;cursor:pointer;width:100%;';
-            (function(seance){ loadBtn.addEventListener('click', function(){ carnetCharger(seance); }); })(s);
-            item.appendChild(loadBtn);
-
-            section.appendChild(item);
-        });
-
-        // Bouton "Voir tout" si plus de 3 séances
-        if (seances.length > VISIBLE) {
-            var toggleBtn = document.createElement('button');
-            toggleBtn.className = 'btn-carnet-export';
-            toggleBtn.textContent = "▼ Voir tout l'historique (" + (seances.length - VISIBLE) + " de plus)";
-            var expanded = false;
-            toggleBtn.addEventListener('click', function() {
-                expanded = !expanded;
-                section.querySelectorAll('.carnet-seance-item').forEach(function(item, idx) {
-                    if (idx >= VISIBLE) item.style.display = expanded ? 'block' : 'none';
-                });
-                toggleBtn.textContent = expanded
-                    ? '▲ Réduire'
-                    : "▼ Voir tout l'historique (" + (seances.length - VISIBLE) + " de plus)";
-            });
-            section.appendChild(toggleBtn);
-        }
-        el.appendChild(section);
-    });
-}
 function carnetCharger(seance) {
     document.getElementById('muscu-name').value = seance.nom;
     document.getElementById('muscu-rs').value = seance.rs || 90;
@@ -3234,7 +3154,7 @@ function execReset() {
 
 window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('muscu-btn-add').addEventListener('click', addBloc);
-    carnetRenderListe();
+    // Le calendrier est rendu via window.load dans le script calendrier
     // Autocomplétion nom de séance depuis le carnet
     activerAutocompleteNomSeance(document.getElementById('muscu-name'));
     document.getElementById('muscu-btn-lancer').addEventListener('click', lancer);
@@ -3245,14 +3165,190 @@ window.addEventListener('DOMContentLoaded', function() {
 // Exposer les fonctions carnet globalement (appelées depuis le HTML)
 window.carnetExport        = carnetExport;
 window.carnetImportFichier = carnetImportFichier;
-window.carnetRenderListe   = carnetRenderListe;
+window.carnetRenderListe   = function() {}; // géré par calRendreMois
+window.carnetLoad          = carnetLoad;
+window.carnetSave          = carnetSave;
+window.carnetCharger       = carnetCharger;
 
 })(); // fin IIFE muscu
 
 
 </script>
+
+<script>
+/* ── CALENDRIER CARNET MUSCU ── */
+
+function calPad(n) { return n < 10 ? '0' + n : '' + n; }
+
+var calAnnee = new Date().getFullYear();
+var calMois  = new Date().getMonth();
+
+// Lecture directe localStorage — indépendante de l'IIFE muscu
+function calLireCarnet() {
+    try { return JSON.parse(localStorage.getItem('muscu_carnet')) || {}; } catch(e) { return {}; }
+}
+function calSauvegarderCarnet(data) {
+    try { localStorage.setItem('muscu_carnet', JSON.stringify(data)); } catch(e) {}
+}
+
+function carnetRenderListe() { /* rendu via calRendreMois */ }
+
+function calNavMois(delta) {
+    calMois += delta;
+    if (calMois > 11) { calMois = 0; calAnnee++; }
+    if (calMois < 0)  { calMois = 11; calAnnee--; }
+    calRendreMois();
+}
+
+function calParseDate(str) {
+    if (!str) return null;
+    var p = str.split(' ')[0].split('/');
+    if (p.length < 3) return null;
+    var d = new Date(+p[2], +p[1]-1, +p[0]);
+    return isNaN(d.getTime()) ? null : d;
+}
+
+function calRendreMois() {
+    var label = document.getElementById('cal-mois-label');
+    var grid  = document.getElementById('cal-grid');
+    var stats = document.getElementById('cal-stats');
+    var fiche = document.getElementById('cal-fiche');
+    if (!label || !grid) return;
+
+    var noms = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    label.textContent = noms[calMois] + ' ' + calAnnee;
+
+    var data = calLireCarnet();
+    var parJour = {};
+    Object.keys(data).forEach(function(nom) {
+        data[nom].forEach(function(s, idx) {
+            var d = calParseDate(s.date);
+            if (!d) return;
+            var key = d.getFullYear() + '-' + calPad(d.getMonth()+1) + '-' + calPad(d.getDate());
+            if (!parJour[key]) parJour[key] = [];
+            parJour[key].push({ seance: s, nom: nom, idx: idx });
+        });
+    });
+
+    grid.innerHTML = '';
+    if (fiche) { fiche.style.display = 'none'; fiche.innerHTML = ''; }
+
+    var premier = new Date(calAnnee, calMois, 1);
+    var dernier  = new Date(calAnnee, calMois+1, 0);
+    var depart   = (premier.getDay() + 6) % 7;
+    var today    = new Date();
+    var nbMois   = 0;
+
+    for (var v = 0; v < depart; v++) {
+        var vide = document.createElement('div');
+        vide.style.height = '34px';
+        grid.appendChild(vide);
+    }
+
+    for (var j = 1; j <= dernier.getDate(); j++) {
+        var key = calAnnee + '-' + calPad(calMois+1) + '-' + calPad(j);
+        var entries = parJour[key] || [];
+        var aSeance = entries.length > 0;
+        if (aSeance) nbMois += entries.length;
+        var isToday = (today.getFullYear()===calAnnee && today.getMonth()===calMois && today.getDate()===j);
+
+        var cell = document.createElement('div');
+        cell.style.cssText = 'height:48px;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.78em;font-weight:600;padding:2px 1px;' +
+            (aSeance ? 'background:#1a3a1a;color:#cddc39;cursor:pointer;border:1px solid #2a5a2a;' : 'color:#334;') +
+            (isToday ? 'outline:2px solid #cddc39;outline-offset:-2px;' : '');
+
+        // Numéro du jour
+        var numEl = document.createElement('div');
+        numEl.textContent = j;
+        cell.appendChild(numEl);
+
+        if (aSeance) {
+            // Titre tronqué — 1 seule séance : titre court, plusieurs : "x séances"
+            var titreEl = document.createElement('div');
+            titreEl.style.cssText = 'font-size:0.62em;font-weight:400;color:#a8c060;line-height:1.1;text-align:center;max-width:100%;overflow:hidden;padding:0 2px;white-space:nowrap;text-overflow:ellipsis;';
+            if (entries.length === 1) {
+                // Abréger le nom : premiers mots jusqu'à 8 caractères
+                var nom = entries[0].seance.nom || '';
+                titreEl.textContent = nom.length > 8 ? nom.substring(0, 7) + '…' : nom;
+                titreEl.title = nom; // tooltip au survol
+            } else {
+                titreEl.textContent = entries.length + ' séances';
+            }
+            cell.appendChild(titreEl);
+        }
+        if (aSeance) {
+            (function(ent) {
+                cell.addEventListener('click', function() { calAfficherFiche(ent); });
+            })(entries);
+        }
+        grid.appendChild(cell);
+    }
+
+    if (stats) stats.textContent = nbMois ? nbMois + ' séance' + (nbMois>1?'s':'') + ' ce mois' : 'Aucune séance ce mois';
+}
+
+function calAfficherFiche(entries) {
+    var fiche = document.getElementById('cal-fiche');
+    if (!fiche) return;
+    fiche.style.display = 'block';
+    fiche.innerHTML = '';
+    entries.forEach(function(entry, ei) {
+        var s = entry.seance;
+        var bloc = document.createElement('div');
+        if (ei > 0) bloc.style.cssText = 'margin-top:12px;padding-top:12px;border-top:1px solid #1e3050;';
+
+        var info = document.createElement('div');
+        info.innerHTML =
+            '<div style="font-size:0.72em;color:#8899bb;margin-bottom:2px;">' + s.date + ' — ' + s.duree + '</div>' +
+            '<div style="font-size:0.92em;font-weight:700;color:#cddc39;margin-bottom:4px;">' + s.nom + '</div>' +
+            '<div style="font-size:0.75em;color:#8899bb;">' + s.resultats.map(function(r){return r.nom;}).join(' · ') + '</div>';
+
+        var loadBtn = document.createElement('button');
+        loadBtn.textContent = '↳ Recharger cette séance';
+        loadBtn.style.cssText = 'margin-top:10px;width:100%;background:#1a237e;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:0.82em;font-weight:700;cursor:pointer;';
+        (function(seance) {
+            loadBtn.addEventListener('click', function() {
+                if (window.carnetCharger) window.carnetCharger(seance);
+            });
+        })(s);
+
+        var delBtn = document.createElement('button');
+        delBtn.textContent = '🗑 Supprimer';
+        delBtn.style.cssText = 'margin-top:4px;width:100%;background:none;color:#e74c3c;border:1px solid #e74c3c;border-radius:8px;padding:6px 12px;font-size:0.78em;cursor:pointer;';
+        (function(nomSeance, idxSeance) {
+            delBtn.addEventListener('click', function() {
+                if (!confirm('Supprimer cette séance du carnet ?')) return;
+                var d = calLireCarnet();
+                if (d[nomSeance]) {
+                    d[nomSeance].splice(idxSeance, 1);
+                    if (!d[nomSeance].length) delete d[nomSeance];
+                }
+                calSauvegarderCarnet(d);
+                // Mettre à jour aussi l'IIFE si disponible
+                if (window.carnetSave) window.carnetSave(d);
+                calRendreMois();
+            });
+        })(entry.nom, entry.idx);
+
+        bloc.appendChild(info);
+        bloc.appendChild(loadBtn);
+        bloc.appendChild(delBtn);
+        fiche.appendChild(bloc);
+    });
+}
+
+// Exposer pour les appels depuis l'IIFE
+window.calRendreMois = calRendreMois;
+
+// Init après chargement complet de tous les scripts
+window.addEventListener('load', function() {
+    calRendreMois();
+});
+</script>
+
 </body>
 </html>
+
 <script>
 /* ══════════════════════════════════════════════════════════════
    WOD CARNET — Sauvegarde et lecture des chronomètres intelligents
