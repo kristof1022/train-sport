@@ -1479,6 +1479,31 @@ const workouts = [
         }        
         }},
   
+  { title: "Séance Stabilité bas du corps", material: ["elastique"], body: "bas", duration: 12, type: "MUSCU", level: "Moyen", desc: "améliorer sa stabilité en 12 minutes",
+      details: { format_label: "RENFO STABILITÉ BAS DU CORPS", exercises: [
+          { text: "tripode (pieds nus) : 2 minutes" }, { text: "Split squat isomètrique : 45 secondes — 2 fois par jambe" }, { text: "Pallof Press statique : 2x2min" }, { text: "Monster walk : 3 minutes" }
+        ], conseil: "-",
+        chargeable: true,
+                  chargement: {
+                  type: "surmesure",
+                  nom: "Séance Stabilité bas du corps 12 minutes",
+                  repeat: 0,
+                  phases: [
+                    { type: "travail", sec: 120, text: "tripode (pieds nus)" },
+                    { type: "travail", sec: 45, text: "Split squat jambe droite devant" },
+                    { type: "travail", sec: 45, text: "Split squat jambe gauche devant" },
+                    { type: "travail", sec: 45, text: "Split squat jambe droite devant" },
+                    { type: "travail", sec: 45, text: "Split squat jambe gauche devant" },
+                    { type: "travail", sec: 120, text: "Pallof press statitique droite" },
+                    { type: "travail", sec: 120, text: "Pallof press statitique gauche" },
+                    { type: "travail", sec: 120, text: "Monster walk à l'élastique" }
+                    
+                  ]
+                  }       
+        }},
+  
+
+  
   // ══════════════════════════════════════════════════════════
     // SÉANCES MUSCU 
     // ══════════════════════════════════════════════════════════
@@ -1502,7 +1527,7 @@ const workouts = [
             chargeable: true,
             chargement: {
                 type: "muscu",
-                nom: "💥SÉANCE Pectoraux / Biceps",
+                nom: "💥Pectoraux / Biceps | SÉANCE MUSCU",
                 recupSerie: 90,
                 recupBloc: 120,
                 blocs: [
@@ -1516,7 +1541,7 @@ const workouts = [
                                     { reps: 10, poids: 60 },
                                     { reps: 10, poids: 60 },
                                     { reps: 10, poids: 60 },
-                                    { reps: 10,  poids: 60 }
+                                    { reps: 10, poids: 60 }
                                 ]
                             }
                         ]
@@ -1529,12 +1554,14 @@ const workouts = [
                                 series: [
                                     { reps: 15, poids: 30 },
                                     { reps: 15, poids: 30 },
+                                    { reps: 15, poids: 30 },
                                     { reps: 15, poids: 30 }
                                 ]
                             },
                             {
                                 nom: "Press Jammer Arm",
                                 series: [
+                                    { reps: 15, poids: 40 },
                                     { reps: 15, poids: 40 },
                                     { reps: 15, poids: 40 },
                                     { reps: 15, poids: 40 }
@@ -1587,7 +1614,7 @@ const workouts = [
             chargeable: true,
             chargement: {
                 type: "muscu",
-                nom: "💥SÉANCE Dos / Triceps",
+                nom: "💥Dos / Triceps | SÉANCE MUSCU",
                 recupSerie: 90,
                 recupBloc: 120,
                 blocs: [
@@ -1643,12 +1670,14 @@ const workouts = [
                                 series: [
                                     { reps: 15, poids: 10 },
                                     { reps: 15, poids: 10 },
+                                    { reps: 15, poids: 10 },
                                     { reps: 15, poids: 10 }
                                 ]
                             },
                             {
                                 nom: "Dips",
                                 series: [
+                                    { reps: 20, poids: 0 },
                                     { reps: 20, poids: 0 },
                                     { reps: 20, poids: 0 },
                                     { reps: 20, poids: 0 }
@@ -1682,7 +1711,7 @@ const workouts = [
             chargeable: true,
             chargement: {
                 type: "muscu",
-                nom: "💥SÉANCE Jambes",
+                nom: "💥Jambes | SÉANCE MUSCU",
                 recupSerie: 90,
                 recupBloc: 120,
                 blocs: [
@@ -1777,7 +1806,7 @@ const workouts = [
             chargeable: true,
             chargement: {
                 type: "muscu",
-                nom: "💥SÉANCE Épaules / Abdominaux",
+                nom: "💥Épaules / Abdominaux | SÉANCE MUSCU",
                 recupSerie: 90,
                 recupBloc: 120,
                 blocs: [
@@ -1817,7 +1846,7 @@ const workouts = [
                         ]
                     },
                     {
-                        type: "biset",
+                        type: "triset",
                         exos: [
                             {
                                 nom: "Oiseau avec haltères",
@@ -1833,6 +1862,14 @@ const workouts = [
                                     { reps: 12, poids: 8 },
                                     { reps: 12, poids: 8 },
                                     { reps: 12, poids: 8 }
+                                ]
+                            },
+                            {
+                                nom: "Deadlift jambes tendues à l'élastique (focus lombaire)",
+                                series: [
+                                    { reps: 12, poids: 0 },
+                                    { reps: 12, poids: 0 },
+                                    { reps: 12, poids: 0 }
                                 ]
                             }
                         ]
@@ -2660,9 +2697,9 @@ function openModal(index) {
             var isRameurType2 = d.niveaux && d.niveaux[0] && d.niveaux[0].attaque !== undefined;
             var isSkiErgBtn = isRameurType2 && w.material && (Array.isArray(w.material) ? w.material.includes('ski-erg') : w.material === 'ski-erg');
             var isAssaultBtn = isRameurType2 && w.material && (Array.isArray(w.material) ? w.material.includes('assault-bike') : w.material === 'assault-bike');
-            var fnSelect = isRameurType2
-                ? (isAssaultBtn ? 'selectNiveauAssaultBike' : isSkiErgBtn ? 'selectNiveauSkiErg' : 'selectNiveauRameur')
-                : 'selectNiveau';
+            var fnSelect = isRameurType2 ?
+                (isAssaultBtn ? 'selectNiveauAssaultBike' : isSkiErgBtn ? 'selectNiveauSkiErg' : 'selectNiveauRameur') :
+                'selectNiveau';
             html += '<button class="btn-niveau' + activeClass + '" onclick="' + fnSelect + '(' + i + ')" id="btn-niveau-' + i + '">' + i + '</button>';
         }
         html += '</div></div>';
@@ -3409,9 +3446,9 @@ function selectNiveauSkiErg(n) {
     ];
 
     phases.forEach(function(p) {
-        var splitDisplay = p.cls === 'run-effort'
-            ? '<strong class="rameur-split-effort">' + p.split + '</strong>'
-            : '<em class="rameur-split-recup">' + p.split + '</em>';
+        var splitDisplay = p.cls === 'run-effort' ?
+            '<strong class="rameur-split-effort">' + p.split + '</strong>' :
+            '<em class="rameur-split-recup">' + p.split + '</em>';
         html += '<tr class="' + p.cls + '" style="border-bottom:1px solid #eee;">';
         html += '<td style="padding:6px 8px;">' + p.label + '</td>';
         html += '<td class="rameur-dur">' + p.dur + '</td>';
@@ -3520,9 +3557,9 @@ function selectNiveauAssaultBike(n) {
     ];
 
     phases.forEach(function(p) {
-        var splitDisplay = p.cls === 'run-effort'
-            ? '<strong class="rameur-split-effort">' + p.split + ' RPM</strong>'
-            : '<em class="rameur-split-recup">' + p.split + '</em>';
+        var splitDisplay = p.cls === 'run-effort' ?
+            '<strong class="rameur-split-effort">' + p.split + ' RPM</strong>' :
+            '<em class="rameur-split-recup">' + p.split + '</em>';
         html += '<tr class="' + p.cls + '" style="border-bottom:1px solid #eee;">';
         html += '<td style="padding:6px 8px;">' + p.label + '</td>';
         html += '<td class="rameur-dur">' + p.dur + '</td>';
