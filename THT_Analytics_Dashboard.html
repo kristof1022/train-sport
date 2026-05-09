@@ -1307,8 +1307,13 @@ function buildWod() {
 function parseDureeStr(str) {
   if (!str) return 0;
   const p = str.split(':').map(Number);
-  if (p.length===3) return p[0]*3600+p[1]*60+p[2];
-  if (p.length===2) return p[0]*60+p[1];
+  if (p.length === 3) {
+    // Deux formats : HH:MM:SS (saisie externe) ou MM:SS:centièmes (chrono seances_perso)
+    // Si p[2] >= 60 ou p[0] > 23 → format MM:SS:centièmes
+    if (p[2] >= 60 || p[0] > 23) return p[0]*60 + p[1];
+    return p[0]*3600 + p[1]*60 + p[2];
+  }
+  if (p.length === 2) return p[0]*60 + p[1];
   return 0;
 }
 
