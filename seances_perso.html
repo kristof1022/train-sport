@@ -2525,6 +2525,7 @@ var TYPES = {
     triset:   { label:'Triset',   color:'#ab47bc' },
     superset: { label:'Superset', color:'#ff7043' }
 };
+window.TYPES = TYPES; // exposé pour carnetCharger
 
 var blocCount = 0;
 var seanceData = [];
@@ -2926,17 +2927,22 @@ function carnetGetPrevResult(nomExo, serieIdx) {
 function carnetSauvegarder(duree) {
     var nom = document.getElementById('muscu-name').value.trim() || 'Séance Muscu';
     var date = new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    var resultats = [];
+    // Sauvegarder les blocs avec leur type (solo/superset/biset/triset)
+    var blocs = [];
+    var resultats = []; // liste plate conservée pour l'affichage calendrier
     seanceData.forEach(function(bloc) {
+        var blocRes = { type: bloc.type || 'solo', exos: [] };
         bloc.exos.forEach(function(exo) {
             var exoRes = { nom: exo.nom, series: [] };
             exo.series.forEach(function(s) {
                 exoRes.series.push({ reps:(s.repsReel!=null)?s.repsReel:s.reps, poids:(s.poidsReel!=null)?s.poidsReel:s.poids });
             });
-            resultats.push(exoRes);
+            blocRes.exos.push(exoRes);
+            resultats.push(exoRes); // liste plate pour le calendrier
         });
+        blocs.push(blocRes);
     });
-    var entry = { date:date, nom:nom, duree:duree, rs:seanceData[0]?seanceData[0].rs:90, rb:seanceData[0]?seanceData[0].rb:120, resultats:resultats };
+    var entry = { date:date, nom:nom, duree:duree, rs:seanceData[0]?seanceData[0].rs:90, rb:seanceData[0]?seanceData[0].rb:120, blocs:blocs, resultats:resultats };
     var data = carnetLoad();
     if (!data[nom]) data[nom] = [];
     data[nom].unshift(entry);
@@ -2950,19 +2956,64 @@ function carnetCharger(seance) {
     document.getElementById('muscu-rs').value = seance.rs || 90;
     document.getElementById('muscu-rb').value = seance.rb || 120;
     document.getElementById('muscu-blocs-list').innerHTML = '';
-    seance.resultats.forEach(function(exoRes) {
-        document.getElementById('muscu-btn-add').click();
-        var blocs = document.querySelectorAll('#muscu-blocs-list .muscu-bloc');
-        var lastBloc = blocs[blocs.length-1];
-        if (!lastBloc) return;
-        var bid = lastBloc.id;
-        var inp = document.getElementById(bid+'-exo0');
-        if (inp) inp.value = exoRes.nom;
-        var seriesDiv = document.getElementById(bid+'-series-0');
-        if (!seriesDiv) return;
-        seriesDiv.innerHTML = '';
-        exoRes.series.forEach(function(s, idx){ appendSerie(seriesDiv, bid+'-e0', idx, s.reps, s.poids); });
-    });
+
+    if (seance.blocs && seance.blocs.length) {
+        // Nouveau format : reconstruire avec les bons types de blocs
+        seance.blocs.forEach(function(bloc) {
+            var typeBloc = bloc.type || 'solo';
+            document.getElementById('muscu-btn-add').click();
+            var allBlocs = document.querySelectorAll('#muscu-blocs-list .muscu-bloc');
+            var lastBloc = allBlocs[allBlocs.length-1];
+            if (!lastBloc) return;
+            var bid = lastBloc.id;
+
+            // Le select n'a pas d'id, on le trouve via querySelector
+            var typeSel = lastBloc.querySelector('select');
+            var typeLabel = lastBloc.querySelector('.muscu-bloc-header span');
+
+            if (typeBloc !== 'solo' && typeSel) {
+                // 1. Changer la valeur du select
+                typeSel.value = typeBloc;
+                // 2. Mettre à jour le label visuel
+                if (typeLabel && window.TYPES && window.TYPES[typeBloc]) {
+                    typeLabel.textContent = window.TYPES[typeBloc].label;
+                    typeLabel.style.color  = window.TYPES[typeBloc].color;
+                }
+                // 3. Reconstruire les champs exos/séries pour le bon type
+                //    (buildExosAndSeries vide et recrée les inputs)
+                if (typeof buildExosAndSeries === 'function') {
+                    buildExosAndSeries(lastBloc, bid, typeBloc);
+                }
+            }
+
+            // Remplir les exercices du bloc (les inputs existent maintenant)
+            bloc.exos.forEach(function(exoRes, eIdx) {
+                var inp = document.getElementById(bid + '-exo' + eIdx);
+                if (inp) inp.value = exoRes.nom;
+                var seriesDiv = document.getElementById(bid + '-series-' + eIdx);
+                if (!seriesDiv) return;
+                seriesDiv.innerHTML = '';
+                exoRes.series.forEach(function(s, sIdx) {
+                    appendSerie(seriesDiv, bid + '-e' + eIdx, sIdx, s.reps, s.poids);
+                });
+            });
+        });
+    } else {
+        // Ancien format (liste plate sans blocs) — rétrocompatibilité
+        seance.resultats.forEach(function(exoRes) {
+            document.getElementById('muscu-btn-add').click();
+            var allBlocs = document.querySelectorAll('#muscu-blocs-list .muscu-bloc');
+            var lastBloc = allBlocs[allBlocs.length-1];
+            if (!lastBloc) return;
+            var bid = lastBloc.id;
+            var inp = document.getElementById(bid+'-exo0');
+            if (inp) inp.value = exoRes.nom;
+            var seriesDiv = document.getElementById(bid+'-series-0');
+            if (!seriesDiv) return;
+            seriesDiv.innerHTML = '';
+            exoRes.series.forEach(function(s, idx){ appendSerie(seriesDiv, bid+'-e0', idx, s.reps, s.poids); });
+        });
+    }
     document.getElementById('cfg-muscu').scrollIntoView({ behavior:'smooth' });
 }
 function carnetExport() {
