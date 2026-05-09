@@ -616,16 +616,6 @@ function scrollToMouvement(targetId) {
     }
 }
 
-// Convertit "dd/mm/yyyy hh:mm" en timestamp — globale pour openCarnetMuscu ET renderCarnetDetail
-function parseCarnetDate(d) {
-    if (!d) return 0;
-    var parts = d.split(' ');
-    var dp = parts[0].split('/');
-    var tp = parts[1] ? parts[1].split(':') : ['0','0'];
-    return new Date(parseInt(dp[2]), parseInt(dp[1])-1, parseInt(dp[0]),
-                    parseInt(tp[0])||0, parseInt(tp[1])||0).getTime();
-}
-
 function openCarnetMuscu() {
     var CARNET_KEY = 'muscu_carnet';
     var data = {};
@@ -655,6 +645,13 @@ function openCarnetMuscu() {
     html += '<label style="font-size:0.8em;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#888;display:block;margin-bottom:6px;">Type de séance</label>';
     html += '<select id="carnet-type-select" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:0.95em;background:#fff;" onchange="renderCarnetDetail()">';
     // Trier les clés par date de la dernière séance (la plus récente en premier)
+    function parseCarnetDate(d) {
+        if (!d) return 0;
+        var parts = d.split(' ');
+        var dp = parts[0].split('/');
+        var tp = parts[1] ? parts[1].split(':') : ['0','0'];
+        return new Date(dp[2], dp[1]-1, dp[0], tp[0], tp[1]).getTime();
+    }
     keys.sort(function(a, b) {
         var dateA = data[a].length ? parseCarnetDate(data[a][0].date) : 0;
         var dateB = data[b].length ? parseCarnetDate(data[b][0].date) : 0;
@@ -797,22 +794,7 @@ function getAllWodEntries() {
         var data = JSON.parse(localStorage.getItem('wod_carnet') || '{}');
         Object.keys(data).forEach(function(nom) {
             (data[nom] || []).forEach(function(entry) {
-                var e = Object.assign({ nomCle: nom }, entry);
-                // Normaliser duree_sec : si absent ou 0, le calculer depuis
-                // tous les champs possibles (duree, temps, tempsTotal)
-                // en gérant les deux formats : HH:MM:SS et MM:SS:centièmes
-                if (!e.duree_sec) {
-                    e.duree_sec = _parseDureeToSec(e.duree || e.temps || e.tempsTotal || '');
-                }
-                // Normaliser le champ d'affichage duree si absent
-                if (!e.duree && e.duree_sec > 0) {
-                    var h = Math.floor(e.duree_sec/3600);
-                    var m = Math.floor((e.duree_sec%3600)/60);
-                    var s = e.duree_sec%60;
-                    e.duree = (h>0 ? String(h).padStart(2,'0')+':' : '') +
-                              String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-                }
-                entries.push(e);
+                entries.push(Object.assign({ nomCle: nom }, entry));
             });
         });
     } catch(e) {}
@@ -1098,8 +1080,9 @@ function renderCarnetWod() {
 
         // Badges résultats
         html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">';
-        // Un seul badge durée : duree est normalisé par getAllWodEntries (absorbe temps/tempsTotal)
         if (e.duree)        html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.duree + '</span>';
+        if (e.temps)        html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.temps + '</span>';
+        if (e.tempsTotal)   html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.tempsTotal + '</span>';
         if (e.distance_km)  html += '<span style="background:#e0f2f1;color:#00695c;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">📍 ' + e.distance_km + ' km</span>';
         if (e.allure_min_km) {
             var am = Math.floor(e.allure_min_km);
@@ -1235,16 +1218,7 @@ function _parseDateFr(str) {
 function _parseDureeToSec(str) {
     if (!str) return 0;
     var parts = str.split(':').map(Number);
-    if (parts.length === 3) {
-        // Deux formats possibles :
-        // HH:MM:SS standard (ex: "01:35:19" depuis saisie externe)
-        // MM:SS:centièmes (ex: "47:34:90" depuis le chrono seances_perso)
-        // Si parts[2] >= 60 ou parts[0] > 23 → forcément MM:SS:centièmes
-        if (parts[2] >= 60 || parts[0] > 23) {
-            return parts[0]*60 + parts[1]; // MM:SS, centièmes ignorés
-        }
-        return parts[0]*3600 + parts[1]*60 + parts[2]; // HH:MM:SS
-    }
+    if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
     if (parts.length === 2) return parts[0]*60 + parts[1];
     return 0;
 }

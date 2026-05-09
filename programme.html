@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="images/2090184-cddc39_ico.png">
+<title>Mon Programme — THT</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── Variables & base ── */
+:root {
+  --acc: #cddc39;
+  --acc2: #aec030;
+  --bg-card: #fff;
+  --border: #e0e0e0;
+  --text: #212121;
+  --text2: #666;
+  --done: #2e7d32;
+  --todo: #1a237e;
+  --ext-color: #00695c;
+}
+body.dark-mode {
+  --bg-card: #1e2030;
+  --border: #333;
+  --text: #f0f0f0;
+  --text2: #aaa;
+}
+
+/* ── Layout ── */
+.prog-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px 60px; }
+
+/* ── Vue accueil ── */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 32px 0;
+}
+@media(max-width:600px){ .home-grid { grid-template-columns: 1fr; } }
+.home-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s;
+  text-align: center;
+}
+.home-card:hover { border-color: var(--acc); box-shadow: 0 4px 18px rgba(0,0,0,.1); }
+.home-card .home-icon { font-size: 2.4em; margin-bottom: 10px; }
+.home-card h3 { margin: 0 0 8px; font-size: 1.1em; color: var(--text); }
+.home-card p  { margin: 0; font-size: 0.85em; color: var(--text2); }
+
+/* ── Section title ── */
+.prog-section-title {
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--acc2);
+  margin: 28px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--acc);
+}
+
+/* ── Programmes clé en main ── */
+.prog-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.prog-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  border-top: 4px solid var(--acc);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: box-shadow .2s;
+}
+.prog-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.prog-card h4 { margin: 0 0 6px; font-size: 1em; color: var(--text); }
+.prog-card .prog-meta { font-size: 0.78em; color: var(--text2); margin-bottom: 8px; }
+.prog-card .prog-desc { font-size: 0.83em; color: var(--text); line-height: 1.4; }
+.prog-card .prog-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px; }
+.prog-tag {
+  font-size: 0.72em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #e1f5fe;
+  color: #01579b;
+  font-weight: 600;
+}
+.prog-tag.objectif { background: #e8f5e9; color: #1b5e20; }
+.prog-tag.niveau   { background: #fff3e0; color: #e65100; }
+
+/* ── Aperçu programme clé en main ── */
+.prog-apercu {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.apercu-semaine {
+  margin-bottom: 16px;
+}
+.apercu-semaine-title {
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.apercu-jours {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 4px;
+}
+@media(max-width:500px){ .apercu-jours { grid-template-columns: repeat(4,1fr); } }
+.apercu-jour {
+  border-radius: 8px;
+  padding: 6px 4px;
+  text-align: center;
+  font-size: 0.72em;
+  border: 1px solid var(--border);
+}
+.apercu-jour .aj-label { font-weight: 700; color: var(--text2); margin-bottom: 3px; }
+.apercu-jour .aj-type  { font-size: 0.9em; }
+.apercu-jour.repos     { opacity: .45; }
+.apercu-jour.indoor    { background: #f5f6ff; border-color: #9fa8da; }
+.apercu-jour.exterieur { background: #f2fdfb; border-color: #80cbc4; }
+body.dark-mode .apercu-jour.indoor    { background: #1e2030; border-color: #3949ab; }
+body.dark-mode .apercu-jour.exterieur { background: #1a2a28; border-color: #00796b; }
+
+/* ── Builder ── */
+.builder-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+.builder-step-num {
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--acc2);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.builder-step h4 { margin: 0 0 14px; font-size: 1em; color: var(--text); }
+
+.prog-input-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+.prog-input-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 140px; }
+.prog-input-group label { font-size: 0.8em; color: var(--text2); font-weight: 600; }
+.prog-input-group select,
+.prog-input-group input[type=number],
+.prog-input-group input[type=date] {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9em;
+  background: var(--bg-card);
+  color: var(--text);
+}
+
+/* Jours de la semaine */
+.jours-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.jour-btn {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: none;
+  font-size: 0.78em;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text);
+  transition: all .15s;
+}
+.jour-btn.actif { background: var(--acc); border-color: var(--acc2); color: #000; }
+
+/* Slots jour */
+.slots-grid { display: flex; flex-direction: column; gap: 10px; }
+.slot-jour {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.slot-jour-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.slot-jour-label {
+  font-weight: 700;
+  font-size: 0.9em;
+  color: var(--text);
+  min-width: 50px;
+}
+.slot-type-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.slot-type-btn {
+  font-size: 0.75em;
+  padding: 4px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: none;
+  color: var(--text);
+  transition: all .15s;
+}
+.slot-type-btn.actif-indoor    { background: #e8eaf6; border-color: #5c6bc0; color: #1a237e; font-weight: 700; }
+.slot-type-btn.actif-exterieur { background: #e8f5e9; border-color: #66bb6a; color: #1b5e20; font-weight: 700; }
+.slot-type-btn.actif-repos     { background: #f5f5f5; border-color: #bbb; color: #555; font-weight: 700; }
+body.dark-mode .slot-type-btn.actif-repos { background: #333; }
+
+.slot-indoor-config, .slot-ext-config { margin-top: 10px; }
+.slot-seance-choisie {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82em;
+  color: var(--text);
+  flex-wrap: wrap;
+}
+.slot-seance-name { font-weight: 600; }
+.btn-choisir-seance {
+  font-size: 0.78em;
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--acc2);
+  background: none;
+  color: var(--acc2);
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-choisir-seance:hover { background: var(--acc); color: #000; border-color: var(--acc); }
+
+.slot-ext-form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.slot-ext-form select,
+.slot-ext-form input { flex: 1; min-width: 130px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.82em; background: var(--bg-card); color: var(--text); }
+
+/* ── Planning actif ── */
+.planning-header {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.planning-titre { font-size: 1.1em; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.planning-progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px 0 4px;
+}
+.planning-progress-fill {
+  height: 100%;
+  background: var(--acc);
+  border-radius: 4px;
+  transition: width .4s;
+}
+.planning-progress-label { font-size: 0.8em; color: var(--text2); }
+
+.semaine-block { margin-bottom: 28px; }
+.semaine-label {
+  font-size: 0.82em;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.semaine-label .sem-badge {
+  background: var(--acc);
+  color: #000;
+  font-size: 0.85em;
+  padding: 1px 8px;
+  border-radius: 10px;
+}
+
+.jour-planning {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.jp-status { font-size: 1.1em; min-width: 24px; }
+.jp-label { font-size: 0.8em; color: var(--text2); font-weight: 700; min-width: 38px; }
+.jp-info { flex: 1; min-width: 160px; }
+.jp-titre { font-size: 0.92em; font-weight: 600; color: var(--text); }
+.jp-meta  { font-size: 0.75em; color: var(--text2); margin-top: 2px; }
+.jp-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.jp-btn {
+  font-size: 0.78em;
+  padding: 6px 14px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity .15s;
+}
+.jp-btn:hover { opacity: .82; }
+.jp-btn-lancer    { background: #1a237e; color: #fff; }
+.jp-btn-exterieur { background: #00695c; color: #fff; }
+.jp-btn-relancer  { background: #555; color: #fff; }
+.jp-btn-valider   { background: var(--acc); color: #000; }
+.jp-repos { opacity: .45; font-style: italic; font-size: 0.85em; color: var(--text2); }
+.jp-today { border-color: var(--acc); box-shadow: 0 0 0 2px var(--acc); }
+
+/* ── Modale recherche séance ── */
+#modal-catalogue {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 8000;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 12px;
+  overflow-y: auto;
+}
+#modal-catalogue.open { display: flex; }
+#cat-box {
+  background: var(--bg-card);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 600px;
+  padding: 22px;
+  position: relative;
+}
+#cat-search {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  background: var(--bg-card);
+  color: var(--text);
+}
+.cat-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.cat-filter { padding: 4px 12px; border-radius: 14px; border: 1px solid var(--border); background: none; font-size: 0.78em; cursor: pointer; color: var(--text); }
+.cat-filter.actif { background: var(--acc); border-color: var(--acc2); color: #000; font-weight: 700; }
+.cat-list { max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.cat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.cat-item:hover { border-color: var(--acc); background: #fafff0; }
+body.dark-mode .cat-item:hover { background: #2a3020; }
+.cat-item-title { font-size: 0.88em; font-weight: 600; color: var(--text); flex: 1; }
+.cat-item-meta  { font-size: 0.75em; color: var(--text2); }
+
+/* ── Modale saisie extérieure ── */
+#modal-ext {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 8000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#modal-ext.open { display: flex; }
+#ext-box {
+  background: var(--bg-card);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+}
+#ext-box h3 { margin: 0 0 16px; font-size: 1em; color: var(--text); }
+.ext-form-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.ext-form-row label { font-size: 0.8em; color: var(--text2); font-weight: 600; }
+.ext-form-row input, .ext-form-row select, .ext-form-row textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.88em;
+  background: var(--bg-card);
+  color: var(--text);
+}
+.ext-form-row textarea { resize: vertical; min-height: 60px; }
+
+/* ── Boutons généraux ── */
+.btn-prog-primary {
+  background: var(--acc);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-size: 0.92em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-prog-primary:hover { background: var(--acc2); }
+.btn-prog-secondary {
+  background: none;
+  color: var(--text2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.88em;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.btn-prog-secondary:hover { border-color: var(--acc); color: var(--text); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.btn-danger { color: #c62828; border-color: #c62828; }
+.btn-danger:hover { background: #fce4ec; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="logo">
+      <a href="index.html"><img src="images/ICONETHT_1.png" alt="Logo"></a>
+    </div>
+    <ul>
+      <li><a href="index.html">ENTRAÎNEMENTS</a></li>
+      <li><a href="infos.html">INFOS &amp; SUIVI</a></li>
+      <li><a href="chrono.html">CHRONOS</a></li>
+      <li><a href="seances_perso.html">MA SÉANCE</a></li>
+      <li><a href="programme.html" class="active">MON PROGRAMME</a></li>
+    </ul>
+    <div class="nav-spacer"></div>
+    <button id="btn-darkmode" onclick="toggleDarkMode()" style="background:none;border:1px solid #555;border-radius:6px;font-size:0.8em;font-weight:700;cursor:pointer;padding:4px 10px;color:#fff;width:70px;letter-spacing:0.05em;">DARK</button>
+  </div>
+</nav>
+
+<main>
+<div class="prog-wrap">
+  <h3 style="text-align:center;margin-bottom:4px;">MON PROGRAMME D'ENTRAÎNEMENT</h3>
+  <p style="text-align:center;font-size:0.85em;color:var(--text2);margin-top:0;">Suis un programme clé en main ou crée le tien sur mesure</p>
+
+  <!-- ═══════════════════ VUE ACCUEIL ═══════════════════ -->
+  <div id="vue-accueil">
+
+    <!-- Programme actif en cours -->
+    <div id="bloc-programme-actif" style="display:none;">
+      <div class="prog-section-title">Programme en cours</div>
+      <div id="resume-actif" class="planning-header" style="cursor:pointer;" onclick="afficherPlanning()">
+        <div class="planning-titre" id="resume-titre">—</div>
+        <div class="planning-progress-bar"><div class="planning-progress-fill" id="resume-fill" style="width:0%"></div></div>
+        <div class="planning-progress-label" id="resume-label">—</div>
+        <div style="margin-top:10px;font-size:0.82em;color:var(--acc2);font-weight:700;">→ Voir mon planning complet</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-prog-secondary btn-danger" onclick="supprimerProgramme()">🗑 Supprimer ce programme</button>
+      </div>
+    </div>
+
+    <div class="home-grid">
+      <div class="home-card" onclick="afficherCleEnMain()">
+        <div class="home-icon">📋</div>
+        <h3>Programmes clés en main</h3>
+        <p>Choisissez parmi des plans d'entraînement préconçus, prêts à démarrer</p>
+      </div>
+      <div class="home-card" onclick="afficherBuilder()">
+        <div class="home-icon">🛠</div>
+        <h3>Mon programme perso</h3>
+        <p>Construisez votre propre planning avec les séances de votre choix</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ VUE CLÉ EN MAIN ═══════════════════ -->
+  <div id="vue-cle-en-main" style="display:none;">
+    <button class="btn-prog-secondary" onclick="retourAccueil()" style="margin-bottom:16px;">← Retour</button>
+    <div class="prog-section-title">Programmes clés en main</div>
+    <div class="prog-cards-grid" id="liste-programmes-cem"></div>
+
+    <!-- Aperçu d'un programme -->
+    <div id="apercu-cem" style="display:none;">
+      <div class="prog-section-title" id="apercu-titre-section">Aperçu</div>
+      <div class="prog-apercu" id="apercu-contenu"></div>
+      <div class="btn-row">
+        <button class="btn-prog-primary" id="btn-demarrer-cem">▶ Démarrer ce programme</button>
+        <button class="btn-prog-secondary" onclick="fermerApercu()">← Retour aux programmes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ VUE BUILDER ═══════════════════ -->
+  <div id="vue-builder" style="display:none;">
+    <button class="btn-prog-secondary" onclick="retourAccueil()" style="margin-bottom:16px;">← Retour</button>
+    <div class="prog-section-title">Créer mon programme perso</div>
+
+    <!-- Étape 1 : Paramètres -->
+    <div class="builder-step">
+      <div class="builder-step-num">Étape 1</div>
+      <h4>Paramètres généraux</h4>
+      <div class="prog-input-row">
+        <div class="prog-input-group">
+          <label>Nom du programme</label>
+          <input type="text" id="b-nom" placeholder="Ex: Mon programme été" maxlength="40" style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.9em;background:var(--bg-card);color:var(--text);">
+        </div>
+        <div class="prog-input-group">
+          <label>Nombre de semaines</label>
+          <select id="b-semaines">
+            <option value="1">1 semaine</option>
+            <option value="2">2 semaines</option>
+            <option value="4" selected>4 semaines</option>
+            <option value="6">6 semaines</option>
+            <option value="8">8 semaines</option>
+            <option value="10">10 semaines</option>
+            <option value="12">12 semaines</option>
+          </select>
+        </div>
+        <div class="prog-input-group">
+          <label>Date de départ</label>
+          <input type="date" id="b-date-debut">
+        </div>
+        <div class="prog-input-group">
+          <label>Structure</label>
+          <select id="b-structure">
+            <option value="fixe">Semaine type (répétée)</option>
+            <option value="prog">Progression semaine/semaine</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Étape 2 : Jours actifs -->
+    <div class="builder-step">
+      <div class="builder-step-num">Étape 2</div>
+      <h4>Jours d'entraînement</h4>
+      <div class="jours-picker" id="jours-picker">
+        <button class="jour-btn" data-jour="1">L</button>
+        <button class="jour-btn" data-jour="2">Ma</button>
+        <button class="jour-btn" data-jour="3">Me</button>
+        <button class="jour-btn" data-jour="4">J</button>
+        <button class="jour-btn" data-jour="5">V</button>
+        <button class="jour-btn" data-jour="6">S</button>
+        <button class="jour-btn" data-jour="0">D</button>
+      </div>
+      <p style="font-size:0.8em;color:var(--text2);margin:0;">Cliquez sur les jours où vous souhaitez vous entraîner</p>
+    </div>
+
+    <!-- Étape 3 : Semaines type -->
+    <div class="builder-step" id="step-slots">
+      <div class="builder-step-num">Étape 3</div>
+      <h4>Contenu des séances</h4>
+      <p style="font-size:0.82em;color:var(--text2);margin-bottom:14px;" id="step-slots-desc">Pour chaque jour sélectionné, choisissez le type de séance.</p>
+      <div id="slots-container"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-prog-primary" onclick="activerProgrammePerso()">✅ Activer ce programme</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ VUE PLANNING ═══════════════════ -->
+  <div id="vue-planning" style="display:none;">
+    <button class="btn-prog-secondary" onclick="retourAccueil()" style="margin-bottom:16px;">← Retour</button>
+
+    <div class="planning-header">
+      <div class="planning-titre" id="plan-titre">—</div>
+      <div class="planning-progress-bar"><div class="planning-progress-fill" id="plan-fill" style="width:0%"></div></div>
+      <div class="planning-progress-label" id="plan-label">—</div>
+    </div>
+
+    <div id="planning-semaines"></div>
+
+    <div class="btn-row">
+      <button class="btn-prog-secondary btn-danger" onclick="supprimerProgramme()">🗑 Supprimer ce programme</button>
+    </div>
+  </div>
+
+</div><!-- /prog-wrap -->
+</main>
+
+<!-- ═══════ MODALE CATALOGUE ═══════ -->
+<div id="modal-catalogue">
+  <div id="cat-box">
+    <button onclick="fermerCatalogue()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.3em;cursor:pointer;color:var(--text);">✕</button>
+    <h3 style="margin:0 0 14px;font-size:1em;color:var(--text);">Choisir une séance</h3>
+    <input type="text" id="cat-search" placeholder="🔍 Rechercher..." oninput="filtrerCatalogue()">
+    <div class="cat-filters" id="cat-filters"></div>
+    <div class="cat-list" id="cat-list"></div>
+  </div>
+</div>
+
+<!-- ═══════ MODALE SAISIE EXTÉRIEURE ═══════ -->
+<div id="modal-ext">
+  <div id="ext-box">
+    <h3 id="ext-titre">📍 Saisir ma séance extérieure</h3>
+    <div class="ext-form-row">
+      <label>Activité</label>
+      <select id="ext-activite">
+        <option>Course à pied</option>
+        <option>Cyclisme sur route</option>
+        <option>VTT</option>
+        <option>Natation</option>
+        <option>Marche / Randonnée</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div class="ext-form-row" style="flex:1">
+        <label>Durée (min)</label>
+        <input type="number" id="ext-duree" min="1" max="600" placeholder="60">
+      </div>
+      <div class="ext-form-row" style="flex:1">
+        <label>Distance (km)</label>
+        <input type="number" id="ext-distance" min="0" step="0.1" placeholder="10">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div class="ext-form-row" style="flex:1">
+        <label>Vitesse moy. (km/h)</label>
+        <input type="number" id="ext-vitesse" min="0" step="0.1" placeholder="">
+      </div>
+      <div class="ext-form-row" style="flex:1">
+        <label>Calories (kcal)</label>
+        <input type="number" id="ext-kcal" min="0" placeholder="">
+      </div>
+    </div>
+    <div class="ext-form-row">
+      <label>Commentaire</label>
+      <textarea id="ext-commentaire" placeholder="Conditions, ressenti..."></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-prog-primary" onclick="validerSeanceExt()">✅ Enregistrer</button>
+      <button class="btn-prog-secondary" onclick="fermerModalExt()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<button id="backToTop" title="Retour en haut">↑</button>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════════════════ */
+function toggleDarkMode() {
+  var isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('tht_darkmode', isDark ? '1' : '0');
+  document.getElementById('btn-darkmode').textContent = isDark ? 'LIGHT' : 'DARK';
+}
+(function() {
+  if (localStorage.getItem('tht_darkmode') === '1') {
+    document.body.classList.add('dark-mode');
+    var btn = document.getElementById('btn-darkmode');
+    if (btn) btn.textContent = 'LIGHT';
+  }
+})();
+
+/* ═══════════════════════════════════════════════════════
+   CATALOGUE (séances de script.js importées)
+   On charge script.js dynamiquement pour accéder à workouts[]
+═══════════════════════════════════════════════════════ */
+var CATALOGUE = [];
+var catalogueSlotCible = null; // { semaineIdx, jourIdx }
+
+function initCatalogue() {
+  // workouts est défini dans script.js — si disponible, on l'utilise
+  if (typeof workouts !== 'undefined') {
+    CATALOGUE = workouts.filter(function(w) {
+      return w.details && w.details.chargeable && w.details.chargement;
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PROGRAMMES CLÉ EN MAIN
+═══════════════════════════════════════════════════════ */
+var PROGRAMMES_CEM = [
+  {
+    id: 'hybride-debutant-4s',
+    titre: 'Hybride Débutant',
+    objectif: 'Hybride',
+    niveau: 'Débutant',
+    jours: 3,
+    semaines: 4,
+    structure: 'fixe',
+    desc: 'Introduction au CrossTraining avec des séances courtes et accessibles. Alternance TABATA, renfo corps complet et cardio extérieur.',
+    semaine_type: [
+      { jour: 1, label: 'Lundi',     type: 'indoor',    titre: 'WOD TABATA 30/10', icone: '🏋', chargement: { type:'tabata', nom:'WOD TABATA 30/10', travail:30, repos:10, rounds:2, exercices:[{text:'SQUATS'},{text:'BURPEES'},{text:'MOUNTAIN CLIMBERS'},{text:'JUMPING JACKS'},{text:'FENTES AVANT'}] } },
+      { jour: 3, label: 'Mercredi',  type: 'exterieur', titre: 'Course 30 min', icone: '🏃', activite:'Course à pied', duree:30, consigne:'Allure modérée — zone 2' },
+      { jour: 5, label: 'Vendredi',  type: 'indoor',    titre: 'WOD EMOM — Force Express', icone: '💪', chargement: { type:'emom', nom:'WOD EMOM Force Express', duree_min:15, exercices:[{text:'10 SQUATS'},{text:'8 POMPES'},{text:'12 ABDOS'}] } }
+    ]
+  },
+  {
+    id: 'force-muscu-8s',
+    titre: 'Force & Muscu',
+    objectif: 'Force',
+    niveau: 'Intermédiaire',
+    jours: 3,
+    semaines: 8,
+    structure: 'prog',
+    desc: 'Programme de renforcement musculaire progressif sur 8 semaines. Focus pectoraux, dos et jambes en alternance.',
+    progression: [
+      {
+        label: 'Semaines 1-2 — Adaptation',
+        jours: [
+          { jour: 1, label: 'Lundi',    type: 'indoor', titre: 'WOD TABATA 40/10', icone: '🏋', chargement: { type:'tabata', nom:'WOD TABATA 40/10', travail:40, repos:10, rounds:3, exercices:[{text:'SQUATS SAUTÉS'},{text:'POMPES'},{text:'SIT-UPS'},{text:'BURPEES'}] } },
+          { jour: 3, label: 'Mercredi', type: 'exterieur', titre: 'Course 25 min', icone: '🏃', activite:'Course à pied', duree:25, consigne:'Allure endurance' },
+          { jour: 5, label: 'Vendredi', type: 'indoor', titre: 'WOD EMOM Corps Complet', icone: '💪', chargement: { type:'emom', nom:'EMOM Corps Complet', duree_min:20, exercices:[{text:'12 POMPES'},{text:'15 SQUATS'},{text:'10 DIPS'},{text:'20 ABDOS'}] } }
+        ]
+      },
+      {
+        label: 'Semaines 3-4 — Progression',
+        jours: [
+          { jour: 1, label: 'Lundi',    type: 'indoor', titre: 'WOD AMRAP 15 min', icone: '🏋', chargement: { type:'amrap', nom:'AMRAP 15 min', duree_min:15, exercices:[{text:'10 BURPEES'},{text:'15 SQUATS'},{text:'10 POMPES'}] } },
+          { jour: 3, label: 'Mercredi', type: 'exterieur', titre: 'Course 35 min', icone: '🏃', activite:'Course à pied', duree:35, consigne:'Allure endurance + 2×5 min tempo' },
+          { jour: 5, label: 'Vendredi', type: 'indoor', titre: 'WOD FOR TIME', icone: '⏱', chargement: { type:'fortime', nom:'FOR TIME 21-15-9', exercices:[{text:'BURPEES'},{text:'SQUATS'},{text:'POMPES'}], rounds_str:'21-15-9' } }
+        ]
+      },
+      {
+        label: 'Semaines 5-6 — Intensification',
+        jours: [
+          { jour: 1, label: 'Lundi',    type: 'indoor', titre: 'TABATA 20/10 Intense', icone: '🔥', chargement: { type:'tabata', nom:'TABATA 20/10 Intense', travail:20, repos:10, rounds:4, exercices:[{text:'BURPEES'},{text:'SQUATS JUMP'},{text:'POMPES EXPLOSIVES'},{text:'MOUNTAIN CLIMBERS'}] } },
+          { jour: 3, label: 'Mercredi', type: 'exterieur', titre: 'Course 45 min', icone: '🏃', activite:'Course à pied', duree:45, consigne:'Sortie longue allure modérée Z2' },
+          { jour: 5, label: 'Vendredi', type: 'indoor', titre: 'EMOM 25 min Force', icone: '💪', chargement: { type:'emom', nom:'EMOM 25 min Force', duree_min:25, exercices:[{text:'8 POMPES LENTES'},{text:'12 SQUATS PROFONDS'},{text:'10 DIPS'},{text:'15 ABDOS'},{text:'5 BURPEES'}] } }
+        ]
+      },
+      {
+        label: 'Semaines 7-8 — Peak',
+        jours: [
+          { jour: 1, label: 'Lundi',    type: 'indoor', titre: 'AMRAP 20 min Peak', icone: '🏆', chargement: { type:'amrap', nom:'AMRAP 20 min Peak', duree_min:20, exercices:[{text:'12 BURPEES'},{text:'20 SQUATS'},{text:'15 POMPES'},{text:'10 DIPS'}] } },
+          { jour: 3, label: 'Mercredi', type: 'exterieur', titre: 'Course 50 min', icone: '🏃', activite:'Course à pied', duree:50, consigne:'Sortie longue + 3×5 min à allure soutenue' },
+          { jour: 5, label: 'Vendredi', type: 'indoor', titre: 'FOR TIME — Final', icone: '⏱', chargement: { type:'fortime', nom:'FOR TIME Final', exercices:[{text:'BURPEES'},{text:'SQUATS JUMP'},{text:'POMPES'},{text:'MOUNTAIN CLIMBERS'}], rounds_str:'21-15-9-6' } }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'endurance-velo-6s',
+    titre: 'Endurance Vélo + Gainage',
+    objectif: 'Cardio',
+    niveau: 'Intermédiaire',
+    jours: 4,
+    semaines: 6,
+    structure: 'fixe',
+    desc: 'Développez votre endurance vélo tout en renforçant le gainage et le haut du corps en indoor.',
+    semaine_type: [
+      { jour: 2, label: 'Mardi',    type: 'exterieur', titre: 'Vélo route 1h', icone: '🚴', activite:'Cyclisme sur route', duree:60, consigne:'Allure modérée — rythme conversation' },
+      { jour: 3, label: 'Mercredi', type: 'indoor',    titre: 'TABATA Gainage & Abdos', icone: '💪', chargement: { type:'tabata', nom:'TABATA Gainage', travail:30, repos:10, rounds:3, exercices:[{text:'PLANK'},{text:'MOUNTAIN CLIMBERS'},{text:'SIT-UPS'},{text:'SUPERMAN'},{text:'GAINAGE LATÉRAL'}] } },
+      { jour: 5, label: 'Vendredi', type: 'exterieur', titre: 'Vélo route 1h30', icone: '🚴', activite:'Cyclisme sur route', duree:90, consigne:'Sortie longue — allure endurance Z2' },
+      { jour: 6, label: 'Samedi',   type: 'indoor',    titre: 'EMOM Haut du corps', icone: '🏋', chargement: { type:'emom', nom:'EMOM Haut du corps', duree_min:15, exercices:[{text:'10 POMPES'},{text:'15 DIPS'},{text:'12 POMPES SERRÉES'}] } }
+    ]
+  },
+  {
+    id: 'full-hybride-5j-8s',
+    titre: 'Full Hybride 5j/semaine',
+    objectif: 'Hybride',
+    niveau: 'Avancé',
+    jours: 5,
+    semaines: 8,
+    structure: 'fixe',
+    desc: 'Programme intensif mêlant WODs, musculation et cardio extérieur. Pour les sportifs confirmés cherchant à progresser sur tous les plans.',
+    semaine_type: [
+      { jour: 1, label: 'Lundi',    type: 'indoor',    titre: 'WOD AMRAP 20 min', icone: '🔥', chargement: { type:'amrap', nom:'AMRAP 20 min', duree_min:20, exercices:[{text:'10 BURPEES'},{text:'15 SQUATS JUMP'},{text:'10 POMPES EXPLOSIVES'},{text:'20 MOUNTAIN CLIMBERS'}] } },
+      { jour: 2, label: 'Mardi',    type: 'exterieur', titre: 'Course 45 min', icone: '🏃', activite:'Course à pied', duree:45, consigne:'Allure modérée Z2 — récupération active' },
+      { jour: 3, label: 'Mercredi', type: 'indoor',    titre: 'EMOM Force 25 min', icone: '💪', chargement: { type:'emom', nom:'EMOM Force 25 min', duree_min:25, exercices:[{text:'10 POMPES LENTES'},{text:'15 SQUATS PROFONDS'},{text:'8 DIPS'},{text:'20 ABDOS'},{text:'5 BURPEES'}] } },
+      { jour: 4, label: 'Jeudi',    type: 'exterieur', titre: 'Vélo 1h', icone: '🚴', activite:'Cyclisme sur route', duree:60, consigne:'Sortie active — quelques accélérations courtes' },
+      { jour: 5, label: 'Vendredi', type: 'indoor',    titre: 'FOR TIME — Benchmark', icone: '⏱', chargement: { type:'fortime', nom:'FOR TIME Benchmark', exercices:[{text:'BURPEES'},{text:'SQUATS JUMP'},{text:'POMPES'},{text:'DIPS'}], rounds_str:'21-15-9' } }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+var PROG_KEY = 'tht_programme_actif';
+var programmeActif = null;
+var cemSelectionne = null;
+
+// Builder state
+var builderJours = []; // indices 0-6
+var builderSlots = []; // [{ jour, label, type, seance?, extConfig? }]
+var builderSemaines = {};  // { semaineIdx: [slots] } pour mode progression
+
+function sauvegarderProgramme() {
+  localStorage.setItem(PROG_KEY, JSON.stringify(programmeActif));
+}
+function chargerProgramme() {
+  try { programmeActif = JSON.parse(localStorage.getItem(PROG_KEY)) || null; } catch(e) { programmeActif = null; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════ */
+function showVue(id) {
+  ['vue-accueil','vue-cle-en-main','vue-builder','vue-planning'].forEach(function(v) {
+    document.getElementById(v).style.display = v === id ? 'block' : 'none';
+  });
+}
+
+function retourAccueil() {
+  showVue('vue-accueil');
+  miseAJourAccueil();
+}
+
+function miseAJourAccueil() {
+  chargerProgramme();
+  var blocActif = document.getElementById('bloc-programme-actif');
+  if (programmeActif) {
+    blocActif.style.display = 'block';
+    var stats = calcStats();
+    document.getElementById('resume-titre').textContent = programmeActif.titre;
+    document.getElementById('resume-fill').style.width = stats.pct + '%';
+    document.getElementById('resume-label').textContent = stats.faits + ' séance(s) effectuée(s) sur ' + stats.total + ' — ' + stats.pct + '%';
+  } else {
+    blocActif.style.display = 'none';
+  }
+}
+
+function calcStats() {
+  if (!programmeActif) return { faits:0, total:0, pct:0 };
+  var seances = programmeActif.seances || [];
+  var faits = seances.filter(function(s) { return s.faite; }).length;
+  var total = seances.filter(function(s) { return s.type !== 'repos'; }).length;
+  return { faits:faits, total:total, pct: total ? Math.round(faits/total*100) : 0 };
+}
+
+/* ═══════════════════════════════════════════════════════
+   CLÉ EN MAIN
+═══════════════════════════════════════════════════════ */
+function afficherCleEnMain() {
+  showVue('vue-cle-en-main');
+  var grid = document.getElementById('liste-programmes-cem');
+  grid.innerHTML = '';
+  document.getElementById('apercu-cem').style.display = 'none';
+
+  PROGRAMMES_CEM.forEach(function(p) {
+    var card = document.createElement('div');
+    card.className = 'prog-card';
+    card.innerHTML = '<h4>' + p.titre + '</h4>' +
+      '<div class="prog-meta">' + p.jours + ' j/semaine — ' + p.semaines + ' semaines</div>' +
+      '<div class="prog-desc">' + p.desc + '</div>' +
+      '<div class="prog-tags">' +
+        '<span class="prog-tag objectif">' + p.objectif + '</span>' +
+        '<span class="prog-tag niveau">' + p.niveau + '</span>' +
+        '<span class="prog-tag">' + p.semaines + ' sem.</span>' +
+      '</div>';
+    card.addEventListener('click', function() { afficherApercuCEM(p); });
+    grid.appendChild(card);
+  });
+}
+
+function afficherApercuCEM(prog) {
+  cemSelectionne = prog;
+  document.getElementById('apercu-titre-section').textContent = prog.titre;
+  document.getElementById('apercu-cem').style.display = 'block';
+  document.getElementById('apercu-cem').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  var el = document.getElementById('apercu-contenu');
+  el.innerHTML = '<div style="font-size:0.88em;color:var(--text2);margin-bottom:14px;">' + prog.desc + '</div>';
+
+  var joursLabels = ['D','L','Ma','Me','J','V','S'];
+
+  if (prog.structure === 'fixe') {
+    // Afficher la semaine type
+    el.innerHTML += '<div class="apercu-semaine-title">Semaine type (répétée ' + prog.semaines + ' fois)</div>';
+    el.innerHTML += renderApercuSemaine(prog.semaine_type, joursLabels);
+  } else {
+    // Afficher chaque bloc de progression
+    prog.progression.forEach(function(bloc) {
+      el.innerHTML += '<div class="apercu-semaine-title">' + bloc.label + '</div>';
+      el.innerHTML += renderApercuSemaine(bloc.jours, joursLabels);
+    });
+  }
+
+  document.getElementById('btn-demarrer-cem').onclick = function() { demarrerCEM(prog); };
+}
+
+function renderApercuSemaine(jours, joursLabels) {
+  var semJours = [1,2,3,4,5,6,0].map(function(j) {
+    return jours.find(function(s) { return s.jour === j; }) || null;
+  });
+  var html = '<div class="apercu-jours">';
+  semJours.forEach(function(s, i) {
+    var dayLabel = ['L','Ma','Me','J','V','S','D'][i];
+    if (!s) {
+      html += '<div class="apercu-jour repos"><div class="aj-label">' + dayLabel + '</div><div class="aj-type">😴</div></div>';
+    } else {
+      var cls = s.type === 'indoor' ? 'indoor' : 'exterieur';
+      html += '<div class="apercu-jour ' + cls + '"><div class="aj-label">' + dayLabel + '</div><div class="aj-type">' + s.icone + '</div><div style="font-size:0.8em;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (s.titre.length > 12 ? s.titre.substring(0,11)+'…' : s.titre) + '</div></div>';
+    }
+  });
+  html += '</div>';
+  return '<div class="apercu-semaine">' + html + '</div>';
+}
+
+function fermerApercu() {
+  document.getElementById('apercu-cem').style.display = 'none';
+  cemSelectionne = null;
+}
+
+function demarrerCEM(prog) {
+  var dateDebut = new Date();
+  dateDebut.setHours(0,0,0,0);
+
+  // Générer toutes les séances du programme
+  var seances = [];
+  var datePtr = new Date(dateDebut);
+
+  if (prog.structure === 'fixe') {
+    for (var s = 0; s < prog.semaines; s++) {
+      var lundi = getLundiSemaine(datePtr, s);
+      prog.semaine_type.forEach(function(slot) {
+        var d = new Date(lundi);
+        d.setDate(d.getDate() + jourOffset(slot.jour));
+        seances.push(creerSeance(slot, d, s));
+      });
+    }
+  } else {
+    var semIdx = 0;
+    prog.progression.forEach(function(bloc) {
+      // Calculer combien de semaines ce bloc couvre
+      var semsBlocMatch = bloc.label.match(/(\d+)-(\d+)/);
+      var semDebut = semsBlocMatch ? parseInt(semsBlocMatch[1])-1 : semIdx;
+      var semFin   = semsBlocMatch ? parseInt(semsBlocMatch[2])-1 : semIdx;
+      for (var s = semDebut; s <= semFin; s++) {
+        var lundi = getLundiSemaine(dateDebut, s);
+        bloc.jours.forEach(function(slot) {
+          var d = new Date(lundi);
+          d.setDate(d.getDate() + jourOffset(slot.jour));
+          seances.push(creerSeance(slot, d, s));
+        });
+      }
+      semIdx = semFin + 1;
+    });
+  }
+
+  programmeActif = {
+    id: prog.id,
+    titre: prog.titre,
+    type: 'cem',
+    dateDebut: dateDebut.toISOString(),
+    semaines: prog.semaines,
+    seances: seances
+  };
+  sauvegarderProgramme();
+  afficherPlanning();
+}
+
+/* ═══════════════════════════════════════════════════════
+   BUILDER
+═══════════════════════════════════════════════════════ */
+function afficherBuilder() {
+  showVue('vue-builder');
+  // Date par défaut = lundi prochain
+  var today = new Date();
+  var lundi = new Date(today);
+  var day = today.getDay();
+  var diff = day === 0 ? 1 : 8 - day;
+  lundi.setDate(today.getDate() + diff);
+  document.getElementById('b-date-debut').valueAsDate = lundi;
+  document.getElementById('b-nom').value = '';
+  builderJours = [];
+  builderSlots = [];
+  majJoursPicker();
+  majSlots();
+}
+
+function majJoursPicker() {
+  document.querySelectorAll('.jour-btn').forEach(function(btn) {
+    var j = parseInt(btn.dataset.jour);
+    btn.classList.toggle('actif', builderJours.indexOf(j) !== -1);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Jours picker
+  document.querySelectorAll('.jour-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var j = parseInt(btn.dataset.jour);
+      var idx = builderJours.indexOf(j);
+      if (idx === -1) builderJours.push(j);
+      else builderJours.splice(idx, 1);
+      majJoursPicker();
+      majSlots();
+    });
+  });
+
+  // Structure change
+  document.getElementById('b-structure').addEventListener('change', majSlots);
+  document.getElementById('b-semaines').addEventListener('change', majSlots);
+
+  initCatalogue();
+  miseAJourAccueil();
+  backToTop();
+});
+
+var JOURS_NOMS = { 0:'Dimanche', 1:'Lundi', 2:'Mardi', 3:'Mercredi', 4:'Jeudi', 5:'Vendredi', 6:'Samedi' };
+
+function majSlots() {
+  var container = document.getElementById('slots-container');
+  var structure = document.getElementById('b-structure').value;
+  var nbSemaines = parseInt(document.getElementById('b-semaines').value);
+  if (!builderJours.length) { container.innerHTML = '<p style="font-size:0.82em;color:var(--text2);">Sélectionnez d\'abord vos jours d\'entraînement ci-dessus.</p>'; return; }
+
+  var joursTriés = builderJours.slice().sort(function(a,b) { return (a===0?7:a)-(b===0?7:b); });
+
+  if (structure === 'fixe') {
+    document.getElementById('step-slots-desc').textContent = 'Définissez la semaine type qui se répètera chaque semaine.';
+    container.innerHTML = '';
+    joursTriés.forEach(function(j) {
+      container.appendChild(creerSlotEl(j, 0));
+    });
+  } else {
+    document.getElementById('step-slots-desc').textContent = 'Définissez le contenu pour chaque semaine.';
+    container.innerHTML = '';
+    for (var s = 0; s < nbSemaines; s++) {
+      var semTitle = document.createElement('div');
+      semTitle.style.cssText = 'font-size:0.82em;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px;';
+      semTitle.textContent = 'Semaine ' + (s+1);
+      container.appendChild(semTitle);
+      var grid = document.createElement('div');
+      grid.className = 'slots-grid';
+      joursTriés.forEach(function(j) {
+        grid.appendChild(creerSlotEl(j, s));
+      });
+      container.appendChild(grid);
+    }
+  }
+}
+
+function creerSlotEl(jour, semaineIdx) {
+  var key = 's' + semaineIdx + 'j' + jour;
+  var el = document.createElement('div');
+  el.className = 'slot-jour';
+  el.id = 'slot-' + key;
+
+  var header = document.createElement('div');
+  header.className = 'slot-jour-header';
+  header.innerHTML = '<span class="slot-jour-label">' + JOURS_NOMS[jour] + '</span>';
+
+  var btnRow = document.createElement('div');
+  btnRow.className = 'slot-type-btns';
+
+  ['indoor','exterieur','repos'].forEach(function(type) {
+    var btn = document.createElement('button');
+    btn.className = 'slot-type-btn';
+    btn.textContent = type === 'indoor' ? '🏋 Indoor' : type === 'exterieur' ? '🏃 Extérieur' : '😴 Repos';
+    btn.addEventListener('click', function() { setSlotType(key, type, jour, semaineIdx, el); });
+    btnRow.appendChild(btn);
+  });
+
+  header.appendChild(btnRow);
+  el.appendChild(header);
+
+  var config = document.createElement('div');
+  config.id = 'slot-config-' + key;
+  el.appendChild(config);
+
+  return el;
+}
+
+var slotData = {}; // key -> { type, seance?, extConfig? }
+
+function setSlotType(key, type, jour, semaineIdx, el) {
+  if (!slotData[key]) slotData[key] = {};
+  slotData[key].type = type;
+  slotData[key].jour = jour;
+  slotData[key].semaineIdx = semaineIdx;
+
+  // Mettre à jour les boutons
+  el.querySelectorAll('.slot-type-btn').forEach(function(btn) {
+    btn.classList.remove('actif-indoor','actif-exterieur','actif-repos');
+  });
+  var btns = el.querySelectorAll('.slot-type-btn');
+  if (type === 'indoor')    { btns[0].classList.add('actif-indoor'); }
+  if (type === 'exterieur') { btns[1].classList.add('actif-exterieur'); }
+  if (type === 'repos')     { btns[2].classList.add('actif-repos'); }
+
+  var config = document.getElementById('slot-config-' + key);
+  config.innerHTML = '';
+
+  if (type === 'indoor') {
+    var div = document.createElement('div');
+    div.className = 'slot-indoor-config';
+    div.innerHTML = '<div class="slot-seance-choisie"><span id="slot-nom-' + key + '" class="slot-seance-name" style="color:var(--text2);">Aucune séance choisie</span><button class="btn-choisir-seance" onclick="ouvrirCatalogue(\'' + key + '\')">Choisir une séance</button></div>';
+    config.appendChild(div);
+  } else if (type === 'exterieur') {
+    var form = document.createElement('div');
+    form.className = 'slot-ext-config slot-ext-form';
+    form.innerHTML =
+      '<select id="slot-ext-act-' + key + '"><option>Course à pied</option><option>Cyclisme sur route</option><option>VTT</option><option>Natation</option><option>Marche / Randonnée</option><option>Autre</option></select>' +
+      '<input type="number" id="slot-ext-dur-' + key + '" placeholder="Durée (min)" min="1" max="600">' +
+      '<input type="text" id="slot-ext-cons-' + key + '" placeholder="Consigne (ex: allure Z2)">';
+    config.appendChild(form);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   CATALOGUE MODAL
+═══════════════════════════════════════════════════════ */
+var catSlotKey = null;
+var catTypeFilter = 'all';
+
+function ouvrirCatalogue(slotKey) {
+  catSlotKey = slotKey;
+  document.getElementById('modal-catalogue').classList.add('open');
+  document.getElementById('cat-search').value = '';
+  catTypeFilter = 'all';
+
+  // Filtres type
+  var types = ['all','TABATA','EMOM','AMRAP','FOR TIME','HYBRID','MUSCU'];
+  var filtersEl = document.getElementById('cat-filters');
+  filtersEl.innerHTML = '';
+  types.forEach(function(t) {
+    var btn = document.createElement('button');
+    btn.className = 'cat-filter' + (t === 'all' ? ' actif' : '');
+    btn.textContent = t === 'all' ? 'Tous' : t;
+    btn.addEventListener('click', function() {
+      catTypeFilter = t;
+      document.querySelectorAll('.cat-filter').forEach(function(b) { b.classList.remove('actif'); });
+      btn.classList.add('actif');
+      filtrerCatalogue();
+    });
+    filtersEl.appendChild(btn);
+  });
+  filtrerCatalogue();
+}
+
+function filtrerCatalogue() {
+  var q = document.getElementById('cat-search').value.toLowerCase();
+  var list = document.getElementById('cat-list');
+  list.innerHTML = '';
+
+  var items = CATALOGUE.filter(function(w) {
+    var matchType = catTypeFilter === 'all' || w.type === catTypeFilter;
+    var matchQ = !q || w.title.toLowerCase().includes(q);
+    return matchType && matchQ;
+  });
+
+  if (!items.length) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text2);font-size:0.85em;">Aucune séance trouvée</div>';
+    return;
+  }
+
+  items.forEach(function(w) {
+    var el = document.createElement('div');
+    el.className = 'cat-item';
+    el.innerHTML = '<div class="cat-item-title">' + w.title + '</div><div class="cat-item-meta">' + w.type + ' · ' + w.duration + ' min · ' + w.level + '</div>';
+    el.addEventListener('click', function() { choisirSeanceCatalogue(w); });
+    list.appendChild(el);
+  });
+}
+
+function choisirSeanceCatalogue(w) {
+  if (!catSlotKey) return;
+  if (!slotData[catSlotKey]) slotData[catSlotKey] = {};
+  slotData[catSlotKey].seance = { titre: w.title, chargement: w.details.chargement };
+  var nomEl = document.getElementById('slot-nom-' + catSlotKey);
+  if (nomEl) nomEl.textContent = w.title;
+  fermerCatalogue();
+}
+
+function fermerCatalogue() {
+  document.getElementById('modal-catalogue').classList.remove('open');
+  catSlotKey = null;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ACTIVATION PROGRAMME PERSO
+═══════════════════════════════════════════════════════ */
+function activerProgrammePerso() {
+  var nom = document.getElementById('b-nom').value.trim() || 'Mon programme perso';
+  var nbSemaines = parseInt(document.getElementById('b-semaines').value);
+  var structure = document.getElementById('b-structure').value;
+  var dateInput = document.getElementById('b-date-debut').valueAsDate;
+  if (!dateInput) { alert('Veuillez choisir une date de départ.'); return; }
+  if (!builderJours.length) { alert('Veuillez sélectionner au moins un jour d\'entraînement.'); return; }
+
+  var dateDebut = new Date(dateInput);
+  dateDebut.setHours(0,0,0,0);
+  var seances = [];
+  var joursTriés = builderJours.slice().sort(function(a,b) { return (a===0?7:a)-(b===0?7:b); });
+
+  for (var s = 0; s < nbSemaines; s++) {
+    var lundi = getLundiSemaine(dateDebut, s);
+    joursTriés.forEach(function(j) {
+      var key = (structure === 'fixe' ? 's0' : 's' + s) + 'j' + j;
+      var sd = slotData[key] || { type: 'repos' };
+      var d = new Date(lundi);
+      d.setDate(d.getDate() + jourOffset(j));
+
+      var slot = { jour: j, label: JOURS_NOMS[j], type: sd.type || 'repos' };
+      if (sd.type === 'indoor' && sd.seance) {
+        slot.titre = sd.seance.titre;
+        slot.icone = '🏋';
+        slot.chargement = sd.seance.chargement;
+      } else if (sd.type === 'exterieur') {
+        var actEl  = document.getElementById('slot-ext-act-'  + key);
+        var durEl  = document.getElementById('slot-ext-dur-'  + key);
+        var consEl = document.getElementById('slot-ext-cons-' + key);
+        slot.titre    = actEl  ? actEl.value  : 'Séance extérieure';
+        slot.activite = actEl  ? actEl.value  : '';
+        slot.duree    = durEl  ? parseInt(durEl.value) || 0 : 0;
+        slot.consigne = consEl ? consEl.value : '';
+        slot.icone    = slot.activite.includes('Cycl') || slot.activite.includes('VTT') ? '🚴' : '🏃';
+      } else {
+        slot.type = 'repos';
+        slot.titre = 'Repos';
+        slot.icone = '😴';
+      }
+      seances.push(creerSeance(slot, d, s));
+    });
+  }
+
+  programmeActif = {
+    id: 'perso-' + Date.now(),
+    titre: nom,
+    type: 'perso',
+    dateDebut: dateDebut.toISOString(),
+    semaines: nbSemaines,
+    seances: seances
+  };
+  sauvegarderProgramme();
+  afficherPlanning();
+}
+
+/* ═══════════════════════════════════════════════════════
+   UTILITAIRES DATE
+═══════════════════════════════════════════════════════ */
+function getLundiSemaine(dateDebut, offsetSemaines) {
+  var d = new Date(dateDebut);
+  // Trouver le lundi de la semaine de dateDebut
+  var day = d.getDay();
+  var diffLundi = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diffLundi + offsetSemaines * 7);
+  return d;
+}
+
+function jourOffset(jour) {
+  // Retourne le nb de jours depuis lundi (lundi=0 ... dimanche=6)
+  return jour === 0 ? 6 : jour - 1;
+}
+
+function creerSeance(slot, date, semaineIdx) {
+  var s = Object.assign({}, slot);
+  s.date = date.toISOString();
+  s.semaineIdx = semaineIdx;
+  s.faite = false;
+  s.resultats = null;
+  return s;
+}
+
+function formatDate(iso) {
+  var d = new Date(iso);
+  var jours = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  var mois  = ['jan','fév','mar','avr','mai','juin','juil','aoû','sep','oct','nov','déc'];
+  return jours[d.getDay()] + ' ' + d.getDate() + ' ' + mois[d.getMonth()];
+}
+
+function isToday(iso) {
+  var d = new Date(iso);
+  var t = new Date();
+  return d.getDate()===t.getDate() && d.getMonth()===t.getMonth() && d.getFullYear()===t.getFullYear();
+}
+
+function isPast(iso) {
+  var d = new Date(iso); d.setHours(23,59,59);
+  return d < new Date();
+}
+
+/* ═══════════════════════════════════════════════════════
+   PLANNING
+═══════════════════════════════════════════════════════ */
+function afficherPlanning() {
+  chargerProgramme();
+  if (!programmeActif) { retourAccueil(); return; }
+  showVue('vue-planning');
+
+  var stats = calcStats();
+  document.getElementById('plan-titre').textContent = programmeActif.titre;
+  document.getElementById('plan-fill').style.width = stats.pct + '%';
+  document.getElementById('plan-label').textContent = stats.faits + ' séance(s) sur ' + stats.total + ' — ' + stats.pct + '%';
+
+  var container = document.getElementById('planning-semaines');
+  container.innerHTML = '';
+
+  // Grouper par semaine
+  var parSemaine = {};
+  programmeActif.seances.forEach(function(s) {
+    var k = s.semaineIdx;
+    if (!parSemaine[k]) parSemaine[k] = [];
+    parSemaine[k].push(s);
+  });
+
+  Object.keys(parSemaine).sort(function(a,b){return a-b;}).forEach(function(semIdx) {
+    var seances = parSemaine[semIdx];
+    var bloc = document.createElement('div');
+    bloc.className = 'semaine-block';
+
+    var label = document.createElement('div');
+    label.className = 'semaine-label';
+    var numSem = parseInt(semIdx)+1;
+    var faitsSem = seances.filter(function(s){return s.faite && s.type!=='repos';}).length;
+    var totalSem = seances.filter(function(s){return s.type!=='repos';}).length;
+    label.innerHTML = 'Semaine ' + numSem + ' <span class="sem-badge">' + faitsSem + '/' + totalSem + '</span>';
+    bloc.appendChild(label);
+
+    seances.forEach(function(s, idx) {
+      var globalIdx = programmeActif.seances.indexOf(s);
+      bloc.appendChild(renderJourPlanning(s, globalIdx));
+    });
+    container.appendChild(bloc);
+  });
+}
+
+function renderJourPlanning(s, idx) {
+  var el = document.createElement('div');
+  el.className = 'jour-planning' + (isToday(s.date) ? ' jp-today' : '');
+
+  var status = s.type === 'repos' ? '😴' : s.faite ? '✅' : isPast(s.date) && !isToday(s.date) ? '⚠️' : '⬜';
+  var label = formatDate(s.date);
+
+  el.innerHTML =
+    '<span class="jp-status">' + status + '</span>' +
+    '<span class="jp-label">' + label + '</span>' +
+    '<div class="jp-info"><div class="jp-titre">' + (s.icone||'') + ' ' + (s.titre||'') + '</div>' +
+    '<div class="jp-meta">' + (s.type==='repos' ? 'Journée de récupération' : s.type==='exterieur' ? (s.duree ? s.duree+' min — ' : '') + (s.consigne||'') : s.type||'') + '</div>' +
+    (s.faite && s.resultats ? '<div class="jp-meta" style="color:var(--done);">✓ ' + renderResultats(s.resultats) + '</div>' : '') +
+    '</div>' +
+    '<div class="jp-actions">' + renderActions(s, idx) + '</div>';
+
+  return el;
+}
+
+function renderResultats(r) {
+  if (!r) return '';
+  var parts = [];
+  if (r.duree) parts.push(r.duree + ' min');
+  if (r.distance) parts.push(r.distance + ' km');
+  if (r.vitesse) parts.push(r.vitesse + ' km/h');
+  return parts.join(' · ');
+}
+
+function renderActions(s, idx) {
+  if (s.type === 'repos') return '';
+  var html = '';
+  if (!s.faite) {
+    if (s.type === 'indoor' && s.chargement) {
+      html += '<button class="jp-btn jp-btn-lancer" onclick="lancerSeanceIndoor(' + idx + ')">▶ Lancer</button>';
+    } else if (s.type === 'exterieur') {
+      html += '<button class="jp-btn jp-btn-exterieur" onclick="ouvrirSaisieExt(' + idx + ')">📍 Saisir</button>';
+    }
+  } else {
+    if (s.type === 'indoor' && s.chargement) {
+      html += '<button class="jp-btn jp-btn-relancer" onclick="lancerSeanceIndoor(' + idx + ')">↺ Relancer</button>';
+    }
+    html += '<button class="jp-btn jp-btn-relancer" onclick="marquerNonFaite(' + idx + ')" style="font-size:0.72em;padding:4px 10px;">✕ Annuler</button>';
+  }
+  if (s.type !== 'indoor') {
+    html += '<button class="jp-btn jp-btn-valider" onclick="marquerFaite(' + idx + ')" style="font-size:0.72em;padding:4px 10px;">' + (s.faite ? '✓' : '✅ Valider') + '</button>';
+  }
+  return html;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ACTIONS SÉANCES
+═══════════════════════════════════════════════════════ */
+function lancerSeanceIndoor(idx) {
+  var s = programmeActif.seances[idx];
+  if (!s || !s.chargement) return;
+  // Marquer comme faite automatiquement au lancement
+  marquerFaite(idx, true);
+  var encoded = encodeURIComponent(JSON.stringify(s.chargement));
+  window.location.href = 'seances_perso.html?seance=' + encoded;
+}
+
+function marquerFaite(idx, silencieux) {
+  programmeActif.seances[idx].faite = true;
+  sauvegarderProgramme();
+  if (!silencieux) afficherPlanning();
+}
+
+function marquerNonFaite(idx) {
+  programmeActif.seances[idx].faite = false;
+  programmeActif.seances[idx].resultats = null;
+  sauvegarderProgramme();
+  afficherPlanning();
+}
+
+/* ═══════════════════════════════════════════════════════
+   SAISIE SÉANCE EXTÉRIEURE
+═══════════════════════════════════════════════════════ */
+var extSlotIdx = null;
+
+function ouvrirSaisieExt(idx) {
+  extSlotIdx = idx;
+  var s = programmeActif.seances[idx];
+  document.getElementById('ext-titre').textContent = (s.icone||'📍') + ' ' + (s.titre||'Séance extérieure');
+  document.getElementById('ext-activite').value = s.activite || 'Course à pied';
+  document.getElementById('ext-duree').value = s.duree || '';
+  document.getElementById('ext-distance').value = '';
+  document.getElementById('ext-vitesse').value = '';
+  document.getElementById('ext-kcal').value = '';
+  document.getElementById('ext-commentaire').value = '';
+  document.getElementById('modal-ext').classList.add('open');
+}
+
+function fermerModalExt() {
+  document.getElementById('modal-ext').classList.remove('open');
+  extSlotIdx = null;
+}
+
+function validerSeanceExt() {
+  if (extSlotIdx === null) return;
+  var s = programmeActif.seances[extSlotIdx];
+  var activite = document.getElementById('ext-activite').value;
+  var duree    = parseInt(document.getElementById('ext-duree').value) || 0;
+  var distance = parseFloat(document.getElementById('ext-distance').value) || 0;
+  var vitesse  = parseFloat(document.getElementById('ext-vitesse').value) || 0;
+  var kcal     = parseInt(document.getElementById('ext-kcal').value) || 0;
+  var comment  = document.getElementById('ext-commentaire').value.trim();
+
+  // Calculer vitesse si manquante
+  if (!vitesse && duree && distance) vitesse = Math.round(distance / duree * 60 * 100) / 100;
+
+  var resultats = { duree: duree||null, distance: distance||null, vitesse: vitesse||null, kcal: kcal||null };
+  s.faite = true;
+  s.resultats = resultats;
+
+  // Enregistrer dans le carnet WOD&Cardio (même localStorage qu'infos.html)
+  var nom = s.titre || activite;
+  var dateStr = formatDateCarnet(new Date(s.date));
+  var dureeStr = duree ? Math.floor(duree/60) + ':' + String(duree%60).padStart(2,'0') + ':00' : '00:00:00';
+  var entry = {
+    date: dateStr,
+    type: 'CARDIO EXTERNE',
+    activite: activite,
+    nom: nom,
+    duree_sec: duree * 60,
+    duree: dureeStr,
+    distance_km: distance || null,
+    vitesse_kmh: vitesse || null,
+    kcal: kcal || null,
+    commentaire: comment || null
+  };
+
+  try {
+    var wc = JSON.parse(localStorage.getItem('wod_carnet')) || {};
+    if (!wc[nom]) wc[nom] = [];
+    wc[nom].push(entry);
+    localStorage.setItem('wod_carnet', JSON.stringify(wc));
+  } catch(e) {}
+
+  sauvegarderProgramme();
+  fermerModalExt();
+  afficherPlanning();
+}
+
+function formatDateCarnet(d) {
+  return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
+}
+
+/* ═══════════════════════════════════════════════════════
+   SUPPRIMER PROGRAMME
+═══════════════════════════════════════════════════════ */
+function supprimerProgramme() {
+  if (!confirm('Supprimer ce programme ? Cette action est irréversible.')) return;
+  localStorage.removeItem(PROG_KEY);
+  programmeActif = null;
+  retourAccueil();
+}
+
+/* ═══════════════════════════════════════════════════════
+   BACK TO TOP
+═══════════════════════════════════════════════════════ */
+function backToTop() {
+  var btn = document.getElementById('backToTop');
+  if (!btn) return;
+  window.addEventListener('scroll', function() {
+    btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+  });
+  btn.addEventListener('click', function() { window.scrollTo({ top:0, behavior:'smooth' }); });
+}
+</script>
+
+<!-- Charger script.js pour accéder au catalogue de séances -->
+<script src="script.js"></script>
+</body>
+</html>
