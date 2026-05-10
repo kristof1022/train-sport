@@ -500,6 +500,21 @@ option { background: var(--bg3); }
     <div id="seance-detail-zone"></div>
 
     <div class="section-title">Synthèse par exercice</div>
+
+    <!-- Filtre exercices -->
+    <div id="exo-filtre-zone" style="display:none; margin-bottom:16px;">
+      <div style="background:#1a1a2e; border:1px solid #2a2a4a; border-radius:10px; padding:14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <span style="font-size:0.82em; font-weight:700; color:#cddc39; letter-spacing:0.06em; text-transform:uppercase;">Exercices à afficher</span>
+          <div style="display:flex; gap:8px;">
+            <button onclick="exoFiltreAll(true)"  style="background:none; border:1px solid #cddc39; color:#cddc39; border-radius:6px; padding:4px 10px; font-size:0.75em; cursor:pointer;">Tout cocher</button>
+            <button onclick="exoFiltreAll(false)" style="background:none; border:1px solid #666;    color:#aaa;     border-radius:6px; padding:4px 10px; font-size:0.75em; cursor:pointer;">Tout décocher</button>
+          </div>
+        </div>
+        <div id="exo-checkboxes" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+      </div>
+    </div>
+
     <div id="exo-synthese-zone"></div>
 
     <div class="section-title">Courbe de fatigue intra-séance</div>
@@ -1061,6 +1076,22 @@ function buildMuscu() {
   initFatigueEmpty();
 }
 
+// État des filtres : nom -> true/false
+const exoFiltreState = {};
+
+function exoFiltreAll(val) {
+  Object.keys(exoFiltreState).forEach(k => { exoFiltreState[k] = val; });
+  document.querySelectorAll('#exo-checkboxes input[type=checkbox]').forEach(cb => { cb.checked = val; });
+  exoAppliquerFiltre();
+}
+
+function exoAppliquerFiltre() {
+  document.querySelectorAll('#exo-synthese-zone .exo-block').forEach(block => {
+    const nom = block.dataset.nom;
+    block.style.display = (exoFiltreState[nom] !== false) ? 'block' : 'none';
+  });
+}
+
 function buildExoSynthese(seances) {
   const exoMap = {};
   seances.forEach(s => {
@@ -1069,6 +1100,38 @@ function buildExoSynthese(seances) {
       exoMap[exo.nom].push({ date: s.date, series: exo.series||[] });
     });
   });
+
+  // Mettre à jour les checkboxes du filtre
+  const checkZone = document.getElementById('exo-checkboxes');
+  const filtreZone = document.getElementById('exo-filtre-zone');
+  const noms = Object.keys(exoMap);
+
+  if (noms.length > 0 && checkZone) {
+    if (filtreZone) filtreZone.style.display = 'block';
+    // Ajouter les nouveaux exercices (conserver l'état des existants)
+    noms.forEach(nom => {
+      if (!(nom in exoFiltreState)) exoFiltreState[nom] = true;
+    });
+    // Reconstruire les checkboxes
+    checkZone.innerHTML = '';
+    noms.forEach(nom => {
+      const label = document.createElement('label');
+      label.style.cssText = 'display:flex; align-items:center; gap:6px; background:#0f0f1a; border:1px solid #2a2a4a; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:0.82em; color:#ccc; user-select:none;';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = exoFiltreState[nom] !== false;
+      cb.style.accentColor = '#cddc39';
+      cb.addEventListener('change', function() {
+        exoFiltreState[nom] = cb.checked;
+        exoAppliquerFiltre();
+      });
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(nom));
+      checkZone.appendChild(label);
+    });
+  } else if (filtreZone) {
+    filtreZone.style.display = 'none';
+  }
 
   let html = '';
   for (const nom in exoMap) {
@@ -1100,7 +1163,7 @@ function buildExoSynthese(seances) {
       intensiteHtml = `<div class="intensity-wrap"><div class="intensity-label">Intensité relative : ${pct}% du 1RM — <span style="color:${col}">${zone}</span></div><div class="intensity-bar"><div class="intensity-fill" style="width:${pct}%;background:${col};"></div></div></div>`;
     }
 
-    html += `<div class="exo-block">
+    html += `<div class="exo-block" data-nom="${nom}">
       <div class="exo-block-header">
         <span class="exo-block-name">${nom}</span>
         <span class="badge badge-gray">${entries.length} séance${entries.length>1?'s':''}</span>
@@ -1116,6 +1179,8 @@ function buildExoSynthese(seances) {
     </div>`;
   }
   document.getElementById('exo-synthese-zone').innerHTML = html || '<div class="empty"><div class="empty-icon">🏋</div>Aucun exercice trouvé.</div>';
+  // Appliquer l'état des filtres après rendu
+  exoAppliquerFiltre();
 }
 
 function renderSeanceDetail() {
@@ -1317,6 +1382,18 @@ function parseDureeStr(str) {
   return 0;
 }
 
+// Formate une durée brute en MM:SS lisible (gère MM:SS:centièmes du chrono)
+function formatDuree(str) {
+  if (!str || str === '—') return str || '—';
+  const sec = parseDureeStr(str);
+  if (!sec) return str; // si 0 ou non parseable, afficher brut
+  const h = Math.floor(sec/3600);
+  const m = Math.floor((sec%3600)/60);
+  const s = sec%60;
+  if (h > 0) return h + 'h' + (m > 0 ? String(m).padStart(2,'0') + 'min' : '');
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
 function filterWod(type, el) {
   currentWodType = type;
   document.querySelectorAll('#wod-type-pills .activity-pill').forEach(p=>p.classList.remove('active'));
@@ -1338,7 +1415,7 @@ function buildWodCard(e) {
       <span style="font-size:11px;color:var(--text3);">${e.date||''}</span>
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;">
-      ${duree ? '<span class="badge badge-gray">⏱ ' + duree + '</span>' : ''}
+      ${duree ? '<span class="badge badge-gray">⏱ ' + formatDuree(duree) + '</span>' : ''}
       ${e.rounds && e.rounds!=='0' ? '<span class="badge badge-red">🔁 ' + e.rounds + ' rounds</span>' : ''}
       ${e.reps ? '<span class="badge badge-orange">💪 ' + e.reps + '</span>' : ''}
       ${e.distance_km ? '<span class="badge badge-teal">📍 ' + e.distance_km + ' km</span>' : ''}
@@ -1418,7 +1495,7 @@ function renderWodProgression() {
     }
     html += `<tr>
       <td>${e.date||''}</td>
-      <td style="font-weight:500;">${duree}</td>
+      <td style="font-weight:500;">${formatDuree(duree)}</td>
       ${hasRounds?`<td>${e.rounds||'—'}</td>`:''}
       ${hasReps?`<td>${e.reps||'—'}</td>`:''}
       ${hasDist?`<td>${e.distance_km||'—'}</td>`:''}
@@ -1550,7 +1627,7 @@ function renderCardioRecords(filtered) {
     <tr><th>Record</th><th>Valeur</th><th>Date</th><th>Sortie</th></tr>
     <tr><td>Vitesse max</td><td><strong>${(byVit.vitesse_kmh||0).toFixed(2)} km/h</strong></td><td>${byVit.date}</td><td>${byVit.nom}</td></tr>
     <tr><td>Distance max</td><td><strong>${byDist.distance_km||'—'} km</strong></td><td>${byDist.date}</td><td>${byDist.nom}</td></tr>
-    <tr><td>Sortie la + longue</td><td><strong>${byDuree.duree||'—'}</strong></td><td>${byDuree.date}</td><td>${byDuree.nom}</td></tr>
+    <tr><td>Sortie la + longue</td><td><strong>${formatDuree(byDuree.duree||byDuree.temps||'—')}</strong></td><td>${byDuree.date}</td><td>${byDuree.nom}</td></tr>
     ${byKcal ? `<tr><td>+ de calories</td><td><strong>${byKcal.kcal} kcal</strong></td><td>${byKcal.date}</td><td>${byKcal.nom}</td></tr>` : ''}
   </table></div>`;
   document.getElementById('cardio-records-zone').innerHTML = html;
