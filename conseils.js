@@ -254,6 +254,7 @@ const conseils = [
                 { type: "texte", texte: "(c'est en phase de test)" },
                 { type: "separateur" },
                  { type: "lien", texte: "📊 Ouvrir THT Analytics", url: "THT_Analytics_Dashboard.html" },
+                 { type: "lien", texte: "📊 Ouvrir THT AnalyticsV2", url: "THT_Analytics_Dashboard_v2.html" },
                  ]
          }
      },
