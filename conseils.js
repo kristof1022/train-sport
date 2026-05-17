@@ -254,7 +254,7 @@ const conseils = [
                 { type: "texte", texte: "(c'est en phase de test)" },
                 { type: "separateur" },
                  { type: "lien", texte: "📊 Ouvrir THT Analytics", url: "THT_Analytics_Dashboard.html" },
-                 { type: "lien", texte: "📊 Ouvrir THT AnalyticsV2", url: "THT_Analytics_Dashboard_v2.html" },
+                  { type: "lien", texte: "📊 Ouvrir THT AnalyticsV2", url: "THT_Analytics_Dashboard_v2.html" },
                  ]
          }
      },
@@ -418,7 +418,8 @@ function displayConseils() {
         '</div>' +
         '<div class="card-buttons">' +
         '<button onclick="exportToutJSON()" class="btn-full" style="margin-bottom:8px;">⬇ Exporter tout (JSON)</button>' +
-        '<button onclick="importToutJSON()" class="btn-full" style="background:#555;">⬆ Importer tout (JSON)</button>' +
+        '<button onclick="importToutJSON()" class="btn-full" style="background:#555;margin-bottom:8px;">⬆ Importer tout (JSON)</button>' +
+        '<button onclick="effacerToutJSON()" class="btn-full" style="background:none;border:1px solid #c0392b;color:#e74c3c;">🗑 Effacer tout</button>' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -1099,8 +1100,9 @@ function renderCarnetWod() {
 
         // Badges résultats
         html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">';
-        // Un seul badge durée : duree est normalisé par getAllWodEntries (absorbe temps/tempsTotal)
         if (e.duree)        html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.duree + '</span>';
+        if (e.temps)        html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.temps + '</span>';
+        if (e.tempsTotal)   html += '<span style="background:#e8eaf6;color:#1a237e;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">⏱ ' + e.tempsTotal + '</span>';
         if (e.distance_km)  html += '<span style="background:#e0f2f1;color:#00695c;border-radius:8px;padding:4px 10px;font-size:0.82em;font-weight:700;">📍 ' + e.distance_km + ' km</span>';
         if (e.allure_min_km) {
             var am = Math.floor(e.allure_min_km);
@@ -1644,4 +1646,12 @@ function importToutJSON() {
         reader.readAsText(file);
     };
     input.click();
+}
+
+function effacerToutJSON() {
+    if (!confirm('⚠️ Supprimer TOUTES les séances enregistrées sur cet appareil ?\n\nCarnet MUSCU + Carnet WOD & Cardio seront définitivement vidés.\nCette action est irréversible.')) return;
+    localStorage.removeItem('muscu_carnet');
+    localStorage.removeItem('wod_carnet');
+    alert('✅ Toutes les données ont été effacées.');
+    if (typeof displayConseils === 'function') displayConseils();
 }
