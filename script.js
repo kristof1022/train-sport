@@ -1412,7 +1412,31 @@ const workouts = [
                 { text: "🧱 Gainage de côté (gauche et droit)" },
                 { text: "🧱 Gainage commando" }
             ],
-            conseil: "Utiliser le champ '📋Mes Notes' pour écrire les résultats de la séance du jour. <br>Rien ne vous empêche d'ajouter des reps sur les genoux. Le gainage statique ou dynamique peut vous aider à vous tonifier en complément."
+            conseil: "Utiliser la fonction 'Charger dans Ma Séance' pour avoir un suivi et travailler sa progression : <br>▪️Bascule automatiquement dans l'onglet Ma Séance|MUSCU|PREPARER <br>▪️Entrer pour les 5 séries le nombre de reps en fonction de son maximum, ajuster la récupération entre chaque série <br>▪️Cliquer sur le bouton 'LANCER LA SEANCE' <br>▪️Faire ses 5 séries de pompes, noter le nombre de répétitions <br>▪️En fin de séance, cliquer sur 'Terminer la séance' pour enregistrer ses résultats <br>▪️Pour les séances suivantes, utiliser le calendrier 'MUSCU | SUIVI | PROGRESSION' en bas de l'onglet 'Ma Séance|MUSCU|PREPARER' pour recharger sa dernière séance et progresser  <br>Rien ne vous empêche d'ajouter des reps sur les genoux. Le gainage statique ou dynamique peut vous aider à vous tonifier en complément.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PROGRAMME POMPES PROGRESSIF",
+                recupSerie: 90,
+                recupBloc: 5,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [
+                            {
+                                nom: "Pompe",
+                                series: [
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            }
+                        ]
+                    },
+                 ]
+            }
         }
     },
 
