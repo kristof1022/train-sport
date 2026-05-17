@@ -2685,6 +2685,8 @@ function buildExecPanels() {
         for (var si = 0; si < nbSeries; si++) {
             panel.appendChild(buildSetBlock(bi, si, bloc));
         }
+        // Placer le bouton Ignorer sur la dernière série
+        refreshIgnoreBtn(panel, bloc);
 
         // Bouton + Série en live
         var addSerieBtn = document.createElement('button');
@@ -2705,8 +2707,9 @@ function buildExecPanels() {
                 // Construire et insérer le nouveau bloc avant ce bouton
                 var newBlock = buildSetBlock(biRef, newSi, blocRef);
                 panelRef.insertBefore(newBlock, btnRef);
-                // Mettre à jour le highlight
+                // Mettre à jour le highlight + bouton Ignorer
                 highlightCurrentSet(panelRef);
+                refreshIgnoreBtn(panelRef, blocRef);
             });
         })(bloc, bi, panel, addSerieBtn);
         panel.appendChild(addSerieBtn);
@@ -2781,13 +2784,44 @@ function buildExecPanels() {
     }
 }
 
+function refreshIgnoreBtn(panel, bloc) {
+    // Retirer le bouton Ignorer de tous les blocs
+    panel.querySelectorAll('.muscu-set-block').forEach(function(b) {
+        var btn = b.querySelector('.muscu-ignore-btn');
+        if (btn) btn.remove();
+    });
+    // Le remettre uniquement sur le dernier
+    var allBlocks = panel.querySelectorAll('.muscu-set-block');
+    if (!allBlocks.length) return;
+    var lastBlock = allBlocks[allBlocks.length - 1];
+    var hd = lastBlock.querySelector('.muscu-set-block-header');
+    if (!hd) return;
+    var btn = document.createElement('button');
+    btn.className = 'muscu-ignore-btn';
+    btn.textContent = '\u2715 Ignorer';
+    btn.style.cssText = 'background:none;border:1px solid #c0392b;color:#e74c3c;border-radius:5px;padding:2px 8px;font-size:0.75em;cursor:pointer;';
+    btn.title = 'Supprimer cette série de la séance';
+    btn.addEventListener('click', function() {
+        // Retirer la dernière série du tableau de données
+        bloc.exos.forEach(function(exo) {
+            if (exo.series.length > 1) exo.series.pop();
+        });
+        lastBlock.remove();
+        refreshIgnoreBtn(panel, bloc);
+    });
+    hd.appendChild(btn);
+}
+
 function buildSetBlock(bi, si, bloc) {
     var key = 'set-' + bi + '-' + si;
     var wrap = document.createElement('div');
     wrap.className = 'muscu-set-block'; wrap.id = key;
 
     var hd = document.createElement('div'); hd.className = 'muscu-set-block-header';
-    hd.textContent = (bloc.exos.length > 1 ? TYPES[bloc.type].label + ' ' : 'S\u00e9rie ') + (si+1);
+    hd.style.cssText = 'display:flex;justify-content:space-between;align-items:center;';
+    var hdTxt = document.createElement('span');
+    hdTxt.textContent = (bloc.exos.length > 1 ? TYPES[bloc.type].label + ' ' : 'S\u00e9rie ') + (si+1);
+    hd.appendChild(hdTxt);
     wrap.appendChild(hd);
 
     var colHd = document.createElement('div');
