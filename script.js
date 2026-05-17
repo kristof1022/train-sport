@@ -1879,85 +1879,7 @@ const workouts = [
         }
     },
   
-    {
-        title: "Push Day — Pectoraux / Triceps",
-        material: ["barre", "station-dips"],
-        body: "haut",
-        duration: 60,
-        type: "MUSCU",
-        level: "Moyen",
-        desc: "Séance poussée : Développé couché, Biset Dips/Écarté, Pompes. 3-4 séries par exercice.",
-        details: {
-            format_label: "MUSCU — 60 MINUTES",
-            exercises: [
-                { text: "Développé couché — 4×10 reps" },
-                { text: "Biset : Dips / Écarté poulie basse — 3×10/15 reps" },
-                { text: "Pompes — 4×15 reps" }
-            ],
-            conseil: "Récup 90s entre chaque série, 2min entre les exercices. Adapter les charges à votre niveau.",
-            chargeable: true,
-            chargement: {
-                type: "muscu",
-                nom: "Push Day — Pectoraux / Triceps",
-                recupSerie: 90,
-                recupBloc: 120,
-                blocs: [
-                    {
-                        type: "solo",
-                        exos: [
-                            {
-                                nom: "Développé couché",
-                                series: [
-                                    { reps: 10, poids: 10 },
-                                    { reps: 10, poids: 10 },
-                                    { reps: 10, poids: 10 },
-                                    { reps: 10, poids: 10 }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        type: "biset",
-                        exos: [
-                            {
-                                nom: "Dips",
-                                series: [
-                                    { reps: 10, poids: 0 },
-                                    { reps: 10, poids: 0 },
-                                    { reps: 10, poids: 0 }
-                                ]
-                            },
-                            {
-                                nom: "Écarté poulie basse",
-                                series: [
-                                    { reps: 15, poids: 10 },
-                                    { reps: 15, poids: 10 },
-                                    { reps: 15, poids: 10 }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        type: "solo",
-                        exos: [
-                            {
-                                nom: "Pompes",
-                                series: [
-                                    { reps: 15, poids: 0 },
-                                    { reps: 15, poids: 0 },
-                                    { reps: 15, poids: 0 },
-                                    { reps: 15, poids: 0 }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-    },
-  
-  
-
+    
     {
         title: "Séances Fractionné course",
         material: ["poids-corps", "tapis-incurve"],
@@ -2427,6 +2349,1314 @@ const workouts = [
                     { type: "repos",   reps: 1,  dur: 60,                   instr: "Récupération active — marche ou course lente" },
                     { type: "travail", reps: 1, instr: "<strong><u>400 MÈTRES ACTIFS</u></strong> 10/10 - <em>(cliquer sur 'étape suivante' quand les 400m sont effectués)</em>" },
                     { type: "recup",   reps: 1,  hasTimer: true,  dur: 300 , instr: "Retour au calme — étirements légers" }
+                ]
+            }
+        }
+    },
+
+
+    // ══════════════════════════════════════════════════════════
+    // PLANIFICATION 5 JOURS — SPLIT MUSCULAIRE
+    // ══════════════════════════════════════════════════════════
+
+    {
+        title: "⚡SPLIT 5J — Jour 1 : Pectoraux / Triceps (Push Day)",
+        material: ["barre", "haltere", "station-dips"],
+        body: "haut",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 5 jours — Jour 1/5.</strong> Séance poussée : développé couché, écarté, dips, extensions triceps. 4 exercices, 3-4 séries.",
+        details: {
+            format_label: "SPLIT 5 JOURS — PECTORAUX / TRICEPS",
+            intro: "📅 Programme SPLIT 5 jours — J1 : Pectoraux / Triceps | J2 : Dos / Biceps | J3 : Épaules | J4 : Jambes | J5 : Bras / Abdos",
+            exercises: [
+                { text: "Développé couché (Bench press) — 4×8-10 reps" },
+                { text: "Écarté haltères couché (Dumbbell fly) — 3×12 reps" },
+                { text: "Développé couché prise serrée (Close-grip bench press) — 3×10 reps" },
+                { text: "Dips — 3×10-12 reps" },
+                { text: "Extension triceps à la poulie haute (Triceps pushdown) — 3×15 reps" }
+            ],
+            conseil: "Récupération 90 sec entre séries, 2 min entre exercices. Échauffement : 10 min cardio léger + rotations épaules + 2 séries légères de développé couché.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "SPLIT 5J — J1 : Pectoraux / Triceps",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé couché (Bench press)",
+                            series: [
+                                { reps: 10, poids: 40 },
+                                { reps: 10, poids: 50 },
+                                { reps: 8,  poids: 60 },
+                                { reps: 8,  poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Écarté haltères couché (Dumbbell fly)",
+                            series: [
+                                { reps: 12, poids: 12 },
+                                { reps: 12, poids: 14 },
+                                { reps: 12, poids: 14 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Développé couché prise serrée (Close-grip bench press)",
+                                series: [
+                                    { reps: 10, poids: 40 },
+                                    { reps: 10, poids: 45 },
+                                    { reps: 10, poids: 45 }
+                                ]
+                            },
+                            {
+                                nom: "Dips",
+                                series: [
+                                    { reps: 12, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Extension triceps à la poulie haute (Triceps pushdown)",
+                            series: [
+                                { reps: 15, poids: 15 },
+                                { reps: 15, poids: 15 },
+                                { reps: 15, poids: 17 }
+                            ]
+                        }]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "⚡SPLIT 5J — Jour 2 : Dos / Biceps (Pull Day)",
+        material: ["barre", "haltere", "traction"],
+        body: "haut",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 5 jours — Jour 2/5.</strong> Séance tirée : tractions, rowing, tirage, curl biceps. 4 exercices, 3-4 séries.",
+        details: {
+            format_label: "SPLIT 5 JOURS — DOS / BICEPS",
+            intro: "📅 Programme SPLIT 5 jours — J1 : Pectoraux / Triceps | J2 : Dos / Biceps | J3 : Épaules | J4 : Jambes | J5 : Bras / Abdos",
+            exercises: [
+                { text: "Tractions (Pull-up) — 4×max reps" },
+                { text: "Rowing barre (Barbell row) — 4×8-10 reps" },
+                { text: "Tirage vertical poulie haute (Lat pulldown) — 3×12 reps" },
+                { text: "Biset : Curl haltères (Dumbbell curl) / Curl marteau (Hammer curl) — 3×10/10 reps" }
+            ],
+            conseil: "Récupération 90 sec entre séries, 2 min entre exercices. Concentrez-vous sur le travail de rétraction des omoplates sur le rowing.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "SPLIT 5J — J2 : Dos / Biceps",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Tractions (Pull-up)",
+                            series: [
+                                { reps: 8, poids: 0 },
+                                { reps: 7, poids: 0 },
+                                { reps: 6, poids: 0 },
+                                { reps: 6, poids: 0 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Rowing barre (Barbell row)",
+                            series: [
+                                { reps: 10, poids: 40 },
+                                { reps: 10, poids: 50 },
+                                { reps: 8,  poids: 55 },
+                                { reps: 8,  poids: 55 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Tirage vertical poulie haute (Lat pulldown)",
+                            series: [
+                                { reps: 12, poids: 40 },
+                                { reps: 12, poids: 45 },
+                                { reps: 12, poids: 45 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Curl haltères (Dumbbell curl)",
+                                series: [
+                                    { reps: 10, poids: 12 },
+                                    { reps: 10, poids: 14 },
+                                    { reps: 10, poids: 14 }
+                                ]
+                            },
+                            {
+                                nom: "Curl marteau (Hammer curl)",
+                                series: [
+                                    { reps: 10, poids: 12 },
+                                    { reps: 10, poids: 12 },
+                                    { reps: 10, poids: 14 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "⚡SPLIT 5J — Jour 3 : Épaules (Shoulder Day)",
+        material: ["barre", "haltere"],
+        body: "haut",
+        duration: 55,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 5 jours — Jour 3/5.</strong> Développé militaire, élévations latérales, oiseau, élévations frontales. 4 exercices, 3-4 séries.",
+        details: {
+            format_label: "SPLIT 5 JOURS — ÉPAULES",
+            intro: "📅 Programme SPLIT 5 jours — J1 : Pectoraux / Triceps | J2 : Dos / Biceps | J3 : Épaules | J4 : Jambes | J5 : Bras / Abdos",
+            exercises: [
+                { text: "Développé militaire (Overhead press / Military press) — 4×8-10 reps" },
+                { text: "Élévation latérale haltères (Lateral raise) — 4×12-15 reps" },
+                { text: "Oiseau haltères (Reverse fly) — 3×12 reps" },
+                { text: "Triset : Élévation frontale (Front raise) / Oiseau poulie (Cable fly) / Shrug barre (Barbell shrug) — 3×12 reps" }
+            ],
+            conseil: "Les épaules sont une articulation fragile : bien s'échauffer avec rotations complètes et élévations légères avant de charger. Privilégier la qualité d'exécution à la charge.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "SPLIT 5J — J3 : Épaules",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé militaire (Overhead press)",
+                            series: [
+                                { reps: 10, poids: 30 },
+                                { reps: 8,  poids: 40 },
+                                { reps: 8,  poids: 45 },
+                                { reps: 8,  poids: 45 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Élévation latérale haltères (Lateral raise)",
+                            series: [
+                                { reps: 15, poids: 8 },
+                                { reps: 12, poids: 10 },
+                                { reps: 12, poids: 10 },
+                                { reps: 12, poids: 10 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Oiseau haltères (Reverse fly)",
+                            series: [
+                                { reps: 12, poids: 8 },
+                                { reps: 12, poids: 8 },
+                                { reps: 12, poids: 10 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "triset",
+                        exos: [
+                            {
+                                nom: "Élévation frontale haltères (Front raise)",
+                                series: [
+                                    { reps: 12, poids: 8 },
+                                    { reps: 12, poids: 8 },
+                                    { reps: 12, poids: 8 }
+                                ]
+                            },
+                            {
+                                nom: "Oiseau à la poulie basse (Cable reverse fly)",
+                                series: [
+                                    { reps: 12, poids: 10 },
+                                    { reps: 12, poids: 10 },
+                                    { reps: 12, poids: 10 }
+                                ]
+                            },
+                            {
+                                nom: "Haussement d'épaules barre (Barbell shrug)",
+                                series: [
+                                    { reps: 15, poids: 50 },
+                                    { reps: 15, poids: 50 },
+                                    { reps: 15, poids: 60 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "⚡SPLIT 5J — Jour 4 : Jambes (Leg Day)",
+        material: ["barre", "haltere"],
+        body: "bas",
+        duration: 65,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 5 jours — Jour 4/5.</strong> Squat, fentes, leg press, leg curl, mollets. Séance complète bas du corps.",
+        details: {
+            format_label: "SPLIT 5 JOURS — JAMBES",
+            intro: "📅 Programme SPLIT 5 jours — J1 : Pectoraux / Triceps | J2 : Dos / Biceps | J3 : Épaules | J4 : Jambes | J5 : Bras / Abdos",
+            exercises: [
+                { text: "Squat barre (Back squat) — 4×8-10 reps" },
+                { text: "Fentes marchées haltères (Walking lunge) — 3×12 reps/jambe" },
+                { text: "Soulevé de terre jambes tendues (Romanian deadlift) — 3×10 reps" },
+                { text: "Biset : Extension de jambes (Leg extension) / Flexion de jambes (Leg curl) — 3×15 reps" },
+                { text: "Élévation des mollets debout (Standing calf raise) — 4×20 reps" }
+            ],
+            conseil: "Bien s'échauffer les genoux et hanches avant de squatter. Ne jamais verrouiller les genoux en extension. Récupération 2 min entre séries de squat.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "SPLIT 5J — J4 : Jambes",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Squat barre (Back squat)",
+                            series: [
+                                { reps: 10, poids: 50 },
+                                { reps: 8,  poids: 70 },
+                                { reps: 8,  poids: 80 },
+                                { reps: 8,  poids: 80 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Fentes marchées haltères (Walking lunge)",
+                            series: [
+                                { reps: 12, poids: 16 },
+                                { reps: 12, poids: 20 },
+                                { reps: 12, poids: 20 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Soulevé de terre jambes tendues (Romanian deadlift)",
+                            series: [
+                                { reps: 10, poids: 50 },
+                                { reps: 10, poids: 60 },
+                                { reps: 10, poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Extension de jambes (Leg extension)",
+                                series: [
+                                    { reps: 15, poids: 30 },
+                                    { reps: 15, poids: 35 },
+                                    { reps: 15, poids: 35 }
+                                ]
+                            },
+                            {
+                                nom: "Flexion de jambes (Leg curl)",
+                                series: [
+                                    { reps: 15, poids: 25 },
+                                    { reps: 15, poids: 30 },
+                                    { reps: 15, poids: 30 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Élévation des mollets debout (Standing calf raise)",
+                            series: [
+                                { reps: 20, poids: 0 },
+                                { reps: 20, poids: 0 },
+                                { reps: 20, poids: 0 },
+                                { reps: 20, poids: 0 }
+                            ]
+                        }]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "⚡SPLIT 5J — Jour 5 : Bras / Abdominaux (Arms & Core Day)",
+        material: ["barre", "haltere", "station-dips"],
+        body: "haut",
+        duration: 55,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 5 jours — Jour 5/5.</strong> Biceps, triceps, avant-bras et gainageabdominaux. Séance finition.",
+        details: {
+            format_label: "SPLIT 5 JOURS — BRAS / ABDOMINAUX",
+            intro: "📅 Programme SPLIT 5 jours — J1 : Pectoraux / Triceps | J2 : Dos / Biceps | J3 : Épaules | J4 : Jambes | J5 : Bras / Abdos",
+            exercises: [
+                { text: "Biset : Curl barre (Barbell curl) / Dips lestés — 4×10/10 reps" },
+                { text: "Biset : Curl incliné haltères (Incline dumbbell curl) / Extension triceps haltère (Triceps overhead extension) — 3×12 reps" },
+                { text: "Triset : Gainage (Plank) / Relevé de jambes suspendu (Hanging knee raise) / Enroulement de bassin (Hip thrust) — 3×30sec/15/20 reps" }
+            ],
+            conseil: "Séance finition : charges modérées, amplitude maximale, focus sur la sensation musculaire. Pas besoin de charger lourd pour les bras.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "SPLIT 5J — J5 : Bras / Abdominaux",
+                recupSerie: 75,
+                recupBloc: 90,
+                blocs: [
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Curl barre (Barbell curl)",
+                                series: [
+                                    { reps: 10, poids: 25 },
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 }
+                                ]
+                            },
+                            {
+                                nom: "Dips",
+                                series: [
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Curl incliné haltères (Incline dumbbell curl)",
+                                series: [
+                                    { reps: 12, poids: 10 },
+                                    { reps: 12, poids: 12 },
+                                    { reps: 12, poids: 12 }
+                                ]
+                            },
+                            {
+                                nom: "Extension triceps haltère (Triceps overhead extension)",
+                                series: [
+                                    { reps: 12, poids: 14 },
+                                    { reps: 12, poids: 16 },
+                                    { reps: 12, poids: 16 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "triset",
+                        exos: [
+                            {
+                                nom: "Gainage face (Plank)",
+                                series: [
+                                    { reps: 30, poids: 0 },
+                                    { reps: 30, poids: 0 },
+                                    { reps: 30, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Relevé de genoux suspendu (Hanging knee raise)",
+                                series: [
+                                    { reps: 15, poids: 0 },
+                                    { reps: 15, poids: 0 },
+                                    { reps: 15, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Enroulement de bassin (Hip thrust / crunch bas)",
+                                series: [
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+
+    // ══════════════════════════════════════════════════════════
+    // PLANIFICATION 4 JOURS — CORPS COMPLET
+    // ══════════════════════════════════════════════════════════
+
+    {
+        title: "🔀PLAN 4J — Jour 1 : Haut du corps Poussée (Upper Push)",
+        material: ["barre", "haltere", "station-dips"],
+        body: "haut",
+        duration: 55,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 4 jours — Jour 1/4.</strong> Pectoraux, épaules (faisceau antérieur & médial), triceps. Corps complet sur la semaine.",
+        details: {
+            format_label: "PLAN 4 JOURS — HAUT POUSSÉE",
+            intro: "📅 Programme 4 jours — J1 : Haut Poussée | J2 : Bas Quadriceps | J3 : Haut Tirée | J4 : Bas Ischio/Fessiers",
+            exercises: [
+                { text: "Développé couché (Bench press) — 4×8-10 reps" },
+                { text: "Développé incliné haltères (Incline dumbbell press) — 3×10 reps" },
+                { text: "Développé militaire haltères (Dumbbell overhead press) — 3×10 reps" },
+                { text: "Biset : Dips / Élévation latérale (Lateral raise) — 3×10/12 reps" }
+            ],
+            conseil: "Récupération 90 sec entre séries, 2 min entre exercices. Programme 4 jours idéal pour les sportifs qui pratiquent aussi une activité cardio.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 4J — J1 : Haut Poussée",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé couché (Bench press)",
+                            series: [
+                                { reps: 10, poids: 40 },
+                                { reps: 8,  poids: 55 },
+                                { reps: 8,  poids: 60 },
+                                { reps: 8,  poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé incliné haltères (Incline dumbbell press)",
+                            series: [
+                                { reps: 10, poids: 18 },
+                                { reps: 10, poids: 20 },
+                                { reps: 10, poids: 20 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé militaire haltères (Dumbbell overhead press)",
+                            series: [
+                                { reps: 10, poids: 16 },
+                                { reps: 10, poids: 18 },
+                                { reps: 10, poids: 18 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Dips",
+                                series: [
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Élévation latérale haltères (Lateral raise)",
+                                series: [
+                                    { reps: 12, poids: 8 },
+                                    { reps: 12, poids: 10 },
+                                    { reps: 12, poids: 10 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "🔀PLAN 4J — Jour 2 : Bas du corps Quadriceps (Lower Quad)",
+        material: ["barre", "haltere"],
+        body: "bas",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 4 jours — Jour 2/4.</strong> Accent quadriceps : squat, fente, leg press, mollets.",
+        details: {
+            format_label: "PLAN 4 JOURS — BAS QUADRICEPS",
+            intro: "📅 Programme 4 jours — J1 : Haut Poussée | J2 : Bas Quadriceps | J3 : Haut Tirée | J4 : Bas Ischio/Fessiers",
+            exercises: [
+                { text: "Squat barre (Back squat) — 4×8-10 reps" },
+                { text: "Fentes avant haltères (Dumbbell lunge) — 3×12 reps/jambe" },
+                { text: "Squat gobelet (Goblet squat) — 3×15 reps" },
+                { text: "Élévation des mollets (Calf raise) — 4×20 reps" }
+            ],
+            conseil: "Séance orientée quadriceps : descente lente (3 sec) sur squat et fentes pour maximiser le travail en excentrique.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 4J — J2 : Bas Quadriceps",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Squat barre (Back squat)",
+                            series: [
+                                { reps: 10, poids: 50 },
+                                { reps: 8,  poids: 70 },
+                                { reps: 8,  poids: 80 },
+                                { reps: 8,  poids: 80 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Fentes avant haltères (Dumbbell lunge)",
+                            series: [
+                                { reps: 12, poids: 16 },
+                                { reps: 12, poids: 20 },
+                                { reps: 12, poids: 20 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Squat gobelet (Goblet squat)",
+                            series: [
+                                { reps: 15, poids: 20 },
+                                { reps: 15, poids: 24 },
+                                { reps: 15, poids: 24 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Élévation des mollets (Calf raise)",
+                            series: [
+                                { reps: 20, poids: 0 },
+                                { reps: 20, poids: 0 },
+                                { reps: 20, poids: 0 },
+                                { reps: 20, poids: 0 }
+                            ]
+                        }]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "🔀PLAN 4J — Jour 3 : Haut du corps Tirée (Upper Pull)",
+        material: ["barre", "haltere", "traction"],
+        body: "haut",
+        duration: 55,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 4 jours — Jour 3/4.</strong> Dos, biceps, trapèzes. Séance tirée complète pour le haut du corps.",
+        details: {
+            format_label: "PLAN 4 JOURS — HAUT TIRÉE",
+            intro: "📅 Programme 4 jours — J1 : Haut Poussée | J2 : Bas Quadriceps | J3 : Haut Tirée | J4 : Bas Ischio/Fessiers",
+            exercises: [
+                { text: "Tractions (Pull-up) — 4×max reps" },
+                { text: "Rowing haltères unilatéral (Single-arm dumbbell row) — 4×10 reps" },
+                { text: "Tirage poulie haute prise serrée (Close-grip lat pulldown) — 3×12 reps" },
+                { text: "Biset : Curl barre (Barbell curl) / Curl marteau (Hammer curl) — 3×10/10 reps" }
+            ],
+            conseil: "Concentrez-vous sur la rétraction des omoplates en début de chaque mouvement de dos. Alterner les exercices pour les tractions : prise large / prise neutre.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 4J — J3 : Haut Tirée",
+                recupSerie: 90,
+                recupBloc: 120,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Tractions (Pull-up)",
+                            series: [
+                                { reps: 8, poids: 0 },
+                                { reps: 7, poids: 0 },
+                                { reps: 6, poids: 0 },
+                                { reps: 6, poids: 0 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Rowing haltère unilatéral (Single-arm dumbbell row)",
+                            series: [
+                                { reps: 10, poids: 20 },
+                                { reps: 10, poids: 24 },
+                                { reps: 10, poids: 26 },
+                                { reps: 10, poids: 26 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Tirage poulie haute prise serrée (Close-grip lat pulldown)",
+                            series: [
+                                { reps: 12, poids: 40 },
+                                { reps: 12, poids: 45 },
+                                { reps: 12, poids: 45 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Curl barre (Barbell curl)",
+                                series: [
+                                    { reps: 10, poids: 25 },
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 }
+                                ]
+                            },
+                            {
+                                nom: "Curl marteau (Hammer curl)",
+                                series: [
+                                    { reps: 10, poids: 12 },
+                                    { reps: 10, poids: 14 },
+                                    { reps: 10, poids: 14 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "🔀PLAN 4J — Jour 4 : Bas du corps Ischio / Fessiers (Lower Posterior)",
+        material: ["barre", "haltere"],
+        body: "bas",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 4 jours — Jour 4/4.</strong> Accent ischio-jambiers et fessiers : soulevé de terre, hip thrust, leg curl.",
+        details: {
+            format_label: "PLAN 4 JOURS — BAS ISCHIO / FESSIERS",
+            intro: "📅 Programme 4 jours — J1 : Haut Poussée | J2 : Bas Quadriceps | J3 : Haut Tirée | J4 : Bas Ischio/Fessiers",
+            exercises: [
+                { text: "Soulevé de terre (Deadlift) — 4×6-8 reps" },
+                { text: "Poussée de hanches (Hip thrust) — 4×12 reps" },
+                { text: "Soulevé de terre jambes tendues (Romanian deadlift) — 3×10 reps" },
+                { text: "Biset : Flexion de jambes (Leg curl) / Abduction (Hip abduction) — 3×15 reps" }
+            ],
+            conseil: "Le soulevé de terre est l'exercice roi de cette séance : ne pas arrondir le dos, bien démarrer avec le bassin en position basse. Récupération longue entre les séries lourdes (2 min).",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 4J — J4 : Bas Ischio / Fessiers",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Soulevé de terre (Deadlift)",
+                            series: [
+                                { reps: 8,  poids: 60 },
+                                { reps: 6,  poids: 80 },
+                                { reps: 6,  poids: 90 },
+                                { reps: 6,  poids: 90 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Poussée de hanches (Hip thrust)",
+                            series: [
+                                { reps: 12, poids: 40 },
+                                { reps: 12, poids: 60 },
+                                { reps: 12, poids: 70 },
+                                { reps: 12, poids: 70 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Soulevé de terre jambes tendues (Romanian deadlift)",
+                            series: [
+                                { reps: 10, poids: 50 },
+                                { reps: 10, poids: 60 },
+                                { reps: 10, poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Flexion de jambes (Leg curl)",
+                                series: [
+                                    { reps: 15, poids: 25 },
+                                    { reps: 15, poids: 30 },
+                                    { reps: 15, poids: 30 }
+                                ]
+                            },
+                            {
+                                nom: "Abduction de hanche (Hip abduction)",
+                                series: [
+                                    { reps: 15, poids: 0 },
+                                    { reps: 15, poids: 0 },
+                                    { reps: 15, poids: 0 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+
+    // ══════════════════════════════════════════════════════════
+    // PLANIFICATION 3 JOURS — FULL BODY
+    // ══════════════════════════════════════════════════════════
+
+    {
+        title: "🔱PLAN 3J — Jour 1 : Corps complet A (Full Body A)",
+        material: ["barre", "haltere", "traction"],
+        body: "complet",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 3 jours — Jour 1/3.</strong> Corps complet : squat, développé couché, tractions, abdos. Exercices polyarticulaires prioritaires.",
+        details: {
+            format_label: "PLAN 3 JOURS — FULL BODY A",
+            intro: "📅 Programme 3 jours — J1 : Full Body A (Lun) | J2 : Full Body B (Mer) | J3 : Full Body C (Ven) — 1 jour de repos entre chaque",
+            exercises: [
+                { text: "Squat barre (Back squat) — 4×8 reps" },
+                { text: "Développé couché (Bench press) — 4×8-10 reps" },
+                { text: "Tractions (Pull-up) — 3×max reps" },
+                { text: "Développé militaire (Overhead press) — 3×10 reps" },
+                { text: "Gainage (Plank) — 3×45 sec" }
+            ],
+            conseil: "Programme Full Body idéal pour 3 séances par semaine. Priorité aux exercices polyarticulaires. Récupération 2 min entre les séries des exercices de base.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 3J — J1 : Full Body A",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Squat barre (Back squat)",
+                            series: [
+                                { reps: 8, poids: 60 },
+                                { reps: 8, poids: 70 },
+                                { reps: 8, poids: 80 },
+                                { reps: 8, poids: 80 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé couché (Bench press)",
+                            series: [
+                                { reps: 10, poids: 40 },
+                                { reps: 8,  poids: 55 },
+                                { reps: 8,  poids: 60 },
+                                { reps: 8,  poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Tractions (Pull-up)",
+                            series: [
+                                { reps: 8, poids: 0 },
+                                { reps: 7, poids: 0 },
+                                { reps: 6, poids: 0 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé militaire (Overhead press)",
+                            series: [
+                                { reps: 10, poids: 30 },
+                                { reps: 10, poids: 35 },
+                                { reps: 10, poids: 40 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Gainage face (Plank)",
+                            series: [
+                                { reps: 45, poids: 0 },
+                                { reps: 45, poids: 0 },
+                                { reps: 45, poids: 0 }
+                            ]
+                        }]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "🔱PLAN 3J — Jour 2 : Corps complet B (Full Body B)",
+        material: ["barre", "haltere"],
+        body: "complet",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 3 jours — Jour 2/3.</strong> Corps complet : soulevé de terre, développé incliné, rowing, fentes, abdos.",
+        details: {
+            format_label: "PLAN 3 JOURS — FULL BODY B",
+            intro: "📅 Programme 3 jours — J1 : Full Body A (Lun) | J2 : Full Body B (Mer) | J3 : Full Body C (Ven) — 1 jour de repos entre chaque",
+            exercises: [
+                { text: "Soulevé de terre (Deadlift) — 4×6 reps" },
+                { text: "Développé incliné haltères (Incline dumbbell press) — 4×10 reps" },
+                { text: "Rowing barre (Barbell row) — 4×10 reps" },
+                { text: "Fentes arrière haltères (Reverse dumbbell lunge) — 3×10 reps/jambe" },
+                { text: "Biset : Crunch (Crunch) / Relevé de bassin (Hip raise) — 3×20 reps" }
+            ],
+            conseil: "Séance B : changement d'exercices pour éviter l'accommodation et stimuler toutes les fibres. Bien s'échauffer avant les séries de soulevé de terre.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 3J — J2 : Full Body B",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Soulevé de terre (Deadlift)",
+                            series: [
+                                { reps: 6, poids: 70 },
+                                { reps: 6, poids: 90 },
+                                { reps: 6, poids: 100 },
+                                { reps: 6, poids: 100 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé incliné haltères (Incline dumbbell press)",
+                            series: [
+                                { reps: 10, poids: 16 },
+                                { reps: 10, poids: 20 },
+                                { reps: 10, poids: 22 },
+                                { reps: 10, poids: 22 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Rowing barre (Barbell row)",
+                            series: [
+                                { reps: 10, poids: 40 },
+                                { reps: 10, poids: 50 },
+                                { reps: 10, poids: 55 },
+                                { reps: 10, poids: 55 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Fentes arrière haltères (Reverse dumbbell lunge)",
+                            series: [
+                                { reps: 10, poids: 16 },
+                                { reps: 10, poids: 18 },
+                                { reps: 10, poids: 20 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Crunch (Crunch)",
+                                series: [
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Relevé de bassin (Hip raise)",
+                                series: [
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "🔱PLAN 3J — Jour 3 : Corps complet C (Full Body C)",
+        material: ["barre", "haltere", "traction"],
+        body: "complet",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 3 jours — Jour 3/3.</strong> Corps complet : squat avant, développé couché prise serrée, rowing haltères, hip thrust, gainage.",
+        details: {
+            format_label: "PLAN 3 JOURS — FULL BODY C",
+            intro: "📅 Programme 3 jours — J1 : Full Body A (Lun) | J2 : Full Body B (Mer) | J3 : Full Body C (Ven) — 1 jour de repos entre chaque",
+            exercises: [
+                { text: "Squat avant (Front squat) — 4×8 reps" },
+                { text: "Développé couché prise serrée (Close-grip bench press) — 3×10 reps" },
+                { text: "Rowing haltère unilatéral (Single-arm dumbbell row) — 3×10 reps" },
+                { text: "Poussée de hanches (Hip thrust) — 3×12 reps" },
+                { text: "Triset : Gainage (Plank) / Gainage latéral (Side plank) / Rotation russe (Russian twist) — 3×30sec/30sec/20 reps" }
+            ],
+            conseil: "Séance C : variantes pour continuer à progresser. Le squat avant développe davantage le gainage et les quadriceps. Ne pas négliger les abdos en fin de séance.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 3J — J3 : Full Body C",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Squat avant (Front squat)",
+                            series: [
+                                { reps: 8, poids: 40 },
+                                { reps: 8, poids: 55 },
+                                { reps: 8, poids: 60 },
+                                { reps: 8, poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé couché prise serrée (Close-grip bench press)",
+                            series: [
+                                { reps: 10, poids: 40 },
+                                { reps: 10, poids: 45 },
+                                { reps: 10, poids: 50 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Rowing haltère unilatéral (Single-arm dumbbell row)",
+                            series: [
+                                { reps: 10, poids: 20 },
+                                { reps: 10, poids: 24 },
+                                { reps: 10, poids: 26 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Poussée de hanches (Hip thrust)",
+                            series: [
+                                { reps: 12, poids: 50 },
+                                { reps: 12, poids: 65 },
+                                { reps: 12, poids: 70 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "triset",
+                        exos: [
+                            {
+                                nom: "Gainage face (Plank)",
+                                series: [
+                                    { reps: 30, poids: 0 },
+                                    { reps: 30, poids: 0 },
+                                    { reps: 30, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Gainage latéral (Side plank)",
+                                series: [
+                                    { reps: 30, poids: 0 },
+                                    { reps: 30, poids: 0 },
+                                    { reps: 30, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Rotation russe (Russian twist)",
+                                series: [
+                                    { reps: 20, poids: 5 },
+                                    { reps: 20, poids: 5 },
+                                    { reps: 20, poids: 5 }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+
+
+    // ══════════════════════════════════════════════════════════
+    // PLANIFICATION 2 JOURS — FULL BODY MINIMALISTE
+    // ══════════════════════════════════════════════════════════
+
+    {
+        title: "⚖️PLAN 2J — Jour 1 : Corps complet Poussée / Bas (Full Body Push + Legs)",
+        material: ["barre", "haltere", "station-dips"],
+        body: "complet",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 2 jours — Jour 1/2.</strong> Programme minimaliste : mouvements de poussée + jambes. Tout le corps travaillé en 2 séances.",
+        details: {
+            format_label: "PLAN 2 JOURS — POUSSÉE + JAMBES",
+            intro: "📅 Programme 2 jours — J1 : Poussée + Jambes (ex: Lun) | J2 : Tirée + Postérieur (ex: Jeu) — parfait pour un emploi du temps chargé",
+            exercises: [
+                { text: "Squat barre (Back squat) — 4×8-10 reps" },
+                { text: "Développé couché (Bench press) — 4×8-10 reps" },
+                { text: "Développé militaire (Overhead press) — 3×10 reps" },
+                { text: "Dips — 3×10-12 reps" },
+                { text: "Élévation des mollets (Calf raise) — 3×20 reps" },
+                { text: "Gainage (Plank) — 3×45 sec" }
+            ],
+            conseil: "Programme 2 jours idéal si vous avez moins de 2h par semaine pour la salle. Chaque séance travaille tout le corps avec des exercices complémentaires. Indispensable de bien récupérer entre les 2 séances (48h mini).",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 2J — J1 : Poussée + Jambes",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Squat barre (Back squat)",
+                            series: [
+                                { reps: 10, poids: 50 },
+                                { reps: 8,  poids: 70 },
+                                { reps: 8,  poids: 80 },
+                                { reps: 8,  poids: 80 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé couché (Bench press)",
+                            series: [
+                                { reps: 10, poids: 40 },
+                                { reps: 8,  poids: 55 },
+                                { reps: 8,  poids: 60 },
+                                { reps: 8,  poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Développé militaire (Overhead press)",
+                            series: [
+                                { reps: 10, poids: 30 },
+                                { reps: 10, poids: 35 },
+                                { reps: 10, poids: 40 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Dips",
+                                series: [
+                                    { reps: 12, poids: 0 },
+                                    { reps: 10, poids: 0 },
+                                    { reps: 10, poids: 0 }
+                                ]
+                            },
+                            {
+                                nom: "Élévation des mollets (Calf raise)",
+                                series: [
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 },
+                                    { reps: 20, poids: 0 }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Gainage face (Plank)",
+                            series: [
+                                { reps: 45, poids: 0 },
+                                { reps: 45, poids: 0 },
+                                { reps: 45, poids: 0 }
+                            ]
+                        }]
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        title: "⚖️PLAN 2J — Jour 2 : Corps complet Tirée / Postérieur (Full Body Pull + Posterior)",
+        material: ["barre", "haltere", "traction"],
+        body: "complet",
+        duration: 60,
+        type: "MUSCU",
+        level: "Moyen",
+        desc: "<strong>Planification 2 jours — Jour 2/2.</strong> Programme minimaliste : mouvements de tirée + chaîne postérieure. Complémentaire du Jour 1.",
+        details: {
+            format_label: "PLAN 2 JOURS — TIRÉE + POSTÉRIEUR",
+            intro: "📅 Programme 2 jours — J1 : Poussée + Jambes (ex: Lun) | J2 : Tirée + Postérieur (ex: Jeu) — parfait pour un emploi du temps chargé",
+            exercises: [
+                { text: "Soulevé de terre (Deadlift) — 4×6-8 reps" },
+                { text: "Tractions (Pull-up) — 4×max reps" },
+                { text: "Rowing barre (Barbell row) — 3×10 reps" },
+                { text: "Poussée de hanches (Hip thrust) — 3×12 reps" },
+                { text: "Biset : Curl barre (Barbell curl) / Rotation russe (Russian twist) — 3×10/20 reps" }
+            ],
+            conseil: "Séance complémentaire du Jour 1 : elle couvre toute la chaîne postérieure (dos, ischio-jambiers, fessiers) et les muscles tireurs. 48h de repos minimum entre les 2 séances.",
+            chargeable: true,
+            chargement: {
+                type: "muscu",
+                nom: "PLAN 2J — J2 : Tirée + Postérieur",
+                recupSerie: 120,
+                recupBloc: 150,
+                blocs: [
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Soulevé de terre (Deadlift)",
+                            series: [
+                                { reps: 8,  poids: 60 },
+                                { reps: 6,  poids: 80 },
+                                { reps: 6,  poids: 95 },
+                                { reps: 6,  poids: 95 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Tractions (Pull-up)",
+                            series: [
+                                { reps: 8, poids: 0 },
+                                { reps: 7, poids: 0 },
+                                { reps: 6, poids: 0 },
+                                { reps: 6, poids: 0 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Rowing barre (Barbell row)",
+                            series: [
+                                { reps: 10, poids: 45 },
+                                { reps: 10, poids: 55 },
+                                { reps: 10, poids: 60 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "solo",
+                        exos: [{
+                            nom: "Poussée de hanches (Hip thrust)",
+                            series: [
+                                { reps: 12, poids: 50 },
+                                { reps: 12, poids: 65 },
+                                { reps: 12, poids: 70 }
+                            ]
+                        }]
+                    },
+                    {
+                        type: "biset",
+                        exos: [
+                            {
+                                nom: "Curl barre (Barbell curl)",
+                                series: [
+                                    { reps: 10, poids: 25 },
+                                    { reps: 10, poids: 30 },
+                                    { reps: 10, poids: 30 }
+                                ]
+                            },
+                            {
+                                nom: "Rotation russe (Russian twist)",
+                                series: [
+                                    { reps: 20, poids: 5 },
+                                    { reps: 20, poids: 5 },
+                                    { reps: 20, poids: 5 }
+                                ]
+                            }
+                        ]
+                    }
                 ]
             }
         }
